@@ -26,7 +26,8 @@ class AuthenticateClass extends React.Component {
       this.setState((state) => {
         const success = !!response['data'];
         const authCheck = success ? AUTH_CHECK.AUTHENTICATED : AUTH_CHECK.INVALID;
-        this.props.setAuthenticated(success && response['data']);
+        if(success)
+          this.props.setAuthenticated(response['data']);
         return ({...state, authCheck});
       });
     });
