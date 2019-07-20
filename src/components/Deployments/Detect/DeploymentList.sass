@@ -1,0 +1,38 @@
+@import './../../../assets/constants'
+
+.deploymentList
+  margin-top: 0
+
+.mainTable
+  margin-top: 22px
+
+.selectedCell
+  font-weight: 700
+
+.status
+  composes: statusDecoration from './../../../assets/text-combos.sass'
+  padding-right: 70px
+
+.statusPending
+  composes: status
+  composes: fontColorIdle from './../../../assets/text-combos.sass'
+
+.statusAccepted
+  composes: status
+  composes: fontColorSuccess from './../../../assets/text-combos.sass'
+
+.statusRejected
+  composes: status
+  composes: fontColorWarn from './../../../assets/text-combos.sass'
+
+.statusRow
+  text-align: left
+  padding-left: 240px
+
+.confirm
+  composes: centerSubmitButton from './../../../assets/input-combos.sass'
+  width: 140px
+  position: absolute
+  bottom: 20px
+  left: 50%
+  transform: translateX(-50%)

@@ -9,7 +9,7 @@ export default class Root extends Component {
     // const subs = { [SUBS.ID]: 11, [SUBS.CONCERN]: 'general' };
     // const home = makeRoute(ROUTES.specs.edit, subs);
     // const home = ROUTES.sysObjects.index;
-    const home = R.team.githubAuth;
+    const home = R.deployments.index;
     // const home = ROUTES.clusters.connect;
 
     return (
@@ -19,6 +19,8 @@ export default class Root extends Component {
             { Root.renderRoute(R.auth.authenticate) }
             { Root.renderRoute(R.auth.login) }
             { Root.renderRoute(R.team.githubAuth) }
+            { Root.renderRoute(R.deployments.index) }
+            { Root.renderRoute(R.deployments.detect) }
             <Route path={'/'} exact component={home.comp}/>
           </Switch>
         </BrowserRouter>

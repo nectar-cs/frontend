@@ -1,0 +1,38 @@
+
+$name-width: 30%
+$buff: 15px
+
+.inputLine
+  display: flex
+  flex-direction: row
+  align-items: flex-end
+  margin-top: 20px
+  &:nth-child(2)
+    margin-top: 34px
+
+.flexInput
+  margin-top: 12px
+
+.lineSlash
+  margin: 0 0 4px
+  font-size: 20px
+
+.lineText
+  margin: 0 0 4px 12px
+  font-size: 20px
+
+.lineIntro
+  margin-bottom: 7px
+  margin-right: 18px
+  min-width: 180px
+  .lineBold
+    font-weight: bold
+
+.repoSelect
+  composes: cleanSelect from './../../../assets/input-combos.sass'
+  margin: 0
+
+.nameInput
+  composes: cleanTextInputDark from './../../../assets/input-combos.sass'
+  margin: 0
+  flex-grow: 1

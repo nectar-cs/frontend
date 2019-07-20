@@ -1,0 +1,84 @@
+@import './../../../assets/constants'
+
+$header-size: 42px
+$header-left: 15px
+
+.card
+  composes: shadowCard from './../../../assets/content-layouts.sass'
+  position: static
+  display: inline-block
+  width: 360px
+  height: 260px
+  margin-left: 36px
+  margin-top: 16px
+
+.header
+  height: $header-size
+  width: 100%
+  position: relative
+  margin-bottom: 14px
+
+.headerImage
+  position: absolute
+  height: $header-size
+  width: $header-size
+  display: inline-block
+
+.headerText
+  left: $header-size
+  position: absolute
+  margin-left: $header-left
+  display: inline-block
+
+.headerTitle
+  composes: headerText
+  composes: tinyTitle from './../../../assets/text-combos.sass'
+  margin-top: 1px
+  &:hover
+    text-decoration: underline
+    cursor: pointer
+
+.headerSubtitle
+  composes: headerText
+  composes: subtitle from './../../../assets/text-combos.sass'
+  bottom: 1px
+
+.section
+  margin-top: 0
+  transition: width 0.8s linear
+
+.sectionTitle
+  display: inline-block
+  font-size: 14px
+  &:hover
+    cursor: pointer
+    font-weight: 500
+
+.moreIcon
+  display: inline-block
+  font-size: 14px
+  margin-left: 100px
+
+.sectionImage
+  display: inline-block
+  font-size: 17px
+  transform: translateY(3px)
+  margin-left: 8px
+
+.environmentsTable
+  margin-top: -4px
+  margin-left: 12px
+  width: 92%
+
+.environmentRow
+  composes: tightRow from './../../../assets/table-combos.sass'
+
+.fidelityCellText
+  letter-spacing: 0px
+
+.outcomeIcon
+  padding-left: 6px
+  font-size: 15px
+
+.headerRow
+  composes: headerRow from './../../../assets/table-combos.sass'
