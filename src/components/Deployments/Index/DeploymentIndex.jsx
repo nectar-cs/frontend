@@ -8,7 +8,7 @@ import WebUtils from '../../../utils/WebUtils';
 import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
 import DeploymentCard from './DeploymentCard';
 
-class SysObjectIndexClass extends React.Component {
+class DeploymentIndexClass extends React.Component {
 
   constructor(props){
     super(props);
@@ -18,7 +18,7 @@ class SysObjectIndexClass extends React.Component {
   }
 
   componentDidMount() {
-    WebUtils.fetchJson('/deployments', (payload) => {
+    WebUtils.fetchJson('/microservices', (payload) => {
       this.setState((s) => ({...s, deployments: payload['data']}));
     });
   }
@@ -29,7 +29,7 @@ class SysObjectIndexClass extends React.Component {
       if(items.length > 0)
         return this.renderCards();
       else
-        return SysObjectIndexClass.renderEmptyList();
+        return DeploymentIndexClass.renderEmptyList();
     } else return <CenterLoader/>;
   }
 
@@ -62,7 +62,7 @@ class SysObjectIndexClass extends React.Component {
 }
 
 const DeploymentIndex = AuthenticatedComponent.compose(
-  SysObjectIndexClass
+  DeploymentIndexClass
 );
 
 export { DeploymentIndex as default };
