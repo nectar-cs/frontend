@@ -1,0 +1,99 @@
+@import './../assets/constants'
+
+.regularInput
+  display: block
+  margin-left: auto
+  margin-right: auto
+  width: 100%
+
+
+.formSubmit
+  display: block
+  margin-left: auto
+  margin-right: auto
+  width: 60%
+
+.formSubmitContrast
+  composes: formSubmit
+  color: $contrast-font
+
+.cleanTextInput
+  width: 95%
+  border-color: $contrast-font
+  border-width: 0 0 1px 0
+  padding-left: 0
+  border-radius: 0
+  color: $contrast-font
+  &::placeholder
+    opacity: 1.0
+    color: $contrast-less-font
+
+.cleanTextInputDark
+  width: 40%
+  border-color: $primary-color
+  border-width: 0 0 1px 0
+  padding-left: 0
+  border-radius: 0
+  color: $primary-font
+  &::placeholder
+    opacity: 1.0
+    color: $primary-font-less
+
+.cleanSelect
+  composes: cleanTextInputDark
+
+.cleanBoxSelect
+  composes: cleanTextInputDark
+  border-width: 1px
+  border-radius: 3px
+  padding-left: 6px
+
+
+.buttonNormalColors
+  background: $ready-lukewarm
+  &:active
+    background: $primary-color
+  &:disabled
+    background: $btn-not-ready-color
+
+.buttonBrightColors
+  background: darkgreen
+  &:active
+    background: forestgreen
+  &:disabled
+    background: $btn-not-ready-color
+
+.confirmButton
+  composes: buttonNormalColors
+  padding-left: 20px
+  padding-right: 20px
+  background: $ready-lukewarm
+  color: $contrast-font
+  cursor: pointer
+  &:active
+    background: $primary-color
+  &:disabled
+    background: $btn-not-ready-color
+
+.centerSubmitButton
+  composes: confirmButton
+  display: block
+  margin-left: auto
+  margin-right: auto
+
+.lineInput
+  display: inline-block
+
+.linePrefixText
+  display: inline-block
+  margin-right: 12px
+
+
+
+
+
+
+
+
+
+

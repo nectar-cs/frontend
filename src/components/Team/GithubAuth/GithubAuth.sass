@@ -1,0 +1,54 @@
+@import './../../../assets/constants'
+
+$container-size: 370px
+$image-size: 140px
+$icon-size: 120px
+
+.connectContainer
+  composes: shadowCard from './../../../assets/content-layouts.sass'
+  position: relative
+  width: $container-size
+  height: $container-size
+  left: 50%
+  top: 45%
+  transform: translateX(-50%) translateY(-50%)
+
+.innerBox
+  position: absolute
+  left: 50%
+  top: 50%
+  transform: translateX(-50%) translateY(-50%)
+
+.containerImage
+  display: block
+  margin-top: 10px
+  margin-left: auto
+  margin-right: auto
+  width: $image-size
+  height: $image-size
+  background: transparent
+
+.containerIcon
+  display: block
+  margin-top: 10px
+  margin-left: auto
+  margin-right: auto
+  width: $icon-size
+  height: $icon-size
+  font-size: $icon-size
+  background: $primary-color
+  border-radius: 50%
+  color: $contrast-color
+
+.link
+  background: transparent
+
+.containerText
+  margin-top: 20px
+  text-align: center
+
+.loader
+  &::after
+    width: 36px
+    height: 36px
+

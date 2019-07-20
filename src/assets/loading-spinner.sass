@@ -1,0 +1,56 @@
+//https://loading.io/css/
+@import './../assets/constants'
+
+$big-spinner-size: 80px
+
+.loadingSpinner
+  display: inline-block
+  width: 64px
+  height: 64px
+  &::after
+    content: " "
+    display: block
+    width: 26px
+    height: 26px
+    margin: 1px
+    border-radius: 50%
+    border: 5px solid $primary-color
+    border-color: $primary-color transparent $primary-color transparent
+    animation: lds-dual-ring 1.6s linear infinite
+
+@keyframes lds-dual-ring
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)
+
+.centLoadingSpinner
+  composes: loadingSpinner
+  display: block
+  width: auto
+  height: auto
+  &::after
+    margin: 0 auto 0 auto
+
+.vertCentLoadingSpinner
+  composes: loadingSpinner
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translateX(-50%) translateY(-50%)
+  &::after
+    margin: 0 auto 0 auto
+
+.bigSpinner
+  width: $big-spinner-size
+  height: $big-spinner-size
+  &:after
+    width: $big-spinner-size
+    height: $big-spinner-size
+
+.thinSpinner
+  composes: loadingSpinner
+  &::after
+    border-width: 3px
+
+
