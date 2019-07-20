@@ -19,8 +19,9 @@ export default class MiscUtils {
   }
 
   static frameworkImage(framework){
-    const fname = `${framework}/${framework}-plain.svg`;
-    return `${__dirname}./../resources/images/frameworks/${fname}`;
+    const base = "https://storage.googleapis.com/nectar-mosaic-public/images/frameworks";
+    const imageName = `${framework}/${framework}-plain.svg`;
+    return `${base}/${imageName}`;
   }
 
   static emptyOption(text){

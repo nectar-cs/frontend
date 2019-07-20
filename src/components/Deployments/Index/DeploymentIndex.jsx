@@ -18,7 +18,6 @@ class SysObjectIndexClass extends React.Component {
   }
 
   componentDidMount() {
-    console.log("ALIVE");
     WebUtils.fetchJson('/deployments', (payload) => {
       this.setState((s) => ({...s, deployments: payload['data']}));
     });
@@ -39,7 +38,7 @@ class SysObjectIndexClass extends React.Component {
       <div className={s.list}>
         { this.state.deployments.map((sysObject) => (
             <DeploymentCard
-              key={sysObject.id}
+              key={sysObject.name}
               deployment={sysObject}
             />
           ))

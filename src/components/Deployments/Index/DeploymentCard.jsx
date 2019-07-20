@@ -42,26 +42,14 @@ class EnvironmentRow extends React.Component{
 }
 
 export default class DeploymentCard extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      explodedKey: 'network',
-    };
-  }
-
-  toggleExploded(key){
-    let next = this.state.explodedKey ? null : key;
-    this.setState((s) => ({...s, explodedKey: next}));
-  }
-
   render(){
     const { name, description, framework } = this.props.deployment;
-    let frameworkImg = require('./../../../resources/images/frameworks/rails/rails-plain.svg');
+    let frameworkImg = MiscUtils.frameworkImage(framework);
 
     return(
       <div className={s.card}>
         <div className={s.header}>
-          <ReactSVG svgClassName={s.headerImage} src={frameworkImg}/>
+          <img className={s.headerImage} src={frameworkImg}/>
           <p className={s.headerTitle}>{name}</p>
           <p className={s.headerSubtitle}>{description}</p>
         </div>
