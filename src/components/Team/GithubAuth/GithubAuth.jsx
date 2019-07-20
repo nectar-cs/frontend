@@ -7,7 +7,6 @@ import MiscUtils from '../../../utils/MiscUtils';
 import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
 import { ROUTES } from '../../../containers/RoutesConsts';
 import { NavLink } from 'react-router-dom';
-import gitLogo from './../../../resources/images/frameworks/github/github-plain.svg'
 
 const GIT_STATES = {
   CHECKING: 'checking',
@@ -67,6 +66,7 @@ const GithubAuthClass = class extends React.Component {
   }
 
   renderGitOffer(){
+    const gitLogo = MiscUtils.frameworkImage('github');
     return(
       <a
         onClick={this.onOpenAuthClicked}

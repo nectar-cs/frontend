@@ -2,12 +2,20 @@ import React from 'react'
 import layouts from './../assets/content-layouts.sass'
 import DataUtils from './DataUtils';
 
+const GCP_BASE = "https://storage.googleapis.com/";
+const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
+
 export default class MiscUtils {
 
   static image(name){
-    const path = './nectar_mark_light.png';
-    return path;
+    return `${IMG_BASE}/${name}`;
   }
+
+  static frameworkImage(framework){
+    const imageName = `${framework}/${framework}-plain.svg`;
+    return `${IMG_BASE}/frameworks/${imageName}`;
+  }
+
   static coolCross(callback){
     let attrs = {background: 'white', marginLeft: "34px", padding: "0 17px  "};
     return(
@@ -16,12 +24,6 @@ export default class MiscUtils {
         { callback(attrs) }
       </div>
     )
-  }
-
-  static frameworkImage(framework){
-    const base = "https://storage.googleapis.com/nectar-mosaic-public/images/frameworks";
-    const imageName = `${framework}/${framework}-plain.svg`;
-    return `${base}/${imageName}`;
   }
 
   static emptyOption(text){

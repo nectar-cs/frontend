@@ -58,7 +58,7 @@ class AuthenticateClass extends React.Component {
         return <Redirect to={ROUTES.clusters.connect}/>;
       else return AuthenticateClass.renderLoading();
     } else if(this.state.authCheck === AUTH_CHECK.INVALID){
-      return <Redirect to={ROUTES.auth.login}/>;
+      return <Redirect to={ROUTES.auth.login.path}/>;
     } else if(this.state.authCheck === AUTH_CHECK.FETCHING) {
       return AuthenticateClass.renderLoading();
     }

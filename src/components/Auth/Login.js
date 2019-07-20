@@ -6,7 +6,6 @@ import WebUtils from '../../utils/WebUtils';
 import { Redirect } from 'react-router';
 import { setSignedIn } from '../../actions/profileAction';
 import {connect} from  'react-redux'
-import logo from './../../resources/images/nectar_mark_light.png'
 
 
 class LoginClass extends React.Component{
@@ -27,11 +26,12 @@ class LoginClass extends React.Component{
   }
 
   renderUnauthenticated(){
+    const image = MiscUtils.image('nectar_mark_light.png');
     return(
       <div className={s.container}>
         <div className={s.content}>
           <div className={s.titleBox}>
-            <img className={s.titleLogo} src={logo} />
+            <img className={s.titleLogo} src={image} />
             <h1 className={s.titleText}>mosaic</h1>
           </div>
           <div className={s.formBox}>
