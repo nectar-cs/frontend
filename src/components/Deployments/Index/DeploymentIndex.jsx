@@ -18,7 +18,7 @@ class DeploymentIndexClass extends React.Component {
       deployments: null,
       selectedIndex: 0
     };
-    this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +39,6 @@ class DeploymentIndexClass extends React.Component {
     });
   }
 
-
   render(){
     const items = this.state.deployments;
     if(items){
@@ -52,7 +51,12 @@ class DeploymentIndexClass extends React.Component {
 
   renderCards(){
     return(
-      <div className={s.list} onKeyDown={this.handleKeyDown} tabIndex={0}>
+      <div
+        className={s.list}
+        onKeyDown={this.handleKeyDown}
+        tabIndex={0}
+        ref={div => div && div.focus()}
+      >
         { this.state.deployments.map((deployment, i) => (
             <DeploymentCard
               key={deployment.deployment_name}
@@ -74,13 +78,11 @@ class DeploymentIndexClass extends React.Component {
       nextIndex = MiscUtils.positiveMod(crtIndex - 1, listMax);
     else if (e.keyCode === 39)
       nextIndex = (crtIndex + 1) % listMax;
-    else nextIndex = -1;
 
-    console.log("KEY DOWN " + e.keyCode);
-    if(nextIndex != null){
-      console.log("KEY DOWN " + e.keyCode + " IND " + nextIndex );
+
+    if(nextIndex != null)
       this.setState((s) => ({...s, selectedIndex: nextIndex}));
-    }
+
   }
 
   static renderEmptyList(){
