@@ -59,22 +59,7 @@ export default class MiscUtils {
     return options;
   }
 
-  static frameworkChoices(withNull=true){
-    // const fs = require('fs');
-    // const dirName = `${__dirname}/../resources/images/frameworks/`;
-    // const options = fs.readdirSync(dirName).map((name) =>
-    //   <option key={name} value={name}>
-    //     <p>{name}</p>
-    //   </option>
-    // );
-    //
-    // if(withNull){
-    //   options.push(this.emptyOption('Framework'))
-    // }
-    //
-    // return options;
+  static frameworkChoices(){
+    return ["javascript", "go", "ruby", "c"];
   }
-
-
-
 }

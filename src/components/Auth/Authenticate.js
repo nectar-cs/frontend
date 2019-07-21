@@ -1,4 +1,4 @@
-import WebUtils from '../../utils/WebUtils';
+import Backend from '../../utils/Backend';
 import { setAuthenticated } from '../../actions/profileAction';
 import { connect } from "react-redux";
 import React from 'react';
@@ -22,7 +22,7 @@ class AuthenticateClass extends React.Component {
 
   componentDidMount(){
     let endpoint = '/auth/authenticate';
-    WebUtils.fetchJson(endpoint, (response) => {
+    Backend.fetchJson(endpoint, (response) => {
       this.setState((state) => {
         const success = !!response['data'];
         const authCheck = success ? AUTH_CHECK.AUTHENTICATED : AUTH_CHECK.INVALID;

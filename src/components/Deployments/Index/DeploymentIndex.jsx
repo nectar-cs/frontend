@@ -4,7 +4,7 @@ import s from './DeploymentIndex.sass'
 import { ROUTES as R } from './../../../containers/RoutesConsts'
 import CenterAnnouncement from '../../../widgets/CenterAnnouncement/CenterAnnouncement';
 import CenterCard from '../../../widgets/CenterCard/CenterCard';
-import WebUtils from '../../../utils/WebUtils';
+import Backend from '../../../utils/Backend';
 import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
 import DeploymentCard from './DeploymentCard';
 
@@ -18,7 +18,7 @@ class DeploymentIndexClass extends React.Component {
   }
 
   componentDidMount() {
-    WebUtils.fetchJson('/microservices', (payload) => {
+    Backend.fetchJson('/microservices', (payload) => {
       this.setState((s) => ({...s, deployments: payload['data']}));
     });
   }

@@ -1,0 +1,1 @@
+const KUBE_HANDLER_URL = process.env['KUBE_HANDLER_URL'];

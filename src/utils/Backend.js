@@ -1,9 +1,11 @@
 import Cookies from "js-cookie";
 
-export default class WebUtils{
+const DEFAULT_URL = "http://localhost:3000";
+const BACKEND_URL = process.env['BACKEND_URL'] || DEFAULT_URL;
 
+export default class Backend {
   static fetchJson(endPoint, callback){
-    let url = `http://localhost:3000${endPoint}`;
+    let url = `${BACKEND_URL}${endPoint}`;
     const headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -21,12 +23,13 @@ export default class WebUtils{
   }
 
   static postJson(endPoint, hash, callback, method='POST'){
-    let url = `http://localhost:3000${endPoint}`;
+    let url = `${BACKEND_URL}${endPoint}`;
     fetch(url, {
       method: method,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
         'Token': this.accessToken()
       },
       body: JSON.stringify(hash)
@@ -46,7 +49,6 @@ export default class WebUtils{
   }
 
   static accessToken(){
-    return WebUtils.kvGet('accessToken');
+    return Backend.kvGet('accessToken');
   }
-
 }

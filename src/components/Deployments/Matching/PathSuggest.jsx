@@ -1,18 +1,9 @@
-//@flow
 import React from 'react'
 import Autocomplete from 'react-autocomplete';
 import s from './PathSuggest.sass'
 import DataUtils from '../../../utils/DataUtils';
 
-type Props = {
-  pathTree: Array<string>
-};
-
-type State = {
-
-}
-
-export default class PathSuggest extends React.Component<Props, State> {
+export default class PathSuggest extends React.Component {
 
   constructor (props) {
     super(props);
@@ -33,11 +24,6 @@ export default class PathSuggest extends React.Component<Props, State> {
 
   getSuggestions(){
     if(this.getTree()){
-      const x = this.getCrtLevelKeys();
-      // console.log("SEARCHING WITH ");
-      // console.log(this.state.committed);
-      // console.log("YIELDS");
-      // console.log(x);
       return this.getCrtLevelKeys().map((dir) => {
         const fullPathParts = [...this.state.committed, dir];
         return { id: dir, label: fullPathParts.join(' / ') }

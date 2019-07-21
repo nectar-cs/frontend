@@ -3,6 +3,7 @@ import Login from "../components/Auth/Login";
 import Authenticate from "../components/Auth/Authenticate";
 import DeploymentCard from "../components/Deployments/Index/DeploymentCard";
 import DeploymentIndex from "../components/Deployments/Index/DeploymentIndex";
+import Matching from "../components/Deployments/Matching/Matching";
 
 
 export const ROUTES = {
@@ -12,7 +13,7 @@ export const ROUTES = {
 
   deployments: {
     index: { path: '/sysObjects/index', comp: DeploymentIndex },
-    detect: { path: '/sysObjects/detect', comp: DeploymentCard },
+    detect: { path: '/sysObjects/detect', comp: Matching },
   },
 
   auth: {

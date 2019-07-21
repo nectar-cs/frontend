@@ -1,10 +1,10 @@
-import WebUtils from "../utils/WebUtils";
+import Backend from "../utils/Backend";
 export const SIGN_IN = 'SIGN_IN';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const SIGN_OUT = 'SIGN_OUT';
 
 export function setSignedIn(accessToken){
-  WebUtils.kvSet('accessToken', accessToken);
+  Backend.kvSet('accessToken', accessToken);
   const bundle = { accessToken, isSessionActive: false };
   return { type: SIGN_IN, bundle: bundle }
 }

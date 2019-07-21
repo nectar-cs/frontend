@@ -7,7 +7,10 @@
     "build": "./node_modules/.bin/webpack -p --mode production",
     "start": "./node_modules/.bin/webpack-dev-server --config ./webpack.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dc": "./node_modules/.bin/webpack-dev-server --hot --progress --colors --host 0.0.0.0 --port 9000"
+    "one": "./node_modules/.bin/webpack-dev-server --hot --progress --colors --host 0.0.0.0 --port 9000",
+    "two": "./node_modules/.bin/webpack-dev-server --mode development --hot --progress --colors --host 0.0.0.0 --port 9000",
+    "three": "./node_modules/.bin/webpack-dev-server --mode development --config ./webpack.config.js --colors --host 0.0.0.0 --port 9000",
+    "four": "./node_modules/.bin/webpack-dev-server --hot --progress --colors --host 0.0.0.0 --port 9000"
   },
   "license": "Apache-2.0",
   "licenses": [
@@ -41,8 +44,10 @@
     "connected-react-router": "^6.5.2",
     "file-loader": "^4.1.0",
     "history": "^4.9.0",
+    "humanize-string": "^2.1.0",
     "js-cookie": "^2.2.0",
     "react": "^16.8.1",
+    "react-autocomplete": "^1.8.1",
     "react-dom": "^16.8.1",
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
@@ -50,6 +55,7 @@
     "react-svg": "^10.0.11",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "string-similarity": "^3.0.0",
     "url-loader": "^2.1.0"
   }
 }

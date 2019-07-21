@@ -1,18 +1,12 @@
-// @flow
 import React from 'react'
-import s from './BasicInfoForm.sass'
-import WebUtils from '../../../utils/WebUtils';
-import MiscUtils from '../../../utils/MiscUtils';
+import s from './MatchForm.sass'
+import Backend from '../../../utils/Backend';
 import PathSuggest from './PathSuggest';
-
-const fs = require('fs');
+import MiscUtils from "../../../utils/MiscUtils";
 const humanizer = require('humanize-string');
-
-type Props = { deployment: string, setIsFetching: (bool) => void }
-
 const StringSimilarity = require('string-similarity');
 
-export default class BasicInfoForm extends React.Component<Props> {
+export default class MatchForm extends React.Component {
 
   constructor(props){
     super(props);
@@ -32,7 +26,7 @@ export default class BasicInfoForm extends React.Component<Props> {
 
   componentDidMount(){
     this.props.setIsFetching(true);
-    WebUtils.fetchJson('/github/list_repos', (payload) => {
+    Backend.fetchJson('/github/list_repos', (payload) => {
       this.setState((s) => ({...s, repoList: payload['data']}));
       this.guessRepo(this.props.deployment.name);
     });
@@ -158,7 +152,7 @@ export default class BasicInfoForm extends React.Component<Props> {
           className={s.repoSelect}
           onChange={(e) => this.onValueChanged({framework: e.target.value})}
         >
-          { BasicInfoForm.frameworkChoices() }
+          { MatchForm.frameworkChoices() }
         </select>
       </div>
     )
@@ -175,7 +169,7 @@ export default class BasicInfoForm extends React.Component<Props> {
   fetchRepoTree(repo){
     this.props.setIsFetching(true);
     const endpoint = `/github/repos/${repo.name}/path_tree`;
-    WebUtils.fetchJson(endpoint, (result) => {
+    Backend.fetchJson(endpoint, (result) => {
       const tree = result['tree'];
       this.repoPathTrees = {...this.repoPathTrees, [repo.name]: tree};
       this.propagateRepoChanged(repo);
@@ -213,8 +207,8 @@ export default class BasicInfoForm extends React.Component<Props> {
   }
 
   static frameworkChoices(){
-    const dirName = `${__dirname}/../resources/images/frameworks/`;
-    return fs.readdirSync(dirName).map((name) =>
+    return MiscUtils.frameworkChoices().map((name) =>
+
       <option key={name} value={name}>
         {name}
       </option>

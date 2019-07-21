@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import WebUtils from '../../../utils/WebUtils';
+import Backend from '../../../utils/Backend';
 import s from './GithubAuth.sass';
 import ls from './../../../assets/loading-spinner.sass'
 import ReactSVG from 'react-svg';
@@ -52,7 +52,7 @@ const GithubAuthClass = class extends React.Component {
 
   componentDidMount(){
     if(this.state.githubState !== GIT_STATES.CHECKING) return;
-    WebUtils.fetchJson('/github/token', (payload) => {
+    Backend.fetchJson('/github/token', (payload) => {
       if(payload['access_token']){
         this.setState((s) => ({...s, githubState: GIT_STATES.AUTHORIZED}));
         this.fetchClusterDeploys();
@@ -72,17 +72,14 @@ const GithubAuthClass = class extends React.Component {
         onClick={this.onOpenAuthClicked}
         href={this.state.authUrl}
         target="_blank">
-        <ReactSVG
-          svgClassName={s.containerImage}
-          src={gitLogo}
-        />
+        <img className={s.containerImage} src={gitLogo} alt={'Github'}/>
         <p className={s.containerText}>Connect your Github</p>
       </a>
     )
   }
 
   checker(){
-    WebUtils.fetchJson('/github/token', (payload) => {
+    Backend.fetchJson('/github/token', (payload) => {
       if(payload['access_token']){
         this.setState((s) => ({...s, githubState: GIT_STATES.AUTHORIZED}));
       } else this.pollBackend();
@@ -109,7 +106,7 @@ const GithubAuthClass = class extends React.Component {
 
   static renderContinueLink(){
     return(
-      <NavLink to={ROUTES.sysObjects.detect}>
+      <NavLink to={ROUTES.sysObjects.detect.path}>
         <i className={`material-icons ${s.containerIcon}`}>check</i>
         <p className={s.containerText}>All set. Click to continue.</p>
       </NavLink>

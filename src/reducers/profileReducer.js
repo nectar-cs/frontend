@@ -1,10 +1,10 @@
 import { SIGN_IN, AUTHENTICATE, SIGN_OUT } from './../actions/profileAction'
 import Cookies from 'js-cookie'
-import WebUtils from '../utils/WebUtils';
+import Backend from '../utils/Backend';
 
 const initialState = {
   isSessionActive: false,
-  accessToken: WebUtils.kvGet('accessToken'),
+  accessToken: Backend.kvGet('accessToken'),
   isClusterReady: false,
   firstName: null,
   isKubeAdmin: null

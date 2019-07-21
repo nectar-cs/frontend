@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import s from './LeftHeader.sass'
 import ReactSVG from 'react-svg'
@@ -6,14 +5,7 @@ import ReactSVG from 'react-svg'
 export const IMAGE = "image";
 export const ICON = "icon";
 
-type Props = {
-  title: string,
-  subtitle: string,
-  graphicType?: IMAGE | ICON,
-  graphicName: string
-};
-
-export class LeftHeader extends React.Component<Props> {
+export class LeftHeader extends React.Component {
 
   render(){
     const { title, subtitle } = this.props;
@@ -28,13 +20,13 @@ export class LeftHeader extends React.Component<Props> {
     )
   }
 
-  renderGraphic(): React.Node {
+  renderGraphic() {
     if(this.props.graphicType === ICON){
       return this.renderMaterialIcon();
     } else return this.renderImage();
   }
 
-  renderMaterialIcon(): React.Node{
+  renderMaterialIcon(){
     return(
       <i className={`material-icons ${s.icon}`}>
         { this.props.graphicName }
@@ -50,8 +42,8 @@ export class LeftHeader extends React.Component<Props> {
       return <img src={source} className={s.image} alt={null}/>;
   }
 
-  static defaultProps = {
-    graphicType: 'material-icon'
-  }
+  // static defaultProps = {
+  //   graphicType: 'material-icon'
+  // }
 
 }

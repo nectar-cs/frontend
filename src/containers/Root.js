@@ -9,7 +9,7 @@ export default class Root extends Component {
     // const subs = { [SUBS.ID]: 11, [SUBS.CONCERN]: 'general' };
     // const home = makeRoute(ROUTES.specs.edit, subs);
     // const home = ROUTES.sysObjects.index;
-    const home = R.deployments.index;
+    const home = R.deployments.detect;
     // const home = ROUTES.clusters.connect;
 
     return (

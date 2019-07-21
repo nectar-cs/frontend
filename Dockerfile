@@ -8,4 +8,4 @@ ADD . /app
 WORKDIR /app
 RUN yarn
 
-CMD yarn dc
+CMD yarn three

@@ -1,12 +1,11 @@
-// @flow
 import React from 'react';
 import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
 import ls from '../../../assets/content-layouts.sass';
 import {LeftHeader, ICON} from '../../../widgets/LeftHeader/LeftHeader';
-import WebUtils from '../../../utils/WebUtils';
+import Backend from '../../../utils/Backend';
 import DeploymentList from './DeploymentList';
 import TopLoader from '../../../widgets/TopLoader/TopLoader';
-import SysObjectPreview from './SysObjectPreview';
+import MatchPreview from './MatchPreview';
 import { Redirect } from 'react-router';
 import { ROUTES } from '../../../containers/RoutesConsts';
 import DataUtils from '../../../utils/DataUtils';
@@ -24,9 +23,7 @@ const Header = function(){
   )
 };
 
-type Props = {}
-
-class SysObjectDetectClass extends React.Component<Props> {
+class MatchingClass extends React.Component {
 
   constructor(props){
     super(props);
@@ -53,13 +50,13 @@ class SysObjectDetectClass extends React.Component<Props> {
     } else if(this.state.githubState === GIT_STATES.CHECKING){
       return <p>Waiting...</p>;
     } else if(this.state.githubState === GIT_STATES.INVALID) {
-      return <Redirect to={ROUTES.team.githubAuth}/>
+      return <Redirect to={ROUTES.team.githubAuth.path}/>
     } else return null;
   }
 
   componentDidMount(){
     this.setState((s) => ({...s, githubState: GIT_STATES.CHECKING}));
-    WebUtils.fetchJson('/github/token', (payload) => {
+    Backend.fetchJson('/github/token', (payload) => {
       const gState = payload['access_token'] ? GIT_STATES.OKAY : GIT_STATES.INVALID;
       this.setState((s) => ({...s, githubState: gState}));
       if(payload['access_token']) this.fetchClusterDeploys();
@@ -79,7 +76,7 @@ class SysObjectDetectClass extends React.Component<Props> {
         </div>
         <div className={ls.halfScreePanelRight}>
           <TopLoader isFetching={this.state.isRightFetching}/>
-          <SysObjectPreview
+          <MatchPreview
             deployment={this.selectedDeployment()}
             onDeploymentReviewed={this.onDeploymentReviewed}
             isReviewComplete={this.isSubmitReady()}
@@ -96,7 +93,7 @@ class SysObjectDetectClass extends React.Component<Props> {
   fetchClusterDeploys(){
     const ep = "/kube/cluster_connect/list_deployments";
     this.setState((s) => ({...s, isFetching: true}));
-    WebUtils.fetchJson(ep, (payload) => {
+    Backend.fetchJson(ep, (payload) => {
       const items = payload['data'];
       const ind = items.length > 0 ? 0 : null;
       this.setState((s) => ({...s,
@@ -155,15 +152,15 @@ class SysObjectDetectClass extends React.Component<Props> {
 
     const payload = { data: formatted };
 
-    WebUtils.postJson('/sys_objects/', payload, (result) => {
+    Backend.postJson('/sys_objects/', payload, (result) => {
       this.setState((s) => ({...s, isSubmitting: false, areAllSubmitted: true}));
       console.log("[submit] submitted");
     });
   }
 }
 
-const SysObjectDetect = AuthenticatedComponent.compose(
-  SysObjectDetectClass
+const Matching = AuthenticatedComponent.compose(
+  MatchingClass
 );
 
-export { SysObjectDetect as default };
+export { Matching as default };

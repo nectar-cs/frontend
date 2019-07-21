@@ -2,16 +2,13 @@ import React from 'react';
 import { LeftHeader } from '../../../widgets/LeftHeader/LeftHeader';
 import MiscUtils from '../../../utils/MiscUtils';
 import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';
-import BasicInfoForm from './BasicInfoForm';
-import s from './SysObjectPreview.sass'
+import MatchForm from './MatchForm';
+import s from './MatchPreview.sass'
 import CenterAnnouncement from '../../../widgets/CenterAnnouncement/CenterAnnouncement';
 import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
 import { ROUTES } from '../../../containers/RoutesConsts';
 
-
-
-export default class SysObjectPreview extends React.Component {
-
+export default class MatchPreview extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -28,13 +25,13 @@ export default class SysObjectPreview extends React.Component {
     if(this.props.isSubmitted)
       return this.renderSubmitted();
     else if(this.props.isSubmitting)
-      return SysObjectPreview.renderLoading();
+      return MatchPreview.renderLoading();
     else if(this.props.isReviewComplete)
       return this.renderReviewComplete();
     else if(this.props.deployment)
       return this.renderMainContent();
     else
-      return SysObjectPreview.renderLoading();
+      return MatchPreview.renderLoading();
   }
 
   renderMainContent(){
@@ -42,7 +39,7 @@ export default class SysObjectPreview extends React.Component {
       <React.Fragment>
         { this.renderHeader() }
         <TextOverLineTitle text="Microservice Source Repo"/>
-        <BasicInfoForm
+        <MatchForm
           deployment={this.props.deployment}
           onInfoChanged={this.onInfoChanged}
           setIsFetching={this.props.setIsFetching}

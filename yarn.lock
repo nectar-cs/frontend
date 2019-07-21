@@ -1778,6 +1778,12 @@ decamelize@^1.1.1, decamelize@^1.1.2, decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
+decamelize@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-2.0.0.tgz#656d7bbc8094c4c788ea53c5840908c9c7d063c7"
+  dependencies:
+    xregexp "4.0.0"
+
 decode-uri-component@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
@@ -1905,6 +1911,10 @@ dom-converter@^0.2:
   resolved "https://registry.yarnpkg.com/dom-converter/-/dom-converter-0.2.0.tgz#6721a9daee2e293682955b6afe416771627bb768"
   dependencies:
     utila "~0.4"
+
+dom-scroll-into-view@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/dom-scroll-into-view/-/dom-scroll-into-view-1.0.1.tgz#32abb92f0d8feca6215162aef43e4b449ab8d99c"
 
 dom-serializer@0:
   version "0.1.1"
@@ -2832,6 +2842,12 @@ http-signature@~1.2.0:
 https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
+
+humanize-string@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/humanize-string/-/humanize-string-2.1.0.tgz#a7d7062e5e514e04f072607ded0df853be8a1f2f"
+  dependencies:
+    decamelize "^2.0.0"
 
 iconv-lite@0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"
@@ -4278,7 +4294,7 @@ promise-inflight@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   dependencies:
@@ -4412,6 +4428,13 @@ rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-autocomplete@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/react-autocomplete/-/react-autocomplete-1.8.1.tgz#ebbbc400006aa91ad538b2d14727b9e7e5d06310"
+  dependencies:
+    dom-scroll-into-view "1.0.1"
+    prop-types "^15.5.10"
 
 react-dom@^16.8.1:
   version "16.8.6"
@@ -5158,6 +5181,10 @@ stream-shift@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/stream-shift/-/stream-shift-1.0.0.tgz#d5c752825e5367e786f78e18e445ea223a155952"
 
+string-similarity@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/string-similarity/-/string-similarity-3.0.0.tgz#07b0bc69fae200ad88ceef4983878d03793847c7"
+
 string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-1.0.2.tgz#118bdf5b8cdc51a2a7e70d211e07e2b0b9b107d3"
@@ -5770,6 +5797,10 @@ wrap-ansi@^5.1.0:
 wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
+
+xregexp@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-4.0.0.tgz#e698189de49dd2a18cc5687b05e17c8e43943020"
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.2"
