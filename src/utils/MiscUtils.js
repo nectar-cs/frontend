@@ -36,6 +36,10 @@ export default class MiscUtils {
     );
   }
 
+  static positiveMod(n, m){
+    return ((n % m) + m) % m;
+  }
+
   static veryEasyOptions(transform, ...strings) {
     const doubled = strings.map((string) =>
       transform ? transform(string) : string

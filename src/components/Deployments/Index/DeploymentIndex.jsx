@@ -7,14 +7,17 @@ import CenterCard from '../../../widgets/CenterCard/CenterCard';
 import Backend from '../../../utils/Backend';
 import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
 import DeploymentCard from './DeploymentCard';
+import MiscUtils from "../../../utils/MiscUtils";
 
 class DeploymentIndexClass extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
-      deployments: null
-    }
+      deployments: null,
+      selectedIndex: 0
+    };
+    this.handleKeyDown = this.handleKeyDown.bind(this)
   }
 
   componentDidMount() {
@@ -35,16 +38,35 @@ class DeploymentIndexClass extends React.Component {
 
   renderCards(){
     return(
-      <div className={s.list}>
-        { this.state.deployments.map((microservice) => (
+      <div className={s.list} onKeyDown={this.handleKeyDown} tabIndex={0}>
+        { this.state.deployments.map((deployment, i) => (
             <DeploymentCard
-              key={microservice.deployment_name}
-              deployment={microservice}
+              key={deployment.deployment_name}
+              isSelected={this.state.selectedIndex === i}
+              deployment={deployment}
             />
           ))
         }
       </div>
     );
+  }
+
+  handleKeyDown(e) {
+    const crtIndex = this.state.selectedIndex;
+    const listMax = this.state.deployments.length;
+    let nextIndex = null;
+
+    if (e.keyCode === 37)
+      nextIndex = MiscUtils.positiveMod(crtIndex - 1, listMax);
+    else if (e.keyCode === 39)
+      nextIndex = (crtIndex + 1) % listMax;
+    else nextIndex = -1;
+
+    console.log("KEY DOWN " + e.keyCode);
+    if(nextIndex != null){
+      console.log("KEY DOWN " + e.keyCode + " IND " + nextIndex );
+      this.setState((s) => ({...s, selectedIndex: nextIndex}));
+    }
   }
 
   static renderEmptyList(){

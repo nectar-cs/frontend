@@ -9,10 +9,9 @@ class SideBarClass extends React.Component {
     return(
       <div className={s.sideBar}>
         <div className={s.logoBox}>
-          <img className={s.titleLogo} src={image} />
-          <h1 className={s.titleText}>Engineer</h1>
+          <img className={s.titleLogo} src={image} alt={"Nectar Mosaic"}/>
+          <h1 className={s.titleText}>Mosaic</h1>
         </div>
-        <h2></h2>
       </div>
     )
   }

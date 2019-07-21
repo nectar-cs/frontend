@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import Backend from '../../../utils/Backend';
 import s from './GithubAuth.sass';
 import ls from './../../../assets/loading-spinner.sass'
-import ReactSVG from 'react-svg';
 import MiscUtils from '../../../utils/MiscUtils';
 import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
 import { ROUTES } from '../../../containers/RoutesConsts';
@@ -106,7 +105,7 @@ const GithubAuthClass = class extends React.Component {
 
   static renderContinueLink(){
     return(
-      <NavLink to={ROUTES.sysObjects.detect.path}>
+      <NavLink to={ROUTES.deployments.detect.path}>
         <i className={`material-icons ${s.containerIcon}`}>check</i>
         <p className={s.containerText}>All set. Click to continue.</p>
       </NavLink>
