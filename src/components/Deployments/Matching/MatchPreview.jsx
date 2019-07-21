@@ -79,7 +79,7 @@ export default class MatchPreview extends React.Component {
   }
 
   frameworkImage(){
-    if(this.state.msFramework)
+    if(this.bundle().msFramework)
       return MiscUtils.frameworkImage(this.bundle().msFramework);
     else return null;
   }
@@ -87,7 +87,6 @@ export default class MatchPreview extends React.Component {
   bundle(){
     return this.state.bundle;
   }
-
 
   static renderSubmitted(){
     return(

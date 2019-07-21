@@ -23,7 +23,7 @@ export default class MatchForm extends React.Component {
 
     this.state = {
       repoList: [],
-      selRepoName: 'null',
+      selRepoName: null,
       msFramework: '',
       msName: '',
       msDescription: '',
@@ -38,12 +38,11 @@ export default class MatchForm extends React.Component {
     this.props.setIsFetching(true);
     Backend.fetchJson('/github/list_repos', (payload) => {
       this.setState((s) => ({...s, repoList: payload['data']}));
-      this.guessRepo(this.props.deployment.name);
+      this.guessRepoFromDep(this.props.deployment.name);
     });
   }
 
-  guessRepo(depName){
-    console.log("Wiorking with " + depName);
+  guessRepoFromDep(depName){
     const repoNames = this.state.repoList.map((r) => r['name']);
     const sorting = StringSimilarity.findBestMatch(depName, repoNames);
     const winnerName = repoNames[sorting.bestMatchIndex];
@@ -53,7 +52,7 @@ export default class MatchForm extends React.Component {
   componentWillReceiveProps(nextProps){
     if(nextProps.deployment){
       if(this.props.deployment.name !== nextProps.deployment.name){
-        this.guessRepo(nextProps.deployment.name)
+        this.guessRepoFromDep(nextProps.deployment.name)
       }
 
       if(nextProps.deployment.name !== this.state.deploymentName){
@@ -168,8 +167,8 @@ export default class MatchForm extends React.Component {
     )
   }
 
-  onRepoChanged(repoId){
-    const repo = this.getCurrentRepo(repoId);
+  onRepoChanged(repoName){
+    const repo = this.getCurrentRepo(repoName);
     if(this.repoPathTrees[repo.msName])
       this.propagateRepoChanged(repo);
     else
@@ -212,7 +211,7 @@ export default class MatchForm extends React.Component {
   repoChoices(){
     return this.state.repoList.map((repo) =>
       <option key={repo['name']} value={repo['name']}>
-        {repo.msName}
+        {repo['name']}
       </option>
     );
   }
