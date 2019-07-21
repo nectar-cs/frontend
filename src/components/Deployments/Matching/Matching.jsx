@@ -42,7 +42,7 @@ class MatchingClass extends React.Component {
     this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);
     this.fetchClusterDeploys = this.fetchClusterDeploys.bind(this);
     this.submit = this.submit.bind(this);
-    this.applications = [];
+    this.matches = [];
   }
 
   render(){
@@ -108,8 +108,8 @@ class MatchingClass extends React.Component {
     return this.state.deployments.map((deployment, i) => {
       if(this.state.selectedIndex === i){
         return {...deployment, isSelected: true};
-      } else if(this.applications[i]){
-        return {...deployment, status: this.applications[i].status};
+      } else if(this.matches[i]){
+        return {...deployment, status: this.matches[i].status};
       } else {
         return {...deployment, status: 'pending'};
       }
@@ -124,23 +124,28 @@ class MatchingClass extends React.Component {
 
   onDeploymentReviewed(bundle){
     const newIndex = this.state.selectedIndex + 1;
-    this.applications.push(bundle);
+    this.matches.push(bundle);
     this.setState((s) => ({...s, selectedIndex: newIndex}))
   }
 
   isSubmitReady(){
     if(this.state.selectedIndex){
-      return this.applications.length === this.state.deployments.length;
+      return this.matches.length === this.state.deployments.length;
     } else return false;
   }
 
   submit(){
     if(this.state.isSubmitting) return;
+
+    console.log("HERE WE GO");
+    console.table(this.state.deployments);
+    console.table(this.matches);
+
     this.setState((s) => ({...s, isSubmitting: true}));
 
-    let formatted = this.applications.map((a, i) => ({...a,
-      k_pointer: this.state.deployments[i].name,
-      repo_id: a.repoId
+    let formatted = this.matches.map((match, i) => ({...a,
+      deployment_name: this.state.deployments[i].msName,
+      repo_name: match.repoName
     }));
 
     formatted = formatted.filter((a) => a.status === 'accepted');

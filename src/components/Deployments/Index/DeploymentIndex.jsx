@@ -38,7 +38,7 @@ class DeploymentIndexClass extends React.Component {
       <div className={s.list}>
         { this.state.deployments.map((sysObject) => (
             <DeploymentCard
-              key={sysObject.name}
+              key={sysObject.msName}
               deployment={sysObject}
             />
           ))

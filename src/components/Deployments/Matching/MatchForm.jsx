@@ -23,11 +23,11 @@ export default class MatchForm extends React.Component {
 
     this.state = {
       repoList: [],
-      selectedRepoId: 'null',
-      framework: '',
-      name: '',
-      description: '',
-      actualName: null,
+      selRepoName: 'null',
+      msFramework: '',
+      msName: '',
+      msDescription: '',
+      deploymentName: null,
     };
 
     this.repoPathTrees = {};
@@ -43,11 +43,11 @@ export default class MatchForm extends React.Component {
   }
 
   guessRepo(depName){
-    const repoNames = this.state.repoList.map((r) => r.name);
+    console.log("Wiorking with " + depName);
+    const repoNames = this.state.repoList.map((r) => r['name']);
     const sorting = StringSimilarity.findBestMatch(depName, repoNames);
     const winnerName = repoNames[sorting.bestMatchIndex];
-    const winnerId = this.state.repoList.find((r) => r.name === winnerName).id;
-    this.onRepoChanged(winnerId);
+    this.onRepoChanged(winnerName);
   }
 
   componentWillReceiveProps(nextProps){
@@ -56,10 +56,10 @@ export default class MatchForm extends React.Component {
         this.guessRepo(nextProps.deployment.name)
       }
 
-      if(nextProps.deployment.name !== this.state.actualName){
+      if(nextProps.deployment.name !== this.state.deploymentName){
         this.setState((s) => ({...s,
-          actualName: nextProps.deployment.name,
-          name: nextProps.deployment.suggested,
+          deploymentName: nextProps.deployment.name,
+          msName: nextProps.deployment.name,
         }));
       }
     }
@@ -89,7 +89,7 @@ export default class MatchForm extends React.Component {
         </p>
         <select
           className={s.repoSelect}
-          value={this.state.selectedRepoId}
+          value={this.state.selRepoName}
           onChange={(e) => this.onRepoChanged(e.target.value)}>
           { this.repoChoices() }
         </select>
@@ -101,7 +101,7 @@ export default class MatchForm extends React.Component {
     const currentRepo = this.getCurrentRepo();
     let currentTree = null;
     if(currentRepo)
-      currentTree = this.repoPathTrees[currentRepo.name];
+      currentTree = this.repoPathTrees[currentRepo.msName];
 
     return(
       <div className={s.inputLine}>
@@ -126,8 +126,8 @@ export default class MatchForm extends React.Component {
         <input
           className={s.nameInput}
           placeholder={'Application Name'}
-          value={this.state.name}
-          onChange={(e) => this.onValueChanged({name: e.target.value})}
+          value={this.state.msName}
+          onChange={(e) => this.onValueChanged({msName: e.target.value})}
         />
       </div>
     )
@@ -143,8 +143,8 @@ export default class MatchForm extends React.Component {
         <input
           className={s.nameInput}
           placeholder={'A short description'}
-          value={this.state.description || ''}
-          onChange={(e) => this.onValueChanged({description: e.target.value})}
+          value={this.state.msDescription || ''}
+          onChange={(e) => this.onValueChanged({msDescription: e.target.value})}
         />
       </div>
     )
@@ -158,9 +158,9 @@ export default class MatchForm extends React.Component {
           Language or Framework
         </p>
         <select
-          value={this.state.framework}
+          value={this.state.msFramework}
           className={s.repoSelect}
-          onChange={(e) => this.onValueChanged({framework: e.target.value})}
+          onChange={(e) => this.onValueChanged({msFramework: e.target.value})}
         >
           { MatchForm.frameworkChoices() }
         </select>
@@ -170,7 +170,7 @@ export default class MatchForm extends React.Component {
 
   onRepoChanged(repoId){
     const repo = this.getCurrentRepo(repoId);
-    if(this.repoPathTrees[repo.name])
+    if(this.repoPathTrees[repo.msName])
       this.propagateRepoChanged(repo);
     else
       this.fetchRepoTree(repo)
@@ -178,27 +178,29 @@ export default class MatchForm extends React.Component {
 
   fetchRepoTree(repo){
     this.props.setIsFetching(true);
-    const endpoint = `/github/repos/${repo.name}/path_tree`;
+    const endpoint = `/github/repos/${repo.msName}/path_tree`;
     Backend.fetchJson(endpoint, (result) => {
       const tree = result['tree'];
-      this.repoPathTrees = {...this.repoPathTrees, [repo.name]: tree};
+      this.repoPathTrees = {...this.repoPathTrees, [repo.msName]: tree};
       this.propagateRepoChanged(repo);
     });
   }
 
-  getCurrentRepo(repoId = this.state.selectedRepoId){
+  getCurrentRepo(repoName = this.state.selRepoName){
     return this.state.repoList.find(
-      (r) => r.id.toString() === repoId.toString()
+      (r) => r['name'] === repoName
     );
   }
 
   propagateRepoChanged(repo){
-    let { name, description, framework } = repo;
-    name = humanizer(name);
-    const selectedRepoId = repo.id;
-    const repoId = repo.id.toString();
-    this.setState((s) => ({...s, name, description, framework, selectedRepoId}));
-    this.props.onInfoChanged({repoId, name, description, framework});
+    const commonBundle = {
+      msName: humanizer(repo.name),
+      msDescription: repo['description'],
+      msFramework: repo['framework']
+    };
+
+    this.setState((s) => ({...s, ...commonBundle, selRepoName: repo.name}));
+    this.props.onInfoChanged(commonBundle);
     this.props.setIsFetching(false);
   }
 
@@ -209,8 +211,8 @@ export default class MatchForm extends React.Component {
 
   repoChoices(){
     return this.state.repoList.map((repo) =>
-      <option key={repo.id} value={repo.id}>
-        {repo.name}
+      <option key={repo['name']} value={repo['name']}>
+        {repo.msName}
       </option>
     );
   }

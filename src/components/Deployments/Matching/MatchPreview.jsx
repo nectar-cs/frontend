@@ -15,16 +15,20 @@ export default class MatchPreview extends React.Component {
     deployment: PropTypes.object,
     isSubmitted: PropTypes.bool,
     isSubmitting: PropTypes.bool,
-    isReviewComplete: PropTypes.bool
+    isReviewComplete: PropTypes.bool,
+    onDeploymentReviewed: PropTypes.func,
+    submitFunction: PropTypes.func
   };
 
   constructor(props){
     super(props);
     this.state = {
-      name: '',
-      framework: '',
-      description: '',
-      repoId: ''
+      bundle: {
+        msName: '',
+        msFramework: '',
+        msDescription: '',
+        repoId: ''
+      }
     };
 
     this.onInfoChanged = this.onInfoChanged.bind(this);
@@ -48,8 +52,8 @@ export default class MatchPreview extends React.Component {
       <React.Fragment>
         <LeftHeader
           graphicName={this.frameworkImage()}
-          title={this.state.name}
-          subtitle={this.state.description}
+          title={this.bundle().msName}
+          subtitle={this.bundle().msDescription}
         />
         <TextOverLineTitle text="Microservice Source Repo"/>
         <MatchForm
@@ -75,16 +79,21 @@ export default class MatchPreview extends React.Component {
   }
 
   frameworkImage(){
-    if(this.state.framework)
-      return MiscUtils.frameworkImage(this.state.framework)
+    if(this.state.msFramework)
+      return MiscUtils.frameworkImage(this.bundle().msFramework);
     else return null;
   }
+
+  bundle(){
+    return this.state.bundle;
+  }
+
 
   static renderSubmitted(){
     return(
       <CenterAnnouncement
         contentType={'nav-link'}
-        routeTo={ROUTES.sysObjects.index}
+        routeTo={ROUTES.deployments.index.path}
         iconName='done_all'
         text="All done. Click to continue."
       />
@@ -96,13 +105,10 @@ export default class MatchPreview extends React.Component {
   }
 
   onAccepted(){
-    const { name, description, repoId, framework } = this.state;
-    this.props.onDeploymentReviewed({
-      name, description, repoId, framework, status: 'accepted'
-    })
+    this.props.onDeploymentReviewed(this.bundle());
   }
 
   onInfoChanged(hash){
-    this.setState((s) => ({...s, ...hash}))
+    this.setState((s) => ({...s, bundle: hash}))
   }
 }

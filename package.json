@@ -1,7 +1,7 @@
 {
-  "name": "mc-frontend",
+  "msName": "mc-frontend",
   "version": "2.0.0",
-  "description": "Gr8s for K8s.",
+  "msDescription": "Gr8s for K8s.",
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/webpack -p --mode production",
