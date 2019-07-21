@@ -13,7 +13,7 @@ export default class MiscUtils {
 
   static frameworkImage(framework){
     const imageName = `${framework}/${framework}-plain.svg`;
-    return `${IMG_BASE}/frameworks/${imageName}`;
+    return `${IMG_BASE}/icons/${imageName}`;
   }
 
   static coolCross(callback){

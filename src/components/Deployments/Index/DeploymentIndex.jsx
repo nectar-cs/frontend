@@ -8,6 +8,7 @@ import Backend from '../../../utils/Backend';
 import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
 import DeploymentCard from './DeploymentCard';
 import MiscUtils from "../../../utils/MiscUtils";
+import KubeHandler from "../../../utils/KubeHandler";
 
 class DeploymentIndexClass extends React.Component {
 
@@ -21,10 +22,23 @@ class DeploymentIndexClass extends React.Component {
   }
 
   componentDidMount() {
-    Backend.fetchJson('/microservices', (payload) => {
-      this.setState((s) => ({...s, deployments: payload['data']}));
+    KubeHandler.fetchJson('/api/deployments', (depsPayload) => {
+      Backend.fetchJson('/microservices', (msPayload) => {
+        const deployments = this.mergeLists(depsPayload['data'], msPayload['data']);
+        this.setState((s) => ({...s, deployments: deployments}));
+      });
     });
   }
+
+  mergeLists(deployments, microservices){
+    return deployments.map((dp) => {
+      const microservice = microservices.find((ms) => (
+        ms.deploymentName === dp.name
+      ));
+      return {...dp, microservice: microservice}
+    });
+  }
+
 
   render(){
     const items = this.state.deployments;
