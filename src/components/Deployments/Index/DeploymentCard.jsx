@@ -15,6 +15,7 @@ export default class DeploymentCard extends React.Component {
       }
     },
     isSelected: PropTypes.bool,
+    isEntered: PropTypes.bool,
     onClick: PropTypes.func
   };
 
@@ -29,7 +30,8 @@ export default class DeploymentCard extends React.Component {
     }
 
     let frameworkImg = MiscUtils.frameworkImage(bundle.framework);
-    const outterClass = this.props.isSelected ? s.cardFocused : s.card;
+    let outterClass = this.props.isSelected ? s.cardFocused : s.card;
+    outterClass = this.props.isEntered ? s.cardEntered : outterClass;
 
     return(
       <div className={outterClass} onClick={this.props.onClick}>

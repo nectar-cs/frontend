@@ -16,7 +16,8 @@ class DeploymentIndexClass extends React.Component {
     super(props);
     this.state = {
       deployments: null,
-      selectedIndex: 0
+      selectedIndex: 0,
+      isEntered: false
     };
     this.onCardClicked = this.onCardClicked.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -64,6 +65,7 @@ class DeploymentIndexClass extends React.Component {
             isSelected={this.state.selectedIndex === i}
             deployment={deployment}
             onClick={() => this.onCardClicked(i)}
+            isEntered={this.state.selectedIndex === i && this.state.isEntered}
           />
           ))
         }
@@ -78,17 +80,21 @@ class DeploymentIndexClass extends React.Component {
   handleKeyDown(e) {
     const crtIndex = this.state.selectedIndex;
     const listMax = this.state.deployments.length;
-    let nextIndex = null;
+    let nextIndex = this.state.selectedIndex;
+    let isEntered = null;
 
     if (e.keyCode === 37)
       nextIndex = MiscUtils.positiveMod(crtIndex - 1, listMax);
     else if (e.keyCode === 39)
       nextIndex = (crtIndex + 1) % listMax;
-
+    else if(e.keyCode === 13)
+      isEntered = !this.state.isEntered;
 
     if(nextIndex != null)
-      this.setState((s) => ({...s, selectedIndex: nextIndex}));
+      this.setState((s) => ({...s, selectedIndex: nextIndex, isEntered}));
 
+    if(isEntered != null)
+      this.setState((s) => ({...s, isEntered}));
   }
 
   static renderEmptyList(){
