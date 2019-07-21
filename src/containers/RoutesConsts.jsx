@@ -1,7 +1,6 @@
 import GithubAuth from "../components/Team/GithubAuth/GithubAuth";
 import Login from "../components/Auth/Login";
 import Authenticate from "../components/Auth/Authenticate";
-import DeploymentCard from "../components/Deployments/Index/DeploymentCard";
 import DeploymentIndex from "../components/Deployments/Index/DeploymentIndex";
 import Matching from "../components/Deployments/Matching/Matching";
 

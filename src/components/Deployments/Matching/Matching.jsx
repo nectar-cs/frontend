@@ -9,6 +9,7 @@ import MatchPreview from './MatchPreview';
 import { Redirect } from 'react-router';
 import { ROUTES } from '../../../containers/RoutesConsts';
 import DataUtils from '../../../utils/DataUtils';
+import KubeHandler from "../../../utils/KubeHandler";
 
 const GIT_STATES = { CHECKING: 'checking', OKAY: 'offer', INVALID: 'waiting' };
 
@@ -91,9 +92,7 @@ class MatchingClass extends React.Component {
   }
 
   fetchClusterDeploys(){
-    const ep = "/kube/cluster_connect/list_deployments";
-    this.setState((s) => ({...s, isFetching: true}));
-    Backend.fetchJson(ep, (payload) => {
+    KubeHandler.fetchJson('/api/deployments', (payload) => {
       const items = payload['data'];
       const ind = items.length > 0 ? 0 : null;
       this.setState((s) => ({...s,
