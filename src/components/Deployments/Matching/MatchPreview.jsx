@@ -1,5 +1,6 @@
 import React from 'react';
 import { LeftHeader } from '../../../widgets/LeftHeader/LeftHeader';
+import PropTypes from 'prop-types'
 import MiscUtils from '../../../utils/MiscUtils';
 import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';
 import MatchForm from './MatchForm';
@@ -9,6 +10,14 @@ import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
 import { ROUTES } from '../../../containers/RoutesConsts';
 
 export default class MatchPreview extends React.Component {
+
+  static propTypes = {
+    deployment: PropTypes.object,
+    isSubmitted: PropTypes.bool,
+    isSubmitting: PropTypes.bool,
+    isReviewComplete: PropTypes.bool
+  };
+
   constructor(props){
     super(props);
     this.state = {
@@ -23,7 +32,7 @@ export default class MatchPreview extends React.Component {
 
   render(){
     if(this.props.isSubmitted)
-      return this.renderSubmitted();
+      return MatchPreview.renderSubmitted();
     else if(this.props.isSubmitting)
       return MatchPreview.renderLoading();
     else if(this.props.isReviewComplete)
@@ -37,7 +46,11 @@ export default class MatchPreview extends React.Component {
   renderMainContent(){
     return(
       <React.Fragment>
-        { this.renderHeader() }
+        <LeftHeader
+          graphicName={this.frameworkImage()}
+          title={this.state.name}
+          subtitle={this.state.description}
+        />
         <TextOverLineTitle text="Microservice Source Repo"/>
         <MatchForm
           deployment={this.props.deployment}
@@ -61,7 +74,13 @@ export default class MatchPreview extends React.Component {
     )
   }
 
-  renderSubmitted(){
+  frameworkImage(){
+    if(this.state.framework)
+      return MiscUtils.frameworkImage(this.state.framework)
+    else return null;
+  }
+
+  static renderSubmitted(){
     return(
       <CenterAnnouncement
         contentType={'nav-link'}
@@ -83,19 +102,7 @@ export default class MatchPreview extends React.Component {
     })
   }
 
-  renderHeader(){
-    return(
-      <LeftHeader
-        graphicName={MiscUtils.frameworkImage(this.state.framework)}
-        title={this.state.name}
-        subtitle={this.state.description}
-      />
-    )
-  }
-
   onInfoChanged(hash){
-    console.log("NEW SHIT");
-    console.log(hash);
     this.setState((s) => ({...s, ...hash}))
   }
 }

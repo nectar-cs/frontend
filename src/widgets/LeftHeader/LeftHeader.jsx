@@ -36,10 +36,7 @@ export class LeftHeader extends React.Component {
 
   renderImage(){
     const source = this.props.graphicName;
-    if(source.includes('.svg'))
-      return <ReactSVG svgClassName={s.image} src={source}/>;
-    else
-      return <img src={source} className={s.image} alt={null}/>;
+    return <img src={source} className={s.image} alt={null}/>;
   }
 
   // static defaultProps = {

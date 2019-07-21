@@ -92,6 +92,7 @@ class MatchingClass extends React.Component {
   }
 
   fetchClusterDeploys(){
+    this.setState((s) => ({...s, isFetching: true}));
     KubeHandler.fetchJson('/api/deployments', (payload) => {
       const items = payload['data'];
       const ind = items.length > 0 ? 0 : null;

@@ -1,12 +1,22 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import s from './MatchForm.sass'
 import Backend from '../../../utils/Backend';
 import PathSuggest from './PathSuggest';
 import MiscUtils from "../../../utils/MiscUtils";
+
 const humanizer = require('humanize-string');
 const StringSimilarity = require('string-similarity');
 
 export default class MatchForm extends React.Component {
+
+  static propTypes = {
+    setIsFetching: PropTypes.func,
+    onInfoChanged: PropTypes.func,
+    deployment: PropTypes.shape({
+      name: PropTypes.string
+    })
+  };
 
   constructor(props){
     super(props);
@@ -198,17 +208,15 @@ export default class MatchForm extends React.Component {
   }
 
   repoChoices(){
-    const options = this.state.repoList.map((repo) =>
+    return this.state.repoList.map((repo) =>
       <option key={repo.id} value={repo.id}>
-        { repo.name }
+        {repo.name}
       </option>
     );
-    return options;
   }
 
   static frameworkChoices(){
     return MiscUtils.frameworkChoices().map((name) =>
-
       <option key={name} value={name}>
         {name}
       </option>
