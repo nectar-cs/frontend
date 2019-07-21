@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
 import s from './DeploymentIndex.sass'
 import { ROUTES as R } from './../../../containers/RoutesConsts'
@@ -18,6 +18,7 @@ class DeploymentIndexClass extends React.Component {
       deployments: null,
       selectedIndex: 0
     };
+    this.onCardClicked = this.onCardClicked.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
@@ -58,15 +59,20 @@ class DeploymentIndexClass extends React.Component {
         ref={div => div && div.focus()}
       >
         { this.state.deployments.map((deployment, i) => (
-            <DeploymentCard
-              key={deployment.deployment_name}
-              isSelected={this.state.selectedIndex === i}
-              deployment={deployment}
-            />
+          <DeploymentCard
+            key={deployment.deployment_name}
+            isSelected={this.state.selectedIndex === i}
+            deployment={deployment}
+            onClick={() => this.onCardClicked(i)}
+          />
           ))
         }
       </div>
     );
+  }
+
+  onCardClicked(index){
+    this.setState((s) => ({...s, selectedIndex: index}));
   }
 
   handleKeyDown(e) {

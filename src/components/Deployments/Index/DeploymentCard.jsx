@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import s from './DeploymentCard.sass'
 import MiscUtils from '../../../utils/MiscUtils';
 
-
 export default class DeploymentCard extends React.Component {
 
   static propTypes = {
@@ -15,7 +14,8 @@ export default class DeploymentCard extends React.Component {
         framework: PropTypes.string
       }
     },
-    isSelected: PropTypes.bool
+    isSelected: PropTypes.bool,
+    onClick: PropTypes.func
   };
 
   render(){
@@ -32,7 +32,7 @@ export default class DeploymentCard extends React.Component {
     const outterClass = this.props.isSelected ? s.cardFocused : s.card;
 
     return(
-      <div className={outterClass}>
+      <div className={outterClass} onClick={this.props.onClick}>
         <div className={s.header}>
           <img className={s.headerImage} src={frameworkImg} alt='Language'/>
           <p className={s.headerTitle}>{bundle.name}</p>
