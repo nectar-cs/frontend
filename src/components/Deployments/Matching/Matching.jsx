@@ -136,11 +136,6 @@ class MatchingClass extends React.Component {
 
   submit(){
     if(this.state.isSubmitting) return;
-
-    console.log("HERE WE GO");
-    console.table(this.state.deployments);
-    console.table(this.matches);
-
     this.setState((s) => ({...s, isSubmitting: true}));
 
     let formatted = this.matches.map((match, i) => ({
@@ -155,7 +150,7 @@ class MatchingClass extends React.Component {
 
     const payload = { data: formatted };
 
-    Backend.postJson('/sys_objects/', payload, (result) => {
+    Backend.postJson('/microservices/', payload, (result) => {
       this.setState((s) => ({...s, isSubmitting: false, areAllSubmitted: true}));
       console.log("[submit] submitted");
     });

@@ -178,12 +178,12 @@ export default class MatchForm extends React.Component {
 
   fetchRepoTree(repo){
     this.props.setIsFetching(true);
-    const endpoint = `/github/repos/${repo.msName}/path_tree`;
-    Backend.fetchJson(endpoint, (result) => {
-      const tree = result['tree'];
-      this.repoPathTrees = {...this.repoPathTrees, [repo.msName]: tree};
+    // const endpoint = `/github/repos/${repo.msName}/path_tree`;
+    // Backend.fetchJson(endpoint, (result) => {
+    //   const tree = result['tree'];
+    //   this.repoPathTrees = {...this.repoPathTrees, [repo.msName]: tree};
       this.propagateRepoChanged(repo);
-    });
+    // });
   }
 
   getCurrentRepo(repoName = this.state.repoName){
