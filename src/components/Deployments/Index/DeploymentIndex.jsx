@@ -36,10 +36,10 @@ class DeploymentIndexClass extends React.Component {
   renderCards(){
     return(
       <div className={s.list}>
-        { this.state.deployments.map((sysObject) => (
+        { this.state.deployments.map((microservice) => (
             <DeploymentCard
-              key={sysObject.msName}
-              deployment={sysObject}
+              key={microservice.deployment_name}
+              deployment={microservice}
             />
           ))
         }
