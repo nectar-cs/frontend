@@ -143,17 +143,15 @@ class MatchingClass extends React.Component {
 
     this.setState((s) => ({...s, isSubmitting: true}));
 
-    let formatted = this.matches.map((match, i) => ({...a,
-      deployment_name: this.state.deployments[i].msName,
-      repo_name: match.repoName
+    let formatted = this.matches.map((match, i) => ({
+      deployment_name: this.state.deployments[i].name,
+      repo_name: match.repoName,
+      ms_name: match.msName,
+      ms_desc: match.msDescription,
+      ms_framework: match.msFramework
     }));
 
-    formatted = formatted.filter((a) => a.status === 'accepted');
-
-    formatted.forEach((e) => {
-      delete e.repoId;
-      delete e.status;
-    });
+    console.table(formatted);
 
     const payload = { data: formatted };
 

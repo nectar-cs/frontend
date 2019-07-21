@@ -23,11 +23,12 @@ export default class MatchForm extends React.Component {
 
     this.state = {
       repoList: [],
-      selRepoName: null,
+      repoName: 'null',
       msFramework: '',
       msName: '',
       msDescription: '',
       deploymentName: null,
+      msSourcePath: ''
     };
 
     this.repoPathTrees = {};
@@ -88,7 +89,7 @@ export default class MatchForm extends React.Component {
         </p>
         <select
           className={s.repoSelect}
-          value={this.state.selRepoName}
+          value={this.state.repoName}
           onChange={(e) => this.onRepoChanged(e.target.value)}>
           { this.repoChoices() }
         </select>
@@ -185,7 +186,7 @@ export default class MatchForm extends React.Component {
     });
   }
 
-  getCurrentRepo(repoName = this.state.selRepoName){
+  getCurrentRepo(repoName = this.state.repoName){
     return this.state.repoList.find(
       (r) => r['name'] === repoName
     );
@@ -195,10 +196,11 @@ export default class MatchForm extends React.Component {
     const commonBundle = {
       msName: humanizer(repo.name),
       msDescription: repo['description'],
-      msFramework: repo['framework']
+      msFramework: repo['framework'],
+      repoName: repo['name'],
     };
 
-    this.setState((s) => ({...s, ...commonBundle, selRepoName: repo.name}));
+    this.setState((s) => ({...s, ...commonBundle}));
     this.props.onInfoChanged(commonBundle);
     this.props.setIsFetching(false);
   }
