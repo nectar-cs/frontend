@@ -1,8 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import s from './DeploymentList.sass'
 import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';
 
 class DeploymentItem extends React.Component {
+
+  static propTypes = {
+    notifyCheckChanged: PropTypes.func.isRequired
+  };
+
+  constructor(props){
+    super(props);
+    this.checkRef = React.createRef();
+  }
 
   static statusClass(isSelected, status){
     if(isSelected) {
@@ -18,22 +28,49 @@ class DeploymentItem extends React.Component {
   }
 
   render(){
-    const {isSelected, name, status} = this.props;
+    const {isSelected, name, status, isChecked} = this.props;
+    const callback = () => {
+      this.props.notifyCheckChanged(name, this.checkRef.current.value);
+    };
+
     const statusBundle = DeploymentItem.statusClass(isSelected, status);
     return(
       <tr className={isSelected ? s.focusedRow : s.row}>
-        <td><input type="checkbox" name="vehicle1" value="Bike"/></td>
+        <td>
+          <input
+            type="checkbox"
+            ref={this.checkRef}
+            checked={isChecked}
+            onChange={callback}/>
+        </td>
         <td><p>default</p></td>
         <td><p>{name}</p></td>
         <td><p className={statusBundle.klass}>{statusBundle.label}</p></td>
       </tr>
     )
   }
+}
 
-  static header(){
+class ListHeader extends React.Component {
+  constructor(props){
+    super(props);
+    this.checkedRef = React.createRef();
+  }
+
+  render(){
+    const callback = () => {
+      this.props.notifyCheckAllChanged(this.checkedRef.current.checked);
+    };
+
     return(
       <tr>
-        <th><input type="checkbox" name="vehicle1" value="Bike"/></th>
+        <th>
+          <input
+            type="checkbox"
+            ref={this.checkedRef}
+            defaultChecked={true}
+            onChange={callback}/>
+        </th>
         <th><p>Namespace</p></th>
         <th><p>Deployment</p></th>
         <th><p>Status</p></th>
@@ -41,7 +78,11 @@ class DeploymentItem extends React.Component {
     )
   }
 
+  static propTypes = {
+    notifyCheckAllChanged: PropTypes.func.isRequired
+  };
 }
+
 
 export default class DeploymentList extends React.Component {
   render(){
@@ -56,7 +97,9 @@ export default class DeploymentList extends React.Component {
         <p>{text}</p>
         <table className={s.mainTable}>
           <tbody>
-          { DeploymentItem.header() }
+          <ListHeader
+            notifyCheckAllChanged={this.props.notifyCheckAllChanged}
+          />
           { this.renderList() }
           </tbody>
         </table>
@@ -71,8 +114,14 @@ export default class DeploymentList extends React.Component {
           key={i}
           index={i}
           {...deployment}
+          notifyCheckChanged={this.props.notifyCheckChanged}
         />
       )
     });
+  }
+
+  static propTypes = {
+    notifyCheckChanged: PropTypes.func.isRequired,
+    notifyCheckAllChanged: PropTypes.func.isRequired
   }
 }

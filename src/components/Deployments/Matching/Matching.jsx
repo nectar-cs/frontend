@@ -33,13 +33,15 @@ class MatchingClass extends React.Component {
       deployments: [],
       selectedIndex: null,
       isSubmitting: false,
-      areAllSubmitted: false
+      areAllSubmitted: false,
     };
 
     this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);
     this.fetchClusterDeploys = this.fetchClusterDeploys.bind(this);
     this.submit = this.submit.bind(this);
     this.notifyGithubConcluded = this.notifyGithubConcluded.bind(this);
+    this.notifyCheckAllChanged = this.notifyCheckAllChanged.bind(this);
+    this.notifyCheckChanged = this.notifyCheckChanged.bind(this);
     this.matches = [];
   }
 
@@ -65,6 +67,8 @@ class MatchingClass extends React.Component {
         <DeploymentList
           selectedIndex={this.state.selectedIndex}
           deployments={this.bundleDeployments()}
+          notifyCheckChanged={this.notifyCheckChanged}
+          notifyCheckAllChanged={this.notifyCheckAllChanged}
         />
       </div>
     )
@@ -150,7 +154,7 @@ class MatchingClass extends React.Component {
   fetchClusterDeploys(){
     this.setState((s) => ({...s, isFetching: true}));
     KubeHandler.fetchJson('/api/deployments', (payload) => {
-      const deployments = payload['data'];
+      const deployments = payload['data'].map((d) => ({...d, isChecked: true}));
       const selectedIndex = deployments.length > 0 ? 0 : null;
       this.setState((s) => ({...s, deployments, isFetching: false, selectedIndex}));
     });
@@ -158,6 +162,21 @@ class MatchingClass extends React.Component {
 
   notifyGithubConcluded(status){
     this.setState((s) => ({...s, githubState: GIT_STATES.FINISHED}));
+  }
+
+  notifyCheckAllChanged(value){
+    const deployments = this.state.deployments.map((d) => ({
+      ...d, isChecked: value
+    }));
+    this.setState((s) => ({...s, deployments}));
+  }
+
+  notifyCheckChanged(name){
+    const deployments = this.state.deployments.map((d) => {
+      if(d.name === name) return {...d, isChecked: !d.isChecked};
+      return d;
+    });
+    this.setState((s) => ({...s, deployments}));
   }
 
   submit(){
