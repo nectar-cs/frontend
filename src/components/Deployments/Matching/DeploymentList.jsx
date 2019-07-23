@@ -18,19 +18,29 @@ class DeploymentItem extends React.Component {
   }
 
   render(){
-    const {isSelected, index, name, status} = this.props;
-    const cellClass = isSelected ? s.selectedCell : null;
+    const {isSelected, name, status} = this.props;
     const statusBundle = DeploymentItem.statusClass(isSelected, status);
     return(
-      <tr>
-        <td><p className={cellClass}>{index + 1}</p></td>
-        <td><p className={cellClass}>{name}</p></td>
-        <td className={s.statusRow}>
-          <p className={statusBundle.klass}>{statusBundle.label}</p>
-        </td>
+      <tr className={isSelected ? s.focusedRow : s.row}>
+        <td><input type="checkbox" name="vehicle1" value="Bike"/></td>
+        <td><p>default</p></td>
+        <td><p>{name}</p></td>
+        <td><p className={statusBundle.klass}>{statusBundle.label}</p></td>
       </tr>
     )
   }
+
+  static header(){
+    return(
+      <tr>
+        <th><input type="checkbox" name="vehicle1" value="Bike"/></th>
+        <th><p>Namespace</p></th>
+        <th><p>Deployment</p></th>
+        <th><p>Status</p></th>
+      </tr>
+    )
+  }
+
 }
 
 export default class DeploymentList extends React.Component {
@@ -46,6 +56,7 @@ export default class DeploymentList extends React.Component {
         <p>{text}</p>
         <table className={s.mainTable}>
           <tbody>
+          { DeploymentItem.header() }
           { this.renderList() }
           </tbody>
         </table>

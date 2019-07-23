@@ -9,9 +9,23 @@
 .selectedCell
   font-weight: 700
 
+.row
+  background: transparent
+  &:hover
+    background: $content-background-color
+    cursor: pointer
+
+.focusedRow
+  composes: row
+  background: $contrast-less-font
+  border-radius: 5px
+  &:hover
+    background: $contrast-less-font
+    cursor: default
+
+
 .status
   composes: statusDecoration from './../../../assets/text-combos.sass'
-  padding-right: 70px
 
 .statusPending
   composes: status
@@ -24,10 +38,6 @@
 .statusRejected
   composes: status
   composes: fontColorWarn from './../../../assets/text-combos.sass'
-
-.statusRow
-  text-align: left
-  padding-left: 240px
 
 .confirm
   composes: centerSubmitButton from './../../../assets/input-combos.sass'
