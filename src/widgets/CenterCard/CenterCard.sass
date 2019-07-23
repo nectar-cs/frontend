@@ -1,4 +1,6 @@
 $container-size: 340px
+$container-height-large: auto
+$container-width-large: 70%
 
 .centerCard
   composes: shadowCard from './../../assets/content-layouts.sass'
@@ -8,3 +10,8 @@ $container-size: 340px
   left: 50%
   top: 50%
   transform: translateX(-50%) translateY(-50%)
+
+.centerCardLarge
+  composes: centerCard
+  width: $container-width-large
+  height: $container-height-large

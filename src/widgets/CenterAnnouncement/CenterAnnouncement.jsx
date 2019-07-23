@@ -1,6 +1,6 @@
-
 import React from 'react'
 import s from './CenterAnnouncement.sass'
+import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom';
 
 function mainContent(props){
@@ -23,3 +23,7 @@ export default function CenterAnnouncement(props){
     return mainContent(props);
   }
 }
+
+CenterAnnouncement.propTypes = {
+  routeTo: PropTypes.string
+};

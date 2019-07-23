@@ -9,6 +9,7 @@ import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
 import DeploymentCard from './DeploymentCard';
 import MiscUtils from "../../../utils/MiscUtils";
 import KubeHandler from "../../../utils/KubeHandler";
+import BeginMatchingPrompt from "./BeginMatchingPrompt";
 
 class DeploymentIndexClass extends React.Component {
 
@@ -24,12 +25,21 @@ class DeploymentIndexClass extends React.Component {
   }
 
   componentDidMount() {
-    KubeHandler.fetchJson('/api/deployments', (depsPayload) => {
-      Backend.fetchJson('/microservices', (msPayload) => {
-        const deployments = this.mergeLists(depsPayload['data'], msPayload['data']);
-        this.setState((s) => ({...s, deployments: deployments}));
-      });
-    });
+    this.setState((s) => ({...s, deployments: []}));
+    // KubeHandler.fetchJson('/api/deployments', (depsPayload) => {
+    //   Backend.fetchJson('/microservices', (msPayload) => {
+    //     let deployments = this.mergeLists(depsPayload['data'], msPayload['data']);
+    //     deployments = [];
+    //     this.setState((s) => ({...s, deployments: deployments}));
+    //   });
+    // });
+  }
+
+  checkEmptiness(deployments, microservices){
+    if(deployments.length === 0){
+    }
+    if(microservices.length === 0){
+    }
   }
 
   mergeLists(deployments, microservices){
@@ -99,13 +109,8 @@ class DeploymentIndexClass extends React.Component {
 
   static renderEmptyList(){
     return(
-      <CenterCard>
-        <CenterAnnouncement
-          contentType='nav-link'
-          text='Your system is empty. Click sync.'
-          iconName='search'
-          routeTo={R.deployments.detect}
-        />
+      <CenterCard size={'large'}>
+        <BeginMatchingPrompt/>
       </CenterCard>
     )
   }
