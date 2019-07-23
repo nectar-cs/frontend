@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types'
 import Backend from '../../../utils/Backend';
 import s from './GithubAuth.sass';
 import ls from './../../../assets/loading-spinner.sass'
 import MiscUtils from '../../../utils/MiscUtils';
-import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
 import { ROUTES } from '../../../containers/RoutesConsts';
 import { NavLink } from 'react-router-dom';
+import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 
 const GIT_STATES = {
   OFFERING: 'offer',
@@ -15,11 +16,16 @@ const GIT_STATES = {
 };
 
 export default class GithubAuth extends React.Component {
+
+  static propTypes = {
+    authUrl: PropTypes.string.isRequired,
+    notifyGithubConcluded: PropTypes.string
+  };
+
   constructor(props){
     super(props);
     this.state = {
       githubState: GIT_STATES.OFFERING,
-      authUrl: null
     };
 
     this.onOpenAuthClicked = this.onOpenAuthClicked.bind(this);
@@ -40,7 +46,7 @@ export default class GithubAuth extends React.Component {
     if(this.state.githubState === GIT_STATES.AUTHORIZED){
       return GithubAuth.renderContinueLink();
     } else if(this.state.githubState === GIT_STATES.AUTHORIZING){
-      return GithubAuth.renderLoading("Waiting on Github.");
+      return <CenterLoader/>
     } else if(this.state.githubState === GIT_STATES.OFFERING) {
       return this.renderGitOffer()
     } else if(this.state.githubState === GIT_STATES.CHECKING) {
@@ -50,7 +56,6 @@ export default class GithubAuth extends React.Component {
 
   componentDidMount(){
     if(this.state.githubState !== GIT_STATES.CHECKING) return;
-
     Backend.fetchJson('/github/token', (payload) => {
       if(payload['access_token']){
         this.setState((s) => ({...s, githubState: GIT_STATES.AUTHORIZED}));
@@ -67,20 +72,20 @@ export default class GithubAuth extends React.Component {
   renderGitOffer(){
     const gitLogo = MiscUtils.frameworkImage2('github', 'original.svg');
     return(
-      <a
-        onClick={this.onOpenAuthClicked}
-        href={this.state.authUrl}
-        target="_blank">
+      <Fragment>
         <img className={s.containerImage} src={gitLogo} alt={'Github'}/>
-        <p className={s.containerText}>Connect your Github</p>
-      </a>
+        <a onClick={this.onOpenAuthClicked} href={this.props.authUrl} target="_blank">
+          <h4 className={s.containerTextTitle}>Connect your Github</h4>
+        </a>
+        <a><p className={s.containerTextSubtitle}>Or, skip</p></a>
+      </Fragment>
     )
   }
 
   checker(){
     Backend.fetchJson('/github/token', (payload) => {
       if(payload['access_token']){
-        this.setState((s) => ({...s, githubState: GIT_STATES.AUTHORIZED}));
+        this.props.notifyGithubConcluded(true);
       } else this.pollBackend();
     });
   };
@@ -94,20 +99,11 @@ export default class GithubAuth extends React.Component {
     this.pollBackend();
   }
 
-  static renderLoading(text){
-    return(
-      <Fragment>
-        <div className={`${ls.centLoadingSpinner} ${s.loader}`}/>
-        <p className={s.containerText}>{text}</p>
-      </Fragment>
-    )
-  }
-
   static renderContinueLink(){
     return(
       <NavLink to={ROUTES.deployments.detect.path}>
         <i className={`material-icons ${s.containerIcon}`}>check</i>
-        <p className={s.containerText}>All set. Click to continue.</p>
+        <p className={s.containerTextTitle}>All set. Click to continue.</p>
       </NavLink>
     )
   }

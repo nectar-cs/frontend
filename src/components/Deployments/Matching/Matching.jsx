@@ -9,21 +9,20 @@ import MatchPreview from './MatchPreview';
 import KubeHandler from "../../../utils/KubeHandler";
 import GithubAuth from "./GithubAuth";
 
-const GIT_STATES = { CHECKING: 'checking', OKAY: 'offer', INVALID: 'waiting' };
+const GIT_STATES = { CHECKING: 'checking', FINISHED: 'offer', INVALID: 'waiting' };
 
 const Header = function(){
   return(
     <LeftHeader
-      title='Match Deployments to Repos'
-      subtitle='System setup wizard'
+      title='Workspace Setup'
+      subtitle='Choose deployments and map them to source code.'
       graphicType={ICON}
-      graphicName='search'
+      graphicName='grid_on'
     />
   )
 };
 
 class MatchingClass extends React.Component {
-
   constructor(props){
     super(props);
     this.state = {
@@ -40,6 +39,7 @@ class MatchingClass extends React.Component {
     this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);
     this.fetchClusterDeploys = this.fetchClusterDeploys.bind(this);
     this.submit = this.submit.bind(this);
+    this.notifyGithubConcluded = this.notifyGithubConcluded.bind(this);
     this.matches = [];
   }
 
@@ -83,8 +83,12 @@ class MatchingClass extends React.Component {
     if(this.state.githubState === GIT_STATES.CHECKING)
       return null;
     else if(this.state.githubState === GIT_STATES.INVALID)
-      return <GithubAuth/>;
-    else if(this.state.githubState === GIT_STATES.OKAY)
+      return(
+        <GithubAuth
+          authUrl={this.state.authUrl}
+          notifyGithubConcluded={this.notifyGithubConcluded}/>
+      );
+    else if(this.state.githubState === GIT_STATES.FINISHED)
       return this.renderMatchingPreview();
   }
 
@@ -136,8 +140,9 @@ class MatchingClass extends React.Component {
   fetchGithubAuth(){
     this.setState((s) => ({...s, githubState: GIT_STATES.CHECKING}));
     Backend.fetchJson('/github/token', (payload) => {
-      const gState = payload['access_token'] ? GIT_STATES.OKAY : GIT_STATES.INVALID;
-      this.setState((s) => ({...s, githubState: gState}));
+      const githubState = payload['access_token'] ? GIT_STATES.FINISHED : GIT_STATES.INVALID;
+      const authUrl = payload['auth_url'];
+      this.setState((s) => ({...s, githubState, authUrl}));
       if(payload['access_token']) this.fetchClusterDeploys();
     });
   }
@@ -149,6 +154,10 @@ class MatchingClass extends React.Component {
       const selectedIndex = deployments.length > 0 ? 0 : null;
       this.setState((s) => ({...s, deployments, isFetching: false, selectedIndex}));
     });
+  }
+
+  notifyGithubConcluded(status){
+    this.setState((s) => ({...s, githubState: GIT_STATES.FINISHED}));
   }
 
   submit(){
