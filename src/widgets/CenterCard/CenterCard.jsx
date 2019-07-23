@@ -14,8 +14,6 @@ export default function CenterCard(props){
   )
 }
 
-
-
 CenterCard.propTypes = {
   size: PropTypes.oneOf(['normal', 'large'])
 };

@@ -8,18 +8,17 @@ import { ROUTES } from '../../../containers/RoutesConsts';
 import { NavLink } from 'react-router-dom';
 
 const GIT_STATES = {
-  CHECKING: 'checking',
   OFFERING: 'offer',
   AUTHORIZING: 'waiting',
   AUTHORIZED: 'all-set',
   EXITING: 'exiting'
 };
 
-const GithubAuthClass = class extends React.Component {
+export default class GithubAuth extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      githubState: GIT_STATES.CHECKING,
+      githubState: GIT_STATES.OFFERING,
       authUrl: null
     };
 
@@ -39,18 +38,19 @@ const GithubAuthClass = class extends React.Component {
 
   centerContent(){
     if(this.state.githubState === GIT_STATES.AUTHORIZED){
-      return GithubAuthClass.renderContinueLink();
+      return GithubAuth.renderContinueLink();
     } else if(this.state.githubState === GIT_STATES.AUTHORIZING){
-      return GithubAuthClass.renderLoading("Waiting on Github.");
+      return GithubAuth.renderLoading("Waiting on Github.");
     } else if(this.state.githubState === GIT_STATES.OFFERING) {
       return this.renderGitOffer()
     } else if(this.state.githubState === GIT_STATES.CHECKING) {
       return <p>Checking...</p>;
-    } return GithubAuthClass.renderLoading("Loading.");
+    } return GithubAuth.renderLoading("Loading.");
   }
 
   componentDidMount(){
     if(this.state.githubState !== GIT_STATES.CHECKING) return;
+
     Backend.fetchJson('/github/token', (payload) => {
       if(payload['access_token']){
         this.setState((s) => ({...s, githubState: GIT_STATES.AUTHORIZED}));
@@ -65,7 +65,7 @@ const GithubAuthClass = class extends React.Component {
   }
 
   renderGitOffer(){
-    const gitLogo = MiscUtils.frameworkImage('github');
+    const gitLogo = MiscUtils.frameworkImage2('github', 'original.svg');
     return(
       <a
         onClick={this.onOpenAuthClicked}
@@ -112,11 +112,3 @@ const GithubAuthClass = class extends React.Component {
     )
   }
 };
-
-const ComposedClass = AuthenticatedComponent.compose(GithubAuthClass);
-
-export default class GithubAuth extends React.Component {
-  render(){
-    return <ComposedClass {...ComposedClass}/>
-  }
-}

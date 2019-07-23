@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
 import ls from '../../../assets/content-layouts.sass';
 import {LeftHeader, ICON} from '../../../widgets/LeftHeader/LeftHeader';
@@ -6,10 +6,8 @@ import Backend from '../../../utils/Backend';
 import DeploymentList from './DeploymentList';
 import TopLoader from '../../../widgets/TopLoader/TopLoader';
 import MatchPreview from './MatchPreview';
-import { Redirect } from 'react-router';
-import { ROUTES } from '../../../containers/RoutesConsts';
-import DataUtils from '../../../utils/DataUtils';
 import KubeHandler from "../../../utils/KubeHandler";
+import GithubAuth from "./GithubAuth";
 
 const GIT_STATES = { CHECKING: 'checking', OKAY: 'offer', INVALID: 'waiting' };
 
@@ -45,74 +43,75 @@ class MatchingClass extends React.Component {
     this.matches = [];
   }
 
-  render(){
-    if(this.state.githubState === GIT_STATES.OKAY){
-      return this.renderMainContent();
-    } else if(this.state.githubState === GIT_STATES.CHECKING){
-      return <p>Waiting...</p>;
-    } else if(this.state.githubState === GIT_STATES.INVALID) {
-      return <Redirect to={ROUTES.team.githubAuth.path}/>
-    } else return null;
-  }
-
   componentDidMount(){
-    this.setState((s) => ({...s, githubState: GIT_STATES.CHECKING}));
-    Backend.fetchJson('/github/token', (payload) => {
-      const gState = payload['access_token'] ? GIT_STATES.OKAY : GIT_STATES.INVALID;
-      this.setState((s) => ({...s, githubState: gState}));
-      if(payload['access_token']) this.fetchClusterDeploys();
-    });
+    this.fetchGithubAuth();
+    this.fetchClusterDeploys();
   }
 
-  renderMainContent(){
+  render(){
     return(
       <React.Fragment>
-        <div className={ls.halfScreePanelLeft}>
-          <Header/>
-          <TopLoader isFetching={this.state.isFetching}/>
-          <DeploymentList
-            selectedIndex={this.state.selectedIndex}
-            deployments={this.bundleDeployments()}
-          />
-        </div>
-        <div className={ls.halfScreePanelRight}>
-          <TopLoader isFetching={this.state.isRightFetching}/>
-          <MatchPreview
-            deployment={this.selectedDeployment()}
-            onDeploymentReviewed={this.onDeploymentReviewed}
-            isReviewComplete={this.isSubmitReady()}
-            submitFunction={this.submit}
-            isSubmitted={this.state.areAllSubmitted}
-            isSubmitting={this.state.isSubmitting}
-            setIsFetching={(v) => this.setState((s) => ({...s, isRightFetching: v}))}
-          />
-        </div>
+        { this.renderLeftSide() }
+        { this.renderRightSide() }
       </React.Fragment>
     )
   }
 
-  fetchClusterDeploys(){
-    this.setState((s) => ({...s, isFetching: true}));
-    KubeHandler.fetchJson('/api/deployments', (payload) => {
-      const items = payload['data'];
-      const ind = items.length > 0 ? 0 : null;
-      this.setState((s) => ({...s,
-        deployments: items,
-        isFetching: false,
-        selectedIndex: ind
-      }));
-    });
+  renderLeftSide(){
+    return(
+      <div className={ls.halfScreePanelLeft}>
+        <Header/>
+        <TopLoader isFetching={this.state.isFetching}/>
+        <DeploymentList
+          selectedIndex={this.state.selectedIndex}
+          deployments={this.bundleDeployments()}
+        />
+      </div>
+    )
+  }
+
+  renderRightSide(){
+    return(
+      <div className={ls.halfScreePanelRight}>
+        <TopLoader isFetching={this.state.isRightFetching}/>
+        { this.decideRightSideContent() }
+      </div>
+    )
+  }
+
+  decideRightSideContent(){
+    if(this.state.githubState === GIT_STATES.CHECKING)
+      return null;
+    else if(this.state.githubState === GIT_STATES.INVALID)
+      return <GithubAuth/>;
+    else if(this.state.githubState === GIT_STATES.OKAY)
+      return this.renderMatchingPreview();
+  }
+
+  renderMatchingPreview(){
+    return(
+      <Fragment>
+        <TopLoader isFetching={this.state.isRightFetching}/>
+        <MatchPreview
+          deployment={this.selectedDeployment()}
+          onDeploymentReviewed={this.onDeploymentReviewed}
+          isReviewComplete={this.isSubmitReady()}
+          submitFunction={this.submit}
+          isSubmitted={this.state.areAllSubmitted}
+          isSubmitting={this.state.isSubmitting}
+          setIsFetching={(v) => this.setState((s) => ({...s, isRightFetching: v}))}
+        />
+      </Fragment>
+    )
   }
 
   bundleDeployments(){
     return this.state.deployments.map((deployment, i) => {
-      if(this.state.selectedIndex === i){
+      if(this.state.selectedIndex === i)
         return {...deployment, isSelected: true};
-      } else if(this.matches[i]){
+       else if(this.matches[i])
         return {...deployment, status: this.matches[i].status};
-      } else {
-        return {...deployment, status: 'pending'};
-      }
+       else return {...deployment, status: 'pending'};
     });
   }
 
@@ -134,6 +133,24 @@ class MatchingClass extends React.Component {
     } else return false;
   }
 
+  fetchGithubAuth(){
+    this.setState((s) => ({...s, githubState: GIT_STATES.CHECKING}));
+    Backend.fetchJson('/github/token', (payload) => {
+      const gState = payload['access_token'] ? GIT_STATES.OKAY : GIT_STATES.INVALID;
+      this.setState((s) => ({...s, githubState: gState}));
+      if(payload['access_token']) this.fetchClusterDeploys();
+    });
+  }
+
+  fetchClusterDeploys(){
+    this.setState((s) => ({...s, isFetching: true}));
+    KubeHandler.fetchJson('/api/deployments', (payload) => {
+      const deployments = payload['data'];
+      const selectedIndex = deployments.length > 0 ? 0 : null;
+      this.setState((s) => ({...s, deployments, isFetching: false, selectedIndex}));
+    });
+  }
+
   submit(){
     if(this.state.isSubmitting) return;
     this.setState((s) => ({...s, isSubmitting: true}));
@@ -146,10 +163,7 @@ class MatchingClass extends React.Component {
       ms_framework: match.msFramework
     }));
 
-    console.table(formatted);
-
     const payload = { data: formatted };
-
     Backend.postJson('/microservices/', payload, (result) => {
       this.setState((s) => ({...s, isSubmitting: false, areAllSubmitted: true}));
       console.log("[submit] submitted");

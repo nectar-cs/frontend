@@ -25,21 +25,12 @@ class DeploymentIndexClass extends React.Component {
   }
 
   componentDidMount() {
-    this.setState((s) => ({...s, deployments: []}));
-    // KubeHandler.fetchJson('/api/deployments', (depsPayload) => {
-    //   Backend.fetchJson('/microservices', (msPayload) => {
-    //     let deployments = this.mergeLists(depsPayload['data'], msPayload['data']);
-    //     deployments = [];
-    //     this.setState((s) => ({...s, deployments: deployments}));
-    //   });
-    // });
-  }
-
-  checkEmptiness(deployments, microservices){
-    if(deployments.length === 0){
-    }
-    if(microservices.length === 0){
-    }
+    KubeHandler.fetchJson('/api/deployments', (depsPayload) => {
+      Backend.fetchJson('/microservices', (msPayload) => {
+        let deployments = this.mergeLists(depsPayload['data'], msPayload['data']);
+        this.setState((s) => ({...s, deployments: deployments}));
+      });
+    });
   }
 
   mergeLists(deployments, microservices){
@@ -53,12 +44,19 @@ class DeploymentIndexClass extends React.Component {
 
   render(){
     const items = this.state.deployments;
-    if(items){
-      if(items.length > 0)
-        return this.renderCards();
-      else
-        return DeploymentIndexClass.renderEmptyList();
+    if(items != null){
+      if(items.length > 0){
+        if(DeploymentIndexClass.areMatchesFound(items))
+          return this.renderCards();
+        else return DeploymentIndexClass.renderNoMatchingsFound();
+      } else {
+        return DeploymentIndexClass.renderNoDeploymentsFound();
+      }
     } else return <CenterLoader/>;
+  }
+
+  static areMatchesFound(items){
+    return items.find((d) => d.microservice != null) != null;
   }
 
   renderCards(){
@@ -77,7 +75,7 @@ class DeploymentIndexClass extends React.Component {
             onClick={() => this.onCardClicked(i)}
             isEntered={this.state.selectedIndex === i && this.state.isEntered}
           />
-          ))
+        ))
         }
       </div>
     );
@@ -107,10 +105,22 @@ class DeploymentIndexClass extends React.Component {
       this.setState((s) => ({...s, isEntered}));
   }
 
-  static renderEmptyList(){
+  static renderNoMatchingsFound(){
     return(
       <CenterCard size={'large'}>
         <BeginMatchingPrompt/>
+      </CenterCard>
+    )
+  }
+
+  static renderNoDeploymentsFound(){
+    return(
+      <CenterCard>
+        <CenterAnnouncement
+          contentType={null}
+          text={"We couldn't find any deployments here."}
+          iconName='search'
+        />
       </CenterCard>
     )
   }

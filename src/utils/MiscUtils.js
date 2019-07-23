@@ -6,24 +6,17 @@ const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
 
 export default class MiscUtils {
-
   static image(name){
     return `${IMG_BASE}/${name}`;
   }
 
-  static frameworkImage(framework){
-    const imageName = `${framework}/${framework}-plain.svg`;
-    return `${IMG_BASE}/icons/${imageName}`;
+  static frameworkImage2(framework){
+    return this.frameworkImage(framework, 'original.svg');
   }
 
-  static coolCross(callback){
-    let attrs = {background: 'white', marginLeft: "34px", padding: "0 17px  "};
-    return(
-      <div className={layouts.horizonBoxWrapper}>
-        <div className={layouts.horizontalLine}/>
-        { callback(attrs) }
-      </div>
-    )
+  static frameworkImage(framework, suffix='plain.svg'){
+    const imageName = `${framework}/${framework}-${suffix}`;
+    return `${IMG_BASE}/icons/${imageName}`;
   }
 
   static emptyOption(text){
