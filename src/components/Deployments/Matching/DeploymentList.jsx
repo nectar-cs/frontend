@@ -14,28 +14,29 @@ class DeploymentItem extends React.Component {
     this.checkRef = React.createRef();
   }
 
-  static statusClass(isSelected, status){
-    if(isSelected) {
-      return { klass: s.status, label: 'reviewing' };
+  statusCopy(){
+    if(this.props.isChecked){
+      if(this.props.isReviewed){
+        return "Reviewed";
+      } else {
+        if(this.props.isSelected){
+          return "Reviewing";
+        } else return "Pending";
+      }
     } else {
-      if(status === 'accepted')
-        return { klass: s.statusAccepted, label: 'included'};
-      else if(status === 'rejected')
-        return { klass: s.statusRejected, label: 'ignored'};
-      else
-        return { klass: s.statusPending, label: 'review pending' };
+      return "Excluded"
     }
   }
 
   render(){
-    const {isSelected, name, status, isChecked} = this.props;
+    const {isSelected, name, isChecked} = this.props;
     const callback = () => {
       this.props.notifyCheckChanged(name, this.checkRef.current.value);
     };
+    const clickCallback = null; //() => {this.props.notifyDeploymentSelected(name)};
 
-    const statusBundle = DeploymentItem.statusClass(isSelected, status);
     return(
-      <tr className={isSelected ? s.focusedRow : s.row}>
+      <tr className={isSelected ? s.focusedRow : s.row} onClick={clickCallback} >
         <td>
           <input
             type="checkbox"
@@ -45,7 +46,7 @@ class DeploymentItem extends React.Component {
         </td>
         <td><p>default</p></td>
         <td><p>{name}</p></td>
-        <td><p className={statusBundle.klass}>{statusBundle.label}</p></td>
+        <td><p className={s.status}>{this.statusCopy()}</p></td>
       </tr>
     )
   }
@@ -114,6 +115,8 @@ export default class DeploymentList extends React.Component {
           key={i}
           index={i}
           {...deployment}
+          isSelected={i === this.props.selectedIndex}
+          notifyDeploymentSelected={this.props.notifyDeploymentSelected}
           notifyCheckChanged={this.props.notifyCheckChanged}
         />
       )
@@ -121,6 +124,8 @@ export default class DeploymentList extends React.Component {
   }
 
   static propTypes = {
+    selectedIndex: PropTypes.number,
+    notifyDeploymentSelected: PropTypes.func.isRequired,
     notifyCheckChanged: PropTypes.func.isRequired,
     notifyCheckAllChanged: PropTypes.func.isRequired
   }

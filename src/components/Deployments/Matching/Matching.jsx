@@ -42,7 +42,7 @@ class MatchingClass extends React.Component {
     this.notifyGithubConcluded = this.notifyGithubConcluded.bind(this);
     this.notifyCheckAllChanged = this.notifyCheckAllChanged.bind(this);
     this.notifyCheckChanged = this.notifyCheckChanged.bind(this);
-    this.matches = [];
+    this.notifyDeploymentSelected = this.notifyDeploymentSelected.bind(this);
   }
 
   componentDidMount(){
@@ -65,10 +65,11 @@ class MatchingClass extends React.Component {
         <Header/>
         <TopLoader isFetching={this.state.isFetching}/>
         <DeploymentList
+          deployments={this.state.deployments}
           selectedIndex={this.state.selectedIndex}
-          deployments={this.bundleDeployments()}
           notifyCheckChanged={this.notifyCheckChanged}
           notifyCheckAllChanged={this.notifyCheckAllChanged}
+          notifyDeploymentSelected={this.notifyDeploymentSelected}
         />
       </div>
     )
@@ -114,31 +115,27 @@ class MatchingClass extends React.Component {
     )
   }
 
-  bundleDeployments(){
-    return this.state.deployments.map((deployment, i) => {
-      if(this.state.selectedIndex === i)
-        return {...deployment, isSelected: true};
-       else if(this.matches[i])
-        return {...deployment, status: this.matches[i].status};
-       else return {...deployment, status: 'pending'};
-    });
-  }
-
   selectedDeployment(){
     if(this.state.selectedIndex !== null)
       return this.state.deployments[this.state.selectedIndex];
     else return null;
   }
 
-  onDeploymentReviewed(bundle){
-    const newIndex = this.state.selectedIndex + 1;
-    this.matches.push(bundle);
-    this.setState((s) => ({...s, selectedIndex: newIndex}))
+  onDeploymentReviewed(name, bundle){
+    const deployments = this.state.deployments.map((d) => {
+      if(d.name === name)
+        return { ...d, ms: bundle, isReviewed: true };
+      else return d;
+    });
+    const selectedIndex = this.state.selectedIndex + 1;
+    this.setState((s) => ({...s, deployments, selectedIndex}));
   }
 
   isSubmitReady(){
-    if(this.state.selectedIndex){
-      return this.matches.length === this.state.deployments.length;
+    if(this.state.selectedIndex != null && this.state.deployments != null){
+      const checkedDeps = this.state.deployments.filter((d) => d.isChecked);
+      const reviewedMap = checkedDeps.map((d) => d.isReviewed);
+      return !reviewedMap.includes(false);
     } else return false;
   }
 
@@ -155,7 +152,8 @@ class MatchingClass extends React.Component {
   fetchClusterDeploys(){
     this.setState((s) => ({...s, isFetching: true}));
     KubeHandler.fetchJson('/api/deployments', (payload) => {
-      const deployments = payload['data'].map((d) => ({...d, isChecked: true}));
+      const bundle = { isChecked: true, isReviewed: false };
+      const deployments = payload['data'].map((d) => ({...d, ...bundle}));
       const selectedIndex = deployments.length > 0 ? 0 : null;
       this.setState((s) => ({...s, deployments, isFetching: false, selectedIndex}));
     });
@@ -180,16 +178,23 @@ class MatchingClass extends React.Component {
     this.setState((s) => ({...s, deployments}));
   }
 
+  notifyDeploymentSelected(name){
+    const selectedIndex = this.state.deployments.findIndex(
+      (d) => (d.name === name)
+    );
+    this.setState((s) => ({...s, selectedIndex}))
+  }
+
   submit(){
     if(this.state.isSubmitting) return;
     this.setState((s) => ({...s, isSubmitting: true}));
 
-    let formatted = this.matches.map((match, i) => ({
-      deployment_name: this.state.deployments[i].name,
-      repo_name: match.repoName,
-      ms_name: match.msName,
-      ms_desc: match.msDescription,
-      ms_framework: match.msFramework
+    let formatted = this.state.deployments.map((deployment) => ({
+      deployment_name: deployment.name,
+      repo_name: deployment.ms.repoName,
+      ms_name: deployment.ms.msName,
+      ms_desc: deployment.ms.msDescription,
+      ms_framework: deployment.ms.msFramework
     }));
 
     const payload = { data: formatted };

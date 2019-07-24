@@ -122,7 +122,10 @@ export default class MatchPreview extends React.Component {
   }
 
   onAccepted(){
-    this.props.onDeploymentReviewed(this.bundle());
+    this.props.onDeploymentReviewed(
+      this.props.deployment.name,
+      this.bundle()
+    );
   }
 
   onInfoChanged(hash){
