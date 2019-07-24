@@ -154,21 +154,27 @@ export default class MatchForm extends React.Component {
 
   onRepoChanged(repoName){
     const repo = this.getCurrentRepo(repoName);
-    if(this.repoPathTrees[repo.msName])
+    if(repoName && repoName !== 'null'){
       this.propagateRepoChanged(repo);
-    else
-      this.fetchRepoTree(repo)
+    } else {
+      this.propagateNoGitDefaults();
+    }
+
+    // if(this.repoPathTrees[repo.msName])
+    //   this.propagateRepoChanged(repo);
+    // else
+    //   this.fetchRepoTree(repo)
   }
 
-  fetchRepoTree(repo){
-    this.props.setIsFetching(true);
-    // const endpoint = `/github/repos/${repo.msName}/path_tree`;
-    // Backend.fetchJson(endpoint, (result) => {
-    //   const tree = result['tree'];
-    //   this.repoPathTrees = {...this.repoPathTrees, [repo.msName]: tree};
-      this.propagateRepoChanged(repo);
-    // });
-  }
+  // fetchRepoTree(repo){
+  //   this.props.setIsFetching(true);
+  //   const endpoint = `/github/repos/${repo.msName}/path_tree`;
+  //   Backend.fetchJson(endpoint, (result) => {
+  //     const tree = result['tree'];
+  //     this.repoPathTrees = {...this.repoPathTrees, [repo.msName]: tree};
+  //     this.propagateRepoChanged(repo);
+  //   });
+  // }
 
   getCurrentRepo(repoName = this.state.repoName){
     return this.state.repoList.find(
@@ -208,7 +214,7 @@ export default class MatchForm extends React.Component {
     const bundle = {
       msName: humanizer(this.props.deployment.name),
       msDescription: "",
-      msFramework: 'javascript'
+      msFramework: 'docker'
     };
 
     this.setState((s) => ({...s,
@@ -224,11 +230,13 @@ export default class MatchForm extends React.Component {
   }
 
   repoChoices(){
-    return this.state.repoList.map((repo) =>
+    const choices = this.state.repoList.map((repo) =>
       <option key={repo['name']} value={repo['name']}>
         {repo['name']}
       </option>
     );
+    choices.unshift(MiscUtils.emptyOption(''));
+    return choices;
   }
 
   static frameworkChoices(){

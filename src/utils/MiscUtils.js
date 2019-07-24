@@ -57,6 +57,6 @@ export default class MiscUtils {
   }
 
   static frameworkChoices(){
-    return ["javascript", "go", "ruby", "c"];
+    return ["docker", "javascript", "go", "ruby", "c"];
   }
 }
