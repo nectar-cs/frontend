@@ -18,7 +18,7 @@ export default class GithubAuth extends React.Component {
 
   static propTypes = {
     authUrl: PropTypes.string.isRequired,
-    notifyGithubConcluded: PropTypes.string
+    notifyGithubConcluded: PropTypes.func.isRequired
   };
 
   constructor(props){
@@ -76,7 +76,9 @@ export default class GithubAuth extends React.Component {
         <a onClick={this.onOpenAuthClicked} href={this.props.authUrl} target="_blank">
           <h4 className={s.containerTextTitle}>Connect your Github</h4>
         </a>
-        <a><p className={s.containerTextSubtitle}>Or, skip</p></a>
+        <a onClick={() => this.props.notifyGithubConcluded(false)}>
+          <p className={s.containerTextSubtitle}>Or, skip</p>
+        </a>
       </Fragment>
     )
   }

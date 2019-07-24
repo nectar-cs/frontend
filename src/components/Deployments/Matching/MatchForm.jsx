@@ -11,11 +11,12 @@ const StringSimilarity = require('string-similarity');
 export default class MatchForm extends React.Component {
 
   static propTypes = {
-    setIsFetching: PropTypes.func,
-    onInfoChanged: PropTypes.func,
+    setIsFetching: PropTypes.func.isRequired,
+    onInfoChanged: PropTypes.func.isRequired,
+    hasGithub: PropTypes.bool.isRequired,
     deployment: PropTypes.shape({
-      name: PropTypes.string
-    })
+      name: PropTypes.string.isRequired
+    }).isRequired
   };
 
   constructor(props){
@@ -36,31 +37,23 @@ export default class MatchForm extends React.Component {
   }
 
   componentDidMount(){
-    this.props.setIsFetching(true);
-    Backend.fetchJson('/github/list_repos', (payload) => {
-      this.setState((s) => ({...s, repoList: payload['data']}));
-      this.guessRepoFromDep(this.props.deployment.name);
-    });
-  }
-
-  guessRepoFromDep(depName){
-    const repoNames = this.state.repoList.map((r) => r['name']);
-    const sorting = StringSimilarity.findBestMatch(depName, repoNames);
-    const winnerName = repoNames[sorting.bestMatchIndex];
-    this.onRepoChanged(winnerName);
+    if(this.props.hasGithub)
+      this.fetchRepos();
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.deployment){
+    if(this.props.hasGithub && nextProps.deployment){
       if(this.props.deployment.name !== nextProps.deployment.name){
         this.guessRepoFromDep(nextProps.deployment.name)
       }
 
       if(nextProps.deployment.name !== this.state.deploymentName){
+
         this.setState((s) => ({...s,
           deploymentName: nextProps.deployment.name,
           msName: nextProps.deployment.name,
         }));
+        this.props.onInfoChanged({msName: this.state.msName});
       }
     }
   }
@@ -71,20 +64,19 @@ export default class MatchForm extends React.Component {
     return(
       <div>
         <p>{intro}</p>
-        { this.renderLineOne() }
-        { this.renderLineTwo() }
-        { this.renderLineThree() }
-        { this.renderLineFour() }
-        { this.renderLineFive() }
+        { this.props.hasGithub ? this.renderRepoInput() : null }
+        { this.props.hasGithub ? this.renderPathInput() : null }
+        { this.renderAppNameInput() }
+        { this.renderDescriptionInput() }
+        { this.renderFrameworkSelect() }
       </div>
     )
   }
 
-  renderLineOne(){
+  renderRepoInput(){
     return(
       <div className={s.inputLine}>
         <p className={s.lineIntro}>
-          <span className={s.lineBold}>1. </span>
           Source Code Repository
         </p>
         <select
@@ -97,7 +89,7 @@ export default class MatchForm extends React.Component {
     )
   }
 
-  renderLineTwo(){
+  renderPathInput(){
     const currentRepo = this.getCurrentRepo();
     let currentTree = null;
     if(currentRepo)
@@ -106,7 +98,6 @@ export default class MatchForm extends React.Component {
     return(
       <div className={s.inputLine}>
         <p className={s.lineIntro}>
-          <span className={s.lineBold}>2. </span>
           Internal Path (optional)
         </p>
         <PathSuggest
@@ -116,11 +107,10 @@ export default class MatchForm extends React.Component {
     )
   }
 
-  renderLineThree(){
+  renderAppNameInput(){
     return(
       <div className={s.inputLine}>
         <p className={s.lineIntro}>
-          <span className={s.lineBold}>3. </span>
           Microservice Name
         </p>
         <input
@@ -133,11 +123,10 @@ export default class MatchForm extends React.Component {
     )
   }
 
-  renderLineFour(){
+  renderDescriptionInput(){
     return(
       <div className={s.inputLine}>
         <p className={s.lineIntro}>
-          <span className={s.lineBold}>4. </span>
           Description
         </p>
         <input
@@ -150,11 +139,10 @@ export default class MatchForm extends React.Component {
     )
   }
 
-  renderLineFive(){
+  renderFrameworkSelect(){
     return(
       <div className={s.inputLine}>
         <p className={s.lineIntro}>
-          <span className={s.lineBold}>5. </span>
           Language or Framework
         </p>
         <select
@@ -190,6 +178,21 @@ export default class MatchForm extends React.Component {
     return this.state.repoList.find(
       (r) => r['name'] === repoName
     );
+  }
+
+  fetchRepos(){
+    this.props.setIsFetching(true);
+    Backend.fetchJson('/github/list_repos', (payload) => {
+      this.setState((s) => ({...s, repoList: payload['data']}));
+      this.guessRepoFromDep(this.props.deployment.name);
+    });
+  }
+
+  guessRepoFromDep(depName){
+    const repoNames = this.state.repoList.map((r) => r['name']);
+    const sorting = StringSimilarity.findBestMatch(depName, repoNames);
+    const winnerName = repoNames[sorting.bestMatchIndex];
+    this.onRepoChanged(winnerName);
   }
 
   propagateRepoChanged(repo){

@@ -13,11 +13,12 @@ export default class MatchPreview extends React.Component {
 
   static propTypes = {
     deployment: PropTypes.object,
-    isSubmitted: PropTypes.bool,
-    isSubmitting: PropTypes.bool,
-    isReviewComplete: PropTypes.bool,
-    onDeploymentReviewed: PropTypes.func,
-    submitFunction: PropTypes.func
+    isSubmitted: PropTypes.bool.isRequired,
+    isSubmitting: PropTypes.bool.isRequired,
+    isReviewComplete: PropTypes.bool.isRequired,
+    onDeploymentReviewed: PropTypes.func.isRequired,
+    submitFunction: PropTypes.func.isRequired,
+    hasGithub: PropTypes.bool.isRequired
   };
 
   constructor(props){
@@ -55,7 +56,7 @@ export default class MatchPreview extends React.Component {
           title={this.bundle().msName}
           subtitle={this.bundle().msDescription}
         />
-        <TextOverLineTitle text="Microservice Source Repo"/>
+        <TextOverLineTitle text="Microservice Details"/>
         { this.renderContentBody() }
         <button className={s.confirm}  onClick={() => this.onAccepted()}>
           Confirm & Review Next
@@ -71,6 +72,7 @@ export default class MatchPreview extends React.Component {
           deployment={this.props.deployment}
           onInfoChanged={this.onInfoChanged}
           setIsFetching={this.props.setIsFetching}
+          hasGithub={this.props.hasGithub}
         />
       )
     } else {
@@ -129,6 +131,7 @@ export default class MatchPreview extends React.Component {
   }
 
   onInfoChanged(hash){
-    this.setState((s) => ({...s, bundle: hash}))
+    const bundle = { ...this.state.bundle, ...hash };
+    this.setState((s) => ({...s, bundle}));
   }
 }

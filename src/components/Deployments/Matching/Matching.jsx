@@ -8,8 +8,17 @@ import TopLoader from '../../../widgets/TopLoader/TopLoader';
 import MatchPreview from './MatchPreview';
 import KubeHandler from "../../../utils/KubeHandler";
 import GithubAuth from "./GithubAuth";
+import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 
-const GIT_STATES = { CHECKING: 'checking', FINISHED: 'offer', INVALID: 'waiting' };
+const GIT_STATES = {
+  CHECKING: 'checking',
+  SHOWING_OFFER: 'waiting',
+  NOT_CONNECTED: 'not-connected',
+  CONNECTED: 'finished',
+
+};
+
+const DEFAULT_QUERY = [{field: "namespace", op: "one-of", challenge: ["default"]}];
 
 const Header = function(){
   return(
@@ -34,6 +43,7 @@ class MatchingClass extends React.Component {
       selectedIndex: null,
       isSubmitting: false,
       areAllSubmitted: false,
+      query: DEFAULT_QUERY
     };
 
     this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);
@@ -85,15 +95,16 @@ class MatchingClass extends React.Component {
   }
 
   decideRightSideContent(){
+    const gitConcluded = [GIT_STATES.CONNECTED, GIT_STATES.NOT_CONNECTED];
     if(this.state.githubState === GIT_STATES.CHECKING)
-      return null;
-    else if(this.state.githubState === GIT_STATES.INVALID)
+      return <CenterLoader/>;
+    else if(this.state.githubState === GIT_STATES.SHOWING_OFFER)
       return(
         <GithubAuth
           authUrl={this.state.authUrl}
           notifyGithubConcluded={this.notifyGithubConcluded}/>
       );
-    else if(this.state.githubState === GIT_STATES.FINISHED)
+    else if(gitConcluded.includes(this.state.githubState))
       return this.renderMatchingPreview();
   }
 
@@ -106,6 +117,7 @@ class MatchingClass extends React.Component {
           onDeploymentReviewed={this.onDeploymentReviewed}
           isReviewComplete={this.isSubmitReady()}
           submitFunction={this.submit}
+          hasGithub={this.state.githubState === GIT_STATES.CONNECTED}
           isSubmitted={this.state.areAllSubmitted}
           isSubmitting={this.state.isSubmitting}
           setIsFetching={(v) => this.setState((s) => ({...s, isRightFetching: v}))}
@@ -142,7 +154,7 @@ class MatchingClass extends React.Component {
   fetchGithubAuth(){
     this.setState((s) => ({...s, githubState: GIT_STATES.CHECKING}));
     Backend.fetchJson('/github/token', (payload) => {
-      const githubState = payload['access_token'] ? GIT_STATES.FINISHED : GIT_STATES.INVALID;
+      const githubState = payload['access_token'] ? GIT_STATES.CONNECTED : GIT_STATES.SHOWING_OFFER;
       const authUrl = payload['auth_url'];
       this.setState((s) => ({...s, githubState, authUrl}));
       if(payload['access_token']) this.fetchClusterDeploys();
@@ -160,7 +172,8 @@ class MatchingClass extends React.Component {
   }
 
   notifyGithubConcluded(status){
-    this.setState((s) => ({...s, githubState: GIT_STATES.FINISHED}));
+    const state = status ? GIT_STATES.CONNECTED : GIT_STATES.NOT_CONNECTED;
+    this.setState((s) => ({...s, githubState: state}));
   }
 
   notifyCheckAllChanged(value){
