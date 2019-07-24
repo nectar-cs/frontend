@@ -201,16 +201,15 @@ class MatchingClass extends React.Component {
   submit(){
     if(this.state.isSubmitting) return;
     this.setState((s) => ({...s, isSubmitting: true}));
+    const checkedDeps = this.state.deployments.filter((d) => d.isChecked);
 
-    let formatted = this.state.deployments.map((deployment) => ({
+    let formatted = checkedDeps.map((deployment) => ({
       deployment_name: deployment.name,
       repo_name: deployment.ms.repoName,
       ms_name: deployment.ms.msName,
       ms_desc: deployment.ms.msDescription,
       ms_framework: deployment.ms.msFramework
     }));
-
-    console.table(formatted);
 
     const payload = { data: formatted };
     Backend.postJson('/microservices/', payload, (result) => {
