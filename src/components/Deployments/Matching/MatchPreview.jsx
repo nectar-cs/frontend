@@ -56,16 +56,34 @@ export default class MatchPreview extends React.Component {
           subtitle={this.bundle().msDescription}
         />
         <TextOverLineTitle text="Microservice Source Repo"/>
-        <MatchForm
-          deployment={this.props.deployment}
-          onInfoChanged={this.onInfoChanged}
-          setIsFetching={this.props.setIsFetching}
-        />
+        { this.renderContentBody() }
         <button className={s.confirm}  onClick={() => this.onAccepted()}>
           Confirm & Review Next
         </button>
       </React.Fragment>
     )
+  }
+
+  renderContentBody(){
+    if(this.props.deployment.isChecked){
+      return(
+        <MatchForm
+          deployment={this.props.deployment}
+          onInfoChanged={this.onInfoChanged}
+          setIsFetching={this.props.setIsFetching}
+        />
+      )
+    } else {
+      let message = "Deployment not checked. It will not appear";
+      message += " in your workspace. Click to check it.";
+      return(
+        <CenterAnnouncement
+          iconName='toggle_off'
+          text={message}
+          action={() => this.props.notifyCheckChanged(this.props.deployment.name)}
+        />
+      )
+    }
   }
 
   renderReviewComplete(){

@@ -108,6 +108,7 @@ class MatchingClass extends React.Component {
           isSubmitted={this.state.areAllSubmitted}
           isSubmitting={this.state.isSubmitting}
           setIsFetching={(v) => this.setState((s) => ({...s, isRightFetching: v}))}
+          notifyCheckChanged={this.notifyCheckChanged}
         />
       </Fragment>
     )
@@ -194,7 +195,6 @@ class MatchingClass extends React.Component {
     const payload = { data: formatted };
     Backend.postJson('/microservices/', payload, (result) => {
       this.setState((s) => ({...s, isSubmitting: false, areAllSubmitted: true}));
-      console.log("[submit] submitted");
     });
   }
 }

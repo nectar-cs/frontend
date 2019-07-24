@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types'
 import Backend from '../../../utils/Backend';
 import s from './GithubAuth.sass';
-import ls from './../../../assets/loading-spinner.sass'
 import MiscUtils from '../../../utils/MiscUtils';
 import { ROUTES } from '../../../containers/RoutesConsts';
 import { NavLink } from 'react-router-dom';
