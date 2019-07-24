@@ -210,6 +210,8 @@ class MatchingClass extends React.Component {
       ms_framework: deployment.ms.msFramework
     }));
 
+    console.table(formatted);
+
     const payload = { data: formatted };
     Backend.postJson('/microservices/', payload, (result) => {
       this.setState((s) => ({...s, isSubmitting: false, areAllSubmitted: true}));

@@ -39,21 +39,17 @@ export default class MatchForm extends React.Component {
   componentDidMount(){
     if(this.props.hasGithub)
       this.fetchRepos();
+    else this.propagateNoGitDefaults();
   }
 
   componentWillReceiveProps(nextProps){
-    if(this.props.hasGithub && nextProps.deployment){
-      if(this.props.deployment.name !== nextProps.deployment.name){
-        this.guessRepoFromDep(nextProps.deployment.name)
-      }
-
-      if(nextProps.deployment.name !== this.state.deploymentName){
-
-        this.setState((s) => ({...s,
-          deploymentName: nextProps.deployment.name,
-          msName: nextProps.deployment.name,
-        }));
-        this.props.onInfoChanged({msName: this.state.msName});
+    if(nextProps.deployment){
+      if(this.props.hasGithub){
+        if(this.props.deployment.name !== nextProps.deployment.name){
+          this.guessRepoFromDep(nextProps.deployment.name)
+        }
+      } else if(nextProps.deployment.name !== this.state.deploymentName){
+        this.propagateNoGitDefaults();
       }
     }
   }
@@ -206,6 +202,20 @@ export default class MatchForm extends React.Component {
     this.setState((s) => ({...s, ...commonBundle}));
     this.props.onInfoChanged(commonBundle);
     this.props.setIsFetching(false);
+  }
+
+  propagateNoGitDefaults(){
+    const bundle = {
+      msName: humanizer(this.props.deployment.name),
+      msDescription: "",
+      msFramework: 'javascript'
+    };
+
+    this.setState((s) => ({...s,
+      deploymentName: this.props.deployment.name,
+      ...bundle
+    }));
+    this.props.onInfoChanged(bundle);
   }
 
   onValueChanged(assignment){
