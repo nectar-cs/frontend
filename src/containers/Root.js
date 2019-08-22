@@ -18,6 +18,7 @@ export default class Root extends Component {
           <Switch>
             { Root.renderRoute(R.auth.authenticate) }
             { Root.renderRoute(R.auth.login) }
+            { Root.renderRoute(R.auth.register) }
             { Root.renderRoute(R.deployments.index) }
             { Root.renderRoute(R.deployments.detect) }
             <Route path={'/'} exact component={home.comp}/>
@@ -27,8 +28,8 @@ export default class Root extends Component {
     );
   }
 
-  static renderRoute(hash){
-    return <Route path={hash.path} component={hash.comp}/>;
+  static renderRoute(hash, props={}){
+    return <Route path={hash.path} component={hash.comp} />;
   }
 
 }

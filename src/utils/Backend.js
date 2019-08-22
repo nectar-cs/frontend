@@ -14,15 +14,19 @@ export default class Backend {
     };
 
     fetch(url, {method: 'GET', headers: headers})
-      .then(res => res.json())
-      .then((result) =>  callback(result))
-      .catch(error => {
-        console.log(`WE HAVE ERROR for ${endPoint}`);
-        console.log(error);
-      })
+    .then(res => res.json())
+    .then((result) =>  callback(result))
+    .catch(error => {
+      console.log(`WE HAVE ERROR for ${endPoint}`);
+      console.log(error);
+    })
   }
 
   static postJson(endPoint, hash, callback, method='POST'){
+    this.postJsonWithErr(endPoint, hash, callback, null, method);
+  }
+
+  static postJsonWithErr(endPoint, hash, callback, errorCallback, method='POST'){
     let url = `${BACKEND_URL}${endPoint}`;
     fetch(url, {
       method: method,
@@ -33,11 +37,17 @@ export default class Backend {
         'Token': this.accessToken()
       },
       body: JSON.stringify(hash)
-    }).then(res => res.json())
-      .then(
-        (parsed_result) => { callback(parsed_result) },
-        (error) => { console.log(error); }
-      );
+    }).then(result => {
+        if (result.ok) return result.json();
+        else throw result;
+      }
+    )
+    .then((parsed_result) => {
+      callback(parsed_result)
+    })
+    .catch(error => {
+      error.json().then((body) => { errorCallback && errorCallback(body)});
+    })
   }
 
   static kvGet(key){
