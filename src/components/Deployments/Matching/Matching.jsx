@@ -23,10 +23,10 @@ const DEFAULT_QUERY = [{field: "namespace", op: "one-of", challenge: ["default"]
 const Header = function(){
   return(
     <LeftHeader
-      title='Workspace Setup'
+      title='Application Matching'
       subtitle='Choose deployments and map them to source code.'
       graphicType={ICON}
-      graphicName='grid_on'
+      graphicName='developer_board'
     />
   )
 };

@@ -13,6 +13,11 @@ export const ROUTES = {
     detect: { path: '/deployments/detect', comp: Matching },
   },
 
+  workspaces: {
+    index: { path: '/workspaces/' },
+    show: { path: '/workspaces/:id' }
+  },
+
   auth: {
     authenticate: { path: '/auth/authenticate', comp: Authenticate },
     login: { path: '/auth/login', comp: LoginAndRegister },
@@ -30,4 +35,8 @@ export function makeRoute(route, subs){
     route = route.replace(`:${key}`, subs[key]);
   });
   return route;
+}
+
+export function routes(){
+  return ROUTES;
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import s from './LeftHeader.sass'
-import ReactSVG from 'react-svg'
 
 export const IMAGE = "image";
 export const ICON = "icon";
