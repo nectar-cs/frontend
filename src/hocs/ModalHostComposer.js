@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import PropTypes from 'prop-types';
 import ModalHelper from "../utils/ModalHelper";
 import Modal from "react-modal";
-Modal.defaultStyles.overlay.backgroundColor = "rgba(49, 54, 72, 0.6)";
+Modal.defaultStyles.overlay.backgroundColor = "rgba(49, 54, 72, 0.8)";
 
 export default class ModalHostComposer{
 
@@ -12,7 +12,8 @@ export default class ModalHostComposer{
       constructor(props){
         super(props);
         this.state = {
-          modalClass: null
+          modalClass: null,
+          modalProps: {}
         };
         this.escFunction = this.escFunction.bind(this);
         this.openModal = this.openModal.bind(this);
@@ -34,34 +35,29 @@ export default class ModalHostComposer{
         )
       }
 
-      openModal(modalClass, data=null){
-        this.setState((s) => {
-          return {...s, modalClass};
-        });
+      openModal(modalClass, modalProps={}){
+        this.setState(s => ({...s, modalClass, modalProps}));
       }
 
       closeModal(){
         this.setState((s) => ({...s, modalClass: null}));
       }
 
-      renderModal(record){
+      renderModal(){
         if(!this.state.modalClass) return null;
-
-        let Actual = this.state.modalClass;
-
-        let data = {
-          onRequestClose: this.closeModal,
-          closeModal: this.closeModal,
-          timedClose: this.timedClose
-        };
-
+        const ModalContentComponent = this.state.modalClass;
         return(
           <Modal
             isOpen={true}
             onRequestClose={() => {this.closeModal()}}
             ariaHideApp={false}
             style={ModalHelper.customStyles()}>
-            <Actual {...data}/>
+            <ModalContentComponent
+              onRequestClose={this.closeModal}
+              closeModal={this.closeModal}
+              timedClose={this.timedClose}
+              {...this.state.modalProps}
+            />
           </Modal>
         )
       }

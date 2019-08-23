@@ -11,7 +11,8 @@ export default class ModalHelper {
         bottom: 'auto',
         transform: 'translate(-50%, -50%)',
         borderRadius: "4px",
-        borderWidth: "0px"
+        borderWidth: "0px",
+        padding: '0'
       }
     }
   }

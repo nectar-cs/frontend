@@ -9,7 +9,6 @@ export default class MiscUtils {
   static image(name){
     return `${IMG_BASE}/${name}`;
   }
-
   static frameworkImage2(framework){
     return this.frameworkImage(framework, 'original.svg');
   }

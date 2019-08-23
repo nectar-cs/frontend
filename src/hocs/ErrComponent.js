@@ -39,7 +39,7 @@ export default class ErrComponent{
 
       kubeErrorCallback(error){
         this.setState((s) => ({...s, error, hasKubeError: true}));
-        this.props.openModal(KubeErrorModal)
+        this.props.openModal(KubeErrorModal, { bundle: error })
       }
     };
   }
