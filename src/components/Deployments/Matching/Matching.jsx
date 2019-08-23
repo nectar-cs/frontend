@@ -171,8 +171,7 @@ class MatchingClass extends React.Component {
 
   fetchClusterDeploys(){
     this.setState((s) => ({...s, isFetching: true}));
-
-    KubeHandler.raisingFetch('/api/deployments', (payload) => {
+    KubeHandler.raisingFetch('/api/deployments/across_namespaces', (payload) => {
       const bundle = { isChecked: true, isReviewed: false };
       const deployments = payload['data'].map((d) => ({...d, ...bundle}));
       const selectedIndex = deployments.length > 0 ? 0 : null;

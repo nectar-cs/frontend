@@ -6,6 +6,7 @@ import MiscUtils from "../../utils/MiscUtils";
 import ModalButton from "../Buttons/ModalButton";
 import KubeHandler from "../../utils/KubeHandler";
 import {KapiErrorContent, kapiErrorTitle} from "../../misc/KubeErrorContent";
+import CenterLoader from "../CenterLoader/CenterLoader";
 
 export default class KubeErrorModal extends React.Component{
 
@@ -30,23 +31,32 @@ export default class KubeErrorModal extends React.Component{
       <div className={s.modal}>
         <LeftHeader
           title={kapiErrorTitle(this.bundle())}
-          subtitle={"Mo' Kubernetes, mo' problems, right?"}
+          subtitle={"Mo' k8s, mo' problems, right?"}
           graphicType='image'
           graphicName={MiscUtils.image('k8s_style_light.png')}
         />
 
-        <div className={s.content}>
-          <KapiErrorContent {...this.bundle()} />
-        </div>
+        { this.renderCenterContent() }
 
         <ModalButton
           title={'Try Reconnecting'}
           callback={this.submitRetry}
           isEnabled={!this.state.isSubmitting && !this.state.didConnect}
         />
-
       </div>
     );
+  }
+
+  renderCenterContent(){
+    if(!this.state.isSubmitting){
+      return(
+        <div className={s.content}>
+          <KapiErrorContent {...this.bundle()} />
+        </div>
+      )
+    } else {
+      return <CenterLoader/>
+    }
   }
 
   onConnectSuccess(){
@@ -59,6 +69,7 @@ export default class KubeErrorModal extends React.Component{
   }
 
   submitRetry(){
+    this.setState((s) => ({...s, isSubmitting: true}));
     const endpoint = `/api/status/connect`;
     KubeHandler.raisingFetch(
       endpoint,

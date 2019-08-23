@@ -18,22 +18,25 @@ export default class KubeHandler {
     let url = `${BACKEND_URL}${endpoint}`;
     fetch(url, {
       method: 'GET',
-    }).then(
-      (response) => {
-        if(response.ok) {
-          callback(response.json());
-        }
-        else throw response;
-      },
+    })
+    .then(
+      (response) => (
+        response.json().then(
+          (data) => {
+            if(callback && response.ok){
+              callback(data);
+            } else if(errorCallback) {
+              const bundle = { kind: "soft", error: data };
+              errorCallback(bundle)
+            }
+          }
+        )
+      ),
       (error) => {
         const bundle = { kind: "hard", error};
         errorCallback && errorCallback(bundle);
       }
     )
-    .catch(response => {
-      const bundle = { kind: "soft", error: response};
-      errorCallback && errorCallback(bundle);
-    })
   }
 
   static fetch3(endpoint){
