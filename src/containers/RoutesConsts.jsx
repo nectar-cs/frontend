@@ -2,6 +2,8 @@ import Authenticate from "../components/Auth/Authenticate";
 import DeploymentIndex from "../components/Deployments/Index/DeploymentIndex";
 import Matching from "../components/Deployments/Matching/Matching";
 import LoginAndRegister from "../components/Auth/LoginAndRegister";
+import WorkspaceIndex from "../components/Workspaces/Index/WorkspaceIndex";
+import WorkspaceEdit from "../components/Workspaces/Edit/WorkspaceEdit";
 
 export const ROUTES = {
   clusters: {
@@ -14,8 +16,8 @@ export const ROUTES = {
   },
 
   workspaces: {
-    index: { path: '/workspaces/' },
-    show: { path: '/workspaces/:id' }
+    index: { path: '/workspaces', comp: WorkspaceIndex },
+    new: { path: '/workspaces/new', comp: WorkspaceEdit },
   },
 
   auth: {

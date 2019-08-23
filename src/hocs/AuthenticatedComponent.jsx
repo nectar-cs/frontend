@@ -7,15 +7,14 @@ import { ROUTES } from '../containers/RoutesConsts';
 export default class AuthenticatedComponent {
   static compose(WrappedComponent){
     const DecisionComponent = function(props) {
+
       const session = props.session;
-      if(session && session.isSessionActive){
+      if(session && session.accessToken){
         return(
           <AppLayout>
             <WrappedComponent {...props} />
           </AppLayout>
         )
-      } else if(session && session.accessToken){
-        return <Redirect to={ROUTES.auth.authenticate.path}/>
       } else {
         return <Redirect to={ROUTES.auth.login.path}/>
       }

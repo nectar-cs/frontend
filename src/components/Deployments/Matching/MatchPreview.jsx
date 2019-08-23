@@ -112,7 +112,7 @@ export default class MatchPreview extends React.Component {
     return(
       <CenterAnnouncement
         contentType={'nav-link'}
-        routeTo={ROUTES.deployments.index.path}
+        routeTo={ROUTES.workspaces.index.path}
         iconName='done_all'
         text="All done. Click to continue."
       />

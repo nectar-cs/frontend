@@ -17,11 +17,16 @@
 
 .focusedRow
   composes: row
-  background: $contrast-less-font
   border-radius: 5px
   &:hover
-    background: $contrast-less-font
     cursor: default
+
+.nsTag
+  composes: statusTag from './../../../assets/text-combos.sass'
+  background: $ready-lukewarm
+  margin-left: 3px
+  &:nth-child(1)
+    margin-left: 0
 
 .status
   composes: statusDecoration from './../../../assets/text-combos.sass'

@@ -60,11 +60,13 @@ export default class KubeErrorModal extends React.Component{
   }
 
   onConnectSuccess(){
+    console.log("SUCCESS");
     this.setState(s => ({...s, isSubmitting: false, didConnect: true}));
     this.props.timedClose();
   }
 
   onConnectFailed(bundle){
+    console.log("FAILURE");
     this.setState((s) => ({...s, bundle, isSubmitting: false}));
   }
 

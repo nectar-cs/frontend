@@ -2,10 +2,6 @@ import React, {Fragment} from "react";
 import s from './KubeErrorContent.sass'
 
 export function kapiErrorTitle(props){
-
-  console.log("PROPS1");
-  console.log(props);
-
   if(props.kind === 'hard')
     return "K8s companion unreachable";
   else if(props.kind === 'soft'){
@@ -79,10 +75,6 @@ function KAPIUnreachable(){
 }
 
 function KAPINotConnecting(props){
-
-  console.log("PROPS");
-  console.log(props);
-
   return(
     <Fragment>
       <div className={s.section}>

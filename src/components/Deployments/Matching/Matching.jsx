@@ -17,7 +17,6 @@ const GIT_STATES = {
   SHOWING_OFFER: 'waiting',
   NOT_CONNECTED: 'not-connected',
   CONNECTED: 'finished',
-
 };
 
 const DEFAULT_QUERY = [{field: "namespace", op: "one-of", challenge: ["default"]}];
@@ -160,6 +159,7 @@ class MatchingClass extends React.Component {
   }
 
   fetchGithubAuth(){
+    if(this.props.hasKubeError) return;
     this.setState((s) => ({...s, githubState: GIT_STATES.CHECKING}));
     Backend.fetchJson('/github/token', (payload) => {
       const githubState = payload['access_token'] ? GIT_STATES.CONNECTED : GIT_STATES.SHOWING_OFFER;
@@ -207,7 +207,7 @@ class MatchingClass extends React.Component {
   }
 
   submit(){
-    if(this.state.isSubmitting) return;
+    if(this.state.isSubmitting || this.props.hasKubeError) return;
     this.setState((s) => ({...s, isSubmitting: true}));
     const checkedDeps = this.state.deployments.filter((d) => d.isChecked);
 
