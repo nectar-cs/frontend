@@ -1,5 +1,8 @@
-import React from "react";
+import React, {Fragment} from "react";
+import Modal from "react-modal";
+import KubeErrorModal from "../widgets/Modals/KubeErrorModal";
 
+Modal.defaultStyles.overlay.backgroundColor = "rgba(49, 54, 72, 0.6)";
 
 export default class ErrComponent{
 
@@ -10,36 +13,33 @@ export default class ErrComponent{
       constructor(props){
         super(props);
         this.state = {
-          isWorking: true,
+          hasKubeError: false,
           error: null
         };
         this.kubeErrorCallback = this.kubeErrorCallback.bind(this);
       }
 
       render(){
-        if(this.state.isWorking)
-          return this.renderNormalView();
-         else
-           return this.renderErrorView()
+        return(
+          <Fragment>
+            { this.renderNormalView() }
+          </Fragment>
+        )
       }
 
       renderNormalView(){
         return(
           <WrappedComponent
             kubeErrorCallback={this.kubeErrorCallback}
+            hasKubeError={this.state.hasKubeError}
             {...this.props}
           />
         )
       }
 
       kubeErrorCallback(error){
-        console.log("GOT");
-        console.log(error);
-        this.setState((s) => ({...s, error, isWorking: false}))
-      }
-
-      renderErrorView(){
-        return <p>Nah {this.state.error.kind}</p>
+        this.setState((s) => ({...s, error, hasKubeError: true}));
+        this.props.openModal(KubeErrorModal)
       }
     };
   }

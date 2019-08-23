@@ -10,6 +10,7 @@ import KubeHandler from "../../../utils/KubeHandler";
 import GithubAuth from "./GithubAuth";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import ErrComponent from "../../../hocs/ErrComponent";
+import ModalHostComposer from "../../../hocs/ModalHostComposer";
 
 const GIT_STATES = {
   CHECKING: 'checking',
@@ -59,6 +60,12 @@ class MatchingClass extends React.Component {
   componentDidMount(){
     this.fetchGithubAuth();
     this.fetchClusterDeploys();
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.hasKubeError){
+      this.setState((s) => ({...s, isFetching: false}))
+    }
   }
 
   render(){
@@ -221,8 +228,10 @@ class MatchingClass extends React.Component {
 }
 
 const Matching = AuthenticatedComponent.compose(
-  ErrComponent.compose(
-    MatchingClass
+  ModalHostComposer.compose(
+    ErrComponent.compose(
+      MatchingClass
+    )
   )
 );
 
