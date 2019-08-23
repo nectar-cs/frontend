@@ -9,6 +9,7 @@ import MatchPreview from './MatchPreview';
 import KubeHandler from "../../../utils/KubeHandler";
 import GithubAuth from "./GithubAuth";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
+import ErrComponent from "../../../hocs/ErrComponent";
 
 const GIT_STATES = {
   CHECKING: 'checking',
@@ -157,18 +158,19 @@ class MatchingClass extends React.Component {
       const githubState = payload['access_token'] ? GIT_STATES.CONNECTED : GIT_STATES.SHOWING_OFFER;
       const authUrl = payload['auth_url'];
       this.setState((s) => ({...s, githubState, authUrl}));
-      if(payload['access_token']) this.fetchClusterDeploys();
+      // if(payload['access_token']) this.fetchClusterDeploys();
     });
   }
 
   fetchClusterDeploys(){
     this.setState((s) => ({...s, isFetching: true}));
-    KubeHandler.fetchJson('/api/deployments', (payload) => {
+
+    KubeHandler.raisingFetch('/api/deployments', (payload) => {
       const bundle = { isChecked: true, isReviewed: false };
       const deployments = payload['data'].map((d) => ({...d, ...bundle}));
       const selectedIndex = deployments.length > 0 ? 0 : null;
       this.setState((s) => ({...s, deployments, isFetching: false, selectedIndex}));
-    });
+    }, this.props.kubeErrorCallback);
   }
 
   notifyGithubConcluded(status){
@@ -219,7 +221,9 @@ class MatchingClass extends React.Component {
 }
 
 const Matching = AuthenticatedComponent.compose(
-  MatchingClass
+  ErrComponent.compose(
+    MatchingClass
+  )
 );
 
 export { Matching as default };
