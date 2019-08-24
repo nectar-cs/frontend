@@ -68,32 +68,35 @@ export default class WorkspaceForm extends React.Component {
   }
 
   onFilterAdded(which, value){
-    console.log("Add");
-    console.log(which);
-    console.log(value);
-
-    const filters = [].concat(this.tags(which), value);
-    const newBundle = {...this.props[which], filters};
-    this.props.onFieldsChanged(newBundle);
+    const bundle = this.props[which];
+    const filters = [].concat(bundle.filters, value.name);
+    const newBundle = {...bundle, filters};
+    this.props.onFieldsChanged({[which]: newBundle});
   }
 
-  onFilterRemoved(which, value){
-    console.log("Delete");
-    console.log(which);
-    console.log(value)
+  onFilterRemoved(which, i){
+    const bundle = this.props[which];
+    let filters = bundle.filters.filter(f => f !== bundle.filters[i]);
+    const newBundle = {...bundle, filters};
+    this.props.onFieldsChanged({[which]: newBundle});
   }
 
   tags(which){
-    console.log("GOT");
-    console.log(this.props);
-    return this.props[which].filters;
+    return this.rinseTags(this.props[which].filters);
+  }
+
+  rinseTags(tags){
+    return tags.map((t) => (
+      { id: t, name: t }
+    ));
   }
 
   suggestions(which) {
     const bundle = this.props[which];
-    return bundle.possibilities.filter((poss) => (
+    const truncated = bundle.possibilities.filter((poss) => (
       !bundle.filters.includes(poss)
     ));
+    return this.rinseTags(truncated);
   }
 
   renderAutocomplete(which) {
@@ -104,7 +107,7 @@ export default class WorkspaceForm extends React.Component {
         placeholder={`Filter by ${which}...`}
         tags={this.tags(which)}
         suggestions={this.suggestions(which)}
-        handleDelete={() => this.onFilterRemoved(which)}
+        handleDelete={(t) => this.onFilterRemoved(which, t)}
         handleAddition={(t) => this.onFilterAdded(which, t)}
         autofocus={false}
         classNames={AUTO_COMPLETE_STYLES}

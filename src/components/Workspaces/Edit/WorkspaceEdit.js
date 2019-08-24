@@ -9,6 +9,7 @@ import WorkspaceForm from "./WorkspaceForm";
 import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
 import s from './WorkspaceEdit.sass'
 import {explanation} from "./copy";
+import KubeHandler from "../../../utils/KubeHandler";
 
 const DEFAULT_STATE = {
   filters: [],
@@ -21,7 +22,8 @@ class WorkspaceEditClass extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      workspaceName: null,
+      isFetching: false,
+      workspaceName: '',
       namespaces: DEFAULT_STATE,
       labels: DEFAULT_STATE
     };
@@ -39,6 +41,7 @@ class WorkspaceEditClass extends React.Component{
   }
 
   componentDidMount(){
+    this.fetchPossibilities()
   }
 
   renderLeftSide(){
@@ -50,7 +53,7 @@ class WorkspaceEditClass extends React.Component{
           title={this.state.workspaceName || "My New Workspace"}
           subtitle={"Made for organizing"}
           />
-        <TopLoader isFetching={false}/>
+        <TopLoader isFetching={this.state.isFetching}/>
 
         <div className={s.introBox}>
           { explanation }
@@ -79,6 +82,20 @@ class WorkspaceEditClass extends React.Component{
     this.setState((s) => ({...s, ...changes}));
   }
 
+  fetchPossibilities(){
+    this.setState(s => ({...s, isFetching: true}));
+    const ep1 = '/api/cluster/namespaces';
+    const ep2 = '/api/cluster/label_combinations';
+    KubeHandler.raisingFetch(ep1, (r1) => {
+      KubeHandler.raisingFetch(ep2, (r2) => {
+        this.setState(s => ({...s,
+          isFetching: false,
+          namespaces: { ...s.namespaces, possibilities: r1['data'] },
+          labels: { ...s.labels, possibilities: r2['data'] }
+        }));
+      });
+    }, this.props.kubeErrorCallback);
+  }
 }
 
 const WorkspaceEdit = AuthenticatedComponent.compose(

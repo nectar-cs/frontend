@@ -24,7 +24,8 @@ export default class KubeHandler {
         response.json().then(
           (data) => {
             if(response.ok){
-              callback && callback(data);
+              if(callback) callback(data);
+              else return data;
             } else {
               if(errorCallback) {
                 errorCallback && errorCallback({ kind: "soft", error: data })
