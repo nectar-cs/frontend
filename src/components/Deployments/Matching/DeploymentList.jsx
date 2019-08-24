@@ -14,22 +14,8 @@ class DeploymentItem extends React.Component {
     this.checkRef = React.createRef();
   }
 
-  statusCopy(){
-    if(this.props.isChecked){
-      if(this.props.isReviewed){
-        return "Reviewed";
-      } else {
-        if(this.props.isSelected){
-          return "Reviewing";
-        } else return "Pending";
-      }
-    } else {
-      return "Excluded"
-    }
-  }
-
   render(){
-    const {isSelected, name, isChecked} = this.props;
+    const {isSelected, name, isChecked, namespaces} = this.props;
     const callback = () => {
       this.props.notifyCheckChanged(name, this.checkRef.current.value);
     };
@@ -44,11 +30,16 @@ class DeploymentItem extends React.Component {
             checked={isChecked}
             onChange={callback}/>
         </td>
-        <td><p>default</p></td>
         <td><p>{name}</p></td>
-        <td><p className={s.status}>{this.statusCopy()}</p></td>
+        <td>{this.renderNamespaces()}</td>
       </tr>
     )
+  }
+
+  renderNamespaces(){
+    return this.props.namespaces.map((ns) => {
+      return <p key={ns} className={s.nsTag}>{ns}</p>
+    });
   }
 }
 
@@ -72,9 +63,8 @@ class ListHeader extends React.Component {
             defaultChecked={true}
             onChange={callback}/>
         </th>
-        <th><p>Namespace</p></th>
         <th><p>Deployment</p></th>
-        <th><p>Status</p></th>
+        <th><p>Namespaces</p></th>
       </tr>
     )
   }

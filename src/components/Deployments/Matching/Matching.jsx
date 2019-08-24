@@ -9,13 +9,14 @@ import MatchPreview from './MatchPreview';
 import KubeHandler from "../../../utils/KubeHandler";
 import GithubAuth from "./GithubAuth";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
+import ErrComponent from "../../../hocs/ErrComponent";
+import ModalHostComposer from "../../../hocs/ModalHostComposer";
 
 const GIT_STATES = {
   CHECKING: 'checking',
   SHOWING_OFFER: 'waiting',
   NOT_CONNECTED: 'not-connected',
   CONNECTED: 'finished',
-
 };
 
 const DEFAULT_QUERY = [{field: "namespace", op: "one-of", challenge: ["default"]}];
@@ -23,10 +24,10 @@ const DEFAULT_QUERY = [{field: "namespace", op: "one-of", challenge: ["default"]
 const Header = function(){
   return(
     <LeftHeader
-      title='Workspace Setup'
+      title='Application Matching'
       subtitle='Choose deployments and map them to source code.'
       graphicType={ICON}
-      graphicName='grid_on'
+      graphicName='developer_board'
     />
   )
 };
@@ -58,6 +59,12 @@ class MatchingClass extends React.Component {
   componentDidMount(){
     this.fetchGithubAuth();
     this.fetchClusterDeploys();
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.hasKubeError){
+      this.setState((s) => ({...s, isFetching: false}))
+    }
   }
 
   render(){
@@ -152,23 +159,24 @@ class MatchingClass extends React.Component {
   }
 
   fetchGithubAuth(){
+    if(this.props.hasKubeError) return;
     this.setState((s) => ({...s, githubState: GIT_STATES.CHECKING}));
     Backend.fetchJson('/github/token', (payload) => {
       const githubState = payload['access_token'] ? GIT_STATES.CONNECTED : GIT_STATES.SHOWING_OFFER;
       const authUrl = payload['auth_url'];
       this.setState((s) => ({...s, githubState, authUrl}));
-      if(payload['access_token']) this.fetchClusterDeploys();
+      // if(payload['access_token']) this.fetchClusterDeploys();
     });
   }
 
   fetchClusterDeploys(){
     this.setState((s) => ({...s, isFetching: true}));
-    KubeHandler.fetchJson('/api/deployments', (payload) => {
+    KubeHandler.raisingFetch('/api/deployments/across_namespaces', (payload) => {
       const bundle = { isChecked: true, isReviewed: false };
       const deployments = payload['data'].map((d) => ({...d, ...bundle}));
       const selectedIndex = deployments.length > 0 ? 0 : null;
       this.setState((s) => ({...s, deployments, isFetching: false, selectedIndex}));
-    });
+    }, this.props.kubeErrorCallback);
   }
 
   notifyGithubConcluded(status){
@@ -199,7 +207,7 @@ class MatchingClass extends React.Component {
   }
 
   submit(){
-    if(this.state.isSubmitting) return;
+    if(this.state.isSubmitting || this.props.hasKubeError) return;
     this.setState((s) => ({...s, isSubmitting: true}));
     const checkedDeps = this.state.deployments.filter((d) => d.isChecked);
 
@@ -219,7 +227,11 @@ class MatchingClass extends React.Component {
 }
 
 const Matching = AuthenticatedComponent.compose(
-  MatchingClass
+  ModalHostComposer.compose(
+    ErrComponent.compose(
+      MatchingClass
+    )
+  )
 );
 
 export { Matching as default };

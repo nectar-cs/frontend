@@ -1,4 +1,3 @@
-
 @import './../../assets/constants'
 
 .container
@@ -12,7 +11,7 @@
 .content
   height: 200px
   position: absolute
-  top: 50%
+  top: 40%
   left: 50%
   transform: translateX(-50%) translateY(-50%)
 
@@ -27,10 +26,31 @@
   margin-left: 8px
   color: $contrast-font
 
+.registerLink
+  margin: 18px 0 20px 0
+  text-align: center
+  color: $contrast-color
+
 .titleLogo
   width: 40px
   height: 40px
 
+.errorBox
+  position: absolute
+  bottom: 10%
+  left: 50%
+  transform: translateX(-50%)
+
+.error
+  color: tomato
+
 .formBox
   margin: 26px 22px 0 22px
+
+.contrastLoader
+  composes: vertCentLoadingSpinner from './../../assets/loading-spinner.sass'
+  composes: contrastLoadingSpinner from './../../assets/loading-spinner.sass'
+  composes: bigSpinner from './../../assets/loading-spinner.sass'
+  margin-top: 80px
+
 

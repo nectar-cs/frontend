@@ -17,7 +17,7 @@ const GIT_STATES = {
 export default class GithubAuth extends React.Component {
 
   static propTypes = {
-    authUrl: PropTypes.string.isRequired,
+    authUrl: PropTypes.string,
     notifyGithubConcluded: PropTypes.func.isRequired
   };
 

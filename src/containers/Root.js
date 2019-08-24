@@ -8,7 +8,7 @@ export default class Root extends Component {
   render() {
     // const subs = { [SUBS.ID]: 11, [SUBS.CONCERN]: 'general' };
     // const home = makeRoute(ROUTES.specs.edit, subs);
-    const home = R.deployments.detect;
+    const home = R.workspaces.index;
     // const home = R.deployments.index;
     // const home = ROUTES.clusters.connect;
 
@@ -18,8 +18,10 @@ export default class Root extends Component {
           <Switch>
             { Root.renderRoute(R.auth.authenticate) }
             { Root.renderRoute(R.auth.login) }
-            { Root.renderRoute(R.deployments.index) }
+            { Root.renderRoute(R.auth.register) }
             { Root.renderRoute(R.deployments.detect) }
+            { Root.renderRoute(R.workspaces.index) }
+            { Root.renderRoute(R.workspaces.new) }
             <Route path={'/'} exact component={home.comp}/>
           </Switch>
         </BrowserRouter>
@@ -27,8 +29,8 @@ export default class Root extends Component {
     );
   }
 
-  static renderRoute(hash){
-    return <Route path={hash.path} component={hash.comp}/>;
+  static renderRoute(hash, props={}){
+    return <Route path={hash.path} exact component={hash.comp} />;
   }
 
 }

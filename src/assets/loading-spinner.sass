@@ -18,6 +18,11 @@ $big-spinner-size: 80px
     border-color: $primary-color transparent $primary-color transparent
     animation: lds-dual-ring 1.6s linear infinite
 
+.contrastLoadingSpinner
+  &::after
+    border: 5px solid $contrast-color
+    border-color: $contrast-color transparent $contrast-color transparent
+
 @keyframes lds-dual-ring
   0%
     transform: rotate(0deg)
