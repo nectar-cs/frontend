@@ -9,12 +9,24 @@ import WorkspaceForm from "./WorkspaceForm";
 import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
 import s from './WorkspaceEdit.sass'
 import {explanation} from "./copy";
-import KubeHandler from "../../../utils/KubeHandler";
+
+const DEFAULT_STATE = {
+  filters: [],
+  filterType: 'whitelist',
+  possibilities: []
+};
 
 class WorkspaceEditClass extends React.Component{
 
   constructor(props){
     super(props);
+    this.state = {
+      workspaceName: null,
+      namespaces: DEFAULT_STATE,
+      labels: DEFAULT_STATE
+    };
+
+    this.onFieldsChanged = this.onFieldsChanged.bind(this);
   }
 
   render(){
@@ -35,7 +47,7 @@ class WorkspaceEditClass extends React.Component{
         <LeftHeader
           graphicType={ICON}
           graphicName='developer_board'
-          title="My New Workspace"
+          title={this.state.workspaceName || "My New Workspace"}
           subtitle={"Made for organizing"}
           />
         <TopLoader isFetching={false}/>
@@ -45,7 +57,10 @@ class WorkspaceEditClass extends React.Component{
         </div>
 
         <WorkspaceForm
-
+          onFieldsChanged={this.onFieldsChanged}
+          workspaceName={this.state.workspaceName}
+          namespaces={this.state.namespaces}
+          labels={this.state.labels}
         />
       </div>
     )
@@ -59,6 +74,11 @@ class WorkspaceEditClass extends React.Component{
       </div>
     )
   }
+
+  onFieldsChanged(changes) {
+    this.setState((s) => ({...s, ...changes}));
+  }
+
 }
 
 const WorkspaceEdit = AuthenticatedComponent.compose(
