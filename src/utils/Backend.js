@@ -30,7 +30,7 @@ export default class Backend {
     this.raisingRequest('POST', endpoint, payload, callback, errorCallback);
   }
 
-  static raisingRequest(method, endpoint, body, callback, errorCallback=null){
+  static raisingRequest(method, endpoint, body, callback, errorCallback){
     let url = `${BACKEND_URL}${endpoint}`;
     const headers = {
       'Accept': 'application/json',

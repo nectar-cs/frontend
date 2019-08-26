@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
@@ -40,7 +40,6 @@ class WorkspaceEditClass extends React.Component{
 
     this.onFieldsChanged = this.onFieldsChanged.bind(this);
     this.submitWorkspace = this.submitWorkspace.bind(this);
-    this.onSubmitted = this.onSubmitted.bind(this);
   }
 
   render(){
@@ -59,7 +58,11 @@ class WorkspaceEditClass extends React.Component{
   }
 
   componentDidMount(){
-    this.fetchPossibilities()
+    this.fetchPossibilities();
+  }
+
+  wip(){
+    return this.props.match.params['id'];
   }
 
   renderDone(){
@@ -145,21 +148,33 @@ class WorkspaceEditClass extends React.Component{
     this.setState(s => ({...s, isFetching: true}));
     const ep1 = '/api/cluster/namespaces';
     const ep2 = '/api/cluster/label_combinations';
+
     KubeHandler.raisingFetch(ep1, (r1) => {
       KubeHandler.raisingFetch(ep2, (r2) => {
-        this.setState(s => ({...s,
-          isFetching: false,
-          namespaces: { ...s.namespaces, possibilities: r1['data'] },
-          labels: { ...s.labels, possibilities: r2['data'] }
-        }));
+        if (this.wip()){
+          Backend.raisingFetch(`/workspaces/${this.wip()}/`, r3 => {
+            this.onAllFetched(r1, r2, r3);
+          });
+        }
+        else this.onAllFetched(r1, r2);
       });
     }, this.props.kubeErrorCallback);
   }
 
-  onSubmitted(response){
+  onAllFetched(nsResp, lbResp, wipResp={}){
     this.setState(s => ({...s,
-      submit: 'done',
-      wip: response.data.id
+      isFetching: false,
+      workspaceName: wipResp['name'],
+      namespaces: {
+        filters: wipResp['ns_filters'] || s.namespaces.filters,
+        filterType: wipResp['ns_filter_type'] || s.namespaces.filterType,
+        possibilities: nsResp['data']
+      },
+      labels: {
+        filters: wipResp['lb_filters'] || s.labels.filters,
+        filterType: wipResp['lb_filter_type'] || s.labels.filterType,
+        possibilities: lbResp['data']
+      }
     }));
   }
 
@@ -169,6 +184,9 @@ class WorkspaceEditClass extends React.Component{
 
   submitWorkspace(){
     this.setState((s) => ({...s, submit: 'submitting'}));
+    const endpoint = `/workspaces/${this.wip() ? this.wip() : ''}`;
+    const method = this.wip() ? 'PATCH' : 'POST';
+
     const payload = {
       name: this.state.workspaceName,
       ns_filter_type: this.state.namespaces.filterType,
@@ -176,10 +194,16 @@ class WorkspaceEditClass extends React.Component{
       lb_filter_type: this.state.labels.filterType,
       lb_filters: this.state.labels.filters
     };
-    Backend.raisingPost(
-      '/workspaces',
+
+    const onSuccess = (response) => {
+      this.setState(s => ({...s, submit: 'done', wip: response.data.id}));
+    };
+
+    Backend.raisingRequest(
+      method,
+      endpoint,
       { workspace: payload },
-      this.onSubmitted,
+      onSuccess,
       this.onSubmitFailed
     )
   }

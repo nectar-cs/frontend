@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import { Provider } from 'react-redux';
 import { Route, BrowserRouter } from 'react-router-dom'
 import { ROUTES as R} from './RoutesConsts';
@@ -10,7 +11,7 @@ export default class Root extends Component {
 
     return (
       <Provider store={this.props.store}>
-        <BrowserRouter>
+        <BrowserRouter history={this.props.history}>
           <Switch>
             { Root.renderRoute(R.auth.authenticate) }
             { Root.renderRoute(R.auth.login) }
@@ -18,6 +19,7 @@ export default class Root extends Component {
             { Root.renderRoute(R.deployments.detect) }
             { Root.renderRoute(R.workspaces.index) }
             { Root.renderRoute(R.workspaces.new) }
+            { Root.renderRoute(R.workspaces.edit) }
             { Root.renderRoute(R.workspaces.show) }
             <Route path={'/'} exact component={home.comp}/>
           </Switch>
@@ -30,4 +32,8 @@ export default class Root extends Component {
     return <Route path={hash.path} exact component={hash.comp} />;
   }
 
+  static PropTypes = {
+    store: PropTypes.any.isRequired,
+    history: PropTypes.any.isRequired,
+  }
 }
