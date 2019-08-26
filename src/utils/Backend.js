@@ -22,6 +22,42 @@ export default class Backend {
     })
   }
 
+  static raisingFetch(endpoint, callback, errorCallback=null){
+    let url = `${BACKEND_URL}${endpoint}`;
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Token': this.accessToken()
+    };
+
+    fetch(url, {method: 'GET', headers})
+    .then(
+      (response) => (
+        response.json().then(
+          (data) => {
+            if(response.ok){
+              if(callback) callback(data);
+              else return data;
+            } else {
+              if(errorCallback) {
+                errorCallback && errorCallback({
+                  kind: "soft",
+                  error: data,
+                  status: response.status
+                })
+              }
+            }
+          }
+        )
+      ),
+      (error) => {
+        const bundle = { kind: "hard", error, status: error.status};
+        errorCallback && errorCallback(bundle);
+      }
+    )
+  }
+
   static postJson(endPoint, hash, callback, method='POST'){
     this.postJsonWithErr(endPoint, hash, callback, null, method);
   }

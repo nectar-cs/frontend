@@ -1,6 +1,13 @@
+@import './../../../assets/text-combos.sass'
+
 .title
   margin-top: 8px
   padding-bottom: 12px
 
 .table
   margin: 20px 0 0 0
+
+.statusTag
+  composes: statusTag from './../../../assets/text-combos.sass'
+  background: $ready-lukewarm
+  color: $contrast-font

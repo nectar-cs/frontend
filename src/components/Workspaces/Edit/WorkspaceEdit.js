@@ -11,12 +11,6 @@ import s from './WorkspaceEdit.sass'
 import {explanation} from "./copy";
 import KubeHandler from "../../../utils/KubeHandler";
 
-const DEFAULT_STATE = {
-  filters: [],
-  filterType: 'whitelist',
-  possibilities: []
-};
-
 class WorkspaceEditClass extends React.Component{
 
   constructor(props){
@@ -24,8 +18,16 @@ class WorkspaceEditClass extends React.Component{
     this.state = {
       isFetching: false,
       workspaceName: '',
-      namespaces: DEFAULT_STATE,
-      labels: DEFAULT_STATE
+      namespaces: {
+        filters: ['default'],
+        filterType: 'whitelist',
+        possibilities: []
+      },
+      labels: {
+        filters: [],
+        filterType: 'blacklist',
+        possibilities: []
+      }
     };
 
     this.onFieldsChanged = this.onFieldsChanged.bind(this);
@@ -70,10 +72,23 @@ class WorkspaceEditClass extends React.Component{
   }
 
   renderRightSide(){
+    const nsBundle = {
+      filters: this.state.namespaces.filters,
+      filterType: this.state.namespaces.filterType
+    };
+
+    const lbBundle = {
+      filters: this.state.labels.filters,
+      filterType: this.state.labels.filterType
+    };
+
     return(
       <div className={ls.halfScreePanelRight}>
         <TopLoader isFetching={false}/>
-        <WorkspaceDepsPreview/>
+        <WorkspaceDepsPreview
+          namespaces={nsBundle}
+          labels={lbBundle}
+        />
       </div>
     )
   }

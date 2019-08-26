@@ -19,9 +19,9 @@ class WorkspaceIndexClass extends React.Component{
   }
 
   componentDidMount(){
-    Backend.fetchJson('/workspaces', (payload) => {
+    Backend.raisingFetch('/workspaces', (payload) => {
       this.setState((s) => ({...s, workspaces: payload['data']}));
-    });
+    }, this.props.apiErrorCallback);
   }
 
   render(){
