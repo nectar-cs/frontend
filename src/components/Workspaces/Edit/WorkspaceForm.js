@@ -36,7 +36,7 @@ export default class WorkspaceForm extends React.Component {
 
         <div className={s.inputLine}>
           <p className={s.label}>Filter Method</p>
-          { this.renderFilterTypeSelect() }
+          { this.renderFilterTypeSelect('namespaces') }
         </div>
 
         <div className={s.inputLine}>
@@ -46,7 +46,7 @@ export default class WorkspaceForm extends React.Component {
 
         <div className={s.inputLine}>
           <p className={s.label}>Filter Method</p>
-          { this.renderFilterTypeSelect() }
+          { this.renderFilterTypeSelect('labels') }
         </div>
       </div>
     )
@@ -116,22 +116,22 @@ export default class WorkspaceForm extends React.Component {
   }
 
   renderFilterTypeSelect(which){
-    const value = this.props[which];
     return(
       <select
         className={s.selectInput}
-        value={value}
-        onChange={this.onFilterTypeChanged}
+        value={this.props[which].filterType}
+        onChange={(e) => this.onFilterTypeChanged(which, e.target.value)}
       >
-        <option>Whitelist</option>
-        <option>Blacklist</option>
+        <option value='whitelist'>Whitelist</option>
+        <option value='blacklist'>Blacklist</option>
       </select>
     )
   }
 
-  onFilterTypeChanged(e){
-    console.log("Filter type changed");
-    console.log(e);
+  onFilterTypeChanged(which, filterType){
+    const bundle = this.props[which];
+    const newBundle = {...bundle, filterType};
+    this.props.onFieldsChanged({[which]: newBundle});
   }
 
   static itemPropTypes = PropTypes.shape({

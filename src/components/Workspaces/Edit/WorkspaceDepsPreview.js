@@ -55,7 +55,7 @@ export default class WorkspaceDepsPreview extends React.Component{
 
   renderRows(){
     return this.state.deployments.map((deployment) => (
-      <Row {...deployment} />
+      <Row {...deployment} key={deployment.name} />
     ));
   }
 
@@ -77,9 +77,14 @@ export default class WorkspaceDepsPreview extends React.Component{
     });
   }
 
+  static fieldShape = PropTypes.shape({
+    filters: PropTypes.arrayOf(PropTypes.string).isRequired,
+    filterType: PropTypes.string.isRequired,
+  });
+
   static propTypes = {
-    namespaces: WorkspaceForm.itemPropTypes,
-    labels:  WorkspaceForm.itemPropTypes
+    namespaces: WorkspaceDepsPreview.fieldShape,
+    labels:  WorkspaceDepsPreview.fieldShape
   }
 }
 
@@ -95,10 +100,11 @@ function ListHeader(){
 
 class Row extends React.Component{
   render(){
+    const {name,  namespace} = this.props;
     return(
       <tr>
-        <td><p>{this.props.name}</p></td>
-        <td><p>{this.props.namespace}</p></td>
+        <td><p>{name}</p></td>
+        <td><p>{namespace}</p></td>
         <td>{this.renderLabels()}</td>
       </tr>
     )
@@ -116,7 +122,7 @@ class Row extends React.Component{
 
   static propTypes = {
     name: PropTypes.string.isRequired,
-    labels: PropTypes.arrayOf(PropTypes.string),
+    labels: PropTypes.object.isRequired,
     namespace: PropTypes.string
   }
 }
