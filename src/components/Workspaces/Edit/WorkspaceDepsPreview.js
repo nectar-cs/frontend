@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react'
 import s from './WorkspaceDepsPreview.sass'
 import PropTypes from 'prop-types'
-import WorkspaceForm from "./WorkspaceForm";
 import KubeHandler from "../../../utils/KubeHandler";
+import TopLoader from "../../../widgets/TopLoader/TopLoader";
 
 export default class WorkspaceDepsPreview extends React.Component{
 
@@ -19,28 +19,15 @@ export default class WorkspaceDepsPreview extends React.Component{
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("NEW PROPS");
-    let changeOccurred = false;
-    const crtProps = this.props;
-
-    ['namespaces', 'labels'].forEach((bundle) => {
-      ['filters', 'filterType'].forEach((field) => {
-        if(crtProps[bundle][field] !== crtProps[bundle][field]){
-          console.log("INEQ " + crtProps[bundle][field] + " != " + nextProps[bundle][field]);
-          changeOccurred = true;
-        }
-      });
-    });
-
-    // if (changeOccurred){
-      console.log("PROP CHANGE");
+    if (nextProps.filtersChanged){
       this.fetchDeployments(nextProps);
-    // }
+    }
   }
 
   render(){
     return (
       <Fragment>
+        <TopLoader isFetching={this.state.isFetching}/>
         <h4 className={s.title}>Preview</h4>
         <p>The following deployments will appear in your workspace:</p>
         <table className={s.table}>
@@ -72,8 +59,10 @@ export default class WorkspaceDepsPreview extends React.Component{
     const args = `${nsFilterType}&${nsFilter}&${lbFilterType}&${lbFilter}`;
     const endpoint = `${base}?${args}`;
 
+    this.setState(s => ({...s, isFetching: true}));
     KubeHandler.raisingFetch(endpoint, (response) => {
       this.setState((s) => ({...s, deployments: response['data']}));
+      this.setState(s => ({...s, isFetching: false}));
     });
   }
 
@@ -83,6 +72,7 @@ export default class WorkspaceDepsPreview extends React.Component{
   });
 
   static propTypes = {
+    filtersChanged: PropTypes.bool.isRequired,
     namespaces: WorkspaceDepsPreview.fieldShape,
     labels:  WorkspaceDepsPreview.fieldShape
   }

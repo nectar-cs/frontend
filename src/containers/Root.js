@@ -6,11 +6,7 @@ import {Switch} from "react-router";
 
 export default class Root extends Component {
   render() {
-    // const subs = { [SUBS.ID]: 11, [SUBS.CONCERN]: 'general' };
-    // const home = makeRoute(ROUTES.specs.edit, subs);
     const home = R.workspaces.index;
-    // const home = R.deployments.index;
-    // const home = ROUTES.clusters.connect;
 
     return (
       <Provider store={this.props.store}>
@@ -22,6 +18,7 @@ export default class Root extends Component {
             { Root.renderRoute(R.deployments.detect) }
             { Root.renderRoute(R.workspaces.index) }
             { Root.renderRoute(R.workspaces.new) }
+            { Root.renderRoute(R.workspaces.show) }
             <Route path={'/'} exact component={home.comp}/>
           </Switch>
         </BrowserRouter>
@@ -29,7 +26,7 @@ export default class Root extends Component {
     );
   }
 
-  static renderRoute(hash, props={}){
+  static renderRoute(hash){
     return <Route path={hash.path} exact component={hash.comp} />;
   }
 

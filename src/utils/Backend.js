@@ -23,6 +23,14 @@ export default class Backend {
   }
 
   static raisingFetch(endpoint, callback, errorCallback=null){
+    this.raisingRequest('GET', endpoint, null, callback, errorCallback);
+  }
+
+  static raisingPost(endpoint, payload, callback, errorCallback=null){
+    this.raisingRequest('POST', endpoint, payload, callback, errorCallback);
+  }
+
+  static raisingRequest(method, endpoint, body, callback, errorCallback=null){
     let url = `${BACKEND_URL}${endpoint}`;
     const headers = {
       'Accept': 'application/json',
@@ -31,7 +39,9 @@ export default class Backend {
       'Token': this.accessToken()
     };
 
-    fetch(url, {method: 'GET', headers})
+    body = body ? JSON.stringify(body) : null;
+
+    fetch(url, {method, headers, body})
     .then(
       (response) => (
         response.json().then(
@@ -52,7 +62,11 @@ export default class Backend {
         )
       ),
       (error) => {
-        const bundle = { kind: "hard", error, status: error.status};
+        const bundle = {
+          kind: "hard",
+          error,
+          status: error.status
+        };
         errorCallback && errorCallback(bundle);
       }
     )

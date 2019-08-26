@@ -6,8 +6,12 @@
 
 .table
   margin: 20px 0 0 0
+  max-height: 80%
 
 .statusTag
   composes: statusTag from './../../../assets/text-combos.sass'
   background: $ready-lukewarm
   color: $contrast-font
+  margin-left: 4px
+  &:nth-child(1)
+    margin-left: 0
