@@ -1,7 +1,7 @@
 @import './constants'
 
 .reactTags
-  width: 70%
+  width: 100%
   margin-top: 20px
   min-height: 38px
   display: flex
@@ -17,6 +17,7 @@
   line-height: 1.2
   /* clicking anywhere will focus the input
   cursor: text
+  word-wrap: break-word
   &.is-focused
     border-color: #b1b1b1
 
@@ -30,12 +31,11 @@
   box-sizing: border-box
   margin: 4px
   padding: 6px 8px
-  border: 1px solid #d1d1d1
-  border-radius: 2px
-  background: #f1f1f1
-  /* match the font styles
-  font-size: inherit
-  line-height: inherit
+  border: none
+  border-radius: 4px
+  background: $primary-color
+  color: $contrast-font
+  max-width: 100%
   &:after
     content: '\2715'
     color: #aaa
