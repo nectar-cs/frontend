@@ -1,0 +1,14 @@
+[ignore]
+
+[include]
+<PROJECT_ROOT>/src/
+<PROJECT_ROOT>/server/
+
+[libs]
+
+[lints]
+
+[options]
+emoji=true
+
+[strict]

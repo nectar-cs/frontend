@@ -1,5 +1,4 @@
 import Authenticate from "../components/Auth/Authenticate";
-import DeploymentIndex from "../components/Deployments/Index/DeploymentIndex";
 import Matching from "../components/Deployments/Matching/Matching";
 import LoginAndRegister from "../components/Auth/LoginAndRegister";
 import WorkspaceIndex from "../components/Workspaces/Index/WorkspaceIndex";
@@ -12,8 +11,8 @@ export const ROUTES = {
   },
 
   deployments: {
-    index: { path: '/deployments/index', comp: DeploymentIndex },
     detect: { path: '/deployments/detect', comp: Matching },
+    show: { path: '/deployments/:id' }
   },
 
   workspaces: {

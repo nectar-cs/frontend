@@ -1,24 +1,26 @@
+//@flow
+
 
 const DEFAULT_URL = "http://localhost:5000";
 const BACKEND_URL = process.env['KUBE_HANDLER_URL'] || DEFAULT_URL;
 
 export default class KubeHandler {
-  static fetchJson(endPoint, callback){
-    let url = `${BACKEND_URL}${endPoint}`;
-    fetch(url, {method: 'GET'})
-    .then(res => res.json())
-    .then((result) =>  callback(result))
-    .catch(error => {
-      console.log(`WE HAVE ERROR for ${endPoint}`);
-      console.log(error);
-    })
+  static filterFetch(endpoint, ws, callback, errorCallback=null){
+    const nsFilterType = `ns_filter_type=${ws.nsFilterType}`;
+    const nsFilter = `ns_filters=${ws.nsFilters.join(',')}`;
+
+    const lbFilterType = `lb_filter_type=${ws.lbFilterType}`;
+    const lbFilter = `lb_filters=${ws.lbFilters.join(',')}`;
+
+    const args = `${nsFilterType}&${nsFilter}&${lbFilterType}&${lbFilter}`;
+    endpoint = `${endpoint}?${args}`;
+
+    this.raisingFetch(endpoint, callback, errorCallback);
   }
 
   static raisingFetch(endpoint, callback, errorCallback=null){
     let url = `${BACKEND_URL}${endpoint}`;
-    fetch(url, {
-      method: 'GET',
-    })
+    fetch(url, {method: 'GET'})
     .then(
       (response) => (
         response.json().then(

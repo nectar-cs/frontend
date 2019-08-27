@@ -1,10 +1,10 @@
-@import './../../../assets/constants'
+@import '../../../assets/constants'
 
 $header-size: 42px
 $header-left: 15px
 
 .card
-  composes: shadowCard from './../../../assets/content-layouts.sass'
+  composes: shadowCard from '../../../assets/content-layouts.sass'
   position: static
   display: inline-block
   width: 360px
@@ -12,16 +12,6 @@ $header-left: 15px
   margin-left: 36px
   margin-top: 16px
   border: transparent solid 2px
-
-.cardFocused
-  composes: card
-  border-color: $secondary-color
-  border-style: solid
-
-.cardEntered
-  composes: cardFocused
-  width: 50%
-  height: 700px
 
 .header
   height: $header-size
@@ -43,7 +33,7 @@ $header-left: 15px
 
 .headerTitle
   composes: headerText
-  composes: tinyTitle from './../../../assets/text-combos.sass'
+  composes: tinyTitle from '../../../assets/text-combos.sass'
   margin-top: 1px
   &:hover
     text-decoration: underline
@@ -51,5 +41,5 @@ $header-left: 15px
 
 .headerSubtitle
   composes: headerText
-  composes: subtitle from './../../../assets/text-combos.sass'
+  composes: subtitle from '../../../assets/text-combos.sass'
   bottom: 1px

@@ -70,4 +70,37 @@ export default class DataUtils {
     return true;
   }
 
+  static objKeysToCamel(o) {
+    let newO, origKey, newKey, value;
+    if (o instanceof Array) {
+      return o.map((value) => {
+        if (typeof value === "object") {
+          value = this.objKeysToCamel(value)
+        }
+        return value
+      })
+    } else {
+      newO = {};
+      for (origKey in o) {
+        if (o.hasOwnProperty(origKey)) {
+          value = o[origKey];
+          if (value instanceof Array || (value !== null && value.constructor === Object)) {
+            value = this.objKeysToCamel(value)
+          }
+          newO[this.snakeStringToCamel(origKey)] = value
+        }
+      }
+    }
+    return newO
+  }
+
+  static snakeStringToCamel(s){
+    return s.replace(/([-_][a-z])/ig, ($1) => {
+      return $1.toUpperCase()
+      .replace('-', '')
+      .replace('_', '');
+    });
+  }
+
+
 }
