@@ -32,7 +32,7 @@ export default class Root extends Component {
     return <Route path={hash.path} exact component={hash.comp} />;
   }
 
-  static PropTypes = {
+  static propTypes = {
     store: PropTypes.any.isRequired,
     history: PropTypes.any.isRequired,
   }

@@ -1,4 +1,6 @@
 import React from 'react'
+import s from './WorkspaceIndex.sass'
+import ts from './../../../assets/text-combos.sass'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
@@ -6,7 +8,8 @@ import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnoun
 import CenterCard from "../../../widgets/CenterCard/CenterCard";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import Backend from "../../../utils/Backend";
-import {ROUTES} from "../../../containers/RoutesConsts";
+import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
+import ColoredLabelList from "../../../widgets/ColoredLabelList/ColoredLabelList";
 
 class WorkspaceIndexClass extends React.Component{
 
@@ -28,10 +31,29 @@ class WorkspaceIndexClass extends React.Component{
     if(this.state.isLoading){
       return <CenterLoader/>
     } else if(this.state.workspaces.length > 0){
-      return <p>There's content!</p>
+      return this.renderMainContent();
     } else if(this.state.workspaces.length === 0){
       return WorkspaceIndexClass.renderEmpty();
     }
+  }
+
+  renderMainContent(){
+    return(
+      <div className={s.content}>
+        <table>
+          <tbody>
+          <WorkspaceHeader/>
+          { this.renderWorkspacesList() }
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
+  renderWorkspacesList(){
+    return this.state.workspaces.map((w) =>
+      <WorkspaceRow key={w.id} {...w}/>
+    );
   }
 
   static renderEmpty(){
@@ -41,11 +63,49 @@ class WorkspaceIndexClass extends React.Component{
           iconName='add'
           text="Workspaces help organize your apps. Create one."
           contentType="nav-link"
-          routeTo={ROUTES.workspaces.new.path}
+          action={ROUTES.workspaces.new.path}
         />
       </CenterCard>
     )
   }
+}
+
+function WorkspaceHeader() {
+  return(
+    <tr>
+      <th><p>Workspace</p></th>
+      <th><p>Namespace Filters</p></th>
+      <th><p>Label Filters</p></th>
+      <th><p>Actions</p></th>
+    </tr>
+  )
+}
+
+function WorkspaceRow(props) {
+  const showPath = makeRoute(ROUTES.workspaces.show.path, {id: props.id});
+  const editPath = makeRoute(ROUTES.workspaces.edit.path, {id: props.id});
+  return(
+    <tr>
+      <td><p>
+        <a href={showPath}>{props.name}</a>
+      </p></td>
+      <td>
+        <ColoredLabelList
+          labelType={props.ns_filter_type}
+          labels={props.ns_filters}
+        />
+      </td>
+      <td>
+        <ColoredLabelList
+          labelType={props.lb_filter_type}
+          labels={props.lb_filters}
+        />
+      </td>
+      <td><p>
+        <a href={editPath}>Edit</a>
+      </p></td>
+    </tr>
+  )
 }
 
 const WorkspaceIndex = AuthenticatedComponent.compose(

@@ -9,6 +9,25 @@
   color:  $contrast-font
   font-size: 13px
 
+.blackLabel
+  composes: statusTag
+  background: $primary-color
+  color: $contrast-font
+  margin-left: 4px
+  &:nth-child(1)
+    margin-left: 0
+
+.whiteLabel
+  composes: statusTag
+  background: $contrast-color
+  color: $primary-color
+  margin-left: 4px
+  border-style: solid
+  border-width: 2px
+  border-color: $primary-color
+  &:nth-child(1)
+    margin-left: 0
+
 .statusDecoration
   letter-spacing: 1px
   font-weight: 800
