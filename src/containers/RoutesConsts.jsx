@@ -12,7 +12,7 @@ export const ROUTES = {
 
   deployments: {
     detect: { path: '/deployments/detect', comp: Matching },
-    show: { path: '/deployments/:id' }
+    show: { path: '/deployments/:ns/:id' }
   },
 
   workspaces: {

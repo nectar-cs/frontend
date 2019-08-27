@@ -2,14 +2,15 @@
 
 $header-size: 42px
 $header-left: 15px
+$mult: 1.04
 
 .card
   composes: shadowCard from '../../../assets/content-layouts.sass'
-  position: static
+  position: relative
   display: inline-block
-  width: 360px
-  height: 260px
-  margin-left: 36px
+  width: calc(360px * #{$mult})
+  height: calc(260px * #{$mult})
+  margin-left: 26px
   margin-top: 16px
   border: transparent solid 2px
 
@@ -43,3 +44,24 @@ $header-left: 15px
   composes: headerText
   composes: subtitle from '../../../assets/text-combos.sass'
   bottom: 1px
+
+.podStatusesBox
+  position: absolute
+  border-style: solid
+  border-width: 0px 0 0 0
+  border-color: #ddd
+  bottom: 0
+  left: -2px
+  right: -2px
+  display: flex
+  padding: 12px 0 12px 4px
+
+$pod-size: 14px
+
+.podCircle
+  width: $pod-size
+  height: $pod-size
+  border-radius: 50%
+  background: orange
+  margin-left: 6px
+
