@@ -17,23 +17,10 @@ export default class DeploymentCard extends React.Component {
   };
 
   render(){
-    const deployment = this.props.deployment;
-    let frameworkImg = MiscUtils.frameworkImage('docker');
-
-    const showCardPath = makeRoute(
-      ROUTES.deployments.show.path, {
-        id: deployment.name,
-        ns: deployment.namespace
-      }
-    );
-
     return(
       <div className={s.card}>
-        <div className={s.header}>
-          <img className={s.headerImage} src={frameworkImg} alt='Language'/>
-          <a href={showCardPath}><p className={s.headerTitle}>{deployment.name}</p></a>
-          <p className={s.headerSubtitle}>Not connected to Git</p>
-        </div>
+        { this.renderHeader() }
+        { this.renderContentRows() }
         <div className={s.podStatusesBox}>
           { this.renderPodStatuses() }
         </div>
@@ -41,14 +28,51 @@ export default class DeploymentCard extends React.Component {
     )
   }
 
+  renderHeader(){
+    const deployment = this.props.deployment;
+    let frameworkImg = MiscUtils.frameworkImage('docker');
+    return(
+      <div className={s.header}>
+        <img className={s.headerImage} src={frameworkImg} alt='Language'/>
+        <a href={this.detailPath()}><p className={s.headerTitle}>{deployment.name}</p></a>
+        <p className={s.headerSubtitle}>Not connected to Git</p>
+      </div>
+    )
+  }
+
+  renderContentRows(){
+    return <table>
+      <tbody>
+        { <ContentRow name='Image' value={<p>Sup</p>} /> }
+        { <ContentRow name='Image' value={<p>Sup</p>} /> }
+      </tbody>
+    </table>;
+  }
+
   renderPodStatuses(){
     return this.props.deployment.pods.map((pod) => {
       const statusCol = `podStatus${pod.state || "Unknown"}`;
       return(
-        <div className={`${s.podCircle} ${s[statusCol]}`} key={pod.name}>
-
-        </div>
+        <div className={`${s.podCircle} ${s[statusCol]}`} key={pod.name}/>
       )
     });
   }
+
+  detailPath(){
+    return makeRoute(
+      ROUTES.deployments.show.path, {
+        id: this.props.deployment.name,
+        ns: this.props.deployment.namespace
+      }
+    )
+  }
+}
+
+function ContentRow(props){
+  return(
+    <tr>
+      <td><p>{props.name}</p></td>
+      <td>{props.value}</td>
+    </tr>
+  )
 }

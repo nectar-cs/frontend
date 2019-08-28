@@ -22,19 +22,28 @@ class WorkspaceIndexClass extends React.Component{
   }
 
   componentDidMount(){
+    this.setState(s => ({...s, isLoading: true}));
     Backend.raisingFetch('/workspaces', (payload) => {
-      this.setState((s) => ({...s, workspaces: payload['data']}));
+      this.setState((s) => ({...s, isLoading: false, workspaces: payload['data']}));
     }, this.props.apiErrorCallback);
   }
 
   render(){
     if(this.state.isLoading){
-      return <CenterLoader/>
+      return this.renderLoading();
     } else if(this.state.workspaces.length > 0){
       return this.renderMainContent();
     } else if(this.state.workspaces.length === 0){
       return WorkspaceIndexClass.renderEmpty();
     }
+  }
+
+  renderLoading(){
+    return(
+      <div className={s.content}>
+        <CenterLoader/>
+      </div>
+    )
   }
 
   renderMainContent(){
