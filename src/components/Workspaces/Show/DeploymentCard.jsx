@@ -8,7 +8,11 @@ export default class DeploymentCard extends React.Component {
 
   static propTypes = {
     deployment: PropTypes.shape({
-      name: PropTypes.string.isRequired
+      name: PropTypes.string.isRequired,
+      pods: PropTypes.arrayOf({
+        name: PropTypes.string.isRequired,
+        state: PropTypes.oneOf(['Running', 'Failed', 'Pending', 'Unknown'])
+      }).isRequired
     }).isRequired
   };
 
@@ -38,10 +42,11 @@ export default class DeploymentCard extends React.Component {
   }
 
   renderPodStatuses(){
-    const states = ['ready', 'pending', 'failed'];
-    return states.map((pod) => {
+    return this.props.deployment.pods.map((pod) => {
+      const statusCol = `podStatus${pod.state || "Unknown"}`;
       return(
-        <div className={s.podCircle} key={pod}>
+        <div className={`${s.podCircle} ${s[statusCol]}`} key={pod.name}>
+
         </div>
       )
     });

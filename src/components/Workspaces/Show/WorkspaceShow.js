@@ -28,7 +28,7 @@ class WorkspaceShowClass extends React.Component{
     this.setState((s) => ({...s, isFetching: true}));
     Backend.raisingFetch(`/workspaces/${this.workspaceId()}`, (workspace) => {
       workspace = DataUtils.objKeysToCamel(workspace);
-      KubeHandler.filterFetch('/api/deployments/filtered', workspace, (depsResp) => {
+      KubeHandler.filterFetch('/api/deployments', workspace, (depsResp) => {
         this.setState((s) => ({
           ...s,
           workspace,
@@ -44,15 +44,12 @@ class WorkspaceShowClass extends React.Component{
       return <CenterLoader/>;
      else if(this.state.deployments.length > 0)
       return this.renderCards();
-    else
-      return this.renderEmpty();
+    else return this.renderEmpty();
   }
 
   renderEmpty(){
-    const editPath = makeRoute(
-      ROUTES.workspaces.edit.path,
-      { id: this.workspaceId() }
-    );
+    const pathBase = ROUTES.workspaces.edit.path;
+    const editPath = makeRoute(pathBase, { id: this.workspaceId() });
 
     return(
       <CenterAnnouncement

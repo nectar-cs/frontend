@@ -13,7 +13,7 @@ export default class KubeHandler {
     const lbFilter = `lb_filters=${ws.lbFilters.join(',')}`;
 
     const args = `${nsFilterType}&${nsFilter}&${lbFilterType}&${lbFilter}`;
-    endpoint = `${endpoint}?${args}`;
+    endpoint = `${endpoint}?${args}&full=true`;
 
     this.raisingFetch(endpoint, callback, errorCallback);
   }
