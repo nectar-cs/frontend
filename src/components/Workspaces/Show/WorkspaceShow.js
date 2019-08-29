@@ -32,7 +32,7 @@ class WorkspaceShowClass extends React.Component{
         this.setState((s) => ({
           ...s,
           workspace,
-          deployments: depsResp['data'],
+          deployments: DataUtils.objKeysToCamel(depsResp)['data'],
           isFetching: false
         }));
       }, this.props.kubeErrorCallback);
@@ -67,6 +67,7 @@ class WorkspaceShowClass extends React.Component{
         key={deployment.name}
         deployment={deployment}
         microservice={this.microserviceForDeployment(deployment)}
+        openModal={this.props.openModal}
       />
     ));
   }
