@@ -4,6 +4,9 @@ import {FULL_DEPLOYMENT} from "../../types/Deployment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import LeftRightHeaders from "./LeftRightHeaders.js";
 import Tabs from "../../widgets/Tabs/Tabs";
+import DestinationPane from "./DestinationPane";
+
+const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
 export default class HttpActionsModal extends React.Component {
   render(){
@@ -17,7 +20,14 @@ export default class HttpActionsModal extends React.Component {
   }
 
   renderTabs(){
-    return <Tabs tabs={['Destination', 'Source', 'Headers', 'Body']}/>
+    return(
+      <Tabs tabs={REQUEST_TAB_NAMES}>
+        <DestinationPane/>
+        <p>two</p>
+        <p>Otre</p>
+        <p>for</p>
+      </Tabs>
+    )
   }
 
   submit(){
@@ -38,3 +48,4 @@ export default class HttpActionsModal extends React.Component {
   }
 
 }
+

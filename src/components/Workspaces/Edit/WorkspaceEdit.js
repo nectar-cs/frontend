@@ -4,7 +4,7 @@ import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
 import ls from "../../../assets/content-layouts.sass";
 import TopLoader from "../../../widgets/TopLoader/TopLoader";
-import {ICON, LeftHeader} from "../../../widgets/LeftHeader/LeftHeader";
+import LeftHeader, {ICON} from "../../../widgets/LeftHeader/LeftHeader";
 import WorkspaceForm from "./WorkspaceForm";
 import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
 import s from './WorkspaceEdit.sass'

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import s from './Tabs.sass'
 
@@ -13,9 +13,12 @@ export default class Tabs extends React.Component {
 
   render(){
     return(
-      <div className={s.tabs}>
-        { this.props.tabs.map((t, i) => this.renderTab(t, i)) }
-      </div>
+      <Fragment>
+        <div className={s.tabs}>
+          { this.props.tabs.map((t, i) => this.renderTab(t, i)) }
+        </div>
+        { this.props.children[this.state.selectedInd] }
+      </Fragment>
     )
   }
 
