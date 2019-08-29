@@ -22,6 +22,13 @@ export default class DeploymentCard extends React.Component {
     )
   }
 
+  componentDidMount(){
+    if(this.props.deployment.name === 'social-ai'){
+      const bun = { deployment: this.props.deployment };
+      this.props.openModal(HttpActionsModal, bun)
+    }
+  }
+
   renderHeader(){
     const dep = this.props.deployment;
     let frameworkImg = MiscUtils.frameworkImage('docker');
