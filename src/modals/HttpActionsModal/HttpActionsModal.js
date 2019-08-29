@@ -1,41 +1,29 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import s from './HttpActionsModal.sass'
-import {LeftHeader} from "../../widgets/LeftHeader/LeftHeader";
 import {FULL_DEPLOYMENT} from "../../types/Deployment";
-import MiscUtils from "../../utils/MiscUtils";
-import {RightHeader} from "../../widgets/RightHeader/RightHeader";
+import ModalButton from "../../widgets/Buttons/ModalButton";
+import LeftRightHeaders from "./LeftRightHeaders.js";
 
 export default class HttpActionsModal extends React.Component {
-
-  renderLeftHeader(){
-    return(
-      <LeftHeader
-       graphicName={MiscUtils.frameworkImage('docker')}
-       title={this.props.deployment.name}
-       subtitle={'Not connected to Git'}
-      />
-    );
-  }
-
-  renderRightHeader(){
-    return(
-      <RightHeader
-        title='HTTP Debugging'
-        subtitle={'Test real requests'}
-        graphicType='icon'
-        graphicName='perm_data_setting'
-      />
-    );
-  }
-
   render(){
     return(
       <div className={s.modal}>
-        { this.renderLeftHeader() }
-        { this.renderRightHeader() }
-
+        <LeftRightHeaders name={this.props.deployment.name}/>
+        { this.renderRunButton() }
       </div>
+    )
+  }
+
+  submit(){
+    console.log("Bang!");
+  }
+
+  renderRunButton(){
+    return(
+      <ModalButton
+        callback={() => this.submit()}
+        title='Run'
+      />
     )
   }
 

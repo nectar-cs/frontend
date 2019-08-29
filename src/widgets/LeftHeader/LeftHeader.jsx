@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 export const IMAGE = "image";
 export const ICON = "icon";
 
-export class LeftHeader extends React.Component {
+export default class LeftHeader extends React.Component {
 
   render(){
     return(
