@@ -4,31 +4,11 @@ import s from './DeploymentCard.sass'
 import MiscUtils from '../../../utils/MiscUtils';
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
+import PortActionsModal from "../../../modals/PortActionsModal/PortActionsModal";
+import CardRow from "./CardRow";
+import {FULL_DEPLOYMENT} from "../../../types/Deployment";
 
 export default class DeploymentCard extends React.Component {
-
-  static propTypes = {
-    openModal: PropTypes.func.isRequired,
-    deployment: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      imageName: PropTypes.string.isRequired,
-      pods: PropTypes.arrayOf({
-        name: PropTypes.string.isRequired,
-        state: PropTypes.oneOf(['Running', 'Failed', 'Pending', 'Unknown'])
-      }).isRequired,
-      services: PropTypes.arrayOf(
-        PropTypes.shape({
-          name: PropTypes.string.isRequired,
-          fromPort: PropTypes.number.isRequired,
-          toPort: PropTypes.number.isRequired,
-          internalIp: PropTypes.string,
-          externalIp: PropTypes.string,
-          shortDns: PropTypes.string.isRequired,
-          longDns: PropTypes.string.isRequired
-        })
-      )
-    }).isRequired
-  };
 
   render(){
     return(
@@ -43,12 +23,12 @@ export default class DeploymentCard extends React.Component {
   }
 
   renderHeader(){
-    const deployment = this.props.deployment;
+    const dep = this.props.deployment;
     let frameworkImg = MiscUtils.frameworkImage('docker');
     return(
       <div className={s.header}>
         <img className={s.headerImage} src={frameworkImg} alt='Language'/>
-        <a href={this.detailPath()}><p className={s.headerTitle}>{deployment.name}</p></a>
+        <a href={this.detailPath()}><p className={s.headerTitle}>{dep.name}</p></a>
         <p className={s.headerSubtitle}>Not connected to Git</p>
       </div>
     )
@@ -60,32 +40,28 @@ export default class DeploymentCard extends React.Component {
 
     const ipLabel = `Internal${svc.externalIp ? ', External' : ''} IP`;
     const ipText = `${svc.internalIp}${svc.externalIp ? `, ${svc.externalIp}` : ''}`;
+    const portText = `${svc.toPort} <- ${svc.fromPort}`;
 
     return <table className={s.contentRows}>
       <tbody>
-        { <ContentRow name='Image' text={dep.imageName} /> }
-        { <ContentRow name='Ports' text={`${svc.toPort} <- ${svc.fromPort}`} />}
-        { <ContentRow name='DNS' value={this.httpActionRow(`${svc.shortDns}`)} />}
-        { <ContentRow name={ipLabel} text={ipText} />}
+        { this.buildRow('Image', dep.imageName) }
+        { this.buildRow('Ports', portText, PortActionsModal) }
+        { this.buildRow('Dns', svc.shortDns, HttpActionsModal) }
+        { this.buildRow(ipLabel, ipText, HttpActionsModal) }
       </tbody>
     </table>;
   }
 
-  httpActionRow(text){
-    const action = () => this.httpModalAction(text);
+  buildRow(label, text, modalClass){
     return(
-      <p className={s.rowTextClickable} onClick={action}>
-        { text }
-      </p>
+      <CardRow
+        label={label}
+        text={text}
+        modalClass={modalClass}
+        getDeployment={() => this.props.deployment}
+        openModal={this.props.openModal}
+      />
     )
-  }
-
-  httpModalAction(url){
-    const bundle = {
-      deployment: this.props.deployment,
-      targetAddr: url
-    };
-    this.props.openModal(HttpActionsModal, bundle);
   }
 
   renderPodStatuses(){
@@ -105,19 +81,10 @@ export default class DeploymentCard extends React.Component {
       }
     )
   }
-}
 
-function ContentRow(props){
-  let value = props.text;
-  value = value ? <p className={s.rowText}>{value}</p> : props.value;
-  return(
-    <tr>
-      <td>
-        <p className={s.rowText}>{
-          props.name}
-        </p>
-      </td>
-      <td className={s.contentRow}>{value}</td>
-    </tr>
-  )
+  static propTypes = {
+    openModal: PropTypes.func.isRequired,
+    ...FULL_DEPLOYMENT
+  };
+
 }
