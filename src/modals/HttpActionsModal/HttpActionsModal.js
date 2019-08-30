@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import s from './HttpActionsModal.sass'
 import {FULL_DEPLOYMENT} from "../../types/Deployment";
@@ -34,7 +34,8 @@ export default class HttpActionsModal extends React.Component {
       bodyText: defaultBody,
       namespaces: [],
       labelCombos: [],
-      phase: 'editing'
+      phase: 'editing',
+      httpResp: null,
     };
 
     this.onSubmitted = this.onSubmitted.bind(this);
@@ -63,36 +64,42 @@ export default class HttpActionsModal extends React.Component {
   }
 
   render(){
-    if(this.state.phase === 'editing')
-      return this.renderEditPhase();
+    let content = null;
+      if(this.state.phase === 'editing')
+      content = this.renderEditPhase();
     else if(this.state.phase === 'submitting')
-      return this.renderSubmitPhase();
+        content = this.renderSubmittingPhase();
     else if(this.state.phase === 'response')
-      return this.renderResponsePhase();
+        content = this.renderResponsePhase();
+
+    return(
+      <div className={s.modal}>
+        <LeftRightHeaders name={this.props.deployment.name}/>
+        { content }
+      </div>
+    )
   }
 
   renderEditPhase(){
     return(
-      <div className={s.modal}>
-        <LeftRightHeaders name={this.props.deployment.name}/>
+      <Fragment>
         { this.renderRunButton() }
         { this.renderTabs() }
-      </div>
+      </Fragment>
     )
   }
 
-  renderSubmitPhase(){
-    return (
-      <div className={s.modal}>
-        <CenterLoader/>
-      </div>
-    )
+  renderSubmittingPhase(){
+    return <CenterLoader/>;
   }
 
   renderResponsePhase(){
-
+    return (
+      <p>
+        { this.state.httpResp }
+      </p>
+    )
   }
-
 
   renderTabs(){
     const destCallback = (asg) => this.onGroupFieldChanged('destination', asg);
@@ -141,9 +148,10 @@ export default class HttpActionsModal extends React.Component {
   }
 
   onSubmitted(response){
-    this.setState(s => ({...s, phase: 'response'}));
-    console.log("Yee");
-    console.log(response);
+    this.setState(s => ({...s,
+      phase: 'response',
+      httpResp: response['data']
+    }));
   }
 
   onSubmitFailed(bundle){
