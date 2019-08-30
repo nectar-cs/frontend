@@ -40,6 +40,14 @@ export default class MiscUtils {
     return this.easyOptions(tuples);
   }
 
+  static arrayOptions(options){
+    return options.map(option => (
+      <option key={option} value={option}>
+        { option }
+      </option>
+    ));
+  }
+
   static easyOptions(nullOption, tuples) {
     const options = tuples.map((tuple) => {
       const key = Object.keys(tuple)[0].toString();

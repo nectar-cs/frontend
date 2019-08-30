@@ -9,6 +9,18 @@ import DestinationPane from "./DestinationPane";
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
 export default class HttpActionsModal extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      destination: {
+        host: null,
+        path: null,
+        verb: 'GET'
+      }
+    }
+  }
+
   render(){
     return(
       <div className={s.modal}>
@@ -20,14 +32,25 @@ export default class HttpActionsModal extends React.Component {
   }
 
   renderTabs(){
+    const destCallback = (asg) => this.onGroupFieldChanged('destination', asg);
+
     return(
       <Tabs tabs={REQUEST_TAB_NAMES}>
-        <DestinationPane/>
+        <DestinationPane
+          {...this.state.destination}
+          onFieldChanged={destCallback}
+          services={this.props.deployment.services}
+        />
         <p>two</p>
         <p>Otre</p>
         <p>for</p>
       </Tabs>
     )
+  }
+
+  onGroupFieldChanged(group, assignment){
+    const newDestination = {...this.state[group], ...assignment};
+    this.setState(s => ({...s, [group]: newDestination}));
   }
 
   submit(){
