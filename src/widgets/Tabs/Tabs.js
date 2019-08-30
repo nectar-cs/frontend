@@ -17,6 +17,7 @@ export default class Tabs extends React.Component {
         <div className={s.tabs}>
           { this.props.tabs.map((t, i) => this.renderTab(t, i)) }
         </div>
+        <div className={s.separator}/>
         { this.props.children[this.state.selectedInd] }
       </Fragment>
     )

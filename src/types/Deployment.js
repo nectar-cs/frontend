@@ -14,10 +14,12 @@ export const FULL_DEPLOYMENT = {
   deployment: PropTypes.shape({
     name: PropTypes.string.isRequired,
     imageName: PropTypes.string.isRequired,
-    pods: PropTypes.arrayOf({
-      name: PropTypes.string.isRequired,
-      state: PropTypes.oneOf(['Running', 'Failed', 'Pending', 'Unknown'])
-    }).isRequired,
+    pods: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        state: PropTypes.oneOf(['Running', 'Failed', 'Pending', 'Unknown'])
+      })
+    ).isRequired,
     services: PropTypes.arrayOf(Service)
   }).isRequired
 };

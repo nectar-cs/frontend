@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import s from './HttpActionsModal.sass'
 import {FULL_DEPLOYMENT} from "../../types/Deployment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
@@ -18,8 +19,8 @@ export default class HttpActionsModal extends React.Component {
     super(props);
     this.state = {
       destination: {
-        host: null,
-        path: null,
+        host: HttpActionsModal.defaultHost(props),
+        path: '',
         verb: 'GET'
       },
       source: {
@@ -31,6 +32,17 @@ export default class HttpActionsModal extends React.Component {
       bodyText: defaultBody,
       namespaces: [],
       labelCombos: [],
+    }
+  }
+
+  static defaultHost(props){
+    if(props.targetHost){
+      return props.targetHost;
+    } else {
+      if(props.deployment.services[0]){
+        const {shortDns, fromPort} = props.deployment.services[0];
+        return DestinationPane.makeHost(shortDns, fromPort);
+      } else return null;
     }
   }
 
@@ -61,7 +73,7 @@ export default class HttpActionsModal extends React.Component {
     const bodyCallback = (bodyText) => this.setState(s => ({...s, bodyText}));
 
     return(
-      <Tabs tabs={REQUEST_TAB_NAMES} selectedInd={2}>
+      <Tabs tabs={REQUEST_TAB_NAMES} selectedInd={0}>
         <DestinationPane
           onFieldChanged={destCallback}
           services={this.props.deployment.services}
@@ -94,7 +106,13 @@ export default class HttpActionsModal extends React.Component {
     if(this.state.source.type !== 'test-pod')
       return false;
 
-    if(Object.values(this.state.destination).includes(null))
+    let blanksPresent = false;
+    Object.values(this.state.destination).forEach(v => {
+      blanksPresent = blanksPresent || !v;
+    });
+
+    // noinspection RedundantIfStatementJS
+    if(blanksPresent)
       return false;
 
     return true;
@@ -115,6 +133,7 @@ export default class HttpActionsModal extends React.Component {
   }
 
   static propTypes = {
-    ...FULL_DEPLOYMENT
+    ...FULL_DEPLOYMENT,
+    targetHost: PropTypes.string
   }
 }

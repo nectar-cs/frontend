@@ -44,14 +44,20 @@ export default class DestinationPane extends React.Component {
 
   hostOptions(){
     const rawArray = this.props.services.map(svc => [
-      `http://${svc.shortDns}:${svc.fromPort}`,
-      `http://${svc.longDns}:${svc.fromPort}`,
-      `http://${svc.internalIp}:${svc.fromPort}`,
-      svc.externalIp ? `http://${svc.externalIp}:${svc.fromPort}` : null,
+      DestinationPane.makeHost(svc.shortDns, svc.fromPort),
+      DestinationPane.makeHost(svc.longDns, svc.fromPort),
+      DestinationPane.makeHost(svc.internalIp, svc.fromPort),
+      DestinationPane.makeHost(svc.externalIp, svc.fromPort),
     ]);
 
     const cleanedArray = rawArray.flat().filter(e => e);
     return MiscUtils.arrayOptions(cleanedArray);
+  }
+
+  static makeHost(domain, port){
+    if(domain && port)
+      return `http://${domain}:${port}`;
+    else return null;
   }
 
   broadcastChange(field, event){

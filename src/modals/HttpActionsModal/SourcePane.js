@@ -68,8 +68,8 @@ export default class SourcePane extends React.Component {
         <ReactTags
           classNames={AUTO_COMPLETE_STYLES}
           suggestions={this.rinseTags(this.props.labelCombos)}
-          handleAddition={null}
-          handleDelete={null}
+          handleAddition={() => console.log("lol")}
+          handleDelete={() => console.log("ita")}
         />
       </div>
     )
@@ -89,7 +89,7 @@ export default class SourcePane extends React.Component {
   static typeOptions(){
     return MiscUtils.hashOptions({
       'test-pod': "A one time pod we create inside your cluster",
-      'www': "One of our servers on the web",
+      'web': "One of our servers on the web",
       'mimic-pod': "A one time pod we create inside your cluster that mimics a deployment"
     })
   }
