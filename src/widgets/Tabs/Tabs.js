@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import s from './Tabs.sass'
+import Prism from "prismjs";
 
 export default class Tabs extends React.Component {
 
@@ -9,6 +10,10 @@ export default class Tabs extends React.Component {
     this.state = {
       selectedInd: props.selectedInd
     };
+  }
+
+  componentDidMount(){
+    Prism.highlightAll();
   }
 
   render(){

@@ -31,7 +31,10 @@ module.exports = {
         }},
       {
         test: /\.(scss|sass|css)$/,
-        exclude: /node_modules/,
+        exclude: [
+          /node_modules/,
+          /vendor/
+        ],
         loaders: [
           MiniCssExtractPlugin.loader,
           {

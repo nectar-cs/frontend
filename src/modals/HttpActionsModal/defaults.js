@@ -6,4 +6,4 @@ export const defaultBody = JSON.stringify({
   data: {
     type: 'test payload'
   }
-});
+}, null, 2);

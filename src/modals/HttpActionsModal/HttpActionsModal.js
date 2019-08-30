@@ -11,6 +11,7 @@ import KubeHandler from "../../utils/KubeHandler";
 import CodeEditor from "./CodeEditor";
 import {defaultBody, defaultHeaders} from "./defaults";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
+import Prism from "prismjs";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -34,8 +35,8 @@ export default class HttpActionsModal extends React.Component {
       bodyText: defaultBody,
       namespaces: [],
       labelCombos: [],
-      phase: 'editing',
-      httpResp: null,
+      phase: 'response',
+      httpResp: defaultBody,
     };
 
     this.onSubmitted = this.onSubmitted.bind(this);
@@ -54,6 +55,7 @@ export default class HttpActionsModal extends React.Component {
   }
 
   componentDidMount(){
+
     KubeHandler.raisingFetch('/api/cluster/namespaces', (resp) => {
       this.setState(s => ({...s, namespaces: resp['data'] }))
     });
@@ -65,12 +67,12 @@ export default class HttpActionsModal extends React.Component {
 
   render(){
     let content = null;
-      if(this.state.phase === 'editing')
+    if(this.state.phase === 'editing')
       content = this.renderEditPhase();
     else if(this.state.phase === 'submitting')
-        content = this.renderSubmittingPhase();
+      content = this.renderSubmittingPhase();
     else if(this.state.phase === 'response')
-        content = this.renderResponsePhase();
+      content = this.renderResponsePhase();
 
     return(
       <div className={s.modal}>
@@ -83,8 +85,8 @@ export default class HttpActionsModal extends React.Component {
   renderEditPhase(){
     return(
       <Fragment>
-        { this.renderRunButton() }
         { this.renderTabs() }
+        { this.renderRunButton() }
       </Fragment>
     )
   }
@@ -95,9 +97,17 @@ export default class HttpActionsModal extends React.Component {
 
   renderResponsePhase(){
     return (
-      <p>
-        { this.state.httpResp }
-      </p>
+      <Fragment>
+        <Tabs tabs={['Body', 'Headers']} selectedInd={0}>
+           <pre>
+            <code className={"language-json"}>
+              { this.state.httpResp }
+            </code>
+            </pre>
+          <p>Jokes</p>
+        </Tabs>
+        { this.renderRunButton() }
+      </Fragment>
     )
   }
 

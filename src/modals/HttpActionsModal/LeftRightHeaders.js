@@ -8,14 +8,8 @@ export default function LeftRightHeaders(props) {
     <Fragment>
       <LeftHeader
         graphicName={MiscUtils.frameworkImage('docker')}
-        title={props.name}
+        title={`${props.name} / http`}
         subtitle={'Not connected to Git'}
-      />
-      <RightHeader
-        title='HTTP Debugging'
-        subtitle={'Test real requests'}
-        graphicType='icon'
-        graphicName='perm_data_setting'
       />
     </Fragment>
   )
