@@ -21,7 +21,7 @@ export default class DeploymentCard extends React.Component {
   }
 
   componentDidMount(){
-    if(this.props.deployment.name === 'social-ai'){
+    if(this.props.deployment.name === 'frontend'){
       const bun = { deployment: this.props.deployment };
       this.props.openModal(HttpActionsModal, bun)
     }

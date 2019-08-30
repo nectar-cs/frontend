@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
 import ls from '../../../assets/content-layouts.sass';
-import {LeftHeader, ICON} from '../../../widgets/LeftHeader/LeftHeader';
+import LeftHeader, { ICON} from '../../../widgets/LeftHeader/LeftHeader';
 import Backend from '../../../utils/Backend';
 import DeploymentList from './DeploymentList';
 import TopLoader from '../../../widgets/TopLoader/TopLoader';

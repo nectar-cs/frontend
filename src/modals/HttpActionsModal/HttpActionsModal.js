@@ -10,6 +10,7 @@ import SourcePane from "./SourcePane";
 import KubeHandler from "../../utils/KubeHandler";
 import CodeEditor from "./CodeEditor";
 import {defaultBody, defaultHeaders} from "./defaults";
+import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -21,7 +22,7 @@ export default class HttpActionsModal extends React.Component {
     this.state = {
       destination: {
         host: HttpActionsModal.defaultHost(props),
-        path: '',
+        path: '/',
         verb: 'GET'
       },
       source: {
@@ -33,7 +34,11 @@ export default class HttpActionsModal extends React.Component {
       bodyText: defaultBody,
       namespaces: [],
       labelCombos: [],
-    }
+      phase: 'editing'
+    };
+
+    this.onSubmitted = this.onSubmitted.bind(this);
+    this.onSubmitFailed = this.onSubmitFailed.bind(this);
   }
 
   static defaultHost(props){
@@ -58,6 +63,15 @@ export default class HttpActionsModal extends React.Component {
   }
 
   render(){
+    if(this.state.phase === 'editing')
+      return this.renderEditPhase();
+    else if(this.state.phase === 'submitting')
+      return this.renderSubmitPhase();
+    else if(this.state.phase === 'response')
+      return this.renderResponsePhase();
+  }
+
+  renderEditPhase(){
     return(
       <div className={s.modal}>
         <LeftRightHeaders name={this.props.deployment.name}/>
@@ -66,6 +80,19 @@ export default class HttpActionsModal extends React.Component {
       </div>
     )
   }
+
+  renderSubmitPhase(){
+    return (
+      <div className={s.modal}>
+        <CenterLoader/>
+      </div>
+    )
+  }
+
+  renderResponsePhase(){
+
+  }
+
 
   renderTabs(){
     const destCallback = (asg) => this.onGroupFieldChanged('destination', asg);
@@ -104,23 +131,38 @@ export default class HttpActionsModal extends React.Component {
   }
 
   assessReadiness(){
-    if(this.state.source.type !== 'test-pod')
-      return false;
+    if(this.state.source.type !== 'test-pod') return false;
 
     let blanksPresent = false;
     Object.values(this.state.destination).forEach(v => {
       blanksPresent = blanksPresent || !v;
     });
+    return !blanksPresent;
+  }
 
-    // noinspection RedundantIfStatementJS
-    if(blanksPresent)
-      return false;
+  onSubmitted(response){
+    this.setState(s => ({...s, phase: 'response'}));
+    console.log("Yee");
+    console.log(response);
+  }
 
-    return true;
+  onSubmitFailed(bundle){
+    this.setState(s => ({...s, phase: 'editing'}));
+    console.log("Fook");
+    console.log(bundle);
   }
 
   submit(){
-    console.log("Bang!");
+    this.setState(s => ({...s, phase: 'submitting'}));
+    const {verb, path, host} = this.state.destination;
+    let payload = { verb, url: `${host}${path}`};
+
+    KubeHandler.raisingPost(
+      "/api/run/curl",
+      payload,
+      this.onSubmitted,
+      this.onSubmitFailed
+    );
   }
 
   renderRunButton(){

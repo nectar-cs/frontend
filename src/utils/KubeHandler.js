@@ -19,8 +19,24 @@ export default class KubeHandler {
   }
 
   static raisingFetch(endpoint, callback, errorCallback=null){
+    this.raisingRequest('GET', endpoint, null, callback, errorCallback);
+  }
+
+  static raisingPost(endpoint, body, callback, errorCallback=null){
+    this.raisingRequest('POST', endpoint, body, callback, errorCallback);
+  }
+
+  static raisingRequest(method, endpoint, body, callback, errorCallback=null){
     let url = `${BACKEND_URL}${endpoint}`;
-    fetch(url, {method: 'GET'})
+
+    body = body ? JSON.stringify(body) : null;
+
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    fetch(url, {method, headers, body})
     .then(
       (response) => (
         response.json().then(
@@ -30,14 +46,22 @@ export default class KubeHandler {
               else return data;
             } else {
               if(errorCallback) {
-                errorCallback && errorCallback({ kind: "soft", error: data })
+                errorCallback && errorCallback({
+                  kind: "soft",
+                  error: data,
+                  status: response.status
+                })
               }
             }
           }
         )
       ),
       (error) => {
-        const bundle = { kind: "hard", error};
+        const bundle = {
+          kind: "hard",
+          error,
+          status: error.status
+        };
         errorCallback && errorCallback(bundle);
       }
     )
