@@ -3,15 +3,6 @@ import React from "react";
 import PropTypes from 'prop-types'
 
 export default class CardRow extends React.Component {
-
-  static propTypes = {
-    label: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    modalClass: PropTypes.object.isRequired,
-    getDeployment: PropTypes.func.isRequired,
-    openModal: PropTypes.func.isRequired
-  };
-
   render(){
     const { label, text } = this.props;
 
@@ -22,7 +13,7 @@ export default class CardRow extends React.Component {
         </td>
         <td>
           <p className={s.rowTextClickable}
-             onClick={() => this.modalAction()}>
+             onClick={this.props.openModal}>
             { text }
           </p>
         </td>
@@ -30,13 +21,11 @@ export default class CardRow extends React.Component {
     )
   }
 
-  modalAction(){
-    const bundle = {
-      deployment: this.props.getDeployment(),
-      targetAddr: this.props.text
-    };
-
-    this.props.openModal(this.props.modalClass, bundle);
-  }
+  static propTypes = {
+    label: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    getDeployment: PropTypes.func.isRequired,
+    openModal: PropTypes.func.isRequired
+  };
 
 }

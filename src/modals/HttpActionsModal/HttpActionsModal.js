@@ -17,6 +17,7 @@ export default class HttpActionsModal extends React.Component {
 
   constructor(props){
     super(props);
+
     this.state = {
       destination: {
         host: HttpActionsModal.defaultHost(props),
@@ -37,7 +38,7 @@ export default class HttpActionsModal extends React.Component {
 
   static defaultHost(props){
     if(props.targetHost){
-      return props.targetHost;
+      return DestinationPane.makeHost(props.targetHost, props.port);
     } else {
       if(props.deployment.services[0]){
         const {shortDns, fromPort} = props.deployment.services[0];
@@ -134,6 +135,7 @@ export default class HttpActionsModal extends React.Component {
 
   static propTypes = {
     ...FULL_DEPLOYMENT,
-    targetHost: PropTypes.string
+    targetAddr: PropTypes.string,
+    port: PropTypes.number
   }
 }

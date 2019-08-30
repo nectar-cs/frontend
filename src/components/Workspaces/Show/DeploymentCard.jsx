@@ -15,9 +15,7 @@ export default class DeploymentCard extends React.Component {
       <div className={s.card}>
         { this.renderHeader() }
         { this.renderContentRows() }
-        <div className={s.podStatusesBox}>
-          { this.renderPodStatuses() }
-        </div>
+        { this.renderPodStatuses() }
       </div>
     )
   }
@@ -48,36 +46,49 @@ export default class DeploymentCard extends React.Component {
     const ipLabel = `Internal${svc.externalIp ? ', External' : ''} IP`;
     const ipText = `${svc.internalIp}${svc.externalIp ? `, ${svc.externalIp}` : ''}`;
     const portText = `${svc.toPort} <- ${svc.fromPort}`;
+    const dnsAction = () => this.openHttpModal(svc.shortDns);
+    const ipAction = () => this.openHttpModal(svc.internalIp);
 
     return <table className={s.contentRows}>
       <tbody>
-        { this.buildRow('Image', dep.imageName) }
+        { this.buildRow('Image', dep.imageName, PortActionsModal) }
         { this.buildRow('Ports', portText, PortActionsModal) }
-        { this.buildRow('Dns', svc.shortDns, HttpActionsModal) }
-        { this.buildRow(ipLabel, ipText, HttpActionsModal) }
+        { this.buildRow('Dns', svc.shortDns, dnsAction) }
+        { this.buildRow(ipLabel, ipText, ipAction) }
       </tbody>
     </table>;
   }
 
-  buildRow(label, text, modalClass){
+  openHttpModal(text){
+    const svc = this.props.deployment.services[0];
+    const bundle = {
+      deployment: this.props.deployment,
+      targetHost: text,
+      port: svc.fromPort
+    };
+
+    this.props.openModal(HttpActionsModal, bundle);
+  }
+
+  buildRow(label, text, openModalFunc){
     return(
       <CardRow
         label={label}
         text={text}
-        modalClass={modalClass}
         getDeployment={() => this.props.deployment}
-        openModal={this.props.openModal}
+        openModal={openModalFunc}
       />
     )
   }
 
-  renderPodStatuses(){
-    return this.props.deployment.pods.map((pod) => {
+  renderPodStatuses() {
+    const rows = this.props.deployment.pods.map((pod) => {
       const statusCol = `podStatus${pod.state || "Unknown"}`;
-      return(
+      return (
         <div className={`${s.podCircle} ${s[statusCol]}`} key={pod.name}/>
       )
     });
+    return <div className={s.podStatusesBox}>{ rows }</div>;
   }
 
   detailPath(){
@@ -93,5 +104,4 @@ export default class DeploymentCard extends React.Component {
     openModal: PropTypes.func.isRequired,
     ...FULL_DEPLOYMENT
   };
-
 }
