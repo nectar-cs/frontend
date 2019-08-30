@@ -7,7 +7,7 @@ export default class Tabs extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedInd: 0
+      selectedInd: props.selectedInd
     };
   }
 
@@ -39,7 +39,8 @@ export default class Tabs extends React.Component {
   }
 
   static propTypes = {
-    tabs: PropTypes.arrayOf(PropTypes.string).isRequired
+    tabs: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedInd: PropTypes.number
   }
 
 }

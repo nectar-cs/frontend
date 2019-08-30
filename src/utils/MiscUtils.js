@@ -48,6 +48,14 @@ export default class MiscUtils {
     ));
   }
 
+  static hashOptions(options){
+    return Object.keys(options).map((key) => (
+      <option key={key} value={key}>
+        { options[key] }
+      </option>
+    ));
+  }
+
   static easyOptions(nullOption, tuples) {
     const options = tuples.map((tuple) => {
       const key = Object.keys(tuple)[0].toString();

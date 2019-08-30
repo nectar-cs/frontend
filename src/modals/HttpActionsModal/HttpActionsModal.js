@@ -5,6 +5,8 @@ import ModalButton from "../../widgets/Buttons/ModalButton";
 import LeftRightHeaders from "./LeftRightHeaders.js";
 import Tabs from "../../widgets/Tabs/Tabs";
 import DestinationPane from "./DestinationPane";
+import SourcePane from "./SourcePane";
+import KubeHandler from "../../utils/KubeHandler";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -17,8 +19,19 @@ export default class HttpActionsModal extends React.Component {
         host: null,
         path: null,
         verb: 'GET'
-      }
+      },
+      source: {
+        type: 'test-pod',
+        namespace: props.deployment.namespace
+      },
+      namespaces: []
     }
+  }
+
+  componentDidMount(){
+    KubeHandler.raisingFetch('/api/cluster/namespaces', (resp) => {
+      this.setState(s => ({...s, namespaces: resp['data'] }))
+    });
   }
 
   render(){
@@ -33,15 +46,20 @@ export default class HttpActionsModal extends React.Component {
 
   renderTabs(){
     const destCallback = (asg) => this.onGroupFieldChanged('destination', asg);
+    const srcCallback = (asg) => this.onGroupFieldChanged('source', asg);
 
     return(
-      <Tabs tabs={REQUEST_TAB_NAMES}>
+      <Tabs tabs={REQUEST_TAB_NAMES} selectedInd={1}>
         <DestinationPane
-          {...this.state.destination}
           onFieldChanged={destCallback}
           services={this.props.deployment.services}
+          {...this.state.destination}
         />
-        <p>two</p>
+        <SourcePane
+          onFieldChanged={srcCallback}
+          namespaces={this.state.namespaces}
+          {...this.state.source}
+        />
         <p>Otre</p>
         <p>for</p>
       </Tabs>
@@ -51,6 +69,9 @@ export default class HttpActionsModal extends React.Component {
   onGroupFieldChanged(group, assignment){
     const newDestination = {...this.state[group], ...assignment};
     this.setState(s => ({...s, [group]: newDestination}));
+  }
+
+  assessReadiness(){
   }
 
   submit(){

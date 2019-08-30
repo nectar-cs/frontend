@@ -6,10 +6,6 @@ import {Service} from "../../types/Deployment";
 
 export default class DestinationPane extends React.Component {
 
-  constructor(props){
-    super(props);
-  }
-
   render(){
     return(
       <Fragment>
