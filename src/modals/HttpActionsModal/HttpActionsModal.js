@@ -7,6 +7,8 @@ import Tabs from "../../widgets/Tabs/Tabs";
 import DestinationPane from "./DestinationPane";
 import SourcePane from "./SourcePane";
 import KubeHandler from "../../utils/KubeHandler";
+import CodeEditor from "./CodeEditor";
+import {defaultBody, defaultHeaders} from "./defaults";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -22,15 +24,23 @@ export default class HttpActionsModal extends React.Component {
       },
       source: {
         type: 'test-pod',
-        namespace: props.deployment.namespace
+        namespace: props.deployment.namespace,
+        labels: []
       },
-      namespaces: []
+      headerText: defaultHeaders,
+      bodyText: defaultBody,
+      namespaces: [],
+      labelCombos: [],
     }
   }
 
   componentDidMount(){
     KubeHandler.raisingFetch('/api/cluster/namespaces', (resp) => {
       this.setState(s => ({...s, namespaces: resp['data'] }))
+    });
+
+    KubeHandler.raisingFetch('/api/cluster/label_combinations', (resp) => {
+      this.setState(s => ({...s, labelCombos: resp['data'] }))
     });
   }
 
@@ -47,9 +57,11 @@ export default class HttpActionsModal extends React.Component {
   renderTabs(){
     const destCallback = (asg) => this.onGroupFieldChanged('destination', asg);
     const srcCallback = (asg) => this.onGroupFieldChanged('source', asg);
+    const headCallback = (headerText) => this.setState(s => ({...s, headerText}));
+    const bodyCallback = (bodyText) => this.setState(s => ({...s, bodyText}));
 
     return(
-      <Tabs tabs={REQUEST_TAB_NAMES} selectedInd={1}>
+      <Tabs tabs={REQUEST_TAB_NAMES} selectedInd={2}>
         <DestinationPane
           onFieldChanged={destCallback}
           services={this.props.deployment.services}
@@ -58,10 +70,17 @@ export default class HttpActionsModal extends React.Component {
         <SourcePane
           onFieldChanged={srcCallback}
           namespaces={this.state.namespaces}
+          labelCombos={this.state.labelCombos}
           {...this.state.source}
         />
-        <p>Otre</p>
-        <p>for</p>
+        <CodeEditor
+          body={this.state.headerText}
+          onCodeChanged={headCallback}
+        />
+        <CodeEditor
+          body={this.state.bodyText}
+          onCodeChanged={bodyCallback}
+        />
       </Tabs>
     )
   }
@@ -72,6 +91,13 @@ export default class HttpActionsModal extends React.Component {
   }
 
   assessReadiness(){
+    if(this.state.source.type !== 'test-pod')
+      return false;
+
+    if(Object.values(this.state.destination).includes(null))
+      return false;
+
+    return true;
   }
 
   submit(){
@@ -81,6 +107,7 @@ export default class HttpActionsModal extends React.Component {
   renderRunButton(){
     return(
       <ModalButton
+        isEnabled={this.assessReadiness()}
         callback={() => this.submit()}
         title='Run'
       />
@@ -90,6 +117,4 @@ export default class HttpActionsModal extends React.Component {
   static propTypes = {
     ...FULL_DEPLOYMENT
   }
-
 }
-

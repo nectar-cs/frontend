@@ -2,6 +2,16 @@ import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import s from './SourcePane.sass'
 import MiscUtils from "../../utils/MiscUtils";
+import ReactTags from "react-tag-autocomplete";
+import ss from "../../assets/react-tags.sass";
+
+const AUTO_COMPLETE_STYLES = {
+  root: s.labelTags,
+  selected: ss.reactTagsSelected,
+  selectedTag: ss.reactTagsSelectedTag,
+  search: ss.reactTagsSearch,
+  suggestions: ss.reactTagsSuggestions
+};
 
 export default class SourcePane extends React.Component {
 
@@ -28,7 +38,12 @@ export default class SourcePane extends React.Component {
 
   renderConditionalFields(){
     if(this.props.type === 'test-pod')    {
-      return this.renderNamespaceSelector()
+      return(
+        <Fragment>
+          { this.renderNamespaceSelector() }
+          { this.renderLabelsInput() }
+        </Fragment>
+      )
     } else return <p className={s.comingSoon}>Coming soon :)</p>
   }
 
@@ -44,6 +59,26 @@ export default class SourcePane extends React.Component {
         </select>
       </div>
     )
+  }
+
+  renderLabelsInput(){
+    return(
+      <div className={s.inputLine}>
+        <p className={s.label}>Pod Labels</p>
+        <ReactTags
+          classNames={AUTO_COMPLETE_STYLES}
+          suggestions={this.rinseTags(this.props.labelCombos)}
+          handleAddition={null}
+          handleDelete={null}
+        />
+      </div>
+    )
+  }
+
+  rinseTags(tags){
+    return tags.map((t) => (
+      { id: t, name: t }
+    ));
   }
 
   broadcastChange(field, event){
@@ -62,6 +97,9 @@ export default class SourcePane extends React.Component {
   static propTypes = {
     type: PropTypes.oneOf(['test-pod', 'web', 'mimic-pod']),
     namespaces: PropTypes.arrayOf(PropTypes.string),
+    namespace: PropTypes.string,
+    labelCombos: PropTypes.arrayOf(PropTypes.string),
+    labels: PropTypes.arrayOf(PropTypes.string),
     onFieldChanged: PropTypes.func.isRequired
   }
 
