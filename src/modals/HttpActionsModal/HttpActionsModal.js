@@ -35,8 +35,8 @@ export default class HttpActionsModal extends React.Component {
       bodyText: defaultBody,
       namespaces: [],
       labelCombos: [],
-      phase: 'response',
-      httpResp: defaultBody,
+      phase: 'editing',
+      httpResp: null,
     };
 
     this.onSubmitted = this.onSubmitted.bind(this);
@@ -55,6 +55,8 @@ export default class HttpActionsModal extends React.Component {
   }
 
   componentDidMount(){
+
+    Prism.highlightAll();
 
     KubeHandler.raisingFetch('/api/cluster/namespaces', (resp) => {
       this.setState(s => ({...s, namespaces: resp['data'] }))
