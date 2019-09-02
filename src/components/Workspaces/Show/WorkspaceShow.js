@@ -2,7 +2,7 @@ import React from 'react'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
-import KubeHandler from "../../../utils/KubeHandler";
+import Kapi from "../../../utils/Kapi";
 import Backend from "../../../utils/Backend";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
@@ -28,7 +28,7 @@ class WorkspaceShowClass extends React.Component{
     this.setState((s) => ({...s, isFetching: true}));
     Backend.raisingFetch(`/workspaces/${this.workspaceId()}`, (workspace) => {
       workspace = DataUtils.objKeysToCamel(workspace);
-      KubeHandler.filterFetch('/api/deployments', workspace, (depsResp) => {
+      Kapi.filterFetch('/api/deployments', workspace, (depsResp) => {
         this.setState((s) => ({
           ...s,
           workspace,

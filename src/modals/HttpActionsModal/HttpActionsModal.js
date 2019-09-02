@@ -6,11 +6,10 @@ import ModalButton from "../../widgets/Buttons/ModalButton";
 import Tabs from "../../widgets/Tabs/Tabs";
 import DestinationPane from "./DestinationPane";
 import SourcePane from "./SourcePane";
-import KubeHandler from "../../utils/KubeHandler";
+import Kapi from "../../utils/Kapi";
 import CodeEditor from "./CodeEditor";
 import {defaultBody, defaultHeaders, sampleOut} from "./defaults";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
-import TopLoader from "../../widgets/TopLoader/TopLoader";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response";
@@ -64,12 +63,12 @@ export default class HttpActionsModal extends React.Component {
   }
 
   componentDidMount(){
-    KubeHandler.raisingFetch('/api/cluster/namespaces', (resp) => {
+    Kapi.fetch('/api/cluster/namespaces', (resp) => {
       if(this._isMounted)
         this.setState(s => ({...s, namespaces: resp['data'] }))
     });
 
-    KubeHandler.raisingFetch('/api/cluster/label_combinations', (resp) => {
+    Kapi.fetch('/api/cluster/label_combinations', (resp) => {
       if(this._isMounted)
         this.setState(s => ({...s, labelCombos: resp['data'] }))
     });
@@ -128,7 +127,7 @@ export default class HttpActionsModal extends React.Component {
         <Tabs tabs={['Body', 'Headers', 'Raw']} selectedInd={0}>
           <BodyResponseView body={this.state.httpResp.body}/>
           <HeadersResponseView headers={this.state.httpResp.headers}/>
-          <RawResponseView response={this.state.httpResp}/>
+          <RawResponseView raw={this.state.httpResp.raw}/>
         </Tabs>
         { this.renderRunButton() }
       </Fragment>
@@ -136,8 +135,8 @@ export default class HttpActionsModal extends React.Component {
   }
 
   renderTabs(){
-    const destCallback = (asg) => this.onGroupFieldChanged('destination', asg);
-    const srcCallback = (asg) => this.onGroupFieldChanged('source', asg);
+    const destCallback = a => this.onGroupFieldChanged('destination', a);
+    const srcCallback = a => this.onGroupFieldChanged('source', a);
     const headCallback = (headerText) => this.setState(s => ({...s, headerText}));
     const bodyCallback = (bodyText) => this.setState(s => ({...s, bodyText}));
 
@@ -211,7 +210,7 @@ export default class HttpActionsModal extends React.Component {
     const { namespace } = this.state.source;
     let payload = { verb, url: `${host}${path}`, namespace };
 
-    KubeHandler.raisingPost(
+    Kapi.post(
       "/api/run/curl",
       payload,
       this.onSubmitted,

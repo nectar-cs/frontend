@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import s from './WorkspaceDepsPreview.sass'
 import PropTypes from 'prop-types'
-import KubeHandler from "../../../utils/KubeHandler";
+import Kapi from "../../../utils/Kapi";
 import TopLoader from "../../../widgets/TopLoader/TopLoader";
 
 export default class WorkspaceDepsPreview extends React.Component{
@@ -60,7 +60,7 @@ export default class WorkspaceDepsPreview extends React.Component{
     const endpoint = `${base}?${args}`;
 
     this.setState(s => ({...s, isFetching: true}));
-    KubeHandler.raisingFetch(endpoint, (response) => {
+    Kapi.fetch(endpoint, (response) => {
       this.setState((s) => ({...s, deployments: response['data']}));
       this.setState(s => ({...s, isFetching: false}));
     });

@@ -1,10 +1,7 @@
-//@flow
-
-
 const DEFAULT_URL = "http://localhost:5000";
 const BACKEND_URL = process.env['KUBE_HANDLER_URL'] || DEFAULT_URL;
 
-export default class KubeHandler {
+export default class Kapi {
   static filterFetch(endpoint, ws, callback, errorCallback=null){
     const nsFilterType = `ns_filter_type=${ws.nsFilterType}`;
     const nsFilter = `ns_filters=${ws.nsFilters.join(',')}`;
@@ -15,14 +12,14 @@ export default class KubeHandler {
     const args = `${nsFilterType}&${nsFilter}&${lbFilterType}&${lbFilter}`;
     endpoint = `${endpoint}?${args}&full=true`;
 
-    this.raisingFetch(endpoint, callback, errorCallback);
+    this.fetch(endpoint, callback, errorCallback);
   }
 
-  static raisingFetch(endpoint, callback, errorCallback=null){
+  static fetch(endpoint, callback, errorCallback=null){
     this.raisingRequest('GET', endpoint, null, callback, errorCallback);
   }
 
-  static raisingPost(endpoint, body, callback, errorCallback=null){
+  static post(endpoint, body, callback, errorCallback=null){
     this.raisingRequest('POST', endpoint, body, callback, errorCallback);
   }
 

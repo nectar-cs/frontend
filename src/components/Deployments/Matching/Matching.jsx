@@ -6,7 +6,7 @@ import Backend from '../../../utils/Backend';
 import DeploymentList from './DeploymentList';
 import TopLoader from '../../../widgets/TopLoader/TopLoader';
 import MatchPreview from './MatchPreview';
-import KubeHandler from "../../../utils/KubeHandler";
+import Kapi from "../../../utils/Kapi";
 import GithubAuth from "./GithubAuth";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import ErrComponent from "../../../hocs/ErrComponent";
@@ -171,7 +171,7 @@ class MatchingClass extends React.Component {
 
   fetchClusterDeploys(){
     this.setState((s) => ({...s, isFetching: true}));
-    KubeHandler.raisingFetch('/api/deployments/across_namespaces', (payload) => {
+    Kapi.fetch('/api/deployments/across_namespaces', (payload) => {
       const bundle = { isChecked: true, isReviewed: false };
       const deployments = payload['data'].map((d) => ({...d, ...bundle}));
       const selectedIndex = deployments.length > 0 ? 0 : null;

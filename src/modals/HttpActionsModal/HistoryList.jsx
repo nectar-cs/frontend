@@ -66,11 +66,12 @@ export default class HistoryList extends React.Component {
     args = `${args}&dep_namespace=${this.props.namespace}`;
     args = `${args}&kind=http_requests`;
     Backend.raisingFetch(`/dep_attachments?${args}`, (resp) => {
-      if(this._isMounted)
+      if(this._isMounted) {
         this.setState(s => ({
           ...s,
           history: DataUtils.objKeysToCamel(resp['data'])
         }))
+      }
     });
   }
 
@@ -88,17 +89,19 @@ export default class HistoryList extends React.Component {
 class HistoryRow extends React.Component {
 
   render(){
-
     let { path, host, verb, status, senderNs, senderType } = this.props;
     host = host.replace("http://", "");
-    let statusClass = MiscUtils.statusCodeColors(status);
+    const Td = (p) => <td className={s.row}>{p.children}</td>;
+    const statCol = MiscUtils.statusCodeColors(status);
+    const verbCol = MiscUtils.httpVerbColors(verb);
+    const callback = () => this.props.callback(this.props);
 
     return(
-      <tr className={s.wholeRow} onClick={() => this.props.callback(this.props)}>
-        <td className={s.row}><p>{host}{path}</p></td>
-        <td className={s.row}><p className={s.verb}>{verb}</p></td>
-        <td className={s.row}><p>{senderNs} / {senderType}</p></td>
-        <td className={s.row}><p className={`${s.verb} ${statusClass}`}>{status}</p></td>
+      <tr className={s.wholeRow} onClick={callback}>
+        <Td><p className={s.url}>{host}{path}</p></Td>
+        <Td><p className={`${s.verb} ${verbCol}`}>{verb}</p></Td>
+        <Td><p>{senderNs} / {senderType}</p></Td>
+        <Td><p className={`${s.verb} ${statCol}`}>{status}</p></Td>
       </tr>
     )
   }

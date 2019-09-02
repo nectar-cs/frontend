@@ -61,6 +61,15 @@ export default class MiscUtils {
     else return null;
   }
 
+  static httpVerbColors(verb){
+    verb = verb.toLowerCase();
+    if(verb === 'get')
+      return textCombos.statusTagGood;
+    else if(['post', 'patch', 'put'].includes(verb))
+      return textCombos.statusTagReady;
+    else return textCombos.statusTagWarn;
+  }
+
 
   static frameworkChoices(){
     return ["docker", "javascript", "go", "ruby", "c"];

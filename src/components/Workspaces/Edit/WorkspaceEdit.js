@@ -9,7 +9,7 @@ import WorkspaceForm from "./WorkspaceForm";
 import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
 import s from './WorkspaceEdit.sass'
 import {explanation} from "./copy";
-import KubeHandler from "../../../utils/KubeHandler";
+import Kapi from "../../../utils/Kapi";
 import ModalButton from "../../../widgets/Buttons/ModalButton";
 import Backend from "../../../utils/Backend";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
@@ -149,8 +149,8 @@ class WorkspaceEditClass extends React.Component{
     const ep1 = '/api/cluster/namespaces';
     const ep2 = '/api/cluster/label_combinations';
 
-    KubeHandler.raisingFetch(ep1, (r1) => {
-      KubeHandler.raisingFetch(ep2, (r2) => {
+    Kapi.fetch(ep1, (r1) => {
+      Kapi.fetch(ep2, (r2) => {
         if (this.wip()){
           Backend.raisingFetch(`/workspaces/${this.wip()}/`, r3 => {
             this.onAllFetched(r1, r2, r3);

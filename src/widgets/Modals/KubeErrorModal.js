@@ -4,7 +4,7 @@ import s from './KubeErrorModal.sass'
 import LeftHeader from "../LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import ModalButton from "../Buttons/ModalButton";
-import KubeHandler from "../../utils/KubeHandler";
+import Kapi from "../../utils/Kapi";
 import {KapiErrorContent, kapiErrorTitle} from "../../misc/KubeErrorContent";
 import CenterLoader from "../CenterLoader/CenterLoader";
 
@@ -73,7 +73,7 @@ export default class KubeErrorModal extends React.Component{
   submitRetry(){
     this.setState((s) => ({...s, isSubmitting: true}));
     const endpoint = `/api/status/connect`;
-    KubeHandler.raisingFetch(
+    Kapi.fetch(
       endpoint,
       this.onConnectSuccess,
       this.onConnectFailed

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import MiscUtils from "../../utils/MiscUtils";
 import s from './Response.sass'
@@ -40,9 +40,7 @@ export class RawResponseView extends React.Component {
     return (
       <div className={s.holder}>
         <code>
-          { this.props.response.headers.join("\n") }
-          <br/><br/>
-          { this.props.response.body }
+          { this.props.raw }
         </code>
       </div>
     )
