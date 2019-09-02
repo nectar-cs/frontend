@@ -19,6 +19,7 @@ export default class CodeEditor extends React.Component {
         value={this.props.body}
         onValueChange={s => this.props.onCodeChanged(s)}
         highlight={code => highlight(code, languages.js)}
+        placeholder={this.props.placeholder}
         padding={10}
         style={{
           fontFamily: '"Fira code", "Fira Mono", monospace',

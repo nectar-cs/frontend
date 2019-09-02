@@ -15,6 +15,7 @@ import Prism from "prismjs";
 import TopLoader from "../../widgets/TopLoader/TopLoader";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
+import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -34,13 +35,12 @@ export default class HttpActionsModal extends React.Component {
         namespace: props.deployment.namespace,
         labels: []
       },
-      headerText: defaultHeaders,
-      bodyText: defaultBody,
+      headerText: '',
+      bodyText: '',
       namespaces: [],
       labelCombos: [],
       phase: 'editing',
       httpResp: null,
-      history: []
     };
 
     this.onSubmitted = this.onSubmitted.bind(this);
@@ -109,13 +109,10 @@ export default class HttpActionsModal extends React.Component {
   renderResponsePhase(){
     return (
       <Fragment>
-        <Tabs tabs={['Body', 'Headers']} selectedInd={0}>
-           <pre>
-            <code className={"language-json"}>
-              { this.state.httpResp }
-            </code>
-            </pre>
-          <p>Jokes</p>
+        <Tabs tabs={['Body', 'Headers', 'Raw']} selectedInd={0}>
+          <BodyResponseView body={this.state.httpResp.body}/>
+          <HeadersResponseView headers={this.state.httpResp.headers}/>
+          <RawResponseView response={this.state.httpResp}/>
         </Tabs>
         { this.renderRunButton() }
       </Fragment>
@@ -143,10 +140,12 @@ export default class HttpActionsModal extends React.Component {
         />
         <CodeEditor
           body={this.state.headerText}
+          placeholder={defaultHeaders}
           onCodeChanged={headCallback}
         />
         <CodeEditor
           body={this.state.bodyText}
+          placeholder={defaultBody}
           onCodeChanged={bodyCallback}
         />
       </Tabs>
