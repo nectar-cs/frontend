@@ -28,16 +28,13 @@ export default class MiscUtils {
     );
   }
 
-  static positiveMod(n, m){
-    return ((n % m) + m) % m;
-  }
-
-  static veryEasyOptions(transform, ...strings) {
-    const doubled = strings.map((string) =>
-      transform ? transform(string) : string
-    );
-    const tuples = DataUtils.bigHash(doubled);
-    return this.easyOptions(tuples);
+  static isJson(str){
+    try {
+      JSON.parse(str);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   static arrayOptions(options){
