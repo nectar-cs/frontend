@@ -1,6 +1,7 @@
 import React from 'react'
 import layouts from './../assets/content-layouts.sass'
 import DataUtils from './DataUtils';
+import textCombos from './../assets/text-combos.sass'
 
 const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
@@ -53,20 +54,13 @@ export default class MiscUtils {
     ));
   }
 
-  static easyOptions(nullOption, tuples) {
-    const options = tuples.map((tuple) => {
-      const key = Object.keys(tuple)[0].toString();
-      const value = tuple[key];
-      return(
-        <option key={key} value={key} >
-          {value}
-        </option>
-      )
-    });
-    if(nullOption)
-      options.unshift(this.emptyOption(nullOption));
-    return options;
+  static statusCodeColors(code){
+    if(code < 300) return textCombos.statusTagSuccess;
+    else if(code < 500 ) return textCombos.statusTagWarn;
+    else if(code < 600) return textCombos.statusTagFailure;
+    else return null;
   }
+
 
   static frameworkChoices(){
     return ["docker", "javascript", "go", "ruby", "c"];

@@ -2,9 +2,12 @@
 
 .historyLabel
   display: block
+  &:hover
+    cursor: pointer
+
 
 .historyToggleLine
-  margin-top: 34px
+  margin-top: 58px
   display: inline-flex
   justify-items: start
 
@@ -15,3 +18,15 @@
 
 .table
   margin-top: 12px
+
+.row
+  composes: skinnyRow from './../../assets/table-combos.sass'
+
+.wholeRow
+  &:hover
+    background: $content-background-color
+    cursor: pointer
+
+
+.verb
+  composes: statusTag from './../../assets/text-combos.sass'

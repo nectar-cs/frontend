@@ -191,6 +191,8 @@ export default class HttpActionsModal extends React.Component {
         phase: 'response',
         httpResp: response['data']
       }));
+
+      this.saveToHistory(response['data']['status']);
     }
   }
 
@@ -204,24 +206,30 @@ export default class HttpActionsModal extends React.Component {
   }
 
   submit(){
-    // this.setState(s => ({...s, phase: 'submitting'}));
+    this.setState(s => ({...s, phase: 'submitting'}));
     const {verb, path, host } = this.state.destination;
     const { namespace } = this.state.source;
     let payload = { verb, url: `${host}${path}`, namespace };
 
-    // KubeHandler.raisingPost(
-    //   "/api/run/curl",
-    //   payload,
-    //   this.onSubmitted,
-    //   this.onSubmitFailed
-    // );
+    KubeHandler.raisingPost(
+      "/api/run/curl",
+      payload,
+      this.onSubmitted,
+      this.onSubmitFailed
+    );
+  }
 
+  saveToHistory(status){
     let args = `dep_name=${this.props.deployment.name}`;
     args = `${args}&dep_namespace=${this.props.deployment.namespace}`;
     args = `${args}&kind=http_requests`;
 
+    const {verb, path, host } = this.state.destination;
     const backendPayload = {
-      verb, path, host
+      verb, path, host,
+      senderNs: this.state.source.namespace,
+      senderType: this.state.source.type,
+      status: status
     };
 
     Backend.raisingPost(

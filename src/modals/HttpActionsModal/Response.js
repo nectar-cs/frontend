@@ -14,13 +14,7 @@ export class BodyResponseView extends React.Component {
         </code>
       </pre>
       )
-    } else {
-      return(
-        <div
-          dangerouslySetInnerHTML={{ __html: this.props.body }}
-        />
-      )
-    }
+    } else return <code>{ this.props.body }</code>;
   }
 
   static propTypes = {
