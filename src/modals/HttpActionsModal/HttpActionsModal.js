@@ -40,8 +40,11 @@ export default class HttpActionsModal extends React.Component {
       httpResp: null,
     };
 
+    this._isMounted = true;
+    this.submit = this.submit.bind(this);
     this.onSubmitted = this.onSubmitted.bind(this);
     this.onSubmitFailed = this.onSubmitFailed.bind(this);
+    this.enterEditState = this.enterEditState.bind(this);
   }
 
   static defaultHost(props){
@@ -56,15 +59,14 @@ export default class HttpActionsModal extends React.Component {
   }
 
   componentDidMount(){
-
-    Prism.highlightAll();
-
     KubeHandler.raisingFetch('/api/cluster/namespaces', (resp) => {
-      this.setState(s => ({...s, namespaces: resp['data'] }))
+      if(this._isMounted)
+        this.setState(s => ({...s, namespaces: resp['data'] }))
     });
 
     KubeHandler.raisingFetch('/api/cluster/label_combinations', (resp) => {
-      this.setState(s => ({...s, labelCombos: resp['data'] }))
+      if(this._isMounted)
+        this.setState(s => ({...s, labelCombos: resp['data'] }))
     });
   }
 
@@ -150,32 +152,40 @@ export default class HttpActionsModal extends React.Component {
   }
 
   assessReadiness(){
-    if(this.state.source.type !== 'test-pod') return false;
+    if(this.state.phase === 'editing'){
+      if(this.state.source.type !== 'test-pod') return false;
 
-    let blanksPresent = false;
-    Object.values(this.state.destination).forEach(v => {
-      blanksPresent = blanksPresent || !v;
-    });
-    return !blanksPresent;
+      let blanksPresent = false;
+      Object.values(this.state.destination).forEach(v => {
+        blanksPresent = blanksPresent || !v;
+      });
+      return !blanksPresent;
+    } else return true;
   }
 
   onSubmitted(response){
-    this.setState(s => ({...s,
-      phase: 'response',
-      httpResp: response['data']
-    }));
+    if(this._isMounted){
+      this.setState(s => ({...s,
+        phase: 'response',
+        httpResp: response['data']
+      }));
+    }
   }
 
   onSubmitFailed(bundle){
-    this.setState(s => ({...s, phase: 'editing'}));
-    console.log("Fook");
-    console.log(bundle);
+    if(this._isMounted){
+      this.setState(s => ({...s, phase: 'editing'}));
+
+      console.log("Fook");
+      console.log(bundle);
+    }
   }
 
   submit(){
     this.setState(s => ({...s, phase: 'submitting'}));
-    const {verb, path, host} = this.state.destination;
-    let payload = { verb, url: `${host}${path}`};
+    const {verb, path, host } = this.state.destination;
+    const { namespace } = this.state.source;
+    let payload = { verb, url: `${host}${path}`, namespace };
 
     KubeHandler.raisingPost(
       "/api/run/curl",
@@ -185,12 +195,21 @@ export default class HttpActionsModal extends React.Component {
     );
   }
 
+  enterEditState(){
+    this.setState((s) => ({...s, phase: 'editing'}))
+  }
+
   renderRunButton(){
+    const phase = this.state.phase;
+
+    const title = phase === 'response' ? 'Back to Edit' : 'Submit Request';
+    const callback = phase === 'response' ? this.enterEditState : this.submit;
+
     return(
       <ModalButton
-        isEnabled={this.assessReadiness()}
-        callback={() => this.submit()}
-        title='Run'
+        isEnabled={phase !== 'submitting' && this.assessReadiness()}
+        callback={callback}
+        title={title}
       />
     )
   }
