@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import s from './HttpActionsModal.sass'
 import {FULL_DEPLOYMENT} from "../../types/Deployment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
-import LeftRightHeaders from "./LeftRightHeaders.js";
 import Tabs from "../../widgets/Tabs/Tabs";
 import DestinationPane from "./DestinationPane";
 import SourcePane from "./SourcePane";
@@ -11,11 +10,12 @@ import KubeHandler from "../../utils/KubeHandler";
 import CodeEditor from "./CodeEditor";
 import {defaultBody, defaultHeaders} from "./defaults";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
-import Prism from "prismjs";
 import TopLoader from "../../widgets/TopLoader/TopLoader";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response";
+import HistoryList from "./HistoryList";
+import Backend from "../../utils/Backend";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -48,6 +48,7 @@ export default class HttpActionsModal extends React.Component {
     this.onSubmitted = this.onSubmitted.bind(this);
     this.onSubmitFailed = this.onSubmitFailed.bind(this);
     this.enterEditState = this.enterEditState.bind(this);
+    this.historyCallback = null;
   }
 
   static defaultHost(props){
@@ -99,6 +100,7 @@ export default class HttpActionsModal extends React.Component {
     return(
       <Fragment>
         { this.renderTabs() }
+        { this.renderHistory() }
         { this.renderRunButton() }
       </Fragment>
     )
@@ -106,6 +108,18 @@ export default class HttpActionsModal extends React.Component {
 
   renderSubmittingPhase(){
     return <CenterLoader/>;
+  }
+
+  renderHistory(){
+    const historyCallbackSetter = (cb) => { this.historyCallback = cb; };
+    return(
+      <HistoryList
+        name={this.props.deployment.name}
+        namespace={this.props.deployment.namespace}
+        callback={null}
+        historyCallbackSetter={historyCallbackSetter}
+      />
+    )
   }
 
   renderResponsePhase(){
@@ -190,17 +204,31 @@ export default class HttpActionsModal extends React.Component {
   }
 
   submit(){
-    this.setState(s => ({...s, phase: 'submitting'}));
+    // this.setState(s => ({...s, phase: 'submitting'}));
     const {verb, path, host } = this.state.destination;
     const { namespace } = this.state.source;
     let payload = { verb, url: `${host}${path}`, namespace };
 
-    KubeHandler.raisingPost(
-      "/api/run/curl",
-      payload,
-      this.onSubmitted,
-      this.onSubmitFailed
-    );
+    // KubeHandler.raisingPost(
+    //   "/api/run/curl",
+    //   payload,
+    //   this.onSubmitted,
+    //   this.onSubmitFailed
+    // );
+
+    let args = `dep_name=${this.props.deployment.name}`;
+    args = `${args}&dep_namespace=${this.props.deployment.namespace}`;
+    args = `${args}&kind=http_requests`;
+
+    const backendPayload = {
+      verb, path, host
+    };
+
+    Backend.raisingPost(
+      `/dep_attachments?${args}`,
+      { extras: backendPayload },
+      this.historyCallback
+    )
   }
 
   enterEditState(){
