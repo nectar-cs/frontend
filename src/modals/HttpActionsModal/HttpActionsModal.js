@@ -8,7 +8,7 @@ import DestinationPane from "./DestinationPane";
 import SourcePane from "./SourcePane";
 import KubeHandler from "../../utils/KubeHandler";
 import CodeEditor from "./CodeEditor";
-import {defaultBody, defaultHeaders} from "./defaults";
+import {defaultBody, defaultHeaders, sampleOut} from "./defaults";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import TopLoader from "../../widgets/TopLoader/TopLoader";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
@@ -40,7 +40,7 @@ export default class HttpActionsModal extends React.Component {
       namespaces: [],
       labelCombos: [],
       phase: 'editing',
-      httpResp: null,
+      httpResp: {body: sampleOut},
     };
 
     this._isMounted = true;
@@ -85,7 +85,6 @@ export default class HttpActionsModal extends React.Component {
 
     return(
       <div className={s.modal}>
-        <TopLoader isFetching={false}/>
         <LeftHeader
           graphicName={MiscUtils.frameworkImage('docker')}
           title={`${this.props.deployment.name} / http`}
@@ -116,7 +115,7 @@ export default class HttpActionsModal extends React.Component {
       <HistoryList
         name={this.props.deployment.name}
         namespace={this.props.deployment.namespace}
-        callback={null}
+        onItemSelectedCallback={null}
         historyCallbackSetter={historyCallbackSetter}
       />
     )

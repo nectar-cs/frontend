@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import MiscUtils from "../../utils/MiscUtils";
+import s from './Response.sass'
 
 export class BodyResponseView extends React.Component {
 
@@ -8,13 +9,13 @@ export class BodyResponseView extends React.Component {
     if(MiscUtils.isJson(this.props.body)){
       const hash = JSON.parse(this.props.body);
       return(
-      <pre>
-        <code className={"language-json"}>
-          { JSON.stringify(hash, null, 2) }
-        </code>
-      </pre>
+        <div className={s.holder}>
+          <code className={`${s.code} language-json`}>
+            { JSON.stringify(hash, null, 2) }
+          </code>
+        </div>
       )
-    } else return <code>{ this.props.body }</code>;
+    } else return <code>{this.props.body}</code>;
   }
 
   static propTypes = {
@@ -25,11 +26,11 @@ export class BodyResponseView extends React.Component {
 export class HeadersResponseView extends React.Component {
   render() {
     return (
-      <pre>
+      <div className={s.holder}>
         <code className={"language-markup"}>
-          { this.props.headers.join("\n") }
+          { (this.props.headers || []).join("\n") }
         </code>
-      </pre>
+      </div>
     )
   }
 }
@@ -37,11 +38,13 @@ export class HeadersResponseView extends React.Component {
 export class RawResponseView extends React.Component {
   render() {
     return (
-      <code>
-        { this.props.response.headers.join("\n") }
-        <br/><br/>
-        { this.props.response.body }
-      </code>
+      <div className={s.holder}>
+        <code>
+          { this.props.response.headers.join("\n") }
+          <br/><br/>
+          { this.props.response.body }
+        </code>
+      </div>
     )
   }
 }
