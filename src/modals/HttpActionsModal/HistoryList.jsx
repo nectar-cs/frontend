@@ -94,7 +94,7 @@ class HistoryRow extends React.Component {
     let statusClass = MiscUtils.statusCodeColors(status);
 
     return(
-      <tr className={s.wholeRow} onClick={this.props.callback}>
+      <tr className={s.wholeRow} onClick={() => this.props.callback(this.props)}>
         <td className={s.row}><p>{host}{path}</p></td>
         <td className={s.row}><p className={s.verb}>{verb}</p></td>
         <td className={s.row}><p>{senderNs} / {senderType}</p></td>

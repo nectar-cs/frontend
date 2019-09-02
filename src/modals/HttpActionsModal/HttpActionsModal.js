@@ -48,6 +48,7 @@ export default class HttpActionsModal extends React.Component {
     this.onSubmitted = this.onSubmitted.bind(this);
     this.onSubmitFailed = this.onSubmitFailed.bind(this);
     this.enterEditState = this.enterEditState.bind(this);
+    this.onHistoryItemSelected = this.onHistoryItemSelected.bind(this);
     this.historyCallback = null;
   }
 
@@ -115,7 +116,7 @@ export default class HttpActionsModal extends React.Component {
       <HistoryList
         name={this.props.deployment.name}
         namespace={this.props.deployment.namespace}
-        onItemSelectedCallback={null}
+        onItemSelectedCallback={this.onHistoryItemSelected}
         historyCallbackSetter={historyCallbackSetter}
       />
     )
@@ -241,9 +242,11 @@ export default class HttpActionsModal extends React.Component {
   onHistoryItemSelected(data){
     const { path, verb, host } = data;
     const destination = { path, verb, host };
+    const source = { type: data.senderType, namespace: data.senderNs };
     this.setState(s => ({
       ...s,
       destination,
+      source: { ...s.source, ...source }
     }))
   }
 
