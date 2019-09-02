@@ -49,7 +49,11 @@ export default class HistoryList extends React.Component {
 
   renderItems(){
     return this.state.history.map(h => (
-      <HistoryRow {...h['extras']} />
+      <HistoryRow
+        id={h['id']}
+        {...h['extras']}
+        callback={this.props.onItemSelectedCallback}
+      />
     ));
   }
 
@@ -77,7 +81,7 @@ export default class HistoryList extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     namespace: PropTypes.string.isRequired,
-    callback: PropTypes.func.isRequired
+    onItemSelectedCallback: PropTypes.func.isRequired
   }
 }
 

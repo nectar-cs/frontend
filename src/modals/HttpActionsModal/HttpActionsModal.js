@@ -239,6 +239,15 @@ export default class HttpActionsModal extends React.Component {
     )
   }
 
+  onHistoryItemSelected(data){
+    const { path, verb, host } = data;
+    const destination = { path, verb, host };
+    this.setState(s => ({
+      ...s,
+      destination,
+    }))
+  }
+
   enterEditState(){
     this.setState((s) => ({...s, phase: 'editing'}))
   }
