@@ -12,6 +12,9 @@ import CodeEditor from "./CodeEditor";
 import {defaultBody, defaultHeaders} from "./defaults";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Prism from "prismjs";
+import TopLoader from "../../widgets/TopLoader/TopLoader";
+import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
+import MiscUtils from "../../utils/MiscUtils";
 import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
@@ -81,7 +84,12 @@ export default class HttpActionsModal extends React.Component {
 
     return(
       <div className={s.modal}>
-        <LeftRightHeaders name={this.props.deployment.name}/>
+        <TopLoader isFetching={false}/>
+        <LeftHeader
+          graphicName={MiscUtils.frameworkImage('docker')}
+          title={`${this.props.deployment.name} / http`}
+          subtitle={'Not connected to Git'}
+        />
         { content }
       </div>
     )

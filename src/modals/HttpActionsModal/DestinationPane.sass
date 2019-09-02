@@ -1,3 +1,4 @@
+@import './../../assets/constants'
 
 .inputLine
   composes: inputLine from './../../assets/input-combos.sass'
@@ -18,3 +19,15 @@
 
 .label
   width: 130px
+
+.historyRow
+  margin-top: 34px
+  display: inline-flex
+  justify-items: start
+  &:hover
+    background: $content-background-color
+    cursor: pointer
+
+.expand
+  margin-top: -3px
+  transform: rotate(90deg)

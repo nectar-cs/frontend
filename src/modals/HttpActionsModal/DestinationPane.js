@@ -32,6 +32,14 @@ export default class DestinationPane extends React.Component {
             { DestinationPane.verbOptions() }
           </select>
         </div>
+
+        <div className={s.historyRow}>
+          <p>Choose from history</p>
+          <i className={`${s.expand} material-icons`}>arrow_right</i>
+        </div >
+
+
+
       </Fragment>
     )
   }
