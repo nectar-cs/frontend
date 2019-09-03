@@ -50,6 +50,7 @@ export default class HistoryList extends React.Component {
   renderItems(){
     return this.state.history.map(h => (
       <HistoryRow
+        key={h['id']}
         id={h['id']}
         {...h['extras']}
         callback={this.props.onItemSelectedCallback}

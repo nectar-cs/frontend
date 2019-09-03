@@ -24,7 +24,8 @@ export default class Tabs extends React.Component {
   }
 
   onTabSelected(index){
-    this.setState(s => ({...s, selectedInd: index}))
+    this.setState(s => ({...s, selectedInd: index}));
+    this.props.onTabChanged && this.props.onTabChanged(index);
   }
 
   renderTab(tab, index){
@@ -41,7 +42,8 @@ export default class Tabs extends React.Component {
 
   static propTypes = {
     tabs: PropTypes.arrayOf(PropTypes.string).isRequired,
-    selectedInd: PropTypes.number
+    selectedInd: PropTypes.number,
+    onTabChanged: PropTypes.func
   }
 
 }

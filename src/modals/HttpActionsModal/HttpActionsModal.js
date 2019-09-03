@@ -40,6 +40,7 @@ export default class HttpActionsModal extends React.Component {
       labelCombos: [],
       phase: 'editing',
       httpResp: {body: sampleOut},
+      showHistory: true
     };
 
     this._isMounted = true;
@@ -98,8 +99,17 @@ export default class HttpActionsModal extends React.Component {
   renderEditPhase(){
     return(
       <Fragment>
-        { this.renderTabs() }
+        { this.renderRequestTabs() }
         { this.renderHistory() }
+        { this.renderRunButton() }
+      </Fragment>
+    )
+  }
+
+  renderResponsePhase(){
+    return(
+      <Fragment>
+        { this.renderResponseTabs() }
         { this.renderRunButton() }
       </Fragment>
     )
@@ -110,38 +120,43 @@ export default class HttpActionsModal extends React.Component {
   }
 
   renderHistory(){
-    const historyCallbackSetter = (cb) => { this.historyCallback = cb; };
-    return(
-      <HistoryList
-        name={this.props.deployment.name}
-        namespace={this.props.deployment.namespace}
-        onItemSelectedCallback={this.onHistoryItemSelected}
-        historyCallbackSetter={historyCallbackSetter}
-      />
-    )
+    if(this.state.showHistory){
+      const historyCallbackSetter = (cb) => { this.historyCallback = cb; };
+      return(
+        <HistoryList
+          name={this.props.deployment.name}
+          namespace={this.props.deployment.namespace}
+          onItemSelectedCallback={this.onHistoryItemSelected}
+          historyCallbackSetter={historyCallbackSetter}
+        />
+      )
+    } else return null;
   }
 
-  renderResponsePhase(){
+  renderResponseTabs(){
     return (
-      <Fragment>
-        <Tabs tabs={['Body', 'Headers', 'Raw']} selectedInd={0}>
-          <BodyResponseView body={this.state.httpResp.body}/>
-          <HeadersResponseView headers={this.state.httpResp.headers}/>
-          <RawResponseView raw={this.state.httpResp.raw}/>
-        </Tabs>
-        { this.renderRunButton() }
-      </Fragment>
+      <Tabs
+        tabs={['Body', 'Headers', 'Raw']}
+        selectedInd={0}>
+        <BodyResponseView body={this.state.httpResp.body}/>
+        <HeadersResponseView headers={this.state.httpResp.headers}/>
+        <RawResponseView raw={this.state.httpResp.raw}/>
+      </Tabs>
     )
   }
 
-  renderTabs(){
+  renderRequestTabs(){
     const destCallback = a => this.onGroupFieldChanged('destination', a);
     const srcCallback = a => this.onGroupFieldChanged('source', a);
     const headCallback = (headerText) => this.setState(s => ({...s, headerText}));
     const bodyCallback = (bodyText) => this.setState(s => ({...s, bodyText}));
+    const onChange = (i) => { this.setState(s => ({...s, showHistory: i === 0})) };
 
     return(
-      <Tabs tabs={REQUEST_TAB_NAMES} selectedInd={0}>
+      <Tabs
+        tabs={REQUEST_TAB_NAMES}
+        selectedInd={0}
+        onTabChanged={onChange}>
         <DestinationPane
           onFieldChanged={destCallback}
           services={this.props.deployment.services}
