@@ -15,12 +15,12 @@ export const LineInput = styled.input`
   border-width: 0 0 1px 0;
   padding-left: 0;
   border-radius: 0;
-  margin: 0
+  margin: 0;
+  color: ${p => p.theme.colors.primaryFont};
 `;
 
 export const LineTextInput = styled.input`
 `.withComponent(LineInput);
-
 
 export const LineSelect = styled.select`
 `.withComponent(LineInput);

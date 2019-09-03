@@ -17,6 +17,7 @@ export default class ImageActionsModal extends React.Component {
     this.state = {
       config: {
         operationType: 'reload',
+        imageName: props.deployment.imageName
       },
       phase: PHASE_CONFIG
     }
@@ -52,6 +53,7 @@ export default class ImageActionsModal extends React.Component {
     return(
       <ImageForm
         operationType={this.state.config.operationType}
+        imageName={this.state.config.imageName}
         onAssignment={(a) => this.onAssignment(a)}
       />
     )
@@ -81,7 +83,8 @@ export default class ImageActionsModal extends React.Component {
   }
 
   onAssignment(assignment){
-    this.setState(s => ({...s, config: {...s.config, ...assignment}}));
+    const merged = {...this.state.config, ...assignment};
+    this.setState(s => ({...s, config: merged}));
   }
 
   static propTypes = {

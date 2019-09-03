@@ -5,6 +5,8 @@ import {InputLine, LineInput, LineLabel} from "../../assets/input-combos";
 import {theme} from "../../assets/constants";
 import {ThemeProvider} from "styled-components";
 import MiscUtils from "../../utils/MiscUtils";
+import {Warning} from "./ImageFormStyles";
+import { defaults } from './defaults'
 
 export default class ImageForm extends React.Component {
   render(){
@@ -12,10 +14,8 @@ export default class ImageForm extends React.Component {
       <ThemeProvider theme={theme}>
         <Fragment>
           { this.renderTypeLine() }
-          <InputLine>
-            <LineLabel>Image Name</LineLabel>
-            <LineInput as='input'/>
-          </InputLine>
+          { this.renderImageNameLine() }
+          { this.renderWarnings() }
         </Fragment>
       </ThemeProvider>
     )
@@ -35,13 +35,35 @@ export default class ImageForm extends React.Component {
     )
   }
 
+  renderWarnings(){
+    return(
+      <Fragment>
+        <Warning>{defaults.copy.warningOne}</Warning>
+      </Fragment>
+    )
+  }
+
+  renderImageNameLine(){
+    return(
+      <InputLine>
+        <LineLabel>Image Name</LineLabel>
+        <LineInput
+          disabled={this.props.operationType !== 'change'}
+          value={this.props.imageName}
+          onChange={(e) => this.onAssignment('imageName', e)}/>
+      </InputLine>
+    )
+  }
+
   onAssignment(name, event){
     this.props.onAssignment({ [name]: event.target.value });
   }
 
   static options(){
     return MiscUtils.hashOptions({
-      reload: "Force pull image with same name on all pods",
+      reload: "Force pull & apply an image with the same name",
+      change: "Supply a new image name",
+      choose: "Choose from popular images like nginx",
       docker: "Choose a docker image from your remote registry",
       git: "Build an image from a git remote"
     })
