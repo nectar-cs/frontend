@@ -89,41 +89,53 @@ export default class HistoryList extends React.Component {
 
 class HistoryRow extends React.Component {
 
+  shortenVerb(verb){
+    if(verb.toLowerCase() === 'delete')
+      verb = 'del';
+    else if(verb.toLowerCase() === 'patch')
+      verb = 'ptch';
+    else if(verb.toLowerCase() === 'options')
+      verb = 'opts';
+
+    return verb.toUpperCase();
+  }
+
   render(){
-    let { path, host, verb, status, senderNs, senderType } = this.props;
+    let { source, destination, status, bodyText, headerText } = this.props;
+    let { type, namespace } = source;
+    let { path, host, verb } = destination;
+    const back = { source, destination, bodyText, headerText };
+
     host = host.replace("http://", "");
     const Td = (p) => <td className={s.row}>{p.children}</td>;
     const statCol = MiscUtils.statusCodeColors(status);
     const verbCol = MiscUtils.httpVerbColors(verb);
-    const callback = () => this.props.callback(this.props);
+    const callback = () => this.props.callback(back);
+    verb = this.shortenVerb(verb);
 
     return(
       <tr className={s.wholeRow} onClick={callback}>
         <Td><p className={s.url}>{host}{path}</p></Td>
         <Td><p className={`${s.verb} ${verbCol}`}>{verb}</p></Td>
-        <Td><p>{senderNs} / {senderType}</p></Td>
+        <Td><p>{namespace} / {type}</p></Td>
         <Td><p className={`${s.verb} ${statCol}`}>{status}</p></Td>
       </tr>
     )
   }
 
   static propTypes = {
-    path: PropTypes.string.isRequired,
-    verb: PropTypes.string.isRequired,
-    headers: PropTypes.arrayOf(PropTypes.string),
-    body: PropTypes.string,
+    destination: PropTypes.shape({
+      path: PropTypes.string.isRequired,
+      verb: PropTypes.string.isRequired,
+      host: PropTypes.string.isRequired
+    }).isRequired,
+    source: PropTypes.shape({
+      namespace: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired
+    }).isRequired,
+    headerText: PropTypes.string,
+    headerBody: PropTypes.string,
     lastStatus: PropTypes.number,
     historyCallbackSetter: PropTypes.func.isRequired
   };
-}
-
-function HistoryHeaderRow() {
-  return(
-    <tr>
-      <th><p>Address</p></th>
-      <th><p>Verb</p></th>
-      <th><p>Sender</p></th>
-      <th><p>Outcome</p></th>
-    </tr>
-  )
 }

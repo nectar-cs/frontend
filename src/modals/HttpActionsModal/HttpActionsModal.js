@@ -237,12 +237,9 @@ export default class HttpActionsModal extends React.Component {
     let args = `dep_name=${this.props.deployment.name}`;
     args = `${args}&dep_namespace=${this.props.deployment.namespace}`;
     args = `${args}&kind=http_requests`;
-
-    const {verb, path, host } = this.state.destination;
+    const { source, destination, headerText, bodyText } = this.state;
     const backendPayload = {
-      verb, path, host,
-      senderNs: this.state.source.namespace,
-      senderType: this.state.source.type,
+      source, destination, headerText, bodyText,
       status: status
     };
 
@@ -254,18 +251,14 @@ export default class HttpActionsModal extends React.Component {
   }
 
   onHistoryItemSelected(data){
-    const { path, verb, host } = data;
-    const destination = { path, verb, host };
-    const source = { type: data.senderType, namespace: data.senderNs };
+    const { source, destination, bodyText, headerText } = data;
     this.setState(s => ({
-      ...s,
-      destination,
-      source: { ...s.source, ...source }
+      ...s, source, destination, bodyText, headerText
     }))
   }
 
   enterEditState(){
-    this.setState((s) => ({...s, phase: 'editing'}))
+    this.setState((s) => ({...s, phase: 'editing', showHistory: true}))
   }
 
   renderRunButton(){

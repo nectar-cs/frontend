@@ -4,6 +4,8 @@ import s from './DestinationPane.sass'
 import MiscUtils from "../../utils/MiscUtils";
 import {Service} from "../../types/Deployment";
 
+const HTTP_VERBS = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'];
+
 export default class DestinationPane extends React.Component {
 
   render(){
@@ -29,17 +31,11 @@ export default class DestinationPane extends React.Component {
             className={s.verbSelect}
             value={this.props.verb}
             onChange={(e) => this.broadcastChange('verb', e)}>
-            { DestinationPane.verbOptions() }
+            { MiscUtils.arrayOptions(HTTP_VERBS) }
           </select>
         </div>
       </Fragment>
     )
-  }
-
-  static verbOptions(){
-    return MiscUtils.arrayOptions([
-      'GET', 'POST'
-    ]);
   }
 
   hostOptions(){
@@ -69,7 +65,7 @@ export default class DestinationPane extends React.Component {
     onFieldChanged: PropTypes.func.isRequired,
     host: PropTypes.string,
     path: PropTypes.string,
-    verb: PropTypes.oneOf(['GET', 'POST']),
+    verb: PropTypes.oneOf(HTTP_VERBS),
     services: PropTypes.arrayOf(Service)
   }
 }
