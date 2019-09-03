@@ -7,6 +7,7 @@ import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal"
 import PortActionsModal from "../../../modals/PortActionsModal/PortActionsModal";
 import CardRow from "./CardRow";
 import {FULL_DEPLOYMENT} from "../../../types/Deployment";
+import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
 
 export default class DeploymentCard extends React.Component {
 
@@ -23,7 +24,7 @@ export default class DeploymentCard extends React.Component {
   componentDidMount(){
     if(this.props.deployment.name === 'ruby-cluster'){
       const bun = { deployment: this.props.deployment };
-      this.props.openModal(HttpActionsModal, bun)
+      this.props.openModal(ImageActionsModal, bun)
     }
   }
 
@@ -48,10 +49,11 @@ export default class DeploymentCard extends React.Component {
     const portText = `${svc.toPort} <- ${svc.fromPort}`;
     const dnsAction = () => this.openHttpModal(svc.shortDns);
     const ipAction = () => this.openHttpModal(svc.internalIp);
+    const imageAction = () => this.openImageModal();
 
     return <table className={s.contentRows}>
       <tbody>
-        { this.buildRow('Image', dep.imageName, PortActionsModal) }
+        { this.buildRow('Image', dep.imageName, imageAction) }
         { this.buildRow('Ports', portText, PortActionsModal) }
         { this.buildRow('Dns', svc.shortDns, dnsAction) }
         { this.buildRow(ipLabel, ipText, ipAction) }
@@ -68,6 +70,11 @@ export default class DeploymentCard extends React.Component {
     };
 
     this.props.openModal(HttpActionsModal, bundle);
+  }
+
+  openImageModal(){
+    const bundle = { deployment: this.props.deployment };
+    this.props.openModal(ImageActionsModal, bundle);
   }
 
   buildRow(label, text, openModalFunc){

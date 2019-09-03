@@ -1,6 +1,6 @@
 import React from 'react'
 import s from './KubeErrorModal.sass'
-import {ICON as TYPE_ICON, LeftHeader} from "../LeftHeader/LeftHeader";
+import LeftHeader, {ICON as TYPE_ICON } from "../LeftHeader/LeftHeader";
 import ModalButton from "../Buttons/ModalButton";
 import {Redirect} from "react-router";
 import {ROUTES} from "../../containers/RoutesConsts";

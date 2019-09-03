@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Separator, Tab, TabsLayout} from "../../modals/HttpActionsModal/TabStyles";
+import {Separator, Tab, TabsLayout} from "./TabStyles";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
 
@@ -48,5 +48,4 @@ export default class Tabs extends React.Component {
     selectedInd: PropTypes.number,
     onTabChanged: PropTypes.func
   }
-
 }

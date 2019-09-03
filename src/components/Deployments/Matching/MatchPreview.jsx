@@ -1,5 +1,5 @@
 import React from 'react';
-import { LeftHeader } from '../../../widgets/LeftHeader/LeftHeader';
+import LeftHeader from '../../../widgets/LeftHeader/LeftHeader';
 import PropTypes from 'prop-types'
 import MiscUtils from '../../../utils/MiscUtils';
 import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';

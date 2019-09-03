@@ -88,7 +88,7 @@ export default class HttpActionsModal extends React.Component {
       <div className={s.modal}>
         <LeftHeader
           graphicName={MiscUtils.frameworkImage('docker')}
-          title={`${this.props.deployment.name} / http`}
+          title={`${this.props.deployment.name} / http ops`}
           subtitle={'Not connected to Git'}
         />
         { content }
