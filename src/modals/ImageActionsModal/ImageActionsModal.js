@@ -8,7 +8,7 @@ import ImageForm from "./ImageForm";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
 import Kapi from "../../utils/Kapi";
-import ImageReplaceTable from "./ImageReplaceTable";
+import PodTable from "./PodTable";
 import {defaults} from "./defaults";
 import Checklist from "./Checklist";
 import ImageReplaceChecklistManager from "./ImageReplaceChecklist";
@@ -73,14 +73,15 @@ export default class ImageActionsModal extends React.Component {
   }
 
   renderChecklist(){
-    if(!this.state.submitting) return;
-
+    // if(!this.state.submitting) return;
+    return null;
     return <Checklist
       items={ImageReplaceChecklistManager.generate()}
     />
   }
 
   renderConfigPhase(){
+    if(this.state.submitting) return null;
     return(
       <ImageForm
         operationType={this.state.config.operationType}
@@ -97,8 +98,12 @@ export default class ImageActionsModal extends React.Component {
     );
 
     return(
-      <ImageReplaceTable
+      <PodTable
         pods={pods}
+        fields={['Name', 'State', 'Image']}
+        mappers={[
+          (p) => p.name, (p) => p.state, (p) => p.imageName,
+        ]}
       />
     )
   }
@@ -129,6 +134,7 @@ export default class ImageActionsModal extends React.Component {
     const endpoint = '/api/run/image_reload';
     this.setState(s => ({...s, submitting: true}));
     Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
+    Helper.reloadPods(this, true);
   }
 
   onAssignment(assignment){

@@ -14,6 +14,13 @@ export class ImageActionsModalHelper {
       runAfter && runAfter();
     })
   }
+
+  static reloadPods(inst, force){
+    if(force || inst.props.submitting){
+      let repeat = () => setTimeout(this.reloadPods, 1000);
+      this.fetchPods(inst, 'updatedPods', repeat)
+    }
+  }
 }
 
 export class ReplaceImageHelper {
@@ -31,7 +38,7 @@ export class ReplaceImageHelper {
   }
 
   static strictlyNewPods(initialPods, updatedPods){
-    if(updatedPods === null) return [];
+    if(updatedPods === null) return null;
 
     const oldNames = initialPods.map(op => op.name);
     return updatedPods.filter(newPod => (
@@ -43,7 +50,7 @@ export class ReplaceImageHelper {
     const initial = initialPods;
     const updated = this.strictlyNewPods(initial, updatedPods);
     const enrichedOldPods = initial.map(p => this.enrichOldPod(updated, p));
-    const enrichedNewPods = updated.map(p => this.enrichNewPod(p));
+    const enrichedNewPods = (updated || []).map(p => this.enrichNewPod(p));
     return enrichedOldPods.concat(enrichedNewPods);
   }
 }
