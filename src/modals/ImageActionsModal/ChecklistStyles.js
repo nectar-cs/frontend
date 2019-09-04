@@ -22,10 +22,11 @@ export const Detail = styled.p`
 `;
 
 export const Icon = styled.div`
-  margin-left: 12px;
+  margin-left: 24px;
   font-size: 21px;
 `;
 
 export const Spinner = styled(TinySpinner)`
-  margin-left: 12px;
+  margin-left: 24px;
+  transform: translateY(-3px);
 `;

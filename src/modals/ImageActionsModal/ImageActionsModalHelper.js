@@ -76,11 +76,13 @@ export class SameImageHelper {
     return false;
   }
 
-  static progressItems(){
+  static progressItems(initial, updated){
+    // const enrichedOldPods = initial.map(p => this.enrichOldPod(updated, p));
+
     return [
-      { name: "Old pods all gone", detail: "1/3", status: 'working' },
-      { name: "New pods all created", detail: "2/2", status: 'done' },
-      { name: "New pods all running", detail: '2/2', status: 'failed' },
+      { name: "Old pods gone", detail: "1/3", status: 'working' },
+      { name: "New pods created", detail: "2/2", status: 'done' },
+      { name: "New pods running", detail: '2/2', status: 'failed' },
     ];
   }
 }

@@ -27,11 +27,11 @@ export const LoadingSpinner = styled.div`
 `;
 
 export const TinySpinner = styled(LoadingSpinner)`
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   &:after{
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-width: 2px;
   }    
 `;
