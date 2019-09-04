@@ -34,6 +34,7 @@ export default class ImageActionsModal extends React.Component {
       updatedPods: null
     };
     this._isMounted = true;
+    this.repeater = this.repeater.bind(this);
     this.reloadPods = this.reloadPods.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
     this.onFailure = this.onFailure.bind(this);
@@ -150,10 +151,18 @@ export default class ImageActionsModal extends React.Component {
     this.reloadPods(true);
   }
 
+  repeater(updatedPods){
+    const { initialPods } = this.state;
+    const podManager = Helper.podSource(this);
+    if(podManager.isStableState(initialPods, updatedPods)){
+      console.log("STABLE STATE! STOP!");
+      this.setState(s => ({...s, phase: PHASE_CONCLUDED}));
+    } else setTimeout(this.reloadPods, 1000);
+  }
+
   reloadPods(force){
     if(force || this.isSubmitted()){
-      let repeat = () => setTimeout(this.reloadPods, 1000);
-      Helper.fetchPods(this, 'updatedPods', repeat)
+      Helper.fetchPods(this, 'updatedPods', this.repeater)
     }
   }
 

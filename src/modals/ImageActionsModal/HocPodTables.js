@@ -24,7 +24,7 @@ export function DesiredStatePodTable(props){
       mappers={[
         (p) => <p>{p.name}</p>,
         (p) => <CleanStatus>{p.state}</CleanStatus>,
-        (p) => <p>{p.desiredState}</p>,
+        (p) => <CleanStatus>{p.desiredState}</CleanStatus>,
       ]}
     />
   )

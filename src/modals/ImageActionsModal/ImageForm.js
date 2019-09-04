@@ -23,7 +23,7 @@ export default class ImageForm extends React.Component {
   renderTypeLine(){
     return(
       <InputLine>
-        <LineLabel>Operation Type</LineLabel>
+        <LineLabel>I want to</LineLabel>
         <LineInput
           as='select'
           value={this.props.operationType}
@@ -54,6 +54,7 @@ export default class ImageForm extends React.Component {
     return MiscUtils.hashOptions({
       reload: "Force pull & apply an image with the same name",
       change: "Supply a new image name",
+      scale: "Change the number of pods, i.e 'scale' ",
       choose: "Choose from popular images like nginx",
       docker: "Choose a docker image from your remote registry",
       git: "Build an image from a git remote"

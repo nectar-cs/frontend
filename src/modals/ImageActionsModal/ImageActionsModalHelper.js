@@ -14,13 +14,14 @@ export class ImageActionsModalHelper {
       const data = DataUtils.objKeysToCamel(resp)['data'];
       console.table(data);
       inst.setState(s => ({...s, [field]: data}));
-      runAfter && runAfter();
+      runAfter && runAfter(data);
     })
   }
 
   static podSource(inst){
-    if(inst.isConfiguring()) return StdImageHelper;
-    else if(inst.isSubmitted() || inst.isConcluded()){
+    if(inst.isConfiguring())
+      return StdImageHelper;
+    else{
       if(inst.isReload()) return SameImageHelper;
       else return ChangeImageHelper;
     }
@@ -64,6 +65,16 @@ export class SameImageHelper {
     const enrichedOldPods = initial.map(p => this.enrichOldPod(updated, p));
     const enrichedNewPods = (updated || []).map(p => this.enrichNewPod(p));
     return enrichedOldPods.concat(enrichedNewPods);
+  }
+
+  static isStableState(initial, updated){
+    updated = this.strictlyNewPods(initial, updated);
+    const updatedPodStates = updated.map(p => p.state.toLowerCase());
+    const synthList = [...new Set(updatedPodStates)];
+
+    if(initial.length === updated.length)
+      return synthList.length === 1 && synthList[0] === 'running';
+    return false;
   }
 }
 
