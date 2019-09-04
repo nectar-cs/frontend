@@ -9,6 +9,10 @@ import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
 import Kapi from "../../utils/Kapi";
 import ImageReplaceTable from "./ImageReplaceTable";
+import {defaults} from "./defaults";
+import Checklist from "./Checklist";
+import ImageReplaceChecklistManager from "./ImageReplaceChecklist";
+import {ImageActionsModalHelper as Helper, ReplaceImageHelper} from "./ImageActionsModalHelper";
 
 const PHASE_CONFIG = 'configuring';
 
@@ -22,11 +26,18 @@ export default class ImageActionsModal extends React.Component {
         imageName: props.deployment.imageName
       },
       phase: PHASE_CONFIG,
-      autoUpdate: false
+      submitting: false,
+      initialPods: [],
+      updatedPods: null
     };
-
+    this._isMounted = false;
     this.onSuccess = this.onSuccess.bind(this);
     this.onFailure = this.onFailure.bind(this);
+  }
+
+  componentDidMount(){
+    this._isMounted = true;
+    Helper.fetchPods(this, 'initialPods')
   }
 
   render(){
@@ -35,34 +46,12 @@ export default class ImageActionsModal extends React.Component {
         <Container>
           { this.renderHeader() }
           { this.renderIntro() }
-          { this.renderOptionsForm() }
+          { this.renderChecklist() }
+          { this.renderConfigPhase() }
           { this.renderPodList() }
           { this.renderButton() }
         </Container>
       </ThemeProvider>
-    )
-  }
-
-  renderIntro(){
-    return(
-      <Intro>You can set a new image or force
-        apply one with the same name.</Intro>
-    )
-  }
-
-  renderOptionsForm(){
-    if(this.state.phase === PHASE_CONFIG)
-      return this.renderConfigPhase();
-    else return null;
-  }
-
-  renderConfigPhase(){
-    return(
-      <ImageForm
-        operationType={this.state.config.operationType}
-        imageName={this.state.config.imageName}
-        onAssignment={(a) => this.onAssignment(a)}
-      />
     )
   }
 
@@ -76,12 +65,40 @@ export default class ImageActionsModal extends React.Component {
     )
   }
 
+  renderIntro(){
+    const key = this.state.submitting ? 'postSubmit' : 'preSubmit';
+    return(
+      <Intro>{defaults.copy.intro[key]}</Intro>
+    )
+  }
+
+  renderChecklist(){
+    if(!this.state.submitting) return;
+
+    return <Checklist
+      items={ImageReplaceChecklistManager.generate()}
+    />
+  }
+
+  renderConfigPhase(){
+    return(
+      <ImageForm
+        operationType={this.state.config.operationType}
+        imageName={this.state.config.imageName}
+        onAssignment={(a) => this.onAssignment(a)}
+      />
+    )
+  }
+
   renderPodList(){
+    const pods = ReplaceImageHelper.buildPodList(
+      this.state.initialPods,
+      this.state.updatedPods
+    );
+
     return(
       <ImageReplaceTable
-        depNamespace={this.props.deployment.namespace}
-        depName={this.props.deployment.name}
-        autoUpdate={this.state.autoUpdate}
+        pods={pods}
       />
     )
   }
@@ -110,7 +127,7 @@ export default class ImageActionsModal extends React.Component {
     };
 
     const endpoint = '/api/run/image_reload';
-    this.setState(s => ({...s, autoUpdate: !s.autoUpdate}));
+    this.setState(s => ({...s, submitting: true}));
     Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
   }
 
