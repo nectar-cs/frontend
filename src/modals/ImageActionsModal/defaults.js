@@ -4,8 +4,8 @@ export const defaults ={
   copy: {
     warningOne: (
       <Fragment>
-        <b>Important.</b> If anything goes wrong, or your image fails,
-        your deployment will be left offline.
+        <b>Important.</b> If anything goes wrong, or if your image fails,
+        your app may go offline.
       </Fragment>
     ),
     risks: (

@@ -7,6 +7,8 @@ import ModalButton from "../../widgets/Buttons/ModalButton";
 import ImageForm from "./ImageForm";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
+import Kapi from "../../utils/Kapi";
+import ImageReplaceTable from "./ImageReplaceTable";
 
 const PHASE_CONFIG = 'configuring';
 
@@ -19,8 +21,12 @@ export default class ImageActionsModal extends React.Component {
         operationType: 'reload',
         imageName: props.deployment.imageName
       },
-      phase: PHASE_CONFIG
-    }
+      phase: PHASE_CONFIG,
+      autoUpdate: false
+    };
+
+    this.onSuccess = this.onSuccess.bind(this);
+    this.onFailure = this.onFailure.bind(this);
   }
 
   render(){
@@ -29,7 +35,8 @@ export default class ImageActionsModal extends React.Component {
         <Container>
           { this.renderHeader() }
           { this.renderIntro() }
-          { this.renderContent() }
+          { this.renderOptionsForm() }
+          { this.renderPodList() }
           { this.renderButton() }
         </Container>
       </ThemeProvider>
@@ -43,7 +50,7 @@ export default class ImageActionsModal extends React.Component {
     )
   }
 
-  renderContent(){
+  renderOptionsForm(){
     if(this.state.phase === PHASE_CONFIG)
       return this.renderConfigPhase();
     else return null;
@@ -69,6 +76,16 @@ export default class ImageActionsModal extends React.Component {
     )
   }
 
+  renderPodList(){
+    return(
+      <ImageReplaceTable
+        depNamespace={this.props.deployment.namespace}
+        depName={this.props.deployment.name}
+        autoUpdate={this.state.autoUpdate}
+      />
+    )
+  }
+
   renderButton(){
     return(
       <ModalButton
@@ -78,8 +95,23 @@ export default class ImageActionsModal extends React.Component {
     )
   }
 
-  submit(){
+  onFailure(){
+    console.log("Failure");
+  }
 
+  onSuccess(){
+    console.log("Success");
+  }
+
+  submit() {
+    const payload = {
+      dep_namespace: this.props.deployment.namespace,
+      dep_name: this.props.deployment.name
+    };
+
+    const endpoint = '/api/run/image_reload';
+    this.setState(s => ({...s, autoUpdate: !s.autoUpdate}));
+    Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
   }
 
   onAssignment(assignment){
