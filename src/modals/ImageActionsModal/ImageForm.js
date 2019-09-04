@@ -1,12 +1,9 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {} from './ImageFormStyles'
 import {InputLine, LineInput, LineLabel} from "../../assets/input-combos";
 import {theme} from "../../assets/constants";
 import {ThemeProvider} from "styled-components";
 import MiscUtils from "../../utils/MiscUtils";
-import {Warning} from "./ImageFormStyles";
-import { defaults } from './defaults'
 
 export default class ImageForm extends React.Component {
   render(){

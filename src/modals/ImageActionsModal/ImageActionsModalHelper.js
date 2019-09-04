@@ -1,6 +1,5 @@
 import Kapi from "../../utils/Kapi";
 import DataUtils from "../../utils/DataUtils";
-import PodTable from "./PodTable";
 import React from "react";
 import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./HocPodTables";
 
@@ -75,6 +74,14 @@ export class SameImageHelper {
     if(initial.length === updated.length)
       return synthList.length === 1 && synthList[0] === 'running';
     return false;
+  }
+
+  static progressItems(){
+    return [
+      { name: "Old pods all gone", detail: "1/3", status: 'working' },
+      { name: "New pods all created", detail: "2/2", status: 'done' },
+      { name: "New pods all running", detail: '2/2', status: 'failed' },
+    ];
   }
 }
 

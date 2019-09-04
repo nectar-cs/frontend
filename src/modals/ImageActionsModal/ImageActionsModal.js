@@ -10,7 +10,6 @@ import {theme} from "../../assets/constants";
 import Kapi from "../../utils/Kapi";
 import {defaults} from "./defaults";
 import Checklist from "./Checklist";
-import ImageReplaceChecklistManager from "./ImageReplaceChecklist";
 import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
@@ -29,7 +28,7 @@ export default class ImageActionsModal extends React.Component {
         operationType: 'reload',
         imageName: props.deployment.imageName
       },
-      phase: PHASE_CONFIG,
+      phase: PHASE_SUBMITTED,
       initialPods: [],
       updatedPods: null
     };
@@ -83,10 +82,11 @@ export default class ImageActionsModal extends React.Component {
   renderIntro(){
     if(this.isSubmitting()) return null;
     const introCopy = defaults.copy.intro.preSubmit;
+    const title = this.isConfiguring() ? 'Options' : 'Progress';
 
     return(
       <Fragment>
-        <TextOverLineSubtitle text='Options'/>
+        <TextOverLineSubtitle text={title}/>
         {  this.isConfiguring() ? <Intro>{introCopy}</Intro> : null }
       </Fragment>
     )
@@ -94,8 +94,9 @@ export default class ImageActionsModal extends React.Component {
 
   renderChecklist(){
     if(this.isSubmitted() || this.isConcluded()){
+      const operationHelper = Helper.podSource(this);
       return <Checklist
-        items={ImageReplaceChecklistManager.generate()}
+        items={operationHelper.progressItems()}
       />
     } else return null;
   }
