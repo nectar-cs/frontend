@@ -28,7 +28,7 @@ export default class ImageActionsModal extends React.Component {
         operationType: 'reload',
         imageName: props.deployment.imageName
       },
-      phase: PHASE_SUBMITTED,
+      phase: PHASE_CONFIG,
       initialPods: [],
       updatedPods: null
     };

@@ -76,13 +76,36 @@ export class SameImageHelper {
     return false;
   }
 
+  static deadPods(initial, updated){
+    if(updated.length < initial.length) return [];
+
+    return initial.filter(initialPod => (
+      !updated.includes(initialPod)
+    ));
+  }
+
   static progressItems(initial, updated){
-    // const enrichedOldPods = initial.map(p => this.enrichOldPod(updated, p));
+    const dead = this.deadPods(initial, updated);
+    const created = this.strictlyNewPods(initial, updated);
+    const running = created.filter(p => p.state.toLowerCase() === 'running');
+    const status = (bool) => bool ? 'done' : 'working';
 
     return [
-      { name: "Old pods gone", detail: "1/3", status: 'working' },
-      { name: "New pods created", detail: "2/2", status: 'done' },
-      { name: "New pods running", detail: '2/2', status: 'failed' },
+      {
+        name: "Old pods gone",
+        detail: `${dead.length}/${initial.length}`,
+        status: status(dead.length === initial.length)
+      },
+      {
+        name: "New pods created",
+        detail: `${created.length}/${initial.length}`,
+        status: status(created.length === initial.length)
+      },
+      {
+        name: "New pods running",
+        detail: `${running.length}/${initial.length}`,
+        status: status(running.length === initial.length)
+      },
     ];
   }
 }
