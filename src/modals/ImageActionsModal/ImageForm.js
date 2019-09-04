@@ -15,7 +15,6 @@ export default class ImageForm extends React.Component {
         <Fragment>
           { this.renderTypeLine() }
           { this.renderImageNameLine() }
-          { this.renderWarnings() }
         </Fragment>
       </ThemeProvider>
     )
@@ -32,14 +31,6 @@ export default class ImageForm extends React.Component {
           { ImageForm.options() }
         </LineInput>
       </InputLine>
-    )
-  }
-
-  renderWarnings(){
-    return(
-      <Fragment>
-        <Warning>{defaults.copy.warningOne}</Warning>
-      </Fragment>
     )
   }
 

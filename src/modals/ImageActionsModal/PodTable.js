@@ -36,7 +36,7 @@ export default class PodTable extends React.Component {
 
 function PodRow(props){
   const fields = props.mappers.map((mapper, i) => (
-    <td key={i}><p>{mapper(props.pod)}</p></td>
+    <td key={i}>{mapper(props.pod)}</td>
   ));
 
   return(

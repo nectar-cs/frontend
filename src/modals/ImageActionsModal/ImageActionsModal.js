@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {Container, Intro} from "./ImageActionsModalStyles";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
@@ -8,13 +8,17 @@ import ImageForm from "./ImageForm";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
 import Kapi from "../../utils/Kapi";
-import PodTable from "./PodTable";
 import {defaults} from "./defaults";
 import Checklist from "./Checklist";
 import ImageReplaceChecklistManager from "./ImageReplaceChecklist";
-import {ImageActionsModalHelper as Helper, ReplaceImageHelper} from "./ImageActionsModalHelper";
+import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 
 const PHASE_CONFIG = 'configuring';
+const PHASE_SUBMITTING = 'submitting';
+const PHASE_SUBMITTED = 'submitted';
+const PHASE_CONCLUDED = 'concluded';
 
 export default class ImageActionsModal extends React.Component {
 
@@ -26,18 +30,21 @@ export default class ImageActionsModal extends React.Component {
         imageName: props.deployment.imageName
       },
       phase: PHASE_CONFIG,
-      submitting: false,
       initialPods: [],
       updatedPods: null
     };
-    this._isMounted = false;
+    this._isMounted = true;
+    this.reloadPods = this.reloadPods.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
     this.onFailure = this.onFailure.bind(this);
   }
 
   componentDidMount(){
-    this._isMounted = true;
     Helper.fetchPods(this, 'initialPods')
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   render(){
@@ -45,6 +52,7 @@ export default class ImageActionsModal extends React.Component {
       <ThemeProvider theme={theme}>
         <Container>
           { this.renderHeader() }
+          { this.renderLoader() }
           { this.renderIntro() }
           { this.renderChecklist() }
           { this.renderConfigPhase() }
@@ -65,23 +73,34 @@ export default class ImageActionsModal extends React.Component {
     )
   }
 
+  renderLoader(){
+    if(this.isSubmitting())
+      return <CenterLoader/>;
+    else return null;
+  }
+
   renderIntro(){
-    const key = this.state.submitting ? 'postSubmit' : 'preSubmit';
+    if(this.isSubmitting()) return null;
+    const introCopy = defaults.copy.intro.preSubmit;
+
     return(
-      <Intro>{defaults.copy.intro[key]}</Intro>
+      <Fragment>
+        <TextOverLineSubtitle text='Options'/>
+        {  this.isConfiguring() ? <Intro>{introCopy}</Intro> : null }
+      </Fragment>
     )
   }
 
   renderChecklist(){
-    // if(!this.state.submitting) return;
-    return null;
-    return <Checklist
-      items={ImageReplaceChecklistManager.generate()}
-    />
+    if(this.isSubmitted() || this.isConcluded()){
+      return <Checklist
+        items={ImageReplaceChecklistManager.generate()}
+      />
+    } else return null;
   }
 
   renderConfigPhase(){
-    if(this.state.submitting) return null;
+    if(!this.isConfiguring()) return null;
     return(
       <ImageForm
         operationType={this.state.config.operationType}
@@ -92,20 +111,12 @@ export default class ImageActionsModal extends React.Component {
   }
 
   renderPodList(){
-    const pods = ReplaceImageHelper.buildPodList(
-      this.state.initialPods,
-      this.state.updatedPods
-    );
-
-    return(
-      <PodTable
-        pods={pods}
-        fields={['Name', 'State', 'Image']}
-        mappers={[
-          (p) => p.name, (p) => p.state, (p) => p.imageName,
-        ]}
-      />
-    )
+    if(this.isSubmitting()) return null;
+    const { initialPods, updatedPods } = this.state;
+    const podsFilter = Helper.podSource(this);
+    const pods = podsFilter.buildPodList(initialPods, updatedPods);
+    const PodTableRenderer = Helper.podsRenderer(this);
+    return <PodTableRenderer pods={pods}/>;
   }
 
   renderButton(){
@@ -119,10 +130,12 @@ export default class ImageActionsModal extends React.Component {
 
   onFailure(){
     console.log("Failure");
+    this.setState(s => ({...s,  phase: PHASE_SUBMITTED}));
   }
 
   onSuccess(){
     console.log("Success");
+    this.setState(s => ({...s, phase: PHASE_SUBMITTED}));
   }
 
   submit() {
@@ -132,10 +145,23 @@ export default class ImageActionsModal extends React.Component {
     };
 
     const endpoint = '/api/run/image_reload';
-    this.setState(s => ({...s, submitting: true}));
+    this.setState(s => ({...s, phase: PHASE_SUBMITTING}));
     Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
-    Helper.reloadPods(this, true);
+    this.reloadPods(true);
   }
+
+  reloadPods(force){
+    if(force || this.isSubmitted()){
+      let repeat = () => setTimeout(this.reloadPods, 1000);
+      Helper.fetchPods(this, 'updatedPods', repeat)
+    }
+  }
+
+  isSubmitting(){ return this.state.phase === PHASE_SUBMITTING }
+  isConfiguring(){ return this.state.phase === PHASE_CONFIG }
+  isConcluded(){ return this.state.phase === PHASE_CONCLUDED }
+  isSubmitted(){ return this.state.phase === PHASE_SUBMITTED }
+  isReload() { return this.state.config.operationType === 'reload' }
 
   onAssignment(assignment){
     const merged = {...this.state.config, ...assignment};

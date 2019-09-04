@@ -6,9 +6,7 @@ export default class Checklist extends React.Component {
 
   render(){
     return(
-      <ul>
-        { this.renderItems() }
-      </ul>
+      <p>jokes</p>
     )
   }
 

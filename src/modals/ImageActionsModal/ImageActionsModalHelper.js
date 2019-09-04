@@ -1,5 +1,8 @@
 import Kapi from "../../utils/Kapi";
 import DataUtils from "../../utils/DataUtils";
+import PodTable from "./PodTable";
+import React from "react";
+import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./HocPodTables";
 
 export class ImageActionsModalHelper {
 
@@ -15,15 +18,24 @@ export class ImageActionsModalHelper {
     })
   }
 
-  static reloadPods(inst, force){
-    if(force || inst.props.submitting){
-      let repeat = () => setTimeout(this.reloadPods, 1000);
-      this.fetchPods(inst, 'updatedPods', repeat)
+  static podSource(inst){
+    if(inst.isConfiguring()) return StdImageHelper;
+    else if(inst.isSubmitted() || inst.isConcluded()){
+      if(inst.isReload()) return SameImageHelper;
+      else return ChangeImageHelper;
+    }
+  }
+
+  static podsRenderer(inst){
+    if(inst.isConfiguring()) return StdPodTable;
+    else if(inst.isSubmitted() || inst.isConcluded()){
+      if(inst.isReload()) return DesiredStatePodTable;
+      else return DesiredTagPodTable;
     }
   }
 }
 
-export class ReplaceImageHelper {
+export class SameImageHelper {
   static enrichOldPod(newPods, pod){
     let actualState;
     if(newPods != null){
@@ -52,5 +64,17 @@ export class ReplaceImageHelper {
     const enrichedOldPods = initial.map(p => this.enrichOldPod(updated, p));
     const enrichedNewPods = (updated || []).map(p => this.enrichNewPod(p));
     return enrichedOldPods.concat(enrichedNewPods);
+  }
+}
+
+export class StdImageHelper {
+  static buildPodList(initialPods, _){
+    return initialPods;
+  }
+}
+
+export class ChangeImageHelper {
+  static buildPodList(_, updatedPods){
+    return updatedPods;
   }
 }
