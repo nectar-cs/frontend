@@ -10,6 +10,9 @@ export const theme = {
     secondaryColor: "#455D7A",
     contentBackgroundColor: "#e1e3e8",
     itemBackgroundColor: "white",
-    lineColor: "#455D7A"
+    lineColor: "#455D7A",
+    success: "darkgreen",
+    fail: "darkred",
+    warn: "tomato"
   }
 };

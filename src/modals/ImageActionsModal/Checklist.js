@@ -6,13 +6,11 @@ import {ThemeProvider} from "styled-components";
 
 function ChecklistItem(props){
 
-  // let secondItem =
-
   let thirdItem = null;
   if(props.status === 'working')
     thirdItem = <Spinner/>;
   else if(props.status === 'done')
-    thirdItem = <Icon className='material-icons'>check</Icon>;
+    thirdItem = <Icon good className='material-icons'>check</Icon>;
   else if(props.status === 'failed')
     thirdItem = <Icon className='material-icons'>bug_report</Icon>;
 

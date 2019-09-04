@@ -24,6 +24,7 @@ export const Detail = styled.p`
 export const Icon = styled.div`
   margin-left: 24px;
   font-size: 21px;
+  color: ${p => p.good ? p.theme.colors.success : p.theme.colors.warn }
 `;
 
 export const Spinner = styled(TinySpinner)`

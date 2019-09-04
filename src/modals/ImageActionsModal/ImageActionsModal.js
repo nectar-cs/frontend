@@ -96,9 +96,12 @@ export default class ImageActionsModal extends React.Component {
     if(this.isSubmitted() || this.isConcluded()){
       const { initialPods, updatedPods } = this.state;
       const operationHelper = Helper.podSource(this);
-      return <Checklist
-        items={operationHelper.progressItems(initialPods, updatedPods)}
-      />
+      const items = operationHelper.progressItems(initialPods, updatedPods);
+      return(
+        <Checklist
+          items={items}
+        />
+      );
     } else return null;
   }
 
