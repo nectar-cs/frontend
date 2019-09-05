@@ -9,10 +9,12 @@ export default class SameTagOpHelper extends PodOpHelper {
   }
 
   isStableState() {
-    return super.eqCountAndState(
+    return this.bigCheck(
       this.strictlyNewPods(),
-      this.initial.length
-    )
+      this.initial.length,
+      p => p.state.toLowerCase(),
+      'running'
+    );
   }
 
   isCrashedState(){

@@ -33,7 +33,7 @@ export default class ImageForm extends React.Component {
   }
 
   renderImageNameLine(){
-    if(this.props.operationType !== 'reload') return null;
+    if(this.props.operationType !== 'change') return null;
 
     return(
       <InputLine>

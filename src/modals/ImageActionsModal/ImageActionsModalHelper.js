@@ -61,11 +61,13 @@ export class ImageActionsModalHelper {
 
   static makeOpHelperBundle(inst){
     const { initialPods, updatedPods } = inst.state;
+    const { imageName, scaleTo } = inst.state.config;
     return {
       initialPods,
       updatedPods,
+      scaleTo,
+      imageName,
       startTime: inst.startTime,
-      scaleTo: inst.state.config.scaleTo,
       hasFailed: inst.isOpFailed()
     };
   }

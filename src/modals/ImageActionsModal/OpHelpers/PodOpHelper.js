@@ -3,9 +3,6 @@ export default class PodOpHelper {
   constructor(){
     this.initial = [];
     this.updated = [];
-    this.startedAt = null;
-    this.scaleTo = null;
-    this.hasFailed = false;
   }
 
   refresh(bundle){
@@ -14,6 +11,7 @@ export default class PodOpHelper {
     this.startedAt = bundle.startedAt;
     this.scaleTo = bundle.scaleTo;
     this.hasFailed = bundle.hasFailed;
+    this.targetImage = bundle.imageName;
   }
 
   runningPods(pods){
@@ -31,6 +29,10 @@ export default class PodOpHelper {
     ));
   }
 
+  podsWithImage(pods, image){
+    return pods.filter(pod => pod.imageName === image);
+  }
+
   strictlyNewPods(emptyOnNull = true){
     if(this.updated === null)
       return emptyOnNull ? [] : null;
@@ -45,9 +47,9 @@ export default class PodOpHelper {
     return this.initial;
   }
 
-  eqCountAndState(podsOfInterest, targetCount) {
-    const actualStates = podsOfInterest.map(p => p.state.toLowerCase());
-    const targetStates = new Array(targetCount).fill('running');
+  bigCheck(pods, count, func, target){
+    const actualStates = pods.map(func);
+    const targetStates = new Array(count).fill(target);
     return actualStates.every(e => targetStates.includes(e));
   }
 

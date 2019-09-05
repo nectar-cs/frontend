@@ -227,7 +227,6 @@ export default class ImageActionsModal extends React.Component {
   isConcluded(){ return this.state.phase === PHASE_CONCLUDED }
   isSubmitted(){ return this.state.phase === PHASE_SUBMITTED }
   isOpFailed() { return this.state.conclusion === CONCLUSION_FAILED }
-  isReload() { return this.state.config.operationType === 'reload' }
 
   onAssignment(assignment){
     const merged = {...this.state.config, ...assignment};

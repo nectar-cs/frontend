@@ -21,10 +21,12 @@ export default class ScalePodsHelper extends PodOpHelper {
   }
 
   isStableState(){
-    return super.eqCountAndState(
+    return this.bigCheck(
       this.updated,
-      this.scaleTo
-    )
+      this.scaleTo,
+      p => p.state.toLowerCase(),
+      'running'
+    );
   }
 
   buildPodList(){

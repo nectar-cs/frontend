@@ -38,7 +38,7 @@ export function DesiredTagPodTable(props){
       mappers={[
         (p) => <p>{p.name}</p>,
         (p) => <p>{p.imageName}</p>,
-        (p) => <p>{p.desiredImageName}</p>,
+        (p) => <p>{p.desiredImage}</p>,
       ]}
     />
   )
