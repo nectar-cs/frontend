@@ -34,11 +34,12 @@ export default class ImageActionsModal extends React.Component {
       },
       phase: PHASE_CONFIG,
       initialPods: [],
-      updatedPods: [],
+      updatedPods: null,
       conclusion: null,
       conclusionReason: null
     };
 
+    this.opHelper = null;
     this._isMounted = true;
     this.repeater = this.repeater.bind(this);
     this.reloadPods = this.reloadPods.bind(this);
