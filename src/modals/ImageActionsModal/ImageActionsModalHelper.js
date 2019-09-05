@@ -53,12 +53,9 @@ export class ImageActionsModalHelper {
     const opType = inst.state.config.operationType;
 
     switch (opType) {
-      case "reload":
-        return "image_reload";
-      case "scale":
-        return "scale_replicas";
-      default:
-        throw `No helper for op type ${opType}`;
+      case "reload": return "image_reload";
+      case "scale": return "scale_replicas";
+      default: throw `No helper for op type ${opType}`;
     }
   }
 
@@ -76,8 +73,16 @@ export class ImageActionsModalHelper {
   static podsRenderer(inst){
     if(inst.isConfiguring()) return StdPodTable;
     else if(inst.isSubmitted() || inst.isConcluded()){
-      if(inst.isReload()) return DesiredStatePodTable;
-      else return DesiredTagPodTable;
+      return this.podRendererAfterSubmit(inst.state.config.operationType)
+    }
+  }
+
+  static podRendererAfterSubmit(opType){
+    switch(opType){
+      case 'reload':
+      case 'scale': return DesiredStatePodTable;
+      case 'change': return DesiredTagPodTable;
+      default: throw `No renderer for op type ${opType}`;
     }
   }
 }

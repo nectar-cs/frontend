@@ -45,7 +45,6 @@ export default class ImageActionsModal extends React.Component {
     this.reloadPods = this.reloadPods.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
     this.onFailure = this.onFailure.bind(this);
-    this.submittedAt = null;
   }
 
   componentDidMount(){
