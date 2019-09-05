@@ -55,6 +55,7 @@ export class ImageActionsModalHelper {
     switch (opType) {
       case "reload": return "image_reload";
       case "scale": return "scale_replicas";
+      case "change": return "new_image";
       default: throw `No helper for op type ${opType}`;
     }
   }

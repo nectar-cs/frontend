@@ -8,7 +8,7 @@ export default class DiffTagOpHelper extends PodOpHelper {
 
   isTimedOut() {
     const now = new Date().getTime();
-    const limitSeconds = Math.abs(this.delta()) * 20;
+    const limitSeconds = this.initial.length * 12;
     return ((now - this.startedAt) / 1000) > limitSeconds;
   }
 
@@ -21,7 +21,8 @@ export default class DiffTagOpHelper extends PodOpHelper {
   }
 
   patchedPods(){
-    return this.podsWithImage(this.initial.updated, this.targetImage);
+    if(!this.updated) return [];
+    return this.podsWithImage(this.updated, this.targetImage);
   }
 
   isStableState(){
@@ -43,7 +44,7 @@ export default class DiffTagOpHelper extends PodOpHelper {
     const patched = this.patchedPods();
     return [
       super.buildProgressItem(
-        "Excess pods gone",
+        "Pods running new image",
         `${patched.length}/${this.initial.length}`,
         patched.length === this.initial.length
       )

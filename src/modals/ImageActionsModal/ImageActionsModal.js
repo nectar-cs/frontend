@@ -29,8 +29,8 @@ export default class ImageActionsModal extends React.Component {
     super(props);
     this.state = {
       config: {
-        operationType: 'scale',
-        imageName: props.deployment.imageName,
+        operationType: 'change',
+        imageName: this.imgDebug(),
         scaleTo: (props.deployment.replicas + 1).toString()
       },
       phase: PHASE_CONFIG,
@@ -45,6 +45,12 @@ export default class ImageActionsModal extends React.Component {
     this.reloadPods = this.reloadPods.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
     this.onFailure = this.onFailure.bind(this);
+  }
+
+  imgDebug(){
+    if(this.props.deployment.imageName.includes('rube'))
+      return 'nginx';
+    else return 'xnectar/rube:latest';
   }
 
   componentDidMount(){
@@ -174,7 +180,8 @@ export default class ImageActionsModal extends React.Component {
     const payload = {
       dep_namespace: this.props.deployment.namespace,
       dep_name: this.props.deployment.name,
-      scale_to: this.state.config.scaleTo
+      scale_to: this.state.config.scaleTo,
+      target_name: this.state.config.imageName
     };
 
     const endpoint = `/api/run/${Helper.urlAction(this)}`;
