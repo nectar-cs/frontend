@@ -13,11 +13,15 @@ import Checklist from "./Checklist";
 import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
+import Conclusion from "./Conclusion";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
 const PHASE_SUBMITTED = 'submitted';
 const PHASE_CONCLUDED = 'concluded';
+
+const CONCLUSION_SUCCESS = 'success';
+const CONCLUSION_FAILED = 'fail';
 
 export default class ImageActionsModal extends React.Component {
 
@@ -30,13 +34,17 @@ export default class ImageActionsModal extends React.Component {
       },
       phase: PHASE_CONFIG,
       initialPods: [],
-      updatedPods: null
+      updatedPods: [],
+      conclusion: null,
+      conclusionReason: null
     };
+
     this._isMounted = true;
     this.repeater = this.repeater.bind(this);
     this.reloadPods = this.reloadPods.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
     this.onFailure = this.onFailure.bind(this);
+    this.submittedAt = null;
   }
 
   componentDidMount(){
@@ -55,6 +63,7 @@ export default class ImageActionsModal extends React.Component {
           { this.renderLoader() }
           { this.renderIntro() }
           { this.renderChecklist() }
+          { this.renderConclusion() }
           { this.renderConfigPhase() }
           { this.renderPodList() }
           { this.renderButton() }
@@ -93,16 +102,31 @@ export default class ImageActionsModal extends React.Component {
   }
 
   renderChecklist(){
-    if(this.isSubmitted() || this.isConcluded()){
-      const { initialPods, updatedPods } = this.state;
-      const operationHelper = Helper.podSource(this);
-      const items = operationHelper.progressItems(initialPods, updatedPods);
-      return(
-        <Checklist
-          items={items}
-        />
-      );
-    } else return null;
+    if(!(this.isSubmitted() || this.isConcluded())) return null;
+
+    const { initialPods, updatedPods } = this.state;
+    const opHelper = Helper.opHelper(this);
+    const items = opHelper.progressItems(
+      initialPods,
+      updatedPods,
+      this.isOpFailed()
+    );
+
+    return <Checklist items={items}/>
+  }
+
+  renderConclusion(){
+    if(!this.isConcluded()) return null;
+
+    const opHelper = Helper.opHelper(this);
+    const reason = opHelper.successMessage();
+
+    return(
+      <Conclusion
+        isSuccess={true}
+        reason={reason}
+      />
+    )
   }
 
   renderConfigPhase(){
@@ -119,7 +143,7 @@ export default class ImageActionsModal extends React.Component {
   renderPodList(){
     if(this.isSubmitting()) return null;
     const { initialPods, updatedPods } = this.state;
-    const podsFilter = Helper.podSource(this);
+    const podsFilter = Helper.opHelper(this);
     const pods = podsFilter.buildPodList(initialPods, updatedPods);
     const PodTableRenderer = Helper.podsRenderer(this);
     return <PodTableRenderer pods={pods}/>;
@@ -141,7 +165,9 @@ export default class ImageActionsModal extends React.Component {
 
   onSuccess(){
     console.log("Success");
+    this.submittedAt = new Date().getTime();
     this.setState(s => ({...s, phase: PHASE_SUBMITTED}));
+    this.reloadPods(true);
   }
 
   submit() {
@@ -153,16 +179,41 @@ export default class ImageActionsModal extends React.Component {
     const endpoint = '/api/run/image_reload';
     this.setState(s => ({...s, phase: PHASE_SUBMITTING}));
     Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
-    this.reloadPods(true);
   }
 
   repeater(updatedPods){
+    if(!this.tryHaltingReloadLoop(updatedPods))
+      setTimeout(this.reloadPods, 1000);
+  }
+
+  tryHaltingReloadLoop(updatedPods){
     const { initialPods } = this.state;
-    const podManager = Helper.podSource(this);
-    if(podManager.isStableState(initialPods, updatedPods)){
-      console.log("STABLE STATE! STOP!");
-      this.setState(s => ({...s, phase: PHASE_CONCLUDED}));
-    } else setTimeout(this.reloadPods, 1000);
+    const opHelper = Helper.opHelper(this);
+    let conclusion, conclusionReason = null;
+
+    if(opHelper.isStableState(initialPods, updatedPods)) {
+      conclusion = CONCLUSION_SUCCESS;
+      conclusionReason = opHelper.successMessage();
+    }
+    else if(opHelper.isTimedOut(initialPods, updatedPods, this.submittedAt)) {
+      conclusion = CONCLUSION_FAILED;
+      conclusionReason = "Failed to reach the desired state in time";
+    }
+    else{
+      const crash = opHelper.isCrashedState(initialPods, updatedPods);
+      if(crash.isCrashed) {
+        conclusion = CONCLUSION_FAILED;
+        conclusionReason = crash.reason;
+      }
+    }
+
+    if(conclusion) {
+      console.log(`HALT ${conclusion} ${conclusionReason}`);
+      let bundle = {phase: PHASE_CONCLUDED, conclusion, conclusionReason};
+      this.setState(s => ({...s, ...bundle}));
+      return true;
+    }
+    else return false;
   }
 
   reloadPods(force){
@@ -175,6 +226,8 @@ export default class ImageActionsModal extends React.Component {
   isConfiguring(){ return this.state.phase === PHASE_CONFIG }
   isConcluded(){ return this.state.phase === PHASE_CONCLUDED }
   isSubmitted(){ return this.state.phase === PHASE_SUBMITTED }
+  isOpFailed() { return this.state.conclusion === CONCLUSION_FAILED }
+  isOpSuccess() { return this.state.conclusion === CONCLUSION_SUCCESS }
   isReload() { return this.state.config.operationType === 'reload' }
 
   onAssignment(assignment){

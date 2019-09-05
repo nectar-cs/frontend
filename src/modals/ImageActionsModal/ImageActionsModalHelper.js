@@ -1,7 +1,7 @@
 import Kapi from "../../utils/Kapi";
 import DataUtils from "../../utils/DataUtils";
 import React from "react";
-import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./HocPodTables";
+import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./PodTableRenderers";
 
 export class ImageActionsModalHelper {
 
@@ -17,7 +17,7 @@ export class ImageActionsModalHelper {
     })
   }
 
-  static podSource(inst){
+  static opHelper(inst){
     if(inst.isConfiguring())
       return StdImageHelper;
     else{
@@ -76,6 +76,22 @@ export class SameImageHelper {
     return false;
   }
 
+  static isTimedOut(initial, updated, startedAt){
+    const now = new Date().getTime();
+    const limitSeconds = initial.length * 20;
+    return ((now - startedAt) / 1000) > limitSeconds;
+  }
+
+  static isCrashedState(initial, updated){
+    return { isCrashed: false, reason: "Because" }
+  }
+
+  static runningPods(pods){
+    return pods.filter(p =>
+      p.state.toLowerCase() === 'running'
+    );
+  }
+
   static deadPods(initial, updated){
     if(updated.length < initial.length) return [];
 
@@ -84,11 +100,18 @@ export class SameImageHelper {
     ));
   }
 
-  static progressItems(initial, updated){
+  static successMessage(){
+    return "All pods running the old image have been replaced."
+  }
+
+  static progressItems(initial, updated, failed){
     const dead = this.deadPods(initial, updated);
     const created = this.strictlyNewPods(initial, updated);
-    const running = created.filter(p => p.state.toLowerCase() === 'running');
-    const status = (bool) => bool ? 'done' : 'working';
+    const running = this.runningPods(created);
+
+    const status = (bool) => {
+      return bool ? 'done' : (failed ? 'idle' : 'working')
+    };
 
     return [
       {

@@ -6,13 +6,14 @@ import {ThemeProvider} from "styled-components";
 
 function ChecklistItem(props){
 
-  let thirdItem = null;
+  let thirdItem;
   if(props.status === 'working')
     thirdItem = <Spinner/>;
   else if(props.status === 'done')
     thirdItem = <Icon good className='material-icons'>check</Icon>;
   else if(props.status === 'failed')
     thirdItem = <Icon className='material-icons'>bug_report</Icon>;
+  else thirdItem = null;
 
   return(
     <ThemeProvider theme={theme}>
@@ -30,7 +31,7 @@ function ChecklistItem(props){
 ChecklistItem.propTypes = {
   name: PropTypes.string.isRequired,
   detail: PropTypes.string,
-  status: PropTypes.oneOf(['working', 'done', 'failed'])
+  status: PropTypes.oneOf(['working', 'done', 'failed', 'idle'])
 };
 
 export default function Checklist(props) {
@@ -49,5 +50,5 @@ export default function Checklist(props) {
 }
 
 Checklist.propTypes = {
-  items: PropTypes.arrayOf(ChecklistItem.propTypes)
+  items: PropTypes.arrayOf(PropTypes.shape(ChecklistItem.propTypes))
 };
