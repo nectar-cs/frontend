@@ -49,10 +49,12 @@ export default class ImageForm extends React.Component {
   renderScaleSelector(){
     if(this.props.operationType !== 'scale') return null;
 
+    const remover = (it) => it.value === this.props.initialReplicas ? null : it;
     const text = (i) => `${i} Pods ${i === 0 ? '(Shut down)' : ''}`;
-    const options = Array.from({length: 20}, (v, i) => (
-      { show: text(i), value: i }
+    let options = Array.from({length: 20}, (v, i) => (
+      remover({ show: text(i), value: i })
     ));
+    options = options.filter(op => op);
 
     return(
       <InputLine>
@@ -86,6 +88,7 @@ export default class ImageForm extends React.Component {
     operationType: PropTypes.string.isRequired,
     imageName: PropTypes.string.isRequired,
     onAssignment: PropTypes.func.isRequired,
-    scaleTo: PropTypes.string.isRequired
+    scaleTo: PropTypes.string.isRequired,
+    initialReplicas: PropTypes.number.isRequired
   }
 }

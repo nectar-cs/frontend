@@ -3,6 +3,7 @@ export default class PodOpHelper {
   constructor(){
     this.initial = [];
     this.updated = [];
+    this.startedAt = null;
     this.scaleTo = null;
     this.hasFailed = false;
   }
@@ -12,6 +13,7 @@ export default class PodOpHelper {
     this.updated = bundle.updatedPods;
     this.startedAt = bundle.startedAt;
     this.scaleTo = bundle.scaleTo;
+    this.hasFailed = bundle.hasFailed;
   }
 
   runningPods(pods){
@@ -44,12 +46,9 @@ export default class PodOpHelper {
   }
 
   eqCountAndState(podsOfInterest, targetCount) {
-    const podsOfInterestStates = podsOfInterest.map(p => p.state.toLowerCase());
-    const synthList = [...new Set(podsOfInterestStates)];
-
-    if(podsOfInterest.length === targetCount)
-      return synthList.length === 1 && synthList[0] === 'running';
-    return false;
+    const actualStates = podsOfInterest.map(p => p.state.toLowerCase());
+    const targetStates = new Array(targetCount).fill('running');
+    return actualStates.every(e => targetStates.includes(e));
   }
 
   buildProgressItem(title, detail, bool){

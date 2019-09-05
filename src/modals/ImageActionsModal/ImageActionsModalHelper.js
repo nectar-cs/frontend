@@ -16,7 +16,7 @@ export class ImageActionsModalHelper {
       const data = DataUtils.objKeysToCamel(resp)['data'];
       console.table(data);
       inst.setState(s => ({...s, [field]: data}));
-      runAfter && runAfter(data);
+      runAfter && runAfter();
     })
   }
 

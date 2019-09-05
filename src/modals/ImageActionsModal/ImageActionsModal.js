@@ -136,6 +136,7 @@ export default class ImageActionsModal extends React.Component {
         operationType={this.state.config.operationType}
         imageName={this.state.config.imageName}
         scaleTo={this.state.config.scaleTo}
+        initialReplicas={this.props.deployment.replicas}
         onAssignment={(a) => this.onAssignment(a)}
       />
     )
@@ -187,21 +188,20 @@ export default class ImageActionsModal extends React.Component {
       setTimeout(this.reloadPods, 1000);
   }
 
-  tryHaltingReloadLoop(updatedPods){
-    const { initialPods } = this.state;
+  tryHaltingReloadLoop(){
     const opHelper = Helper.opHelper(this);
     let conclusion, conclusionReason = null;
 
-    if(opHelper.isStableState(initialPods, updatedPods)) {
+    if(opHelper.isStableState()) {
       conclusion = CONCLUSION_SUCCESS;
       conclusionReason = opHelper.successMessage();
     }
-    else if(opHelper.isTimedOut(initialPods, updatedPods, this.submittedAt)) {
+    else if(opHelper.isTimedOut()) {
       conclusion = CONCLUSION_FAILED;
       conclusionReason = "Failed to reach the desired state in time";
     }
     else{
-      const crash = opHelper.isCrashedState(initialPods, updatedPods);
+      const crash = opHelper.isCrashedState();
       if(crash.isCrashed) {
         conclusion = CONCLUSION_FAILED;
         conclusionReason = crash.reason;
