@@ -9,13 +9,10 @@ export default class SameTagOpHelper extends PodOpHelper {
   }
 
   isStableState() {
-    const newPods = this.strictlyNewPods();
-    const newPodStates = newPods.map(p => p.state.toLowerCase());
-    const synthList = [...new Set(newPodStates)];
-
-    if(this.initial.length === newPods.length)
-      return synthList.length === 1 && synthList[0] === 'running';
-    return false;
+    return super.eqCountAndState(
+      this.strictlyNewPods(),
+      this.initial.length
+    )
   }
 
   isCrashedState(){
@@ -41,43 +38,41 @@ export default class SameTagOpHelper extends PodOpHelper {
   }
 
   buildPodList(){
-    const enrichedOldPods = this.initial.map(p => (
-      this.enrichOldPod(p)
-    ));
+    if(this.updated){
+      const enrichedOldPods = this.initial.map(p => (
+        this.enrichOldPod(p)
+      ));
 
-    const enrichedNewPods = this.strictlyNewPods().map(p => (
-      this.enrichNewPod(p)
-    ));
+      const enrichedNewPods = this.strictlyNewPods().map(p => (
+        this.enrichNewPod(p)
+      ));
 
-    return enrichedOldPods.concat(enrichedNewPods);
+      return enrichedOldPods.concat(enrichedNewPods);
+    } else return super.buildSimplePodList();
   }
 
-  progressItems(failed){
+  progressItems(){
     const initial = this.initial;
     const dead = this.deadPods();
     const created = this.strictlyNewPods();
     const running = this.runningPods(created);
 
-    const status = (bool) => {
-      return bool ? 'done' : (failed ? 'idle' : 'working')
-    };
-
     return [
-      {
-        name: "Old pods gone",
-        detail: `${dead.length}/${initial.length}`,
-        status: status(dead.length === initial.length)
-      },
-      {
-        name: "New pods created",
-        detail: `${created.length}/${initial.length}`,
-        status: status(created.length === initial.length)
-      },
-      {
-        name: "New pods running",
-        detail: `${running.length}/${initial.length}`,
-        status: status(running.length === initial.length)
-      },
+      super.buildProgressItem(
+        "Old pods gone",
+        `${dead.length}/${initial.length}`,
+        dead.length === initial.length
+      ),
+      super.buildProgressItem(
+        "New pods created",
+        `${created.length}/${initial.length}`,
+        created.length === initial.length
+      ),
+      super.buildProgressItem(
+        "New pods running",
+        `${running.length}/${initial.length}`,
+        running.length === initial.length
+      ),
     ];
   }
 }

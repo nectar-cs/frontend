@@ -3,12 +3,15 @@ export default class PodOpHelper {
   constructor(){
     this.initial = [];
     this.updated = [];
+    this.scaleTo = null;
+    this.hasFailed = false;
   }
 
   refresh(bundle){
     this.initial = bundle.initialPods;
     this.updated = bundle.updatedPods;
     this.startedAt = bundle.startedAt;
+    this.scaleTo = bundle.scaleTo;
   }
 
   runningPods(pods){
@@ -36,6 +39,29 @@ export default class PodOpHelper {
     ));
   }
 
+  buildSimplePodList(){
+    return this.initial;
+  }
+
+  eqCountAndState(podsOfInterest, targetCount) {
+    const podsOfInterestStates = podsOfInterest.map(p => p.state.toLowerCase());
+    const synthList = [...new Set(podsOfInterestStates)];
+
+    if(podsOfInterest.length === targetCount)
+      return synthList.length === 1 && synthList[0] === 'running';
+    return false;
+  }
+
+  buildProgressItem(title, detail, bool){
+    const status = bool ? 'done' : (this.hasFailed ? 'idle' : 'working');
+    return({
+      name: title,
+      detail: detail,
+      status: status
+    })
+  }
+
+  buildPodList() { throw `Method buildPodList not implemented!`; }
   isStableState(){ throw `Method isStableState not implemented!`; }
   isCrashedState(){ throw `Method isCrashedState not implemented!`; }
   isTimedOut(){ throw `Method isTimedOut not implemented!`; }

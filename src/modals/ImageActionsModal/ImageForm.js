@@ -12,6 +12,7 @@ export default class ImageForm extends React.Component {
         <Fragment>
           { this.renderTypeLine() }
           { this.renderImageNameLine() }
+          { this.renderScaleSelector() }
         </Fragment>
       </ThemeProvider>
     )
@@ -25,13 +26,15 @@ export default class ImageForm extends React.Component {
           as='select'
           value={this.props.operationType}
           onChange={(e) => this.onAssignment('operationType', e)}>
-          { ImageForm.options() }
+          { ImageForm.operationTypeOptions() }
         </LineInput>
       </InputLine>
     )
   }
 
   renderImageNameLine(){
+    if(this.props.operationType !== 'reload') return null;
+
     return(
       <InputLine>
         <LineLabel>Image Name</LineLabel>
@@ -43,11 +46,32 @@ export default class ImageForm extends React.Component {
     )
   }
 
-  onAssignment(name, event){
-    this.props.onAssignment({ [name]: event.target.value });
+  renderScaleSelector(){
+    if(this.props.operationType !== 'scale') return null;
+
+    const text = (i) => `${i} Pods ${i === 0 ? '(Shut down)' : ''}`;
+    const options = Array.from({length: 20}, (v, i) => (
+      { show: text(i), value: i }
+    ));
+
+    return(
+      <InputLine>
+        <LineLabel>Scale to</LineLabel>
+        <LineInput
+          as='select'
+          value={this.props.scaleTo}
+          onChange={(e) => this.onAssignment('scaleTo', e)}>
+          { MiscUtils.arrayOfHashesOptions(options) }
+        </LineInput>
+      </InputLine>
+    )
   }
 
-  static options(){
+  onAssignment(name, event){
+    this.props.onAssignment({ [name]: event.target.value.toString() });
+  }
+
+  static operationTypeOptions(){
     return MiscUtils.hashOptions({
       reload: "Force pull & apply an image with the same name",
       change: "Supply a new image name",
@@ -60,7 +84,8 @@ export default class ImageForm extends React.Component {
 
   static propTypes = {
     operationType: PropTypes.string.isRequired,
-    imageName: PropTypes.string,
-    onAssignment: PropTypes.func.isRequired
+    imageName: PropTypes.string.isRequired,
+    onAssignment: PropTypes.func.isRequired,
+    scaleTo: PropTypes.string.isRequired
   }
 }

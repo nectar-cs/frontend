@@ -29,8 +29,9 @@ export default class ImageActionsModal extends React.Component {
     super(props);
     this.state = {
       config: {
-        operationType: 'reload',
-        imageName: props.deployment.imageName
+        operationType: 'scale',
+        imageName: props.deployment.imageName,
+        scaleTo: (props.deployment.replicas + 1).toString()
       },
       phase: PHASE_CONFIG,
       initialPods: [],
@@ -39,7 +40,6 @@ export default class ImageActionsModal extends React.Component {
       conclusionReason: null
     };
 
-    this.opHelper = null;
     this._isMounted = true;
     this.repeater = this.repeater.bind(this);
     this.reloadPods = this.reloadPods.bind(this);
@@ -65,7 +65,7 @@ export default class ImageActionsModal extends React.Component {
           { this.renderIntro() }
           { this.renderChecklist() }
           { this.renderConclusion() }
-          { this.renderConfigPhase() }
+          { this.renderConfigForm() }
           { this.renderPodList() }
           { this.renderButton() }
         </Container>
@@ -109,8 +109,7 @@ export default class ImageActionsModal extends React.Component {
     const opHelper = Helper.opHelper(this);
     const items = opHelper.progressItems(
       initialPods,
-      updatedPods,
-      this.isOpFailed()
+      updatedPods
     );
 
     return <Checklist items={items}/>
@@ -130,12 +129,13 @@ export default class ImageActionsModal extends React.Component {
     )
   }
 
-  renderConfigPhase(){
+  renderConfigForm(){
     if(!this.isConfiguring()) return null;
     return(
       <ImageForm
         operationType={this.state.config.operationType}
         imageName={this.state.config.imageName}
+        scaleTo={this.state.config.scaleTo}
         onAssignment={(a) => this.onAssignment(a)}
       />
     )
@@ -143,9 +143,8 @@ export default class ImageActionsModal extends React.Component {
 
   renderPodList(){
     if(this.isSubmitting()) return null;
-    const { initialPods, updatedPods } = this.state;
     const podsFilter = Helper.opHelper(this);
-    const pods = podsFilter.buildPodList(initialPods, updatedPods);
+    const pods = podsFilter.buildPodList();
     const PodTableRenderer = Helper.podsRenderer(this);
     return <PodTableRenderer pods={pods}/>;
   }
@@ -174,10 +173,11 @@ export default class ImageActionsModal extends React.Component {
   submit() {
     const payload = {
       dep_namespace: this.props.deployment.namespace,
-      dep_name: this.props.deployment.name
+      dep_name: this.props.deployment.name,
+      scale_to: this.state.config.scaleTo
     };
 
-    const endpoint = '/api/run/image_reload';
+    const endpoint = `/api/run/${Helper.urlAction(this)}`;
     this.setState(s => ({...s, phase: PHASE_SUBMITTING}));
     Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
   }
@@ -228,7 +228,6 @@ export default class ImageActionsModal extends React.Component {
   isConcluded(){ return this.state.phase === PHASE_CONCLUDED }
   isSubmitted(){ return this.state.phase === PHASE_SUBMITTED }
   isOpFailed() { return this.state.conclusion === CONCLUSION_FAILED }
-  isOpSuccess() { return this.state.conclusion === CONCLUSION_SUCCESS }
   isReload() { return this.state.config.operationType === 'reload' }
 
   onAssignment(assignment){

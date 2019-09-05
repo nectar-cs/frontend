@@ -38,6 +38,14 @@ export default class MiscUtils {
     }
   }
 
+  static arrayOfHashesOptions(options){
+    return options.map(option => (
+      <option key={option['value']} value={option['value']}>
+        { option['show'] }
+      </option>
+    ));
+  }
+
   static arrayOptions(options){
     return options.map(option => (
       <option key={option} value={option}>

@@ -14,6 +14,7 @@ export const FULL_DEPLOYMENT = {
   deployment: PropTypes.shape({
     name: PropTypes.string.isRequired,
     imageName: PropTypes.string.isRequired,
+    replicas: PropTypes.number.isRequired,
     pods: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,

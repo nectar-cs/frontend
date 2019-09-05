@@ -4,6 +4,7 @@ import React from "react";
 import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./PodTableRenderers";
 import SameTagOpHelper from "./OpHelpers/SameTagOpHelper";
 import DiffTagOpHelper from "./OpHelpers/DiffTagOpHelper";
+import ScalePodsHelper from "./OpHelpers/ScalePodsHelper";
 
 export class ImageActionsModalHelper {
 
@@ -32,6 +33,9 @@ export class ImageActionsModalHelper {
       case "docker":
         oughtToBeClass = DiffTagOpHelper;
         break;
+      case "scale":
+        oughtToBeClass = ScalePodsHelper;
+        break;
       default:
         throw `No helper for op type ${opType}`;
     }
@@ -41,10 +45,32 @@ export class ImageActionsModalHelper {
       // console.log(`New cached helper: ${oughtToBeClass.name}`)
     }
 
-    const { initialPods, updatedPods } = inst.state;
-    const bundle = { initialPods, updatedPods, startTime: inst.startTime };
-    inst.opHelper.refresh(bundle);
+    inst.opHelper.refresh(this.makeOpHelperBundle(inst));
     return inst.opHelper;
+  }
+
+  static urlAction(inst){
+    const opType = inst.state.config.operationType;
+
+    switch (opType) {
+      case "reload":
+        return "image_reload";
+      case "scale":
+        return "scale_replicas";
+      default:
+        throw `No helper for op type ${opType}`;
+    }
+  }
+
+  static makeOpHelperBundle(inst){
+    const { initialPods, updatedPods } = inst.state;
+    return {
+      initialPods,
+      updatedPods,
+      startTime: inst.startTime,
+      scaleTo: inst.state.config.scaleTo,
+      hasFailed: inst.isOpFailed()
+    };
   }
 
   static podsRenderer(inst){
