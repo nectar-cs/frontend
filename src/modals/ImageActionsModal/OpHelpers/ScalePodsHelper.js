@@ -60,7 +60,7 @@ export default class ScalePodsHelper extends PodOpHelper {
     } else {
       return [
         super.buildProgressItem(
-          "Excess pods gone",
+          "Unwanted pods killed",
           `${dead.length}/${-this.delta()}`,
           dead.length === -this.delta()
         )
