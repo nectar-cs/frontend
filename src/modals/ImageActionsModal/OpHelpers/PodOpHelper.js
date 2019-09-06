@@ -57,6 +57,7 @@ export default class PodOpHelper {
   checkGroupInState(pods, count, func, target){
     const actualStates = pods.map(func);
     const targetStates = new Array(count).fill(target);
+    console.log(`COMPARE ${actualStates} =?= ${targetStates}`);
     return actualStates.every(e => targetStates.includes(e));
   }
 

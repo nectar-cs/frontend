@@ -13,7 +13,7 @@ export const Item = styled.div`
 `;
 
 export const Name = styled.p`
-  width: 150px;
+  width: 180px;
 `;
 
 export const Detail = styled.p`

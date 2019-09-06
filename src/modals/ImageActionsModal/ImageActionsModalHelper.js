@@ -14,7 +14,7 @@ export class ImageActionsModalHelper {
     Kapi.fetch(endpoint, (resp) => {
       if(!inst._isMounted) return;
       const data = DataUtils.objKeysToCamel(resp)['data'];
-      console.table(data);
+      // console.table(data);
       inst.setState(s => ({...s, [field]: data}));
       runAfter && runAfter();
     })

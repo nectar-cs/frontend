@@ -20,17 +20,18 @@ export default class DiffTagOpHelper extends PodOpHelper {
     return {...pod, desiredImage: this.targetImage};
   }
 
-  patchedPods(){
+  patchedAndRunningPods(){
     if(!this.updated) return [];
-    return this.podsWithImage(this.updated, this.targetImage);
+    const patched = super.podsWithImage(this.updated, this.targetImage);
+    return super.runningPods(patched);
   }
 
   isStableState(){
     return this.checkGroupInState(
-      this.updated,
+      super.podsWithImage(this.updated, this.targetImage),
       this.initial.length,
-      p => p.imageName,
-      this.targetImage
+      p => p.state.toLowerCase(),
+      'running'
     );
   }
 
@@ -41,7 +42,7 @@ export default class DiffTagOpHelper extends PodOpHelper {
   }
 
   progressItems(){
-    const patched = this.patchedPods();
+    const patched = this.patchedAndRunningPods();
     return [
       super.buildProgressItem(
         "Pods running new image",

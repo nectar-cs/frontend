@@ -201,16 +201,19 @@ export default class ImageActionsModal extends React.Component {
     if(opHelper.isStableState()) {
       conclusion = CONCLUSION_SUCCESS;
       conclusionReason = opHelper.successMessage();
+      console.log(`HALT for STABLE STATE`);
     }
     else if(opHelper.isTimedOut()) {
       conclusion = CONCLUSION_FAILED;
       conclusionReason = "Failed to reach the desired state in time";
+      console.log(`HALT for TIMEOUT`);
     }
     else{
       const crash = opHelper.isCrashedState();
       if(crash.isCrashed) {
         conclusion = CONCLUSION_FAILED;
         conclusionReason = crash.reason;
+        console.log(`HALT for CRASH STATE`);
       }
     }
 
