@@ -40,7 +40,8 @@ export default class ScalePodsHelper extends PodOpHelper {
   }
 
   progressItems(){
-    const dead = this.deadPods();
+    const updatedCount = (this.updated || this.initial).length;
+    const dCount = this.initial.length - updatedCount;
     const newPods = this.strictlyNewPods();
     const running = this.runningPods(newPods);
 
@@ -61,8 +62,8 @@ export default class ScalePodsHelper extends PodOpHelper {
       return [
         super.buildProgressItem(
           "Unwanted pods killed",
-          `${dead.length}/${-this.delta()}`,
-          dead.length === -this.delta()
+          `${dCount}/${-this.delta()}`,
+          dCount === -this.delta()
         )
       ]
     }

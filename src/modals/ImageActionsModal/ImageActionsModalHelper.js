@@ -70,8 +70,7 @@ export class ImageActionsModalHelper {
       scaleTo,
       imageName,
       conclusion,
-      startTime: inst.startTime,
-      hasFailed: inst.isOpFailed()
+      startTime: inst.startTime
     };
   }
 

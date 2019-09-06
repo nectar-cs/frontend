@@ -13,7 +13,6 @@ export default class PodOpHelper {
     this.updated = this.removeTerminating(bundle.updatedPods);
     this.startedAt = bundle.startedAt;
     this.scaleTo = parseInt(bundle.scaleTo);
-    this.hasFailed = bundle.hasFailed;
     this.targetImage = bundle.imageName;
     this.conclusion = bundle.conclusion;
   }
@@ -67,7 +66,6 @@ export default class PodOpHelper {
   }
 
   progressItemStatus(bool){
-    console.log("CALLED WITH CONCLUSION " + this.conclusion);
     if(bool) return 'done';
     if(this.conclusion === null || this.conclusion === undefined)
       return bool ? 'done' : 'working';
