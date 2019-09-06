@@ -5,6 +5,7 @@ import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./PodTableR
 import SameTagOpHelper from "./OpHelpers/SameTagOpHelper";
 import DiffTagOpHelper from "./OpHelpers/DiffTagOpHelper";
 import ScalePodsHelper from "./OpHelpers/ScalePodsHelper";
+import {CONCLUSION_FAILED, CONCLUSION_SUCCESS} from "./ImageActionsModal";
 
 export class ImageActionsModalHelper {
 
@@ -61,13 +62,14 @@ export class ImageActionsModalHelper {
   }
 
   static makeOpHelperBundle(inst){
-    const { initialPods, updatedPods } = inst.state;
+    const { initialPods, updatedPods, conclusion } = inst.state;
     const { imageName, scaleTo } = inst.state.config;
     return {
       initialPods,
       updatedPods,
       scaleTo,
       imageName,
+      conclusion,
       startTime: inst.startTime,
       hasFailed: inst.isOpFailed()
     };

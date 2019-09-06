@@ -20,9 +20,6 @@ const PHASE_SUBMITTING = 'submitting';
 const PHASE_SUBMITTED = 'submitted';
 const PHASE_CONCLUDED = 'concluded';
 
-const CONCLUSION_SUCCESS = 'success';
-const CONCLUSION_FAILED = 'fail';
-
 export default class ImageActionsModal extends React.Component {
 
   constructor(props){
@@ -196,25 +193,25 @@ export default class ImageActionsModal extends React.Component {
 
   tryHaltingReloadLoop(){
     const opHelper = Helper.opHelper(this);
-    let conclusion, conclusionReason = null;
+    let conclusion = null, conclusionReason = null;
 
     if(opHelper.isStableState()) {
-      conclusion = CONCLUSION_SUCCESS;
+      conclusion = true;
       conclusionReason = opHelper.successMessage();
     }
     else if(opHelper.isTimedOut()) {
-      conclusion = CONCLUSION_FAILED;
+      conclusion = false;
       conclusionReason = "Failed to reach the desired state in time";
     }
     else{
       const crash = opHelper.isCrashedState();
       if(crash.isCrashed) {
-        conclusion = CONCLUSION_FAILED;
+        conclusion = false;
         conclusionReason = crash.reason;
       }
     }
 
-    if(conclusion) {
+    if(conclusion !== null) {
       console.log(`HALT ${conclusion} ${conclusionReason}`);
       let bundle = {phase: PHASE_CONCLUDED, conclusion, conclusionReason};
       this.setState(s => ({...s, ...bundle}));
@@ -233,7 +230,7 @@ export default class ImageActionsModal extends React.Component {
   isConfiguring(){ return this.state.phase === PHASE_CONFIG }
   isConcluded(){ return this.state.phase === PHASE_CONCLUDED }
   isSubmitted(){ return this.state.phase === PHASE_SUBMITTED }
-  isOpFailed() { return this.state.conclusion === CONCLUSION_FAILED }
+  isOpFailed() { return this.state.conclusion === false }
 
   onAssignment(assignment){
     const merged = {...this.state.config, ...assignment};
