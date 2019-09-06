@@ -1,3 +1,6 @@
+import isEqual from 'lodash/isEqual';
+
+
 export default class PodOpHelper {
 
   constructor(){
@@ -9,7 +12,7 @@ export default class PodOpHelper {
     this.initial = this.removeTerminating(bundle.initialPods);
     this.updated = this.removeTerminating(bundle.updatedPods);
     this.startedAt = bundle.startedAt;
-    this.scaleTo = bundle.scaleTo;
+    this.scaleTo = parseInt(bundle.scaleTo);
     this.hasFailed = bundle.hasFailed;
     this.targetImage = bundle.imageName;
   }
@@ -54,11 +57,12 @@ export default class PodOpHelper {
     return this.initial;
   }
 
-  checkGroupInState(pods, count, func, target){
+  checkGroupInState(pods, count, func, targetValue){
     const actualStates = pods.map(func);
-    const targetStates = new Array(count).fill(target);
-    console.log(`COMPARE ${actualStates} =?= ${targetStates}`);
-    return actualStates.every(e => targetStates.includes(e));
+    const targetStates = Array.from(Array(count), () => targetValue);
+    // console.log(typeof(count));
+    // console.log(`COMPARE ${actualStates} =?= ${targetStates} (${count})`);
+    return isEqual(actualStates, targetStates);
   }
 
   buildProgressItem(title, detail, bool){
