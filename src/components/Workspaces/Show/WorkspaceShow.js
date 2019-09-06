@@ -22,17 +22,25 @@ class WorkspaceShowClass extends React.Component{
       isEntered: false,
       isFetching: false
     };
+
+    this.fetchDeployments = this.fetchDeployments.bind(this);
   }
 
   componentDidMount() {
     this.setState((s) => ({...s, isFetching: true}));
+    this.fetchDeployments();
+  }
+
+  fetchDeployments(){
     Backend.raisingFetch(`/workspaces/${this.workspaceId()}`, (workspace) => {
       workspace = DataUtils.objKeysToCamel(workspace);
       Kapi.filterFetch('/api/deployments', workspace, (depsResp) => {
+        const deployments = DataUtils.objKeysToCamel(depsResp)['data'];
+        console.log(`States: ${deployments[0].pods.map(p => p.state)}`);
         this.setState((s) => ({
           ...s,
           workspace,
-          deployments: DataUtils.objKeysToCamel(depsResp)['data'],
+          deployments: deployments,
           isFetching: false
         }));
       }, this.props.kubeErrorCallback);
@@ -68,6 +76,7 @@ class WorkspaceShowClass extends React.Component{
         deployment={deployment}
         microservice={this.microserviceForDeployment(deployment)}
         openModal={this.props.openModal}
+        refreshCallback={this.fetchDeployments}
       />
     ));
   }

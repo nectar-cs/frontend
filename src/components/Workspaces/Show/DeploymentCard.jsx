@@ -73,7 +73,10 @@ export default class DeploymentCard extends React.Component {
   }
 
   openImageModal(){
-    const bundle = { deployment: this.props.deployment };
+    const bundle = {
+      deployment: this.props.deployment,
+      refreshCallback: this.props.refreshCallback
+    };
     this.props.openModal(ImageActionsModal, bundle);
   }
 
@@ -109,6 +112,7 @@ export default class DeploymentCard extends React.Component {
 
   static propTypes = {
     openModal: PropTypes.func.isRequired,
+    refreshCallback: PropTypes.func.isRequired,
     ...FULL_DEPLOYMENT
   };
 }

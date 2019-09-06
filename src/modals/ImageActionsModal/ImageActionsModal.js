@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react'
+import PropTypes from 'prop-types'
 import {Container, Intro} from "./ImageActionsModalStyles";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
@@ -171,6 +172,7 @@ export default class ImageActionsModal extends React.Component {
     this.submittedAt = new Date().getTime();
     this.setState(s => ({...s, phase: PHASE_SUBMITTED}));
     this.reloadPods(true);
+    this.notifySubscribers();
   }
 
   submit() {
@@ -214,6 +216,7 @@ export default class ImageActionsModal extends React.Component {
     if(conclusion !== null) {
       console.log(`HALT ${conclusion} ${conclusionReason}`);
       let bundle = {phase: PHASE_CONCLUDED, conclusion, conclusionReason};
+      this.notifySubscribers();
       this.setState(s => ({...s, ...bundle}));
       return true;
     }
@@ -230,14 +233,19 @@ export default class ImageActionsModal extends React.Component {
   isConfiguring(){ return this.state.phase === PHASE_CONFIG }
   isConcluded(){ return this.state.phase === PHASE_CONCLUDED }
   isSubmitted(){ return this.state.phase === PHASE_SUBMITTED }
-  isOpFailed() { return this.state.conclusion === false }
 
   onAssignment(assignment){
     const merged = {...this.state.config, ...assignment};
     this.setState(s => ({...s, config: merged}));
   }
 
+  notifySubscribers(){
+    const broadcast = this.props.refreshCallback;
+    if(broadcast) broadcast();
+  }
+
   static propTypes = {
-    ...FULL_DEPLOYMENT
+    ...FULL_DEPLOYMENT,
+    refreshCallback: PropTypes.func
   }
 }
