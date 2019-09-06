@@ -26,7 +26,7 @@ export default class DiffTagOpHelper extends PodOpHelper {
   }
 
   isStableState(){
-    return this.bigCheck(
+    return this.checkGroupInState(
       this.updated,
       this.initial.length,
       p => p.imageName,

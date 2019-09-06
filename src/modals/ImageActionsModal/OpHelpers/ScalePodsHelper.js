@@ -21,7 +21,7 @@ export default class ScalePodsHelper extends PodOpHelper {
   }
 
   isStableState(){
-    return this.bigCheck(
+    return super.checkGroupInState(
       this.updated,
       this.scaleTo,
       p => p.state.toLowerCase(),

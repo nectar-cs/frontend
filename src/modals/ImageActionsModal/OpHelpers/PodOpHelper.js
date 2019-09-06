@@ -6,12 +6,19 @@ export default class PodOpHelper {
   }
 
   refresh(bundle){
-    this.initial = bundle.initialPods;
-    this.updated = bundle.updatedPods;
+    this.initial = this.removeTerminating(bundle.initialPods);
+    this.updated = this.removeTerminating(bundle.updatedPods);
     this.startedAt = bundle.startedAt;
     this.scaleTo = bundle.scaleTo;
     this.hasFailed = bundle.hasFailed;
     this.targetImage = bundle.imageName;
+  }
+
+  removeTerminating(pods){
+    if(!pods) return pods;
+    return pods.filter(pod => (
+      !pod.state.toLowerCase().includes('terminat')
+    ))
   }
 
   runningPods(pods){
@@ -47,7 +54,7 @@ export default class PodOpHelper {
     return this.initial;
   }
 
-  bigCheck(pods, count, func, target){
+  checkGroupInState(pods, count, func, target){
     const actualStates = pods.map(func);
     const targetStates = new Array(count).fill(target);
     return actualStates.every(e => targetStates.includes(e));

@@ -9,7 +9,7 @@ export default class SameTagOpHelper extends PodOpHelper {
   }
 
   isStableState() {
-    return this.bigCheck(
+    return this.checkGroupInState(
       this.strictlyNewPods(),
       this.initial.length,
       p => p.state.toLowerCase(),
