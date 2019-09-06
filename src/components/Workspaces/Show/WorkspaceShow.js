@@ -36,11 +36,10 @@ class WorkspaceShowClass extends React.Component{
       workspace = DataUtils.objKeysToCamel(workspace);
       Kapi.filterFetch('/api/deployments', workspace, (depsResp) => {
         const deployments = DataUtils.objKeysToCamel(depsResp)['data'];
-        console.log(`States: ${deployments[0].pods.map(p => p.state)}`);
         this.setState((s) => ({
           ...s,
           workspace,
-          deployments: deployments,
+          deployments,
           isFetching: false
         }));
       }, this.props.kubeErrorCallback);

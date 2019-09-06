@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Modal = styled.div`
-  width: 600px;
+  width: 580px;
   height: 700px;
-  padding: 14px 18px 14px 18px;
+  padding: 14px 20px 14px 20px;
 `;
