@@ -26,12 +26,29 @@ export const LoadingSpinner = styled.div`
   }
 `;
 
-export const TinySpinner = styled(LoadingSpinner)`
-  width: 12px;
-  height: 12px;
+function size(p, def='medium'){
+  if(!p || !p.size) p = def;
+  if(p.size === 'x-small') return "12px";
+  if(p.size === 'small') return "19px";
+  if(p.size === 'medium') return "26px";
+  if(p.size === 'large') return "40px";
+}
+
+export const ModSpinner = styled(LoadingSpinner)`
+  width: ${p => size(p)};
+  height: ${p => size(p)};
   &:after{
-    width: 12px;
-    height: 12px;
+    width: ${p => size(p)};
+    height: ${p => size(p)};
     border-width: 2px;
   }    
 `;
+
+export const CenteredSpinner = styled(ModSpinner)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+`;
+
+

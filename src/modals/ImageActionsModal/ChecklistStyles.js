@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {TinySpinner} from "../../assets/loading-spinner";
+import {ModSpinner} from "../../assets/loading-spinner";
 
 export const List = styled.ul`
   margin-top: 30px;
@@ -27,7 +27,7 @@ export const Icon = styled.div`
   color: ${p => p.good ? p.theme.colors.success : p.theme.colors.warn }
 `;
 
-export const Spinner = styled(TinySpinner)`
+export const Spinner = styled(ModSpinner)`
   margin-left: 24px;
   transform: translateY(-3px);
 `;

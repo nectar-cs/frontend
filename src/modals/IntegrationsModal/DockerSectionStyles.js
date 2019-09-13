@@ -12,6 +12,20 @@ export const S = {
     display: flex;
   `,
 
+  LoadingLayout: styled.div`
+    width: 100%;
+    height: 110px;
+    position: relative;
+  `,
+
+  LoadText: styled.p`
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    margin-left: 2px;
+    transform: translateX(-50%);
+  `,
+
   Vendor: styled.img`
     width: 30px;
     height: 30px;

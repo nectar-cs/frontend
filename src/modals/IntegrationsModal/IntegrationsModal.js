@@ -6,22 +6,16 @@ import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";
 import defaults from "./defaults";
 
-function Header(){
-  return(
-    <LeftHeader
-      graphicName={MiscUtils.image('integration.png')}
-      title='Docker and Git Setup'
-      subtitle='Integration portal'
-    />
-  )
-}
 
 export default class IntegrationsModal extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
-      docker: { showForm: true,  vendor: 'dockerhub' }
+      docker: {
+        formShowing: true,
+        vendor: 'dockerhub'
+      }
     };
 
     this.setDockerState = this.setDockerState.bind(this);
@@ -47,14 +41,24 @@ export default class IntegrationsModal extends React.Component {
       <DockerSection
         setDockerState={this.setDockerState}
         vendor={this.state.docker.vendor}
-        showForm={this.state.docker.showForm}
+        formShowing={this.state.docker.formShowing}
       />
     )
   }
 
   renderGitSection(){
-    if(this.state.docker.showForm) return null;
+    if(this.state.docker.formShowing) return null;
     return <GitSection/>
   }
 
+}
+
+function Header(){
+  return(
+    <LeftHeader
+      graphicName={MiscUtils.image('integration.png')}
+      title='Docker and Git Setup'
+      subtitle='Integration portal'
+    />
+  )
 }

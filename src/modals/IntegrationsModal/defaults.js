@@ -1,6 +1,7 @@
 const defaults = {
   intro: "Mosaic is a lot more useful when it talks to your image and source repos.",
   dockerApology: "Password auth, I know... Unfortunately that's how DockerHub rolls ;( ",
+  vendorQuestion: "What image registry do you want to add?",
 
   vendors: [
     { name: 'dockerhub', image: ['docker'] },
