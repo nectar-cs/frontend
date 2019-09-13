@@ -7,6 +7,7 @@ import {theme} from "../../assets/constants";
 import {InputLine, LineInput, SharedLineInput} from "../../assets/input-combos";
 import defaults from "./defaults";
 import Helper from "./Helper";
+import MiscUtils from "../../utils/MiscUtils";
 
 export default class DockerSection extends React.Component {
 
@@ -24,6 +25,7 @@ export default class DockerSection extends React.Component {
         <Fragment>
           <TextOverLineSubtitle text='Image Registries'/>
           { this.renderAddNewButton() }
+          { this.renderVendorChoices() }
           { this.renderFormInputs() }
           { this.renderFormButtons() }
         </Fragment>
@@ -42,7 +44,25 @@ export default class DockerSection extends React.Component {
     }
   }
 
-  renderRegistryChoices(){
+  renderVendorChoices(){
+    if(!this.state.showForm) return null;
+
+    const make = (name) => () => this.setState(s => ({...s, vendor: name}));
+    const items = defaults.vendors.map(vendor => (
+      <S.Vendor
+        key={vendor.name}
+        onClick={make(vendor.name)}
+        sel={vendor.name === this.state.vendor}
+        src={MiscUtils.frameworkImage(...vendor.image)}
+      />
+    ));
+
+    return(
+      <Fragment>
+        <p>Where are your docker images?</p>
+        <S.RegistriesRow>{items}</S.RegistriesRow>
+      </Fragment>
+    );
   }
 
   renderFormInputs(){

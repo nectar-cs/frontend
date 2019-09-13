@@ -23,9 +23,6 @@ export const LineInput = styled.input`
   }
 `;
 
-export const LineSelect = styled.select`
-`.withComponent(LineInput);
-
 export const LineLabel = styled.p`
   width: 30%;
 `;
