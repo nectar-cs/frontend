@@ -5,7 +5,7 @@ import defaults from "./defaults";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
 
-export default class DockerHub extends React.Component{
+export default class DockerHubForm extends React.Component{
 
   constructor(props){
     super(props);
@@ -34,12 +34,13 @@ export default class DockerHub extends React.Component{
         <LineInput
           value={this.state.username}
           onChange={(e) => make(e, 'username')}
-          placeholder='Username'
+          placeholder='DockerHub Username'
         />
         <LineInput
           value={this.state.password}
           onChange={(e) => make(e, 'password')}
-          placeholder='Password'
+          placeholder='DockerHub Password'
+          type={'password'}
         />
       </InputLine>
     )

@@ -15,8 +15,8 @@ export const S = {
   Vendor: styled.img`
     width: 30px;
     height: 30px;
-    border-radius: 10px;
-    border-width: 2px;
+    border-radius: 9px;
+    border-width: 1.5px;
     border-style: solid;
     padding: 4px;
     border-color: ${p => secondary(p)};
