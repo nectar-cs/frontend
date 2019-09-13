@@ -13,7 +13,7 @@ export default class IntegrationsModal extends React.Component {
     super(props);
     this.state = {
       docker: {
-        formShowing: true,
+        formShowing: false,
         vendor: 'dockerhub'
       }
     };

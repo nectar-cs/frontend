@@ -30,17 +30,16 @@ export const S = {
     width: 30px;
     height: 30px;
     border-radius: 9px;
-    border-width: 1.5px;
+    border-width: 2.2px;
     border-style: solid;
     padding: 4px;
-    border-color: ${p => secondary(p)};
-    background: ${p => p.sel ? secondary(p) : 'transparent'};
+    border-color: ${p => p.sel ? secondary(p) : 'transparent'};
     &:not(:first-child) {
      margin-left: 10px;
     }
     &:hover {
       cursor: pointer;
-      background: ${p => p.sel ? secondary(p) : less(p)};  
+      border-color: ${p => secondary(p)};
     }
   `,
 

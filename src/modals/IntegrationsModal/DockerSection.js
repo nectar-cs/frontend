@@ -10,16 +10,26 @@ import Helper from "./Helper";
 import MiscUtils from "../../utils/MiscUtils";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import {CenteredSpinner, ModSpinner} from "../../assets/loading-spinner";
+import Backend from "../../utils/Backend";
+import DataUtils from "../../utils/DataUtils";
+import IntegrationList from "./IntegrationList";
 
 export default class DockerSection extends React.PureComponent {
 
   constructor(props){
     super(props);
-    this.state = { isSubmitting: false };
+    this.state = { isSubmitting: false, registries: [] };
     this.formSubmit = null;
     this.onSubmitted = this.onSubmitted.bind(this);
   }
-  
+
+  componentDidMount(){
+    Backend.raisingFetch('/image_registries', (resp) => {
+      const registries = DataUtils.objKeysToCamel(resp['data']);
+      this.setState(s => ({...s, registries}));
+    });
+  }
+
   changeState(assignment){
     this.props.setDockerState(assignment);
   }
@@ -34,6 +44,7 @@ export default class DockerSection extends React.PureComponent {
       <ThemeProvider theme={theme}>
         <Fragment>
           <TextOverLineSubtitle text='Image Registries'/>
+          { this.renderList() }
           { this.renderAddNewButton() }
           { this.renderLoading() }
           { this.renderVendorChoices() }
@@ -42,6 +53,12 @@ export default class DockerSection extends React.PureComponent {
         </Fragment>
       </ThemeProvider>
     )
+  }
+
+  renderList(){
+    if(this.props.formShowing) return null;
+    if(this.state.isSubmitting) return null;
+    return <IntegrationList items={this.state.registries}/>
   }
 
   renderLoading(){
@@ -109,7 +126,10 @@ export default class DockerSection extends React.PureComponent {
     if(this.state.isSubmitting) return null;
     
     const onCancel = () => this.changeState({formShowing: false});
-    const onOk = this.formSubmit;
+    const onOk = () => {
+      this.setState(s => ({...s, isSubmitting: true}));
+      this.formSubmit();
+    };
 
     const OkButton = ()=> <S.OkButton onClick={onOk}>Connect</S.OkButton>;
 
