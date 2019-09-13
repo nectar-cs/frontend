@@ -7,6 +7,7 @@ export const InputLine = styled.div`
   flex-direction: row;
   align-items: baseline;
   margin-top: 20px;
+  justify-content: space-between;
 `;
 
 export const LineInput = styled.input`
@@ -17,10 +18,10 @@ export const LineInput = styled.input`
   border-radius: 0;
   margin: 0;
   color: ${p => p.theme.colors.primaryFont};
+  &:not(:first-child) {
+   margin-left: 18px;
+  }
 `;
-
-export const LineTextInput = styled.input`
-`.withComponent(LineInput);
 
 export const LineSelect = styled.select`
 `.withComponent(LineInput);

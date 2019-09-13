@@ -9,6 +9,7 @@ import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnoun
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import DataUtils from "../../../utils/DataUtils";
+import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
 
 class WorkspaceShowClass extends React.Component{
 
@@ -29,6 +30,7 @@ class WorkspaceShowClass extends React.Component{
   componentDidMount() {
     this.setState((s) => ({...s, isFetching: true}));
     this.fetchDeployments();
+    this.props.openModal(IntegrationsModal);
   }
 
   fetchDeployments(){

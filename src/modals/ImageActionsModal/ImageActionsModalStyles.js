@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { Modal } from './../../assets/layouts.js'
+import { ModalLayout } from './../../assets/layouts.js'
 
-export const Container = styled(Modal)`
+export const Container = styled(ModalLayout)`
   
 `;
 
