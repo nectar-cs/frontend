@@ -21,6 +21,9 @@ export const LineInput = styled.input`
   &:not(:first-child) {
    margin-left: 18px;
   }
+  &::placeholder{
+   color: ${p => p.theme.colors.primaryFontLess}
+  }
 `;
 
 export const LineLabel = styled.p`

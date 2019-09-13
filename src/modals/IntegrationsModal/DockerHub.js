@@ -2,23 +2,45 @@ import React, {Fragment} from "react";
 import {InputLine, LineInput} from "../../assets/input-combos";
 import {S} from "./DockerSectionStyles";
 import defaults from "./defaults";
+import {ThemeProvider} from "styled-components";
+import {theme} from "../../assets/constants";
 
-export default class DockerHub {
+export default class DockerHub extends React.Component{
+
+  constructor(props){
+    super(props);
+    this.state = { username: '', password: '' }
+  }
 
   render(){
     return(
-      <Fragment>
-        { this.renderFormInputs() }
-        { this.renderApology() }
-      </Fragment>
+      <ThemeProvider theme={theme}>
+        <Fragment>
+          { this.renderFormInputs() }
+          { this.renderApology() }
+        </Fragment>
+      </ThemeProvider>
     )
   }
 
   renderFormInputs(){
+    const make = (e, name) => {
+      const value = e.target.value;
+      this.setState(s => ({...s, [name]: value}));
+    };
+
     return(
       <InputLine>
-        <LineInput value='Username'/>
-        <LineInput value='Password'/>
+        <LineInput
+          value={this.state.username}
+          onChange={(e) => make(e, 'username')}
+          placeholder='Username'
+        />
+        <LineInput
+          value={this.state.password}
+          onChange={(e) => make(e, 'password')}
+          placeholder='Password'
+        />
       </InputLine>
     )
   }

@@ -1,42 +1,60 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {LayoutIntro, ModalLayout} from "../../assets/layouts";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import AddNew from "../../widgets/AddNew/AddNew";
 import DockerSection from "./DockerSection";
+import GitSection from "./GitSection";
+import defaults from "./defaults";
+
+function Header(){
+  return(
+    <LeftHeader
+      graphicName={MiscUtils.image('integration.png')}
+      title='Docker and Git Setup'
+      subtitle='Integration portal'
+    />
+  )
+}
 
 export default class IntegrationsModal extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      docker: { showForm: true,  vendor: 'dockerhub' }
+    };
+
+    this.setDockerState = this.setDockerState.bind(this);
+  }
+
+  setDockerState(assignment){
+    this.setState(s => ({...s, docker: ({...s.docker, ...assignment})}));
+  }
 
   render(){
     return(
       <ModalLayout>
-        <LeftHeader
-          graphicName={MiscUtils.image('integration.png')}
-          title='Docker and Git Setup'
-          subtitle='Integration portal'
-          />
-
-        <LayoutIntro>
-          Mosaic is a lot more useful when it talks to your image and source repos.
-        </LayoutIntro>
-
-        <DockerSection/>
+        <Header/>
+        <LayoutIntro>{defaults.intro}</LayoutIntro>
+        { this.renderDockerSection() }
         { this.renderGitSection() }
-
       </ModalLayout>
     )
   }
 
-  renderGitSection(){
+  renderDockerSection(){
     return(
-      <Fragment>
-        <TextOverLineSubtitle
-          text='Git Integrations'
-        />
-        <AddNew><p>Add a GitHub or BitBucket account</p></AddNew>
-      </Fragment>
+      <DockerSection
+        setDockerState={this.setDockerState}
+        vendor={this.state.docker.vendor}
+        showForm={this.state.docker.showForm}
+      />
     )
+  }
+
+  renderGitSection(){
+    if(this.state.docker.showForm) return null;
+    return <GitSection/>
   }
 
 }

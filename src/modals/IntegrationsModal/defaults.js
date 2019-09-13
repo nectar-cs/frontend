@@ -1,8 +1,9 @@
 const defaults = {
-  dockerApology: "Password auth... Unfortunately that's how DockerHub rolls :( ",
+  intro: "Mosaic is a lot more useful when it talks to your image and source repos.",
+  dockerApology: "Password auth, I know... Unfortunately that's how DockerHub rolls :( ",
 
   vendors: [
-    { mame: 'dockerhub', image: ['docker'] },
+    { name: 'dockerhub', image: ['docker'] },
     { name: 'aws', image: ['amazonwebservices', 'original.svg'] },
     { name: 'azure', image: ['azure', 'plain.png'] }
   ]

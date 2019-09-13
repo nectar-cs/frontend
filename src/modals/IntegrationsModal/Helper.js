@@ -4,7 +4,7 @@ import DockerHub from "./DockerHub";
 export default class Helper {
   static rendererForVendor(vendor){
     if(vendor === 'dockerhub')
-      return DockerHub;
+      return <DockerHub/>;
     else
       return <p>Coming soon!</p>;
   }

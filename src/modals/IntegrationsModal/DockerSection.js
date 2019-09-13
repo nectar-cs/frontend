@@ -1,22 +1,18 @@
 import React, {Fragment} from 'react'
+import PropTypes from 'prop-types'
 import {S} from './DockerSectionStyles'
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import AddNew from "../../widgets/AddNew/AddNew";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
-import {InputLine, LineInput, SharedLineInput} from "../../assets/input-combos";
 import defaults from "./defaults";
 import Helper from "./Helper";
 import MiscUtils from "../../utils/MiscUtils";
 
-export default class DockerSection extends React.Component {
+export default class DockerSection extends React.PureComponent {
 
-  constructor(props){
-    super(props);
-    this.state = {
-      showForm: true,
-      vendor: null
-    }
+  changeState(assignment){
+    this.props.setDockerState(assignment);
   }
 
   render(){
@@ -34,8 +30,8 @@ export default class DockerSection extends React.Component {
   }
 
   renderAddNewButton(){
-    if(!this.state.showForm){
-      const action = ()=> this.setState(s => ({...s, showForm: true}));
+    if(!this.props.showForm){
+      const action = ()=> this.changeState({showForm: true});
       return(
         <AddNew action={action}>
           <p>Add a docker account</p>
@@ -45,14 +41,14 @@ export default class DockerSection extends React.Component {
   }
 
   renderVendorChoices(){
-    if(!this.state.showForm) return null;
+    if(!this.props.showForm) return null;
 
-    const make = (name) => () => this.setState(s => ({...s, vendor: name}));
+    const make = (name) => () => this.changeState({vendor: name});
     const items = defaults.vendors.map(vendor => (
       <S.Vendor
         key={vendor.name}
         onClick={make(vendor.name)}
-        sel={vendor.name === this.state.vendor}
+        sel={vendor.name === this.props.vendor}
         src={MiscUtils.frameworkImage(...vendor.image)}
       />
     ));
@@ -66,20 +62,26 @@ export default class DockerSection extends React.Component {
   }
 
   renderFormInputs(){
-    if(this.state.showForm && this.state.vendor){
-      return Helper.rendererForVendor(this.state.vendor);
+    if(this.props.showForm && this.props.vendor){
+      return Helper.rendererForVendor(this.props.vendor);
     } else return null;
   }
 
   renderFormButtons(){
-    if(this.state.showForm){
-      const onCancel = () => this.setState(s => ({...s, showForm: false}));
+    if(this.props.showForm){
+      const onCancel = () => this.changeState({showForm: false});
       return(
         <S.FormButtonsRow>
           <S.CancelButton onClick={onCancel}>Cancel</S.CancelButton>
-          { this.state.vendor ? <S.OkButton>Connect</S.OkButton> : null }
+          { this.props.vendor ? <S.OkButton>Connect</S.OkButton> : null }
         </S.FormButtonsRow>
       )
     }
+  }
+
+  static propTypes = {
+    vendor: PropTypes.string.isRequired,
+    showForm: PropTypes.oneOf([true, false]).isRequired,
+    setDockerState: PropTypes.func.isRequired
   }
 }
