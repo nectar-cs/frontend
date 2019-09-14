@@ -19,7 +19,19 @@ export default class GitSection extends IntegrationSection {
     })
   }
 
-  formRenderer(){
+  performAuthUrlsFetch(whenDone){
+    const endpoint = `/git_remotes/github/auth_url`;
+    Backend.raisingFetch(endpoint, resp => {
+      whenDone({github: resp['auth_url']});
+    });
+  }
+
+  formRenderer(extras){
+    extras.setSubmitPerformer(() => {
+      const url = this.state.authUrls[this.props.vendor];
+      window.open(url, "_blank")
+    });
+
     if(this.props.vendor === 'github')
       return <S.FwdNotice>{defaults.gitFwdNotice}</S.FwdNotice>;
     else

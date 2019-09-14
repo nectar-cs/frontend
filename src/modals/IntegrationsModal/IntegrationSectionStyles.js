@@ -2,7 +2,6 @@ import styled from "styled-components";
 import {SmallButton} from "../../assets/buttons";
 
 const less = (p) => p.theme.colors.contrastLessFont;
-const primary = (p) => p.theme.colors.primaryColor;
 const secondary = (p) => p.theme.colors.secondaryColor;
 
 export const S = {

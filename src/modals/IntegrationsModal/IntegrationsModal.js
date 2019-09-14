@@ -6,6 +6,7 @@ import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";
 import defaults from "./defaults";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import Backend from "../../utils/Backend";
 
 export default class IntegrationsModal extends React.Component {
 
@@ -19,11 +20,15 @@ export default class IntegrationsModal extends React.Component {
       git: {
         formShowing: true,
         vendor: null
-      }
+      },
+      authUrls: {}
     };
 
     this.setDockerState = this.setDockerState.bind(this);
     this.setGitState = this.setGitState.bind(this);
+  }
+
+  componentDidMount(){
   }
 
   setDockerState(assignment){

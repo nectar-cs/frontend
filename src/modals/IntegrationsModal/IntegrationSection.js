@@ -5,7 +5,6 @@ import AddNew from "../../widgets/AddNew/AddNew";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
 import defaults from "./defaults";
-import Helper from "./Helper";
 import MiscUtils from "../../utils/MiscUtils";
 import {CenteredSpinner} from "../../assets/loading-spinner";
 import Backend from "../../utils/Backend";
@@ -17,7 +16,10 @@ export default class IntegrationSection extends React.PureComponent {
     super(props);
     this.state = {
       isSubmitting: false,
-      registries: []
+      isListFetching: true,
+      isAuthUrlsFetching: true,
+      registries: [],
+      authUrls: []
     };
     this.formSubmit = null;
     this.onSubmitted = this.onSubmitted.bind(this);
@@ -26,6 +28,7 @@ export default class IntegrationSection extends React.PureComponent {
 
   componentDidMount(){
     this.fetchIntegrations();
+    this.fetchAuthUrls();
   }
 
   render(){
@@ -53,6 +56,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   renderList(){
+    if(this.isBaseFetching()) return null;
     if(this.props.formShowing) return null;
     if(this.state.isSubmitting) return null;
     return <IntegrationList
@@ -62,7 +66,9 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   renderLoading(){
-    if(!this.state.isSubmitting) return null;
+    if(!this.state.isSubmitting && !this.isBaseFetching())
+      return null;
+
     return(
       <S.LoadingLayout>
         <CenteredSpinner size='large'/>
@@ -72,6 +78,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   renderAddNewButton(){
+    if(this.isBaseFetching()) return null;
     if(this.props.formShowing) return null;
     if(this.state.isSubmitting) return null;
 
@@ -84,6 +91,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   renderVendorChoices(){
+    if(this.isBaseFetching()) return null;
     if(!this.props.formShowing) return null;
     if(this.state.isSubmitting) return null;
 
@@ -106,6 +114,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   renderFormInputs(){
+    if(this.isBaseFetching()) return null;
     if(this.state.isSubmitting) return null;
 
     const extras = {
@@ -119,6 +128,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   renderFormButtons(){
+    if(this.isBaseFetching()) return null;
     if(!this.props.formShowing) return null;
     if(this.state.isSubmitting) return null;
 
@@ -139,10 +149,17 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   fetchIntegrations(){
-    this.setState(s => ({...s, registries: []}));
+    this.setState(s => ({...s, registries: [], isListFetching: true}));
     this.performFetch((registries) => {
-      this.setState(s => ({...s, registries}));
+      this.setState(s => ({...s, registries, isListFetching: false}));
       registries.forEach(r => this.startConnectionCheck(r.id));
+    })
+  }
+
+  fetchAuthUrls(){
+    this.setState(s => ({...s, isAuthUrlsFetching: true}));
+    this.performAuthUrlsFetch((authUrls) => {
+      this.setState(s => ({...s, authUrls, isAuthUrlsFetching: false}));
     })
   }
 
@@ -165,6 +182,11 @@ export default class IntegrationSection extends React.PureComponent {
     this.setState(s => ({...s, isSubmitting: false}));
     this.changeState({formShowing: false});
     this.fetchIntegrations();
+  }
+
+  isBaseFetching(){
+    const { isAuthUrlsFetching, isListFetching } = this.state;
+    return isAuthUrlsFetching || isListFetching;
   }
 
   static propTypes = {
