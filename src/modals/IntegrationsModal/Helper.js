@@ -12,7 +12,10 @@ export default class Helper {
   }
 
   static imgName(name){
-    const nm = defaults.vendors.find(v => v.name === name).image;
+    const imgRegVendors = defaults.imageRegistryVendors;
+    const remGitVendors = defaults.gitRemoteVendors;
+    const superList = imgRegVendors.concat(remGitVendors);
+    const nm = superList.find(v => v.name === name).image;
     return MiscUtils.frameworkImage(...nm);
   }
 

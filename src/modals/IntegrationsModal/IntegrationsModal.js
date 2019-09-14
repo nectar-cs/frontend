@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {LayoutIntro, ModalLayout} from "../../assets/layouts";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";
 import defaults from "./defaults";
-
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 export default class IntegrationsModal extends React.Component {
 
@@ -15,14 +15,23 @@ export default class IntegrationsModal extends React.Component {
       docker: {
         formShowing: false,
         vendor: null
+      },
+      git: {
+        formShowing: false,
+        vendor: null
       }
     };
 
     this.setDockerState = this.setDockerState.bind(this);
+    this.setGitState = this.setGitState.bind(this);
   }
 
   setDockerState(assignment){
     this.setState(s => ({...s, docker: ({...s.docker, ...assignment})}));
+  }
+
+  setGitState(assignment){
+    this.setState(s => ({...s, git: ({...s.git, ...assignment})}));
   }
 
   render(){
@@ -37,20 +46,32 @@ export default class IntegrationsModal extends React.Component {
   }
 
   renderDockerSection(){
+    if(this.state.git.formShowing) return null;
     return(
-      <DockerSection
-        setDockerState={this.setDockerState}
-        vendor={this.state.docker.vendor}
-        formShowing={this.state.docker.formShowing}
-      />
+      <Fragment>
+        <TextOverLineSubtitle text='Docker Image Registries'/>
+        <DockerSection
+          setMasterState={this.setDockerState}
+          vendor={this.state.docker.vendor}
+          formShowing={this.state.docker.formShowing}
+        />
+      </Fragment>
     )
   }
 
   renderGitSection(){
     if(this.state.docker.formShowing) return null;
-    return <GitSection/>
+    return(
+      <Fragment>
+        <TextOverLineSubtitle text='Git Remotes'/>
+        <GitSection
+          setMasterState={this.setGitState}
+          vendor={this.state.git.vendor}
+          formShowing={this.state.git.formShowing}
+        />
+      </Fragment>
+    )
   }
-
 }
 
 function Header(){

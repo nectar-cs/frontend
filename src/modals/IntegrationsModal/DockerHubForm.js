@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import PropTypes from 'prop-types'
 import {InputLine, LineInput} from "../../assets/input-combos";
-import {S} from "./DockerSectionStyles";
+import {S} from "./IntegrationSectionStyles";
 import defaults from "./defaults";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
