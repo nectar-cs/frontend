@@ -24,6 +24,11 @@ export default class DockerSection extends IntegrationSection {
     })
   }
 
+  performDelete(id, whenDone){
+    const endpoint = `/image_registries/${id}`;
+    Backend.raisingDelete(endpoint, whenDone);
+  }
+
   formRenderer(extras){
     if(this.props.vendor === 'dockerhub')
       return <DockerHubForm {...extras}/>;

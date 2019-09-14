@@ -15,7 +15,7 @@ export default class GitSection extends IntegrationSection {
   performConnectionCheck(id, whenDone){
     const ep = `/git_remotes/${id}/check_connection`;
     Backend.raisingFetch(ep, resp => {
-      whenDone(resp['data']['connected']);
+      whenDone(resp['connected']);
     })
   }
 
@@ -26,11 +26,17 @@ export default class GitSection extends IntegrationSection {
     });
   }
 
-  formRenderer(extras){
-    extras.setSubmitPerformer(() => {
+  performDelete(id, whenDone){
+    const endpoint = `/git_remotes/${id}`;
+    Backend.raisingDelete(endpoint, whenDone);
+  }
+
+  formRenderer(){
+    super.formSubmit = () => {
       const url = this.state.authUrls[this.props.vendor];
-      window.open(url, "_blank")
-    });
+      window.open(url, "_blank");
+      super.onSubmitted();
+    };
 
     if(this.props.vendor === 'github')
       return <S.FwdNotice>{defaults.gitFwdNotice}</S.FwdNotice>;

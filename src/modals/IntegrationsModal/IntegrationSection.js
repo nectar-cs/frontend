@@ -48,8 +48,7 @@ export default class IntegrationSection extends React.PureComponent {
 
   deleteItem(id){
     this.setState(s => ({...s, isSubmitting: true}));
-    const endpoint = `/image_registries/${id}`;
-    Backend.raisingDelete(endpoint, () => {
+    this.performDelete(id, () => {
       this.setState(s => ({...s, isSubmitting: false}));
       this.fetchIntegrations();
     });
