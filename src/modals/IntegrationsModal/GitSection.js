@@ -1,10 +1,9 @@
-import React, {Fragment} from 'react'
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import AddNew from "../../widgets/AddNew/AddNew";
+import React from 'react'
 import defaults from "./defaults";
 import IntegrationSection from "./IntegrationSection";
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
+import {S} from './IntegrationSectionStyles'
 
 export default class GitSection extends IntegrationSection {
   performFetch(whenDone){
@@ -20,8 +19,13 @@ export default class GitSection extends IntegrationSection {
     })
   }
 
-  vendorList(){
-    return defaults.imageRegistryVendors;
+  formRenderer(){
+    if(this.props.vendor === 'github')
+      return <S.FwdNotice>{defaults.gitFwdNotice}</S.FwdNotice>;
+    else
+      return <S.Apology>Coming soon!</S.Apology>;
   }
 
+  vendorQuestion(){ return defaults.gitVendorQuestion; }
+  vendorList(){ return defaults.gitRemoteVendors; }
 }

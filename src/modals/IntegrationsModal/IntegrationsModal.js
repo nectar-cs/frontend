@@ -17,7 +17,7 @@ export default class IntegrationsModal extends React.Component {
         vendor: null
       },
       git: {
-        formShowing: false,
+        formShowing: true,
         vendor: null
       }
     };

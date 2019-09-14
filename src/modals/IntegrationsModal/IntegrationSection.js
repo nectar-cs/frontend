@@ -99,7 +99,7 @@ export default class IntegrationSection extends React.PureComponent {
 
     return(
       <Fragment>
-        <p>{defaults.vendorQuestion}</p>
+        <p>{this.vendorQuestion()}</p>
         <S.RegistriesRow>{items}</S.RegistriesRow>
       </Fragment>
     );
@@ -108,16 +108,13 @@ export default class IntegrationSection extends React.PureComponent {
   renderFormInputs(){
     if(this.state.isSubmitting) return null;
 
-    const props = {
+    const extras = {
       setSubmitPerformer: (func) => this.formSubmit = func,
       notifySubmitted: this.onSubmitted
     };
 
     if(this.props.formShowing && this.props.vendor){
-      return Helper.rendererForVendor(
-        this.props.vendor,
-        props
-      );
+      return this.formRenderer(extras);
     } else return null;
   }
 

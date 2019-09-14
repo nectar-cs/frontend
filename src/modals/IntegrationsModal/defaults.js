@@ -1,7 +1,10 @@
 const defaults = {
-  intro: "Mosaic is a lot more useful when it talks to your image and source repos.",
-  dockerApology: "Password auth, I know... Unfortunately that's how DockerHub rolls ;( ",
-  vendorQuestion: "What image registry do you want to add?",
+  intro: "Mosaic is a lot more useful when it talks to your image" +
+    " and source repos.",
+  dockerApology: "Password auth, I know... Unfortunately that's how" +
+    " DockerHub rolls ;( ",
+  imgVendorQuestion: "What image registry do you want to add?",
+  gitVendorQuestion: "What git remote do you want to add?",
   addNewImageReg: "Add an image registry",
   addNewGitRemote: "Add a Git Remote",
 
@@ -12,9 +15,13 @@ const defaults = {
   ],
 
   gitRemoteVendors: [
-    { name: 'github', image: ['github'] },
-    { name: 'bitbucket', image: ['bitbucket'] }
-  ]
+    { name: 'github', image: ['github', 'original.svg'] },
+    { name: 'bitbucket', image: ['bitbucket', 'original.svg'] },
+    { name: 'gitlab', image: ['gitlab', 'plain.svg'] }
+  ],
+
+  gitFwdNotice: "Clicking \"Connect\" will take you to GitHub's" +
+    " third party authorization page."
 };
 
 export default defaults;

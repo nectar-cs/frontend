@@ -3,6 +3,7 @@ import IntegrationSection from "./IntegrationSection";
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
 import defaults from "./defaults";
+import DockerHubForm from "./DockerHubForm";
 
 export default class DockerSection extends IntegrationSection {
   performFetch(whenDone){
@@ -18,7 +19,13 @@ export default class DockerSection extends IntegrationSection {
     })
   }
 
-  vendorList(){
-    return defaults.imageRegistryVendors;
+  formRenderer(extras){
+    if(this.props.vendor === 'dockerhub')
+      return <DockerHubForm {...extras}/>;
+    else
+      return <p>Coming soon!</p>;
   }
+
+  vendorQuestion(){ return defaults.imgVendorQuestion; }
+  vendorList(){ return defaults.imageRegistryVendors; }
 }

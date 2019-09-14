@@ -4,13 +4,6 @@ import defaults from "./defaults";
 import MiscUtils from "../../utils/MiscUtils";
 
 export default class Helper {
-  static rendererForVendor(vendor, props){
-    if(vendor === 'dockerhub')
-      return <DockerHubForm {...props}/>;
-    else
-      return <p>Coming soon!</p>;
-  }
-
   static imgName(name){
     const imgRegVendors = defaults.imageRegistryVendors;
     const remGitVendors = defaults.gitRemoteVendors;

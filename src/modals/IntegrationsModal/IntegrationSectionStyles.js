@@ -61,7 +61,11 @@ export const S = {
   `,
 
   Apology: styled.p`
-    margin-top: 16px
+    margin-top: 18px
+  `,
+
+  FwdNotice: styled.p`
+    margin-top: 18px
   `
 };
 
