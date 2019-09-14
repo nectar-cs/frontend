@@ -15,16 +15,24 @@ function IntegrationItem(props) {
     </Trash>
   );
 
-  const status = props.status ?
-    <StatusTag>Working</StatusTag> :
-    <ModSpinner size='x-small'/>
-  ;
+  let statusWidget = null;
+  switch(props.connected){
+    case null:
+    case undefined:
+      statusWidget = <ModSpinner size='x-small'/>;
+      break;
+    case true:
+      statusWidget = <StatusTag emotion='success'>Authenticated</StatusTag>;
+      break;
+    case false:
+      statusWidget = <StatusTag emotion='fail'>Broken</StatusTag>;
+  }
 
   return(
     <tr>
       <td><Icon src={Helper.imgName(props.type)}/></td>
       <td><p>{props.identifier}</p></td>
-      <td>{status}</td>
+      <td>{statusWidget}</td>
       <td>{delCol}</td>
     </tr>
   )

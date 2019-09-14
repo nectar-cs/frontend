@@ -38,10 +38,12 @@ export default class DockerSection extends React.PureComponent {
     const ep = `/image_registries/${id}/check_connection`;
 
     Backend.raisingFetch(ep, resp => {
-      const result = resp['result'];
+      const result = resp['data']['connected'];
       const news = this.state.registries.map(r => {
-        if(r.id === id){
-          return {...r, connectionCheck: result};
+        if(r.id.toString() === id.toString()){
+          console.log("WACKING ");
+          console.log(r);
+          return {...r, connected: result};
         } else return r;
       });
       this.setState(s => ({...s, registries: news}));

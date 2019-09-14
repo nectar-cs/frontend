@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 function colored(name, p){
+  const color = p.theme.ali(name);
+  return p.theme.colors[color];
 }
 
 export const StatusTag = styled.p`
@@ -10,7 +12,7 @@ export const StatusTag = styled.p`
   display: inline-block;
   color: ${p => p.theme.colors.contrastFont};
   font-size: 13px;
-  background: red
+  background: ${p => colored(p.emotion, p)};
 `;
 
 export const CleanStatus = styled.p`

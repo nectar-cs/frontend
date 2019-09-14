@@ -11,8 +11,16 @@ export const theme = {
     contentBackgroundColor: "#e1e3e8",
     itemBackgroundColor: "white",
     lineColor: "#455D7A",
-    success: "darkgreen",
+    success: "#326342",
     fail: "darkred",
     warn: "tomato"
+  },
+  ali: (name) => {
+    if(name === 'success') return 'success';
+    if(name === 'connected') return "success";
+    if(name === 'true') return "success";
+    if(name === 'fail') return 'fail';
+    if(name === 'failure') return 'fail';
+    if(name === 'failed') return 'fail';
   }
 };
