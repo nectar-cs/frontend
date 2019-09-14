@@ -18,7 +18,10 @@ export default class DockerSection extends React.PureComponent {
 
   constructor(props){
     super(props);
-    this.state = { isSubmitting: false, registries: [] };
+    this.state = {
+      isSubmitting: false,
+      registries: []
+    };
     this.formSubmit = null;
     this.onSubmitted = this.onSubmitted.bind(this);
   }
@@ -27,6 +30,21 @@ export default class DockerSection extends React.PureComponent {
     Backend.raisingFetch('/image_registries', (resp) => {
       const registries = DataUtils.objKeysToCamel(resp['data']);
       this.setState(s => ({...s, registries}));
+      registries.forEach(r => this.startConnectionCheck(r.id));
+    });
+  }
+
+  startConnectionCheck(id){
+    const ep = `/image_registries/${id}/check_connection`;
+
+    Backend.raisingFetch(ep, resp => {
+      const result = resp['result'];
+      const news = this.state.registries.map(r => {
+        if(r.id === id){
+          return {...r, connectionCheck: result};
+        } else return r;
+      });
+      this.setState(s => ({...s, registries: news}));
     });
   }
 
