@@ -33,6 +33,7 @@ export default class ImageActionsModal extends React.Component {
       },
       phase: PHASE_CONFIG,
       initialPods: [],
+      imageRegs: [],
       updatedPods: null,
       conclusion: null,
       conclusionReason: null
@@ -141,6 +142,7 @@ export default class ImageActionsModal extends React.Component {
         scaleTo={this.state.config.scaleTo}
         initialReplicas={this.props.deployment.replicas}
         onAssignment={(a) => this.onAssignment(a)}
+        imageRegs={this.state.imageRegs}
       />
     )
   }

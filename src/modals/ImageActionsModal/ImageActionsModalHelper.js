@@ -6,6 +6,7 @@ import SameTagOpHelper from "./OpHelpers/SameTagOpHelper";
 import DiffTagOpHelper from "./OpHelpers/DiffTagOpHelper";
 import ScalePodsHelper from "./OpHelpers/ScalePodsHelper";
 import {CONCLUSION_FAILED, CONCLUSION_SUCCESS} from "./ImageActionsModal";
+import Backend from "../../utils/Backend";
 
 export class ImageActionsModalHelper {
 
@@ -18,6 +19,14 @@ export class ImageActionsModalHelper {
       // console.table(data);
       inst.setState(s => ({...s, [field]: data}));
       runAfter && runAfter();
+    })
+  }
+
+  static fetchDockerImgs(inst){
+    const ep = `/image_registries/total`;
+    Backend.raisingFetch(ep, resp => {
+      const data = DataUtils.objKeysToCamel(resp)['data'];
+      inst.setState(s => ({...s, imageRegs: data}));
     })
   }
 

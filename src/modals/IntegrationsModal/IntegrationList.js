@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Icon, Trash} from "./IntegrationListStyles";
+import {Icon, Identifier, Status, Trash} from "./IntegrationListStyles";
 import {theme} from "../../assets/constants";
 import {ThemeProvider} from "styled-components";
 import Helper from "./Helper";
@@ -23,16 +23,16 @@ function IntegrationItem(props) {
       statusWidget = <ModSpinner size='x-small'/>;
       break;
     case true:
-      statusWidget = <StatusTag emotion='success'>Connected</StatusTag>;
+      statusWidget = <Status emotion='success'>Connected</Status>;
       break;
     case false:
-      statusWidget = <StatusTag emotion='fail'>Malfunction</StatusTag>;
+      statusWidget = <Status emotion='fail'>Disconnected</Status>;
   }
 
   return(
     <tr>
       <td><Icon src={Helper.imgName(props.type)}/></td>
-      <td><p>{props.identifier}</p></td>
+      <td><Identifier>{props.identifier}</Identifier></td>
       <td>{statusWidget}</td>
       <td>{delCol}</td>
     </tr>

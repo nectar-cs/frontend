@@ -18,7 +18,7 @@ export const StatusTag = styled.p`
 export const CleanStatus = styled.p`
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: ${p => p.color || p.theme.colors.primaryColor}
+  color: ${p => p.color || colored(p.emotion, p)}
 `;
 
 export const BoldStatus = styled(CleanStatus)`

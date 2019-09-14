@@ -12,5 +12,4 @@ export default class Helper {
     const args = nm ? nm.image : [];
     return MiscUtils.frameworkImage(...args);
   }
-
 }

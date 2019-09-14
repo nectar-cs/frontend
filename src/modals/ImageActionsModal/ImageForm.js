@@ -13,6 +13,8 @@ export default class ImageForm extends React.Component {
           { this.renderTypeLine() }
           { this.renderImageNameLine() }
           { this.renderScaleSelector() }
+          { this.renderRegistrySelectors() }
+          { this.renderRegRepoSelectors() }
         </Fragment>
       </ThemeProvider>
     )
@@ -69,6 +71,42 @@ export default class ImageForm extends React.Component {
     )
   }
 
+  renderRegistrySelectors(){
+    if(this.props.operationType !== 'docker') return null;
+    return(
+      <InputLine>
+        <LineLabel>Source</LineLabel>
+        <LineInput
+          as='select'
+          value={this.props.fromReg}
+          onChange={(e) => this.onAssignment('fromReg', e)}>
+          { [] }
+        </LineInput>
+        <LineInput
+          as='select'
+          value={this.props.fromRegRepo}
+          onChange={(e) => this.onAssignment('fromRegRepo', e)}>
+          { [] }
+        </LineInput>
+      </InputLine>
+    )
+  }
+
+  renderRegRepoSelectors(){
+    if(this.props.operationType !== 'docker') return null;
+    return(
+      <InputLine>
+        <LineLabel>Image</LineLabel>
+        <LineInput
+          as='select'
+          value={this.props.imageSrc}
+          onChange={(e) => this.onAssignment('imageSrc', e)}>
+          { [] }
+        </LineInput>
+      </InputLine>
+    )
+  }
+
   onAssignment(name, event){
     this.props.onAssignment({ [name]: event.target.value.toString() });
   }
@@ -88,6 +126,17 @@ export default class ImageForm extends React.Component {
     imageName: PropTypes.string.isRequired,
     onAssignment: PropTypes.func.isRequired,
     scaleTo: PropTypes.string.isRequired,
-    initialReplicas: PropTypes.number.isRequired
+    initialReplicas: PropTypes.number.isRequired,
+    imageRegs: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        repos: PropTypes.arrayOf(
+          PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            images: PropTypes.arrayOf(PropTypes.string)
+          })
+        )
+      })
+    )
   }
 }

@@ -48,11 +48,13 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   deleteItem(id){
-    this.setState(s => ({...s, isSubmitting: true}));
-    this.performDelete(id, () => {
-      this.setState(s => ({...s, isSubmitting: false}));
-      this.fetchIntegrations();
-    });
+    if (window.confirm('Are you sure?')) {
+      this.setState(s => ({...s, isSubmitting: true}));
+      this.performDelete(id, () => {
+        this.setState(s => ({...s, isSubmitting: false}));
+        this.fetchIntegrations();
+      });
+    }
   }
 
   renderList(){

@@ -18,7 +18,7 @@ export const LineInput = styled.input`
   border-radius: 0;
   margin: 0;
   color: ${p => p.theme.colors.primaryFont};
-  &:not(:first-child) {
+  &:not(:nth-child(1)) {
    margin-left: 18px;
   }
   &::placeholder{
@@ -27,5 +27,6 @@ export const LineInput = styled.input`
 `;
 
 export const LineLabel = styled.p`
-  width: 30%;
+  width: 120px;
+  min-width: 120px;
 `;

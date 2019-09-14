@@ -94,7 +94,8 @@ export default class IntegrationsModal extends React.Component {
 function Header(){
   return(
     <LeftHeader
-      graphicName={MiscUtils.image('integration.png')}
+      graphicName='extension'
+      graphicType='icon'
       title='Docker and Git Setup'
       subtitle='Integration portal'
     />
