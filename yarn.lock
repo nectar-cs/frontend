@@ -4598,6 +4598,13 @@ react-modal@^3.10.1:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
+react-page-visibility@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-page-visibility/-/react-page-visibility-4.1.1.tgz#169aaf6ca6ad4dba13daa345b068bfaa421e8a5d"
+  integrity sha512-B1iSC26dXqKVve0NUIpoN7/o7LhhnzX5CXeEPYJglP0pDxgJ09zWdEjMLXKzloqBgjPvw4o815qHFkRvItmiPg==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-redux@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.0.tgz#72af7cf490a74acdc516ea9c1dd80e25af9ea0b2"

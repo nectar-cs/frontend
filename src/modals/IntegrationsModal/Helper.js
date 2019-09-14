@@ -5,11 +5,12 @@ import MiscUtils from "../../utils/MiscUtils";
 
 export default class Helper {
   static imgName(name){
-    const imgRegVendors = defaults.imageRegistryVendors;
-    const remGitVendors = defaults.gitRemoteVendors;
-    const superList = imgRegVendors.concat(remGitVendors);
-    const nm = superList.find(v => v.name === name).image;
-    return MiscUtils.frameworkImage(...nm);
+    const imgVendors = defaults.imageRegistryVendors;
+    const gitVendors = defaults.gitRemoteVendors;
+    const superList = imgVendors.concat(gitVendors);
+    const nm = superList.find(v => v.name === name);
+    const args = nm ? nm.image : [];
+    return MiscUtils.frameworkImage(...args);
   }
 
 }

@@ -7,7 +7,6 @@ import {theme} from "../../assets/constants";
 import defaults from "./defaults";
 import MiscUtils from "../../utils/MiscUtils";
 import {CenteredSpinner} from "../../assets/loading-spinner";
-import Backend from "../../utils/Backend";
 import IntegrationList from "./IntegrationList";
 
 export default class IntegrationSection extends React.PureComponent {
@@ -24,9 +23,11 @@ export default class IntegrationSection extends React.PureComponent {
     this.formSubmit = null;
     this.onSubmitted = this.onSubmitted.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.fetchIntegrations = this.fetchIntegrations.bind(this);
   }
 
   componentDidMount(){
+    this.props.setReloadPerformer(this.fetchIntegrations);
     this.fetchIntegrations();
     this.fetchAuthUrls();
   }
@@ -189,6 +190,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   static propTypes = {
+    setReloadPerformer: PropTypes.func.isRequired,
     vendor: PropTypes.string.isRequired,
     formShowing: PropTypes.oneOf([true, false]).isRequired,
     setMasterState: PropTypes.func.isRequired

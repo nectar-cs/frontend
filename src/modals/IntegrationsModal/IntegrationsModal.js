@@ -7,6 +7,7 @@ import GitSection from "./GitSection";
 import defaults from "./defaults";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import Backend from "../../utils/Backend";
+import PageVisibility from "react-page-visibility";
 
 export default class IntegrationsModal extends React.Component {
 
@@ -18,17 +19,15 @@ export default class IntegrationsModal extends React.Component {
         vendor: null
       },
       git: {
-        formShowing: true,
+        formShowing: false,
         vendor: null
-      },
-      authUrls: {}
+      }
     };
 
     this.setDockerState = this.setDockerState.bind(this);
     this.setGitState = this.setGitState.bind(this);
-  }
-
-  componentDidMount(){
+    this.gitReloader = null;
+    this.imgReloader = null;
   }
 
   setDockerState(assignment){
@@ -39,19 +38,29 @@ export default class IntegrationsModal extends React.Component {
     this.setState(s => ({...s, git: ({...s.git, ...assignment})}));
   }
 
+  onTabFocusChange = isFocused => {
+    if(isFocused){
+      this.gitReloader();
+      this.imgReloader();
+    }
+  };
+
   render(){
     return(
-      <ModalLayout>
-        <Header/>
-        <LayoutIntro>{defaults.intro}</LayoutIntro>
-        { this.renderDockerSection() }
-        { this.renderGitSection() }
-      </ModalLayout>
+      <PageVisibility onChange={this.onTabFocusChange}>
+        <ModalLayout>
+          <Header/>
+          <LayoutIntro>{defaults.intro}</LayoutIntro>
+          { this.renderDockerSection() }
+          { this.renderGitSection() }
+        </ModalLayout>
+      </PageVisibility>
     )
   }
 
   renderDockerSection(){
     if(this.state.git.formShowing) return null;
+    const reloadSetter = (r) => { this.imgReloader = r; };
     return(
       <Fragment>
         <TextOverLineSubtitle text='Docker Image Registries'/>
@@ -59,6 +68,7 @@ export default class IntegrationsModal extends React.Component {
           setMasterState={this.setDockerState}
           vendor={this.state.docker.vendor}
           formShowing={this.state.docker.formShowing}
+          setReloadPerformer={reloadSetter}
         />
       </Fragment>
     )
@@ -66,6 +76,7 @@ export default class IntegrationsModal extends React.Component {
 
   renderGitSection(){
     if(this.state.docker.formShowing) return null;
+    const reloadSetter = (r) => { this.gitReloader = r; };
     return(
       <Fragment>
         <TextOverLineSubtitle text='Git Remotes'/>
@@ -73,6 +84,7 @@ export default class IntegrationsModal extends React.Component {
           setMasterState={this.setGitState}
           vendor={this.state.git.vendor}
           formShowing={this.state.git.formShowing}
+          setReloadPerformer={reloadSetter}
         />
       </Fragment>
     )
