@@ -24,9 +24,15 @@ export default class DockerSection extends React.PureComponent {
     };
     this.formSubmit = null;
     this.onSubmitted = this.onSubmitted.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
   componentDidMount(){
+    this.fetchRegistryIntegrations();
+  }
+
+  fetchRegistryIntegrations(){
+    this.setState(s => ({...s, registries: []}));
     Backend.raisingFetch('/image_registries', (resp) => {
       const registries = DataUtils.objKeysToCamel(resp['data']);
       this.setState(s => ({...s, registries}));
@@ -41,8 +47,6 @@ export default class DockerSection extends React.PureComponent {
       const result = resp['data']['connected'];
       const news = this.state.registries.map(r => {
         if(r.id.toString() === id.toString()){
-          console.log("WACKING ");
-          console.log(r);
           return {...r, connected: result};
         } else return r;
       });
@@ -56,7 +60,8 @@ export default class DockerSection extends React.PureComponent {
 
   onSubmitted(){
     this.setState(s => ({...s, isSubmitting: false}));
-    this.changeState({showingForm: false});
+    this.changeState({formShowing: false});
+    this.fetchRegistryIntegrations();
   }
 
   render(){
@@ -75,10 +80,22 @@ export default class DockerSection extends React.PureComponent {
     )
   }
 
+  deleteItem(id){
+    this.setState(s => ({...s, isSubmitting: true}));
+    const endpoint = `/image_registries/${id}`;
+    Backend.raisingDelete(endpoint, () => {
+      this.setState(s => ({...s, isSubmitting: false}));
+      this.fetchRegistryIntegrations();
+    });
+  }
+
   renderList(){
     if(this.props.formShowing) return null;
     if(this.state.isSubmitting) return null;
-    return <IntegrationList items={this.state.registries}/>
+    return <IntegrationList
+      items={this.state.registries}
+      requestDelete={this.deleteItem}
+    />
   }
 
   renderLoading(){
@@ -86,7 +103,7 @@ export default class DockerSection extends React.PureComponent {
     return(
       <S.LoadingLayout>
         <CenteredSpinner size='large'/>
-        <S.LoadText>Saving</S.LoadText>
+        <S.LoadText>Working</S.LoadText>
       </S.LoadingLayout>
     )
   }

@@ -30,6 +30,10 @@ export default class Backend {
     this.raisingRequest('POST', endpoint, payload, callback, errorCallback);
   }
 
+  static raisingDelete(endpoint, callback, errorCallback=null){
+    this.raisingRequest('DELETE', endpoint, null, callback, errorCallback);
+  }
+
   static raisingRequest(method, endpoint, body, callback, errorCallback){
     let url = `${BACKEND_URL}${endpoint}`;
     const headers = {

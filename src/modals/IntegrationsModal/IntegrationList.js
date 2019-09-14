@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Icon, Trash} from "./IntegrationListStyles";
 import {theme} from "../../assets/constants";
 import {ThemeProvider} from "styled-components";
@@ -22,10 +23,10 @@ function IntegrationItem(props) {
       statusWidget = <ModSpinner size='x-small'/>;
       break;
     case true:
-      statusWidget = <StatusTag emotion='success'>Authenticated</StatusTag>;
+      statusWidget = <StatusTag emotion='success'>Connected</StatusTag>;
       break;
     case false:
-      statusWidget = <StatusTag emotion='fail'>Broken</StatusTag>;
+      statusWidget = <StatusTag emotion='fail'>Malfunction</StatusTag>;
   }
 
   return(
@@ -40,7 +41,11 @@ function IntegrationItem(props) {
 
 export default function IntegrationList(props){
   const items = props.items.map(item => (
-    <IntegrationItem key={item.id} {...item}/>
+    <IntegrationItem
+      requestDelete={() => props.requestDelete(item.id)}
+      key={item.id}
+      {...item}
+    />
   ));
 
   return(
@@ -53,3 +58,14 @@ export default function IntegrationList(props){
     </ThemeProvider>
   )
 }
+
+IntegrationList.propTypes = {
+  requestDelete: PropTypes.func.isRequired,
+  items: PropTypes.array
+};
+
+IntegrationItem.propTypes = {
+  identifier: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  connected: PropTypes.oneOf([true, false])
+};
