@@ -23,10 +23,13 @@ export class ImageActionsModalHelper {
   }
 
   static fetchDockerImgs(inst){
-    const ep = `/image_registries/total`;
+    const ep = `/image_registries/absolute`;
     Backend.raisingFetch(ep, resp => {
       const data = DataUtils.objKeysToCamel(resp)['data'];
-      inst.setState(s => ({...s, imageRegs: data}));
+      inst.setState(s => ({...s,
+        imageRegs: data,
+        imgRegistry: data[0]
+      }));
     })
   }
 

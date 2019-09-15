@@ -73,20 +73,31 @@ export default class ImageForm extends React.Component {
 
   renderRegistrySelectors(){
     if(this.props.operationType !== 'docker') return null;
+    const selReg = this.props.imgRegistry;
+    const allRegs = this.props.imageRegs;
+    const regs = allRegs.map(i => i.identifier);
+    console.log(selReg);
+
+    const reg = selReg && allRegs.find(i => (
+      i.identifier === this.props.imgRegistry
+    ));
+    console.log(reg);
+    const repos = reg ? reg.contents.map(i => i.name) : [];
+
     return(
       <InputLine>
         <LineLabel>Source</LineLabel>
         <LineInput
           as='select'
-          value={this.props.fromReg}
-          onChange={(e) => this.onAssignment('fromReg', e)}>
-          { [] }
+          value={this.props.imgRegistry}
+          onChange={(e) => this.onAssignment('imgRegistry', e)}>
+          { MiscUtils.arrayOptions(regs) }
         </LineInput>
         <LineInput
           as='select'
-          value={this.props.fromRegRepo}
-          onChange={(e) => this.onAssignment('fromRegRepo', e)}>
-          { [] }
+          value={this.props.imgRepo}
+          onChange={(e) => this.onAssignment('imgRepo', e)}>
+          { MiscUtils.arrayOptions(repos) }
         </LineInput>
       </InputLine>
     )
@@ -99,7 +110,7 @@ export default class ImageForm extends React.Component {
         <LineLabel>Image</LineLabel>
         <LineInput
           as='select'
-          value={this.props.imageSrc}
+          value={this.props.imgSource}
           onChange={(e) => this.onAssignment('imageSrc', e)}>
           { [] }
         </LineInput>
@@ -127,10 +138,13 @@ export default class ImageForm extends React.Component {
     onAssignment: PropTypes.func.isRequired,
     scaleTo: PropTypes.string.isRequired,
     initialReplicas: PropTypes.number.isRequired,
+    imgRegistry: PropTypes.string,
+    imgRepo: PropTypes.string,
+    imgSource: PropTypes.string,
     imageRegs: PropTypes.arrayOf(
       PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        repos: PropTypes.arrayOf(
+        identifier: PropTypes.string.isRequired,
+        contents: PropTypes.arrayOf(
           PropTypes.shape({
             name: PropTypes.string.isRequired,
             images: PropTypes.arrayOf(PropTypes.string)

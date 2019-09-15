@@ -27,9 +27,12 @@ export default class ImageActionsModal extends React.Component {
     super(props);
     this.state = {
       config: {
-        operationType: 'change',
+        operationType: 'docker',
         imageName: this.imgDebug(),
-        scaleTo: (props.deployment.replicas + 1).toString()
+        scaleTo: (props.deployment.replicas + 1).toString(),
+        imgRegistry: null,
+        imgRepo: null,
+        imgSource: null,
       },
       phase: PHASE_CONFIG,
       initialPods: [],
@@ -53,7 +56,8 @@ export default class ImageActionsModal extends React.Component {
   }
 
   componentDidMount(){
-    Helper.fetchPods(this, 'initialPods')
+    Helper.fetchPods(this, 'initialPods');
+    Helper.fetchDockerImgs(this);
   }
 
   componentWillUnmount(){
@@ -138,11 +142,13 @@ export default class ImageActionsModal extends React.Component {
     return(
       <ImageForm
         operationType={this.state.config.operationType}
-        imageName={this.state.config.imageName}
         scaleTo={this.state.config.scaleTo}
         initialReplicas={this.props.deployment.replicas}
         onAssignment={(a) => this.onAssignment(a)}
         imageRegs={this.state.imageRegs}
+        imgRegistry={this.state.config.imgRegistry}
+        imgRepo={this.state.config.imgRepo}
+        imageSource={this.state.config.imageSource}
       />
     )
   }
