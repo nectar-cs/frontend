@@ -3,15 +3,30 @@ import { connect } from "react-redux";
 import React, {Fragment} from 'react';
 import MiscUtils from '../../../utils/MiscUtils';
 import sections from './sections'
+import ModalHostComposer from "../../../hocs/ModalHostComposer";
 
 class SideBarItem extends React.Component {
+
+  renderHref(){
+    return(
+      <a className={s.item} href={this.props.path}>
+        <p className={s.itemText}>{this.props.title}</p>
+      </a>
+    )
+  }
+
+  renderModalAction(){
+    const action = () => this.props.openModal(this.props.modal);
+    return(
+      <p className={s.itemText} onClick={action}>{this.props.title}</p>
+    )
+  }
+
   render(){
     return(
       <div className={s.itemRow}>
         <i className={`material-icons ${s.subSectionToggle}`}>keyboard_arrow_down</i>
-        <a className={s.item} href={this.props.path}>
-          <p className={s.itemText}>{this.props.title}</p>
-        </a>
+        { this.props.path ? this.renderHref() : this.renderModalAction() }
       </div>
     )
   }
@@ -34,7 +49,11 @@ class SideBarSection extends React.Component {
 
   renderItems(){
     return this.props.items.map((item) => (
-      <SideBarItem key={item.path} {...item}/>
+      <SideBarItem
+        key={item.path}
+        {...item}
+        openModal={this.props.openModal}
+      />
     ));
   }
 }
@@ -49,15 +68,19 @@ class SideBarClass extends React.Component {
           <h1 className={s.titleText}>Mosaic</h1>
           </div>
         <div className={s.content}>
-          { SideBarClass.renderSections() }
+          { this.renderSections() }
         </div>
       </div>
     )
   }
 
-  static renderSections(){
+  renderSections(){
     return sections.map((section) => (
-      <SideBarSection key={section.title} {...section}/>
+      <SideBarSection
+        key={section.title}
+        openModal={this.props.openModal}
+        {...section}
+      />
     ))
   }
 }
@@ -67,5 +90,7 @@ function mapStateToProps(reduxState){
 }
 
 const connector = connect(mapStateToProps, null);
-const SideBar = connector(SideBarClass);
+const SideBar = ModalHostComposer.compose(
+  connector(SideBarClass)
+);
 export default SideBar;

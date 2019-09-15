@@ -1,3 +1,4 @@
+import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
 
 const workbench = {
   title: 'Workbench',
@@ -33,7 +34,7 @@ const settings = {
   title: 'Settings',
   icon: 'settings',
   items: [
-    { title: "My Account", path: '/1' },
+    { title: "Git & Docker", modal: IntegrationsModal },
     { title: "My Cluster", path: '/2' },
   ]
 };

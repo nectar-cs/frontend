@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
@@ -9,8 +9,6 @@ import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnoun
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import DataUtils from "../../../utils/DataUtils";
-import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
-import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
 
 class WorkspaceShowClass extends React.Component{
 
@@ -49,14 +47,27 @@ class WorkspaceShowClass extends React.Component{
   }
 
   render(){
-    if(this.state.isFetching)
-      return <CenterLoader/>;
-     else if(this.state.deployments.length > 0)
-      return this.renderCards();
-    else return this.renderEmpty();
+    return(
+      <Fragment>
+        { this.renderLoading() }
+        { this.renderCards() }
+        { this.renderEmpty() }
+      </Fragment>
+    );
+  }
+
+  renderLoading(){
+    if(!this.state.isFetching) return null;
+    return <CenterLoader/>;
+  }
+
+  renderIntegrationButton(){
+    return <FloatingButton/>
   }
 
   renderEmpty(){
+    if(this.state.isFetching) return null;
+    if(this.state.deployments.length > 0) return null;
     const pathBase = ROUTES.workspaces.edit.path;
     const editPath = makeRoute(pathBase, { id: this.workspaceId() });
 
@@ -71,6 +82,8 @@ class WorkspaceShowClass extends React.Component{
   }
 
   renderCards(){
+    if(this.state.isFetching) return null;
+
     return this.state.deployments.map((deployment) => (
       <DeploymentCard
         key={deployment.name}
