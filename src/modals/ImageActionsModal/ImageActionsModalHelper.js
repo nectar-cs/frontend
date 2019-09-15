@@ -28,7 +28,7 @@ export class ImageActionsModalHelper {
       const data = DataUtils.objKeysToCamel(resp)['data'];
       inst.setState(s => ({...s,
         imageRegs: data,
-        imgRegistry: data[0]
+        config: {...s.config, imgRegistry: data[0].identifier }
       }));
     })
   }

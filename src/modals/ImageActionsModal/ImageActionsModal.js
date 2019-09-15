@@ -9,7 +9,6 @@ import ImageForm from "./ImageForm";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
 import Kapi from "../../utils/Kapi";
-import {defaults} from "./defaults";
 import Checklist from "./Checklist";
 import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
@@ -99,15 +98,8 @@ export default class ImageActionsModal extends React.Component {
 
   renderIntro(){
     if(this.isSubmitting()) return null;
-    const introCopy = defaults.copy.intro.preSubmit;
     const title = this.isConfiguring() ? 'Options' : 'Progress';
-
-    return(
-      <Fragment>
-        <TextOverLineSubtitle text={title}/>
-        {  this.isConfiguring() ? <Intro>{introCopy}</Intro> : null }
-      </Fragment>
-    )
+    return <TextOverLineSubtitle text={title}/>;
   }
 
   renderChecklist(){
@@ -148,7 +140,7 @@ export default class ImageActionsModal extends React.Component {
         imageRegs={this.state.imageRegs}
         imgRegistry={this.state.config.imgRegistry}
         imgRepo={this.state.config.imgRepo}
-        imageSource={this.state.config.imageSource}
+        imgSource={this.state.config.imgSource}
       />
     )
   }

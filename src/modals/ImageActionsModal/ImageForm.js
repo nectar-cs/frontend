@@ -73,15 +73,9 @@ export default class ImageForm extends React.Component {
 
   renderRegistrySelectors(){
     if(this.props.operationType !== 'docker') return null;
-    const selReg = this.props.imgRegistry;
     const allRegs = this.props.imageRegs;
     const regs = allRegs.map(i => i.identifier);
-    console.log(selReg);
-
-    const reg = selReg && allRegs.find(i => (
-      i.identifier === this.props.imgRegistry
-    ));
-    console.log(reg);
+    const reg = this.crtImgRegistry();
     const repos = reg ? reg.contents.map(i => i.name) : [];
 
     return(
@@ -105,17 +99,39 @@ export default class ImageForm extends React.Component {
 
   renderRegRepoSelectors(){
     if(this.props.operationType !== 'docker') return null;
+
+
     return(
       <InputLine>
         <LineLabel>Image</LineLabel>
         <LineInput
           as='select'
           value={this.props.imgSource}
-          onChange={(e) => this.onAssignment('imageSrc', e)}>
-          { [] }
+          onChange={(e) => this.onAssignment('imgSource', e)}>
+          { MiscUtils.arrayOptions(this.crtRepoImages()) }
         </LineInput>
       </InputLine>
     )
+  }
+
+  crtImgRegistry(){
+    const selReg = this.props.imgRegistry;
+    const allRegs = this.props.imageRegs;
+    return selReg && allRegs.find(i => (
+      i.identifier === this.props.imgRegistry
+    ));
+  }
+
+  crtImgRepo(){
+    if (!this.crtImgRegistry()) return null;
+    return this.crtImgRegistry().contents.find(repo => (
+      repo.name === this.props.imgRepo
+    ));
+  }
+
+  crtRepoImages(){
+    if (!this.crtImgRepo()) return [];
+    return this.crtImgRepo().images.map(i => i.name);
   }
 
   onAssignment(name, event){
@@ -134,7 +150,6 @@ export default class ImageForm extends React.Component {
 
   static propTypes = {
     operationType: PropTypes.string.isRequired,
-    imageName: PropTypes.string.isRequired,
     onAssignment: PropTypes.func.isRequired,
     scaleTo: PropTypes.string.isRequired,
     initialReplicas: PropTypes.number.isRequired,
