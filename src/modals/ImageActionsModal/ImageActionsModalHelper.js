@@ -5,7 +5,6 @@ import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./PodTableR
 import SameTagOpHelper from "./OpHelpers/SameTagOpHelper";
 import DiffTagOpHelper from "./OpHelpers/DiffTagOpHelper";
 import ScalePodsHelper from "./OpHelpers/ScalePodsHelper";
-import {CONCLUSION_FAILED, CONCLUSION_SUCCESS} from "./ImageActionsModal";
 import Backend from "../../utils/Backend";
 
 export class ImageActionsModalHelper {
@@ -16,7 +15,6 @@ export class ImageActionsModalHelper {
     Kapi.fetch(endpoint, (resp) => {
       if(!inst._isMounted) return;
       const data = DataUtils.objKeysToCamel(resp)['data'];
-      // console.table(data);
       inst.setState(s => ({...s, [field]: data}));
       runAfter && runAfter();
     })
@@ -25,12 +23,20 @@ export class ImageActionsModalHelper {
   static fetchDockerImgs(inst){
     const ep = `/image_registries/absolute`;
     Backend.raisingFetch(ep, resp => {
-      const data = DataUtils.objKeysToCamel(resp)['data'];
-      inst.setState(s => ({...s,
-        imageRegs: data,
-        config: {...s.config, imgRegistry: data[0].identifier }
-      }));
+      const imageRegs = DataUtils.objKeysToCamel(resp)['data'];
+      inst.setState(s => ({...s, imageRegs}));
+      inst.onAssignment({imgRegistry: imageRegs[0].identifier});
+      inst.onAssignment({imgRepo: this.guessImgRepo(imageRegs)});
+      inst.onAssignment({imgSource: this.guessImgSource(imageRegs)});
     })
+  }
+
+  static guessImgRepo(imageRegs){
+    return imageRegs[0].contents[0].name;
+  }
+
+  static guessImgSource(imageRegs){
+    return imageRegs[0].contents[0].images[0].name;
   }
 
   static opHelper(inst){
@@ -101,4 +107,18 @@ export class ImageActionsModalHelper {
       default: throw `No renderer for op type ${opType}`;
     }
   }
+
+  static coerceConfig(config, assignment){
+    const key = Object.keys(assignment)[0];
+    if(['imgRegistry', 'imgRepo', 'imgSource'].includes(key)){
+      const imageName = this.imgRegToImageName(config);
+      return {...config, imageName};
+    } else return config;
+  }
+
+  static imgRegToImageName(config){
+    const { imgRegistry, imgRepo, imgSource } = config;
+    return `${imgRegistry}/${imgRepo}:${imgSource}`;
+  }
+
 }

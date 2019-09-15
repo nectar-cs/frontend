@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {Container, Intro} from "./ImageActionsModalStyles";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
@@ -146,6 +146,7 @@ export default class ImageActionsModal extends React.Component {
   }
 
   renderPodList(){
+    if(this.isConfiguring()) return null;
     if(this.isSubmitting()) return null;
     const podsFilter = Helper.opHelper(this);
     const pods = podsFilter.buildPodList();
@@ -236,7 +237,8 @@ export default class ImageActionsModal extends React.Component {
 
   onAssignment(assignment){
     const merged = {...this.state.config, ...assignment};
-    this.setState(s => ({...s, config: merged}));
+    const cleaned = Helper.coerceConfig(merged, assignment);
+    this.setState(s => ({...s, config: cleaned}));
   }
 
   notifySubscribers(){
