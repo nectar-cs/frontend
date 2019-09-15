@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Container, Intro} from "./ImageActionsModalStyles";
+import {Container} from "./ImageActionsModalStyles";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import {FULL_DEPLOYMENT} from "../../types/Deployment";
@@ -215,7 +215,6 @@ export default class ImageActionsModal extends React.Component {
     }
 
     if(conclusion !== null) {
-      console.log(`HALT ${conclusion} ${conclusionReason}`);
       let bundle = {phase: PHASE_CONCLUDED, conclusion, conclusionReason};
       this.notifySubscribers();
       this.setState(s => ({...s, ...bundle}));

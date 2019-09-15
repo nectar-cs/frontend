@@ -74,6 +74,7 @@ export class ImageActionsModalHelper {
     switch (opType) {
       case "reload": return "image_reload";
       case "scale": return "scale_replicas";
+      case "docker":
       case "change": return "new_image";
       default: throw `No helper for op type ${opType}`;
     }
@@ -103,6 +104,7 @@ export class ImageActionsModalHelper {
     switch(opType){
       case 'reload':
       case 'scale': return DesiredStatePodTable;
+      case 'docker':
       case 'change': return DesiredTagPodTable;
       default: throw `No renderer for op type ${opType}`;
     }
