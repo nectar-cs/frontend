@@ -41,7 +41,7 @@ class MatchingClass extends React.Component {
     this.state = {
       isFetching: false,
       isRightFetching: false,
-      githubState: null,
+      githubState: GIT_STATES.SHOWING_OFFER,
       authUrl: null,
       deployments: [],
       selectedIndex: null,
@@ -58,7 +58,7 @@ class MatchingClass extends React.Component {
   }
 
   componentDidMount(){
-    this.fetchGithubAuth();
+    // this.fetchGithubAuth();
     this.fetchClusterDeploys();
   }
 

@@ -12,6 +12,7 @@ import {theme} from "../../../assets/constants";
 import {FixedSmallButton, SmallButton} from "../../../assets/buttons";
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
+import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 
 const PHASES = {
   OFFERING: 'offer',
@@ -24,7 +25,7 @@ const IntegrationsPromptClass = class extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      githubState: PHASES.OFFERING
+      phase: PHASES.OFFERING
     };
     this.onIntegrationsChanged = this.onIntegrationsChanged.bind(this);
   }
@@ -33,8 +34,8 @@ const IntegrationsPromptClass = class extends React.Component {
     return(
       <ThemeProvider theme={theme}>
         <Fragment>
-          { this.renderContinueLink() }
           { this.renderPrompting() }
+          { this.renderDone() }
         </Fragment>
       </ThemeProvider>
     )
@@ -43,12 +44,24 @@ const IntegrationsPromptClass = class extends React.Component {
   onIntegrationsChanged(){
     console.log("RELOAD TIME");
     IntegrationsPromptClass.checkGitOrDocker(done => {
-
+      done && this.setState(s => ({...s, phase: PHASES.DONE}));
     })
   }
 
+  renderDone(){
+    if(this.state.phase !== PHASES.DONE) return null;
+    return(
+      <CenterAnnouncement
+        text={"Done. Click to begin Matching."}
+        contentType='action'
+        iconName='check'
+        action={this.props.notifyGithubConcluded(true)}
+      />
+    )
+  }
+
   renderPrompting(){
-    if(this.state.githubState !== PHASES.OFFERING) return null;
+    if(this.state.phase !== PHASES.OFFERING) return null;
     const skip = () => this.props.notifyGithubConcluded(false);
     const cont = () => this.showOffer();
 
@@ -67,25 +80,13 @@ const IntegrationsPromptClass = class extends React.Component {
   }
 
   showOffer(){
-    this.setState(s => ({...s, githubState: PHASES.OFFERING}));
+    this.setState(s => ({...s, phase: PHASES.OFFERING}));
     const bundle = { onClosed: this.onIntegrationsChanged };
     this.props.openModal(IntegrationsModal, bundle);
   }
 
-
-  renderContinueLink(){
-    if(this.state.githubState === PHASES.DONE){
-      return(
-        <NavLink to={ROUTES.deployments.detect.path}>
-          <i className={`material-icons ${s.containerIcon}`}>check</i>
-          <p className={s.containerTextTitle}>All set. Click to continue.</p>
-        </NavLink>
-      )
-    }
-  }
-
   static checkGitOrDocker(whenDone){
-    whenDone(true);
+    whenDone(false);
   }
 
   static propTypes = {
