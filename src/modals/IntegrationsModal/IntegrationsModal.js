@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {MosaicContainer, LayoutIntro, ModalLayout} from "../../assets/layouts";
+import {MosaicContainer, Intro, ModalLayout} from "../../assets/layouts";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";
@@ -9,6 +9,7 @@ import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLin
 import PageVisibility from "react-page-visibility";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../assets/constants";
+import ModalButton from "../../widgets/Buttons/ModalButton";
 
 export default class IntegrationsModal extends React.Component {
 
@@ -27,6 +28,7 @@ export default class IntegrationsModal extends React.Component {
 
     this.setDockerState = this.setDockerState.bind(this);
     this.setGitState = this.setGitState.bind(this);
+    this.onCreateOrDelete = this.onCreateOrDelete.bind(this);
     this.gitReloader = null;
     this.imgReloader = null;
   }
@@ -54,9 +56,10 @@ export default class IntegrationsModal extends React.Component {
         <ThemeProvider theme={theme}>
           <Container>
             <Header/>
-            <LayoutIntro>{defaults.intro}</LayoutIntro>
+            <Intro>{defaults.intro}</Intro>
             { this.renderDockerSection() }
             { this.renderGitSection() }
+            { this.renderDoneButton() }
           </Container>
         </ThemeProvider>
       </PageVisibility>
@@ -74,6 +77,7 @@ export default class IntegrationsModal extends React.Component {
           vendor={this.state.docker.vendor}
           formShowing={this.state.docker.formShowing}
           setReloadPerformer={reloadSetter}
+          notifyDataChanged={this.onCreateOrDelete}
         />
       </Fragment>
     )
@@ -90,13 +94,34 @@ export default class IntegrationsModal extends React.Component {
           vendor={this.state.git.vendor}
           formShowing={this.state.git.formShowing}
           setReloadPerformer={reloadSetter}
+          notifyDataChanged={this.onCreateOrDelete}
         />
       </Fragment>
     )
   }
 
+  renderDoneButton(){
+    const parentCallback = this.props.onDataChanged;
+    const callback = () => {
+      parentCallback && parentCallback();
+      this.props.closeModal();
+    };
+
+    return(
+      <ModalButton
+        callback={callback}
+        title={"Close"}
+      />
+    )
+  }
+
+  onCreateOrDelete(){
+    this.props.onDataChanged();
+  }
+
   static propTypes = {
-    mode: PropTypes.oneOf(['modal', 'embedded'])
+    mode: PropTypes.oneOf(['modal', 'embedded']),
+    onDataChanged: PropTypes.func,
   };
 
   static defaultProps = {

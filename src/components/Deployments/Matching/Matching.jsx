@@ -13,6 +13,7 @@ import ErrComponent from "../../../hocs/ErrComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import {theme} from "../../../assets/constants";
 import {ThemeProvider} from "styled-components";
+import {ROUTES} from "../../../containers/RoutesConsts";
 
 const GIT_STATES = {
   CHECKING: 'checking',
@@ -26,7 +27,7 @@ const DEFAULT_QUERY = [{field: "namespace", op: "one-of", challenge: ["default"]
 const Header = function(){
   return(
     <LeftHeader
-      title='Application Matching'
+      title='Deployment Matching'
       subtitle='Match your deployments to your git and docker repos'
       graphicType={ICON}
       graphicName='developer_board'
@@ -189,8 +190,9 @@ class MatchingClass extends React.Component {
   }
 
   notifyGithubConcluded(status){
-    const state = status ? GIT_STATES.CONNECTED : GIT_STATES.NOT_CONNECTED;
-    this.setState((s) => ({...s, githubState: state}));
+    if(status){
+      this.setState((s) => ({...s, githubState: GIT_STATES.CONNECTED}));
+    } else window.location = ROUTES.workspaces.index.path;
   }
 
   notifyDeploymentSelected(name){

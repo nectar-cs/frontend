@@ -10,21 +10,23 @@ import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsMod
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../../assets/constants";
 import {FixedSmallButton, SmallButton} from "../../../assets/buttons";
+import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
+import ModalHostComposer from "../../../hocs/ModalHostComposer";
 
-const GIT_STATES = {
+const PHASES = {
   OFFERING: 'offer',
   AUTHORIZING: 'waiting',
-  AUTHORIZED: 'all-set',
+  DONE: 'all-set',
   EXITING: 'exiting'
 };
 
-export default class IntegrationsPrompt extends React.Component {
-
+const IntegrationsPromptClass = class extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      githubState: GIT_STATES.OFFERING
+      githubState: PHASES.OFFERING
     };
+    this.onIntegrationsChanged = this.onIntegrationsChanged.bind(this);
   }
 
   render(){
@@ -32,24 +34,21 @@ export default class IntegrationsPrompt extends React.Component {
       <ThemeProvider theme={theme}>
         <Fragment>
           { this.renderContinueLink() }
-          { this.renderWaiting() }
           { this.renderPrompting() }
         </Fragment>
       </ThemeProvider>
     )
   }
 
-  renderWaiting(){
-    if(this.state.githubState !== GIT_STATES.AUTHORIZING) return null;
-    return(
-      <IntegrationsModal
-        mode='embedded'
-      />
-    );
+  onIntegrationsChanged(){
+    console.log("RELOAD TIME");
+    IntegrationsPromptClass.checkGitOrDocker(done => {
+
+    })
   }
 
   renderPrompting(){
-    if(this.state.githubState !== GIT_STATES.OFFERING) return null;
+    if(this.state.githubState !== PHASES.OFFERING) return null;
     const skip = () => this.props.notifyGithubConcluded(false);
     const cont = () => this.showOffer();
 
@@ -68,24 +67,14 @@ export default class IntegrationsPrompt extends React.Component {
   }
 
   showOffer(){
-    this.setState(s => ({...s, githubState: GIT_STATES.OFFERING}));
-    this.props.openModal(IntegrationsModal);
+    this.setState(s => ({...s, githubState: PHASES.OFFERING}));
+    const bundle = { onClosed: this.onIntegrationsChanged };
+    this.props.openModal(IntegrationsModal, bundle);
   }
 
-  checker(){
-    Backend.fetchJson('/github/token', (payload) => {
-      if(payload['access_token']){
-        this.props.notifyGithubConcluded(true);
-      } else this.pollBackend();
-    });
-  };
-
-  pollBackend(){
-    setTimeout(this.checker.bind(this), 2000);
-  }
 
   renderContinueLink(){
-    if(this.state.githubState === GIT_STATES.AUTHORIZED){
+    if(this.state.githubState === PHASES.DONE){
       return(
         <NavLink to={ROUTES.deployments.detect.path}>
           <i className={`material-icons ${s.containerIcon}`}>check</i>
@@ -95,8 +84,17 @@ export default class IntegrationsPrompt extends React.Component {
     }
   }
 
+  static checkGitOrDocker(whenDone){
+    whenDone(true);
+  }
+
   static propTypes = {
     notifyGithubConcluded: PropTypes.func.isRequired,
-    openModal: PropTypes.func.isRequired
   };
 };
+
+const IntegrationPrompt = ModalHostComposer.compose(
+  IntegrationsPromptClass
+);
+
+export { IntegrationPrompt as default };

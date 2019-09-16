@@ -13,7 +13,7 @@ export const ModalLayout = styled(StandardLayout)`
   height: 700px;
 `;
 
-export const LayoutIntro = styled.p`
+export const Intro = styled.p`
   margin-top: 22px;
 `;
 

@@ -183,6 +183,7 @@ export default class IntegrationSection extends React.PureComponent {
   onSubmitted(){
     this.setState(s => ({...s, isSubmitting: false}));
     this.changeState({formShowing: false});
+    this.props.notifyDataChanged();
     this.fetchIntegrations();
   }
 
@@ -195,6 +196,7 @@ export default class IntegrationSection extends React.PureComponent {
     setReloadPerformer: PropTypes.func.isRequired,
     vendor: PropTypes.string.isRequired,
     formShowing: PropTypes.oneOf([true, false]).isRequired,
-    setMasterState: PropTypes.func.isRequired
+    setMasterState: PropTypes.func.isRequired,
+    notifyDataChanged: PropTypes.func.isRequired
   }
 }

@@ -35,7 +35,7 @@ const settings = {
   icon: 'settings',
   items: [
     { title: "Git & Docker", modal: IntegrationsModal },
-    { title: "Deployment Matches", path: '/deployments/detect' },
+    { title: "Deployment Matching", path: '/deployments/detect' },
   ]
 };
 

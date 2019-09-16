@@ -2,12 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import s from './DeploymentList.sass'
 import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';
+import {Icon} from "../../../modals/ImageActionsModal/ChecklistStyles";
 
 function ListHeader() {
   return(
     <tr>
       <th><p>Deployment</p></th>
-      <th className={s.rightCol}><p>Found in Namespaces</p></th>
+      <th><p>Found in Namespaces</p></th>
+      <th><p className={s.checkHead}>Git</p></th>
+      <th><p className={s.checkHead}>Docker</p></th>
     </tr>
   )
 }
@@ -19,13 +22,26 @@ function DeploymentItem(props) {
     <p key={ns} className={s.nsTag}>{ns}</p>
   ));
 
+  const icon = (done) => (
+    done ? <Icon good className={`material-icons ${s.check}`}>check</Icon> : null
+  );
+
   return(
     <tr className={isSelected ? s.focusedRow : s.row}>
       <td><p>{props.name}</p></td>
-      <td className={s.rightCol}>{namespaces}</td>
+      <td>{namespaces}</td>
+      <td>{icon(props.gitDone)}</td>
+      <td>{icon(props.dockerDone)}</td>
     </tr>
   )
 }
+
+DeploymentItem.propTypes = {
+  gitDone: PropTypes.bool,
+  dockerDone: PropTypes.bool,
+  namespaces: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isSelected: PropTypes.bool
+};
 
 export default class DeploymentList extends React.Component {
   render(){

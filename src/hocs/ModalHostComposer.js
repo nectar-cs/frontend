@@ -27,7 +27,6 @@ export default class ModalHostComposer{
             { this.renderModal() }
             <WrappedComponent
               openModal={this.openModal}
-              onRequestClose={this.closeModal}
               closeModal={this.closeModal}
               {...this.props}
             />
@@ -41,6 +40,8 @@ export default class ModalHostComposer{
 
       closeModal(){
         this.setState((s) => ({...s, modalClass: null}));
+        const onClose = this.state.modalProps.onClosed;
+        onClose && onClose();
       }
 
       renderModal(){
