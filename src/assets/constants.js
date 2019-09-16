@@ -22,5 +22,6 @@ export const theme = {
     if(name === 'fail') return 'fail';
     if(name === 'failure') return 'fail';
     if(name === 'failed') return 'fail';
+    if(name === 'idle') return 'primaryFontLess'
   }
 };

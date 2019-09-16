@@ -3,84 +3,35 @@ import PropTypes from 'prop-types'
 import s from './DeploymentList.sass'
 import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';
 
-class DeploymentItem extends React.Component {
-
-  static propTypes = {
-    notifyCheckChanged: PropTypes.func.isRequired
-  };
-
-  constructor(props){
-    super(props);
-    this.checkRef = React.createRef();
-  }
-
-  render(){
-    const {isSelected, name, isChecked, namespaces} = this.props;
-    const callback = () => {
-      this.props.notifyCheckChanged(name, this.checkRef.current.value);
-    };
-    const clickCallback = null; //() => {this.props.notifyDeploymentSelected(name)};
-
-    return(
-      <tr className={isSelected ? s.focusedRow : s.row} onClick={clickCallback} >
-        <td>
-          <input
-            type="checkbox"
-            ref={this.checkRef}
-            checked={isChecked}
-            onChange={callback}/>
-        </td>
-        <td><p>{name}</p></td>
-        <td>{this.renderNamespaces()}</td>
-      </tr>
-    )
-  }
-
-  renderNamespaces(){
-    return this.props.namespaces.map((ns) => {
-      return <p key={ns} className={s.nsTag}>{ns}</p>
-    });
-  }
+function ListHeader() {
+  return(
+    <tr>
+      <th><p>Deployment</p></th>
+      <th className={s.rightCol}><p>Found in Namespaces</p></th>
+    </tr>
+  )
 }
 
-class ListHeader extends React.Component {
-  constructor(props){
-    super(props);
-    this.checkedRef = React.createRef();
-  }
+function DeploymentItem(props) {
+  const {isSelected} = props;
 
-  render(){
-    const callback = () => {
-      this.props.notifyCheckAllChanged(this.checkedRef.current.checked);
-    };
+  const namespaces = props.namespaces.map(ns => (
+    <p key={ns} className={s.nsTag}>{ns}</p>
+  ));
 
-    return(
-      <tr>
-        <th>
-          <input
-            type="checkbox"
-            ref={this.checkedRef}
-            defaultChecked={true}
-            onChange={callback}/>
-        </th>
-        <th><p>Deployment</p></th>
-        <th><p>Namespaces</p></th>
-      </tr>
-    )
-  }
-
-  static propTypes = {
-    notifyCheckAllChanged: PropTypes.func.isRequired
-  };
+  return(
+    <tr className={isSelected ? s.focusedRow : s.row}>
+      <td><p>{props.name}</p></td>
+      <td className={s.rightCol}>{namespaces}</td>
+    </tr>
+  )
 }
-
 
 export default class DeploymentList extends React.Component {
   render(){
 
-    const text = "Nectar found the following deployments on your cluster. " +
-      "For each one that you want to work with in Nectar, check the box" +
-      " and add some metadata. ";
+    const text = "This wizard lets your tie deployments to their related git and image repos. " +
+      "This is optional, and can be changed later.";
 
     return(
       <div className={s.deploymentList}>
@@ -88,9 +39,7 @@ export default class DeploymentList extends React.Component {
         <p>{text}</p>
         <table className={s.mainTable}>
           <tbody>
-          <ListHeader
-            notifyCheckAllChanged={this.props.notifyCheckAllChanged}
-          />
+          <ListHeader/>
           { this.renderList() }
           </tbody>
         </table>
@@ -115,8 +64,6 @@ export default class DeploymentList extends React.Component {
 
   static propTypes = {
     selectedIndex: PropTypes.number,
-    notifyDeploymentSelected: PropTypes.func.isRequired,
-    notifyCheckChanged: PropTypes.func.isRequired,
-    notifyCheckAllChanged: PropTypes.func.isRequired
+    notifyDeploymentSelected: PropTypes.func.isRequired
   }
 }

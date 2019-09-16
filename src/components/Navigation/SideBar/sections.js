@@ -35,7 +35,7 @@ const settings = {
   icon: 'settings',
   items: [
     { title: "Git & Docker", modal: IntegrationsModal },
-    { title: "My Cluster", path: '/2' },
+    { title: "Deployment Matches", path: '/deployments/detect' },
   ]
 };
 

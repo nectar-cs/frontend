@@ -7,10 +7,12 @@ import DeploymentList from './DeploymentList';
 import TopLoader from '../../../widgets/TopLoader/TopLoader';
 import MatchPreview from './MatchPreview';
 import Kapi from "../../../utils/Kapi";
-import GithubAuth from "./GithubAuth";
+import IntegrationsPrompt from "./IntegrationsPrompt";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import ErrComponent from "../../../hocs/ErrComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
+import {theme} from "../../../assets/constants";
+import {ThemeProvider} from "styled-components";
 
 const GIT_STATES = {
   CHECKING: 'checking',
@@ -25,7 +27,7 @@ const Header = function(){
   return(
     <LeftHeader
       title='Application Matching'
-      subtitle='Choose deployments and map them to source code.'
+      subtitle='Match your deployments to your git and docker repos'
       graphicType={ICON}
       graphicName='developer_board'
     />
@@ -51,8 +53,6 @@ class MatchingClass extends React.Component {
     this.fetchClusterDeploys = this.fetchClusterDeploys.bind(this);
     this.submit = this.submit.bind(this);
     this.notifyGithubConcluded = this.notifyGithubConcluded.bind(this);
-    this.notifyCheckAllChanged = this.notifyCheckAllChanged.bind(this);
-    this.notifyCheckChanged = this.notifyCheckChanged.bind(this);
     this.notifyDeploymentSelected = this.notifyDeploymentSelected.bind(this);
   }
 
@@ -69,10 +69,12 @@ class MatchingClass extends React.Component {
 
   render(){
     return(
-      <React.Fragment>
-        { this.renderLeftSide() }
-        { this.renderRightSide() }
-      </React.Fragment>
+      <ThemeProvider theme={theme}>
+        <React.Fragment>
+          { this.renderLeftSide() }
+          { this.renderRightSide() }
+        </React.Fragment>
+      </ThemeProvider>
     )
   }
 
@@ -84,8 +86,6 @@ class MatchingClass extends React.Component {
         <DeploymentList
           deployments={this.state.deployments}
           selectedIndex={this.state.selectedIndex}
-          notifyCheckChanged={this.notifyCheckChanged}
-          notifyCheckAllChanged={this.notifyCheckAllChanged}
           notifyDeploymentSelected={this.notifyDeploymentSelected}
         />
       </div>
@@ -96,26 +96,36 @@ class MatchingClass extends React.Component {
     return(
       <div className={ls.halfScreePanelRight}>
         <TopLoader isFetching={this.state.isRightFetching}/>
-        { this.decideRightSideContent() }
+        <Fragment>
+          { this.renderIntegrationsLoading() }
+          { this.renderIntegrationsPrompt() }
+          { this.renderMatchingPreview() }
+        </Fragment>
       </div>
     )
   }
 
-  decideRightSideContent(){
-    const gitConcluded = [GIT_STATES.CONNECTED, GIT_STATES.NOT_CONNECTED];
+  renderIntegrationsLoading(){
     if(this.state.githubState === GIT_STATES.CHECKING)
       return <CenterLoader/>;
-    else if(this.state.githubState === GIT_STATES.SHOWING_OFFER)
+    else return null;
+  }
+
+  renderIntegrationsPrompt(){
+    if(this.state.githubState === GIT_STATES.SHOWING_OFFER){
       return(
-        <GithubAuth
+        <IntegrationsPrompt
           authUrl={this.state.authUrl}
-          notifyGithubConcluded={this.notifyGithubConcluded}/>
+          notifyGithubConcluded={this.notifyGithubConcluded}
+          openModal={this.props.openModal}
+        />
       );
-    else if(gitConcluded.includes(this.state.githubState))
-      return this.renderMatchingPreview();
+    } else return null;
   }
 
   renderMatchingPreview(){
+    const gitConcluded = [GIT_STATES.CONNECTED, GIT_STATES.NOT_CONNECTED];
+    if(!gitConcluded.includes(this.state.githubState)) return null;
     return(
       <Fragment>
         <TopLoader isFetching={this.state.isRightFetching}/>
@@ -128,7 +138,6 @@ class MatchingClass extends React.Component {
           isSubmitted={this.state.areAllSubmitted}
           isSubmitting={this.state.isSubmitting}
           setIsFetching={(v) => this.setState((s) => ({...s, isRightFetching: v}))}
-          notifyCheckChanged={this.notifyCheckChanged}
         />
       </Fragment>
     )
@@ -184,21 +193,6 @@ class MatchingClass extends React.Component {
     this.setState((s) => ({...s, githubState: state}));
   }
 
-  notifyCheckAllChanged(value){
-    const deployments = this.state.deployments.map((d) => ({
-      ...d, isChecked: value
-    }));
-    this.setState((s) => ({...s, deployments}));
-  }
-
-  notifyCheckChanged(name){
-    const deployments = this.state.deployments.map((d) => {
-      if(d.name === name) return {...d, isChecked: !d.isChecked};
-      return d;
-    });
-    this.setState((s) => ({...s, deployments}));
-  }
-
   notifyDeploymentSelected(name){
     const selectedIndex = this.state.deployments.findIndex(
       (d) => (d.name === name)
@@ -209,7 +203,7 @@ class MatchingClass extends React.Component {
   submit(){
     if(this.state.isSubmitting || this.props.hasKubeError) return;
     this.setState((s) => ({...s, isSubmitting: true}));
-    const checkedDeps = this.state.deployments.filter((d) => d.isChecked);
+    const checkedDeps = this.state.deployments;
 
     let formatted = checkedDeps.map((deployment) => ({
       deployment_name: deployment.name,

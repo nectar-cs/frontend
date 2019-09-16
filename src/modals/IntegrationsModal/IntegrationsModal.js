@@ -1,13 +1,14 @@
 import React, {Fragment} from 'react'
-import {LayoutIntro, ModalLayout} from "../../assets/layouts";
+import PropTypes from 'prop-types'
+import {MosaicContainer, LayoutIntro, ModalLayout} from "../../assets/layouts";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
 import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";
 import defaults from "./defaults";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import Backend from "../../utils/Backend";
 import PageVisibility from "react-page-visibility";
+import {ThemeProvider} from "styled-components";
+import {theme} from "../../assets/constants";
 
 export default class IntegrationsModal extends React.Component {
 
@@ -46,14 +47,18 @@ export default class IntegrationsModal extends React.Component {
   };
 
   render(){
+    const isModal = this.props.mode === 'modal';
+    const Container = isModal ? ModalLayout : MosaicContainer;
     return(
       <PageVisibility onChange={this.onTabFocusChange}>
-        <ModalLayout>
-          <Header/>
-          <LayoutIntro>{defaults.intro}</LayoutIntro>
-          { this.renderDockerSection() }
-          { this.renderGitSection() }
-        </ModalLayout>
+        <ThemeProvider theme={theme}>
+          <Container>
+            <Header/>
+            <LayoutIntro>{defaults.intro}</LayoutIntro>
+            { this.renderDockerSection() }
+            { this.renderGitSection() }
+          </Container>
+        </ThemeProvider>
       </PageVisibility>
     )
   }
@@ -89,6 +94,14 @@ export default class IntegrationsModal extends React.Component {
       </Fragment>
     )
   }
+
+  static propTypes = {
+    mode: PropTypes.oneOf(['modal', 'embedded'])
+  };
+
+  static defaultProps = {
+    mode: "modal"
+  };
 }
 
 function Header(){

@@ -61,10 +61,6 @@ class WorkspaceShowClass extends React.Component{
     return <CenterLoader/>;
   }
 
-  renderIntegrationButton(){
-    return <FloatingButton/>
-  }
-
   renderEmpty(){
     if(this.state.isFetching) return null;
     if(this.state.deployments.length > 0) return null;

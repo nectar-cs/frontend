@@ -50,7 +50,7 @@ class SideBarSection extends React.Component {
   renderItems(){
     return this.props.items.map((item) => (
       <SideBarItem
-        key={item.path}
+        key={item.title}
         {...item}
         openModal={this.props.openModal}
       />
