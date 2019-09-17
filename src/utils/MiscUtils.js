@@ -77,9 +77,4 @@ export default class MiscUtils {
       return textCombos.statusTagReady;
     else return textCombos.statusTagWarn;
   }
-
-
-  static frameworkChoices(){
-    return ["docker", "javascript", "go", "ruby", "c"];
-  }
 }

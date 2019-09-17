@@ -8,20 +8,24 @@ import s from './MatchPreview.sass'
 import CenterAnnouncement from '../../../widgets/CenterAnnouncement/CenterAnnouncement';
 import defaults from './defaults'
 import { ROUTES } from '../../../containers/RoutesConsts';
+import TopLoader from "../../../widgets/TopLoader/TopLoader";
 
 export default class MatchPreview extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       bundle: {
-        msFramework: '',
-        msDescription: '',
-        remoteName: '',
-        repoName: ''
-      }
+        framework: '',
+        gitRemoteName: '',
+        gitRepoName: '',
+        imgRegistryName: '',
+        imgRepoName: ''
+      },
+      isGitFetching: false,
+      isDockerFetching: false
     };
 
-    this.onInfoChanged = this.onInfoChanged.bind(this);
+    this.onFormDataChanged = this.onFormDataChanged.bind(this);
   }
 
   render(){
@@ -40,24 +44,65 @@ export default class MatchPreview extends React.Component {
 
     return(
       <Fragment>
-        <LeftHeader
-          graphicName={this.frameworkImage()}
-          title={this.props.deployment.name}
-          subtitle={this.bundle().msDescription}
-        />
+        { this.renderHeader() }
+        { this.renderTopRightLoader() }
+        { this.renderTitle() }
+        { this.renderForm() }
+        { this.renderNextButton() }
+      </Fragment>
+    )
+  }
+
+  renderTitle(){
+    return(
+      <Fragment>
         <TextOverLineTitle text={defaults.previewTitle}/>
         <p>{defaults.previewIntro}</p>
-        <MatchForm
-          deployment={this.props.deployment}
-          onInfoChanged={this.onInfoChanged}
-          setIsFetching={this.props.setIsFetching}
-          hasGitRemote={this.props.hasGitRemote}
-          hasImageRegistry={this.props.hasImageRegistry}
-        />
-        <button className={s.confirm}  onClick={() => this.onAccepted()}>
-          Confirm & Review Next
-        </button>
       </Fragment>
+    )
+  }
+
+  renderHeader(){
+    return(
+      <LeftHeader
+        graphicName={this.frameworkImage()}
+        title={this.props.deployment.name}
+        subtitle='A connected app'
+      />
+    )
+  }
+
+  renderForm(){
+    const gFetch = (b) => this.setState(s => ({...s, isGitFetching: b}));
+    const dFetch = (b) => this.setState(s => ({...s, isDockerFetching: b}));
+
+    return(
+      <MatchForm
+        deployment={this.props.deployment}
+        notifyChanged={this.onFormDataChanged}
+        setIsGitFetching={gFetch}
+        setIsDockerFetching={dFetch}
+        hasGitRemote={this.props.hasGitRemote}
+        hasImageRegistry={this.props.hasImageRegistry}
+        {...this.state.bundle}
+      />
+    )
+  }
+
+  renderTopRightLoader(){
+    if(this.state.isGitFetching || this.state.isDockerFetching)
+      return <TopLoader isFetching={true}/>;
+    else return null;
+  }
+
+  renderNextButton(){
+    if(this.state.isGitFetching ||  this.state.isGitFetching)
+      return null;
+
+    return(
+      <button className={s.confirm}  onClick={() => this.onAccepted()}>
+        Confirm & Review Next
+      </button>
     )
   }
 
@@ -74,9 +119,8 @@ export default class MatchPreview extends React.Component {
   }
 
   frameworkImage(){
-    if(this.bundle().msFramework)
-      return MiscUtils.frameworkImage(this.bundle().msFramework);
-    else return null;
+    const framework = this.state.bundle.framework;
+    return MiscUtils.frameworkImage( framework || 'docker');
   }
 
   bundle(){
@@ -102,8 +146,8 @@ export default class MatchPreview extends React.Component {
     );
   }
 
-  onInfoChanged(hash){
-    const bundle = { ...this.state.bundle, ...hash };
+  onFormDataChanged(hash){
+    const bundle = {...this.state.bundle, ...hash};
     this.setState((s) => ({...s, bundle}));
   }
 

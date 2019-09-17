@@ -26,7 +26,13 @@ export const LineInput = styled.input`
   }
 `;
 
+function labelSize(p){
+  if(!p || p.size === 'medium') return '120px';
+  if(p.size === 'large') return '240px';
+  return '100px';
+}
+
 export const LineLabel = styled.p`
-  width: 120px;
+  width: ${p => labelSize(p)};
   min-width: 120px;
 `;

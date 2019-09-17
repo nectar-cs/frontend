@@ -1,12 +1,11 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import s from './MatchForm.sass'
-import PathSuggest from './PathSuggest';
-import MiscUtils from "../../../utils/MiscUtils";
 import Backend from "../../../utils/Backend";
 import DataUtils from "../../../utils/DataUtils";
-
-const StringSimilarity = require('string-similarity');
+import {FormHelper as H} from "./FormHelper";
+import {InputLine, LineInput, LineLabel} from "../../../assets/input-combos";
+import {ThemeProvider} from "styled-components";
+import {theme} from "../../../assets/constants";
 
 export default class MatchForm extends React.Component {
 
@@ -16,16 +15,10 @@ export default class MatchForm extends React.Component {
     this.state = {
       gitRemoteList: [],
       imgRegistryList: [],
-      repoName: 'null',
-      msFramework: '',
-      msDescription: '',
       deploymentName: null,
-      msSourcePath: ''
     };
 
     this.deploymentName = null;
-    this.repoPathTrees = {};
-    this.getCurrentRepo = this.getCurrentRepo.bind(this);
   }
 
   componentDidMount(){
@@ -33,172 +26,112 @@ export default class MatchForm extends React.Component {
 
     if(this.props.hasGitRemote)
       this.fetchGitRepos();
-    //
+
     // if(this.props.hasImageRegistry)
     //   this.fetchImageRegistries();
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("Comp will receive props");
-    // if(nextProps.deployment){
-    //   this.deploymentName = nextProps.deployment.name;
-    //   if(this.props.deployment.name !== this.deploymentName){
-    //     if(this.props.hasGitRemote){
-    //       this.guessRepoFromDep(nextProps.deployment.name)
-    //     }
-    //   }
-    // }
+    if(nextProps.deployment){
+      this.deploymentName = nextProps.deployment.name;
+      if(this.props.deployment.name !== this.deploymentName){
+        if(this.props.hasGitRemote){
+          const repoName = H.guessRepo(
+            this.repoNames(),
+            this.deploymentName
+          );
+          this.props.notifyChanged({gitRepoName: repoName});
+        }
+      }
+    }
   }
 
   render(){
     return(
-      <div>
-        {/*{ this.props.hasGitRemote ? this.renderRepoInput() : null }*/}
-        {/*{ this.props.hasGitRemote ? this.renderPathInput() : null }*/}
-        {/*{ this.renderDescriptionInput() }*/}
-        {/*{ this.renderFrameworkSelect() }*/}
-      </div>
+      <ThemeProvider theme={theme}>
+        <Fragment>
+          { this.renderGitRemoteInput() }
+          { this.renderRepoInput() }
+          { this.renderFrameworkSelect() }
+        </Fragment>
+      </ThemeProvider>
     )
+  }
+
+  renderGitRemoteInput(){
+    if(!this.props.hasGitRemote) return null;
+    return this.makeSelect(
+      'Git Remote',
+      'gitRemoteName',
+      H.remotesOptions(this)
+    );
   }
 
   renderRepoInput(){
-    return(
-      <div className={s.inputLine}>
-        <p className={s.lineIntro}>
-          Source Code Repository
-        </p>
-        <select
-          className={s.repoSelect}
-          value={this.state.repoName}
-          onChange={(e) => this.onRepoChanged(e.target.value)}>
-          { this.repoChoices() }
-        </select>
-      </div>
-    )
-  }
-
-  renderPathInput(){
-    const currentRepo = this.getCurrentRepo();
-    let currentTree = null;
-    if(currentRepo)
-      currentTree = this.repoPathTrees[currentRepo.msName];
-
-    return(
-      <div className={s.inputLine}>
-        <p className={s.lineIntro}>
-          Internal Path (optional)
-        </p>
-        <PathSuggest
-          pathTree={currentTree}
-        />
-      </div>
-    )
-  }
-
-  renderDescriptionInput(){
     if(!this.props.hasGitRemote) return null;
-
-    return(
-      <div className={s.inputLine}>
-        <p className={s.lineIntro}>
-          Description
-        </p>
-        <input
-          className={s.nameInput}
-          placeholder={'A short description'}
-          value={this.state.msDescription || ''}
-          onChange={(e) => this.onValueChanged({msDescription: e.target.value})}
-        />
-      </div>
-    )
+    return this.makeSelect(
+      'Git Repository',
+      'gitRepoName',
+      H.gitRepoOptions(this, this.props.gitRemoteName)
+    );
   }
 
   renderFrameworkSelect(){
-    return(
-      <div className={s.inputLine}>
-        <p className={s.lineIntro}>
-          Language or Framework
-        </p>
-        <select
-          value={this.state.msFramework}
-          className={s.repoSelect}
-          onChange={(e) => this.onValueChanged({msFramework: e.target.value})}
-        >
-          { MatchForm.frameworkChoices() }
-        </select>
-      </div>
-    )
-  }
-
-  onRepoChanged(repoName){
-    const repo = this.getCurrentRepo(repoName);
-    if(repoName && repoName !== 'null'){
-      this.propagateRepoChanged(repo);
-    } else {
-      this.propagateNoGitDefaults();
-    }
-  }
-
-  getCurrentRepo(repoName = this.state.repoName){
-    return this.state.repoList.find(
-      (r) => r['name'] === repoName
+    return this.makeSelect(
+      'Framework or Language',
+      'framework',
+      H.frameworkOptions()
     );
   }
 
   fetchGitRepos(){
-    this.props.setIsFetching(true);
+    this.props.setIsGitFetching(true);
     Backend.raisingFetch('/git_remotes/loaded', (payload) => {
       const gitRemoteList = DataUtils.objKeysToCamel(payload)['data'];
-      this.setState((s) => ({...s, remotesList: gitRemoteList}));
-      this.props.setIsFetching(false);
-      // this.guessRepoFromDep(this.props.deployment.name);
+      const remote = gitRemoteList[0];
+      const remoteName = remote.identifier;
+      const repoNames = H.gitRepoNames(gitRemoteList, remoteName);
+      const repoName = H.guessRepo(repoNames, this.props.deployment.name);
+      const repo = H.selectedRepo(gitRemoteList, remoteName, repoName);
+
+      this.setState((s) => ({...s, gitRemoteList}));
+      this.props.notifyChanged({gitRemoteName: remoteName});
+      this.props.notifyChanged({gitRepoName: repoName});
+      this.props.notifyChanged({framework: repo.framework});
+      this.props.setIsGitFetching(false);
     });
   }
 
-  fetchImageRegistries(){
+  fetchImageRegistries(){}
 
-  }
-
-  guessRepoFromDep(depName){
-    const repoNames = this.state.repoList.map((r) => r['name']);
-    const sorting = StringSimilarity.findBestMatch(depName, repoNames);
-    const winnerName = repoNames[sorting.bestMatchIndex];
-    this.onRepoChanged(winnerName);
-  }
-
-  propagateRepoChanged(repo){
-    const commonBundle = {
-      msDescription: repo['description'],
-      msFramework: repo['framework'],
-      repoName: repo['name'],
+  makeSelect(title, field, choices){
+    const callback = (e) => {
+      this.props.notifyChanged({[field]: e.target.value});
     };
 
-    this.setState((s) => ({...s, ...commonBundle}));
-    this.props.onInfoChanged(commonBundle);
-    this.props.setIsFetching(false);
+    return(
+      <InputLine>
+        <LineLabel size='large'>{title}</LineLabel>
+        <LineInput
+          as='select'
+          value={this.props[field]}
+          onChange={(e) => callback(e)}>
+          { choices }
+        </LineInput>
+      </InputLine>
+    )
   }
 
-  propagateNoGitDefaults(){
-    const bundle = {
-      msDescription: "",
-      msFramework: 'docker'
-    };
-
-    this.setState((s) => ({...s,
-      deploymentName: this.props.deployment.name,
-      ...bundle
-    }));
-    this.props.onInfoChanged(bundle);
-  }
-
-  onValueChanged(assignment){
-    this.setState((s) => ({...s, ...assignment}));
-    this.props.onInfoChanged(assignment);
-  }
+  repoNames() { return H.gitRepoNames(this, this.props.gitRemoteName); }
 
   static propTypes = {
-    setIsFetching: PropTypes.func.isRequired,
-    onInfoChanged: PropTypes.func.isRequired,
+    gitRemoteName: PropTypes.string,
+    gitRepoName: PropTypes.string,
+    imgRegistryName: PropTypes.string,
+    imgRepoName: PropTypes.string,
+    setIsGitFetching: PropTypes.func.isRequired,
+    setIsDockerFetching: PropTypes.func.isRequired,
+    notifyChanged: PropTypes.func.isRequired,
     hasGitRemote: PropTypes.bool.isRequired,
     hasImageRegistry: PropTypes.bool.isRequired,
     deployment: PropTypes.shape({

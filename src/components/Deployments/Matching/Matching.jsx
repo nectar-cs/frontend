@@ -101,7 +101,6 @@ class MatchingClass extends React.Component {
 
     return(
       <Fragment>
-        <TopLoader isFetching={this.state.isRightFetching}/>
         <MatchPreview
           deployment={this.selectedDeployment()}
           onDeploymentReviewed={this.onDeploymentReviewed}
