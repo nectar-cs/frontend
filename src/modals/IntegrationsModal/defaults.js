@@ -21,7 +21,9 @@ const defaults = {
   ],
 
   gitFwdNotice: "Clicking \"Connect\" will take you to GitHub's" +
-    " third party authorization page."
+    " third party authorization page.",
+
+  confirmDelete: "Are you sure you want to delete this integration?"
 };
 
 export default defaults;

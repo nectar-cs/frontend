@@ -48,7 +48,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   deleteItem(id){
-    if (window.confirm('Are you sure?')) {
+    if (window.confirm(defaults.confirmDelete)) {
       this.setState(s => ({...s, isSubmitting: true}));
       this.performDelete(id, () => {
         this.setState(s => ({...s, isSubmitting: false}));

@@ -8,6 +8,7 @@ import {theme} from "../../../assets/constants";
 import {FixedSmallButton} from "../../../assets/buttons";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
+import Backend from "../../../utils/Backend";
 
 const IntegrationsPromptClass = class extends React.Component {
   constructor(props){
@@ -74,7 +75,6 @@ const IntegrationsPromptClass = class extends React.Component {
   }
 
   checkIntegrationState(){
-    console.log("RELOAD TIME");
     IntegrationsPromptClass.checkGitOrDocker(done => {
       if(done) this.props.notifyIntegrationDone(true);
       else this.setState(s => ({...s, isChecking: false}));
@@ -87,7 +87,13 @@ const IntegrationsPromptClass = class extends React.Component {
   }
 
   static checkGitOrDocker(whenDone){
-    whenDone(false);
+    Backend.raisingFetch(`/git_remotes/connected`, resp => {
+      if(resp.data.length > 0) {
+        Backend.raisingFetch(`/image_registries`, resp => {
+          whenDone(resp.data.length > 0);
+        });
+      } else whenDone(false);
+    })
   }
 
   static propTypes = {

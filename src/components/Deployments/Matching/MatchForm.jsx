@@ -184,10 +184,10 @@ export default class MatchForm extends React.Component {
 
   fetchRepos(){
     this.props.setIsFetching(true);
-    Backend.fetchJson('/github/list_repos', (payload) => {
-      this.setState((s) => ({...s, repoList: payload['data']}));
-      this.guessRepoFromDep(this.props.deployment.name);
-    });
+    // Backend.fetchJson('/github/list_repos', (payload) => {
+    //   this.setState((s) => ({...s, repoList: payload['data']}));
+    //   this.guessRepoFromDep(this.props.deployment.name);
+    // });
   }
 
   guessRepoFromDep(depName){

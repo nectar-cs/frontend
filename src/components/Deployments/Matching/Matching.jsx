@@ -8,7 +8,6 @@ import TopLoader from '../../../widgets/TopLoader/TopLoader';
 import MatchPreview from './MatchPreview';
 import Kapi from "../../../utils/Kapi";
 import IntegrationsPrompt from "./IntegrationsPrompt";
-import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import ErrComponent from "../../../hocs/ErrComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import {theme} from "../../../assets/constants";
@@ -177,7 +176,7 @@ class MatchingClass extends React.Component {
     }));
 
     const payload = { data: formatted };
-    Backend.postJson('/microservices/', payload, (result) => {
+    Backend.postJson('/microservices/', payload, (_) => {
       this.setState((s) => ({...s, isSubmitting: false, areAllSubmitted: true}));
     });
   }
