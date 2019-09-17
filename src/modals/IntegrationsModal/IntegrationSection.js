@@ -181,8 +181,8 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   onSubmitted(){
-    this.setState(s => ({...s, isSubmitting: false}));
     this.changeState({formShowing: false});
+    this.setState(s => ({...s, isSubmitting: false}));
     this.props.notifyDataChanged();
     this.fetchIntegrations();
   }

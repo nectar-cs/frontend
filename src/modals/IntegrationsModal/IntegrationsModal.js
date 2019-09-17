@@ -116,7 +116,8 @@ export default class IntegrationsModal extends React.Component {
   }
 
   onCreateOrDelete(){
-    this.props.onDataChanged();
+    if(this.props.onDataChanged)
+      this.props.onDataChanged();
   }
 
   static propTypes = {

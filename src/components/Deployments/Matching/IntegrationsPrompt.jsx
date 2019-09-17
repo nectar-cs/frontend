@@ -89,8 +89,8 @@ const IntegrationsPromptClass = class extends React.Component {
   static checkGitOrDocker(whenDone){
     Backend.raisingFetch(`/git_remotes/connected`, resp => {
       if(resp.data.length > 0) {
-        Backend.raisingFetch(`/image_registries`, resp => {
-          whenDone(resp.data.length > 0);
+        Backend.raisingFetch(`/image_registries/connected`, resp2 => {
+          whenDone(resp2.data.length > 0);
         });
       } else whenDone(false);
     })
