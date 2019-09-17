@@ -38,4 +38,5 @@ export default class DockerSection extends IntegrationSection {
 
   vendorQuestion(){ return defaults.imgVendorQuestion; }
   vendorList(){ return defaults.imageRegistryVendors; }
+  newEntryCopy() { return defaults.addNewImageReg }
 }

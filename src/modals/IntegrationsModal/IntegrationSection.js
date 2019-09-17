@@ -87,7 +87,7 @@ export default class IntegrationSection extends React.PureComponent {
     const action = ()=> this.changeState({formShowing: true});
     return(
       <AddNew action={action}>
-        <p>{defaults.addNewImageReg}</p>
+        <p>{this.newEntryCopy()}</p>
       </AddNew>
     )
   }

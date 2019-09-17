@@ -1,39 +1,34 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types'
-import Backend from '../../../utils/Backend';
 import s from './GithubAuth.sass';
-import MiscUtils from '../../../utils/MiscUtils';
-import { ROUTES } from '../../../containers/RoutesConsts';
-import { NavLink } from 'react-router-dom';
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
 import {ThemeProvider} from "styled-components";
 import {theme} from "../../../assets/constants";
-import {FixedSmallButton, SmallButton} from "../../../assets/buttons";
-import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
+import {FixedSmallButton} from "../../../assets/buttons";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
-
-const PHASES = {
-  OFFERING: 'offer',
-  AUTHORIZING: 'waiting',
-  DONE: 'all-set',
-  EXITING: 'exiting'
-};
 
 const IntegrationsPromptClass = class extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      phase: PHASES.OFFERING
+      isDone: false,
+      isChecking: false,
     };
-    this.onIntegrationsChanged = this.onIntegrationsChanged.bind(this);
+    this.checkIntegrationState = this.checkIntegrationState.bind(this);
+  }
+
+  componentDidMount(){
+    this.setState(s => ({...s, isChecking: true}));
+    this.checkIntegrationState();
   }
 
   render(){
     return(
       <ThemeProvider theme={theme}>
         <Fragment>
+          { this.renderChecking() }
           { this.renderPrompting() }
           { this.renderDone() }
         </Fragment>
@@ -41,28 +36,26 @@ const IntegrationsPromptClass = class extends React.Component {
     )
   }
 
-  onIntegrationsChanged(){
-    console.log("RELOAD TIME");
-    IntegrationsPromptClass.checkGitOrDocker(done => {
-      done && this.setState(s => ({...s, phase: PHASES.DONE}));
-    })
-  }
-
   renderDone(){
-    if(this.state.phase !== PHASES.DONE) return null;
+    if(!this.state.isDone) return null;
     return(
       <CenterAnnouncement
         text={"Done. Click to begin Matching."}
         contentType='action'
         iconName='check'
-        action={this.props.notifyGithubConcluded(true)}
+        action={this.props.notifyIntegrationDone(true)}
       />
     )
   }
 
+  renderChecking(){
+    if(!this.state.isChecking) return null;
+    return <CenterLoader/>;
+  }
+
   renderPrompting(){
-    if(this.state.phase !== PHASES.OFFERING) return null;
-    const skip = () => this.props.notifyGithubConcluded(false);
+    if(this.state.isChecking || this.state.isDone) return null;
+    const skip = () => this.props.notifyIntegrationDone(false);
     const cont = () => this.showOffer();
 
     return(
@@ -75,13 +68,21 @@ const IntegrationsPromptClass = class extends React.Component {
             <FixedSmallButton emotion={'idle'} onClick={skip}>Skip</FixedSmallButton>
             <FixedSmallButton onClick={cont}>Connect</FixedSmallButton>
           </div>
-        </div></div>
+        </div>
+      </div>
     )
   }
 
+  checkIntegrationState(){
+    console.log("RELOAD TIME");
+    IntegrationsPromptClass.checkGitOrDocker(done => {
+      if(done) this.props.notifyIntegrationDone(true);
+      else this.setState(s => ({...s, isChecking: false}));
+    })
+  }
+
   showOffer(){
-    this.setState(s => ({...s, phase: PHASES.OFFERING}));
-    const bundle = { onClosed: this.onIntegrationsChanged };
+    const bundle = { onClosed: this.checkIntegrationState };
     this.props.openModal(IntegrationsModal, bundle);
   }
 
@@ -90,7 +91,7 @@ const IntegrationsPromptClass = class extends React.Component {
   }
 
   static propTypes = {
-    notifyGithubConcluded: PropTypes.func.isRequired,
+    notifyIntegrationDone: PropTypes.func.isRequired,
   };
 };
 

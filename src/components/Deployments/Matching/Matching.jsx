@@ -15,33 +15,13 @@ import {theme} from "../../../assets/constants";
 import {ThemeProvider} from "styled-components";
 import {ROUTES} from "../../../containers/RoutesConsts";
 
-const GIT_STATES = {
-  CHECKING: 'checking',
-  SHOWING_OFFER: 'waiting',
-  NOT_CONNECTED: 'not-connected',
-  CONNECTED: 'finished',
-};
-
-const DEFAULT_QUERY = [{field: "namespace", op: "one-of", challenge: ["default"]}];
-
-const Header = function(){
-  return(
-    <LeftHeader
-      title='Deployment Matching'
-      subtitle='Match your deployments to your git and docker repos'
-      graphicType={ICON}
-      graphicName='developer_board'
-    />
-  )
-};
-
 class MatchingClass extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       isFetching: false,
       isRightFetching: false,
-      githubState: GIT_STATES.SHOWING_OFFER,
+      isIntegrated: false,
       authUrl: null,
       deployments: [],
       selectedIndex: null,
@@ -53,12 +33,11 @@ class MatchingClass extends React.Component {
     this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);
     this.fetchClusterDeploys = this.fetchClusterDeploys.bind(this);
     this.submit = this.submit.bind(this);
-    this.notifyGithubConcluded = this.notifyGithubConcluded.bind(this);
+    this.onIntegrationDone = this.onIntegrationDone.bind(this);
     this.notifyDeploymentSelected = this.notifyDeploymentSelected.bind(this);
   }
 
   componentDidMount(){
-    // this.fetchGithubAuth();
     this.fetchClusterDeploys();
   }
 
@@ -98,7 +77,6 @@ class MatchingClass extends React.Component {
       <div className={ls.halfScreePanelRight}>
         <TopLoader isFetching={this.state.isRightFetching}/>
         <Fragment>
-          { this.renderIntegrationsLoading() }
           { this.renderIntegrationsPrompt() }
           { this.renderMatchingPreview() }
         </Fragment>
@@ -106,27 +84,21 @@ class MatchingClass extends React.Component {
     )
   }
 
-  renderIntegrationsLoading(){
-    if(this.state.githubState === GIT_STATES.CHECKING)
-      return <CenterLoader/>;
-    else return null;
-  }
-
   renderIntegrationsPrompt(){
-    if(this.state.githubState === GIT_STATES.SHOWING_OFFER){
-      return(
-        <IntegrationsPrompt
-          authUrl={this.state.authUrl}
-          notifyGithubConcluded={this.notifyGithubConcluded}
-          openModal={this.props.openModal}
-        />
-      );
-    } else return null;
+    if(this.state.isIntegrated) return null;
+
+    return(
+      <IntegrationsPrompt
+        authUrl={this.state.authUrl}
+        notifyIntegrationDone={this.onIntegrationDone}
+        openModal={this.props.openModal}
+      />
+    );
   }
 
   renderMatchingPreview(){
-    const gitConcluded = [GIT_STATES.CONNECTED, GIT_STATES.NOT_CONNECTED];
-    if(!gitConcluded.includes(this.state.githubState)) return null;
+    if(!this.state.isIntegrated) return null;
+
     return(
       <Fragment>
         <TopLoader isFetching={this.state.isRightFetching}/>
@@ -135,7 +107,7 @@ class MatchingClass extends React.Component {
           onDeploymentReviewed={this.onDeploymentReviewed}
           isReviewComplete={this.isSubmitReady()}
           submitFunction={this.submit}
-          hasGithub={this.state.githubState === GIT_STATES.CONNECTED}
+          hasGithub={true}
           isSubmitted={this.state.areAllSubmitted}
           isSubmitting={this.state.isSubmitting}
           setIsFetching={(v) => this.setState((s) => ({...s, isRightFetching: v}))}
@@ -168,17 +140,6 @@ class MatchingClass extends React.Component {
     } else return false;
   }
 
-  fetchGithubAuth(){
-    if(this.props.hasKubeError) return;
-    this.setState((s) => ({...s, githubState: GIT_STATES.CHECKING}));
-    Backend.fetchJson('/github/token', (payload) => {
-      const githubState = payload['access_token'] ? GIT_STATES.CONNECTED : GIT_STATES.SHOWING_OFFER;
-      const authUrl = payload['auth_url'];
-      this.setState((s) => ({...s, githubState, authUrl}));
-      // if(payload['access_token']) this.fetchClusterDeploys();
-    });
-  }
-
   fetchClusterDeploys(){
     this.setState((s) => ({...s, isFetching: true}));
     Kapi.fetch('/api/deployments/across_namespaces', (payload) => {
@@ -189,9 +150,9 @@ class MatchingClass extends React.Component {
     }, this.props.kubeErrorCallback);
   }
 
-  notifyGithubConcluded(status){
+  onIntegrationDone(status){
     if(status){
-      this.setState((s) => ({...s, githubState: GIT_STATES.CONNECTED}));
+      this.setState((s) => ({...s, isIntegrated: true}));
     } else window.location = ROUTES.workspaces.index.path;
   }
 
@@ -221,6 +182,19 @@ class MatchingClass extends React.Component {
     });
   }
 }
+
+const DEFAULT_QUERY = [{field: "namespace", op: "one-of", challenge: ["default"]}];
+
+const Header = function(){
+  return(
+    <LeftHeader
+      title='Deployment Matching'
+      subtitle='Match your deployments to your git and docker repos'
+      graphicType={ICON}
+      graphicName='developer_board'
+    />
+  )
+};
 
 const Matching = AuthenticatedComponent.compose(
   ModalHostComposer.compose(

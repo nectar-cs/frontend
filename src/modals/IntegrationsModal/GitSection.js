@@ -46,4 +46,5 @@ export default class GitSection extends IntegrationSection {
 
   vendorQuestion(){ return defaults.gitVendorQuestion; }
   vendorList(){ return defaults.gitRemoteVendors; }
+  newEntryCopy() { return defaults.addNewGitRemote }
 }
