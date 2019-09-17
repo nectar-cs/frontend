@@ -26,7 +26,8 @@ class MatchingClass extends React.Component {
       selectedIndex: null,
       isSubmitting: false,
       areAllSubmitted: false,
-      query: DEFAULT_QUERY
+      query: DEFAULT_QUERY,
+      integrations: null
     };
 
     this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);
@@ -84,7 +85,7 @@ class MatchingClass extends React.Component {
   }
 
   renderIntegrationsPrompt(){
-    if(this.state.isIntegrated) return null;
+    if(this.state.integrations) return null;
 
     return(
       <IntegrationsPrompt
@@ -96,7 +97,7 @@ class MatchingClass extends React.Component {
   }
 
   renderMatchingPreview(){
-    if(!this.state.isIntegrated) return null;
+    if(!this.state.integrations) return null;
 
     return(
       <Fragment>
@@ -106,10 +107,11 @@ class MatchingClass extends React.Component {
           onDeploymentReviewed={this.onDeploymentReviewed}
           isReviewComplete={this.isSubmitReady()}
           submitFunction={this.submit}
-          hasGithub={true}
           isSubmitted={this.state.areAllSubmitted}
           isSubmitting={this.state.isSubmitting}
           setIsFetching={(v) => this.setState((s) => ({...s, isRightFetching: v}))}
+          hasGitRemote={this.state.integrations.hasGitRemote}
+          hasImageRegistry={this.state.integrations.hasImageRegistry}
         />
       </Fragment>
     )
@@ -149,9 +151,11 @@ class MatchingClass extends React.Component {
     }, this.props.kubeErrorCallback);
   }
 
-  onIntegrationDone(status){
+  onIntegrationDone(status, hash){
     if(status){
-      this.setState((s) => ({...s, isIntegrated: true}));
+      const { hasGitRemote, hasImageRegistry } = hash;
+      const integrations = {hasGitRemote, hasImageRegistry};
+      this.setState((s) => ({...s, integrations }));
     } else window.location = ROUTES.workspaces.index.path;
   }
 

@@ -75,8 +75,8 @@ const IntegrationsPromptClass = class extends React.Component {
   }
 
   checkIntegrationState(){
-    IntegrationsPromptClass.checkGitOrDocker(done => {
-      if(done) this.props.notifyIntegrationDone(true);
+    IntegrationsPromptClass.checkGitOrDocker((done, hash) => {
+      if(done) this.props.notifyIntegrationDone(true, hash);
       else this.setState(s => ({...s, isChecking: false}));
     })
   }
@@ -86,13 +86,14 @@ const IntegrationsPromptClass = class extends React.Component {
     this.props.openModal(IntegrationsModal, bundle);
   }
 
-  static checkGitOrDocker(whenDone){
-    Backend.raisingFetch(`/git_remotes/connected`, resp => {
-      if(resp.data.length > 0) {
-        Backend.raisingFetch(`/image_registries/connected`, resp2 => {
-          whenDone(resp2.data.length > 0);
-        });
-      } else whenDone(false);
+  static checkGitOrDocker(callback){
+    Backend.raisingFetch(`/git_remotes/connected`, git => {
+      Backend.raisingFetch(`/image_registries/connected`, docker => {
+        const hasGitRemote = git.data.length > 0;
+        const hasImageRegistry = docker.data.length > 0;
+        const done = hasGitRemote || hasImageRegistry;
+        callback(done, {hasGitRemote, hasImageRegistry});
+      });
     })
   }
 

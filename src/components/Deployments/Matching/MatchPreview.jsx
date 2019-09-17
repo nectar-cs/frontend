@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import LeftHeader from '../../../widgets/LeftHeader/LeftHeader';
 import PropTypes from 'prop-types'
 import MiscUtils from '../../../utils/MiscUtils';
@@ -6,29 +6,18 @@ import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTi
 import MatchForm from './MatchForm';
 import s from './MatchPreview.sass'
 import CenterAnnouncement from '../../../widgets/CenterAnnouncement/CenterAnnouncement';
-import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
+import defaults from './defaults'
 import { ROUTES } from '../../../containers/RoutesConsts';
 
 export default class MatchPreview extends React.Component {
-
-  static propTypes = {
-    deployment: PropTypes.object,
-    isSubmitted: PropTypes.bool.isRequired,
-    isSubmitting: PropTypes.bool.isRequired,
-    isReviewComplete: PropTypes.bool.isRequired,
-    onDeploymentReviewed: PropTypes.func.isRequired,
-    submitFunction: PropTypes.func.isRequired,
-    hasGithub: PropTypes.bool.isRequired
-  };
-
   constructor(props){
     super(props);
     this.state = {
       bundle: {
-        msName: '',
         msFramework: '',
         msDescription: '',
-        repoId: ''
+        remoteName: '',
+        repoName: ''
       }
     };
 
@@ -36,59 +25,45 @@ export default class MatchPreview extends React.Component {
   }
 
   render(){
-    if(this.props.isSubmitted)
-      return MatchPreview.renderSubmitted();
-    else if(this.props.isSubmitting)
-      return MatchPreview.renderLoading();
-    else if(this.props.isReviewComplete)
-      return this.renderReviewComplete();
-    else if(this.props.deployment)
-      return this.renderMainContent();
-    else
-      return MatchPreview.renderLoading();
+    return(
+      <Fragment>
+        { this.renderSubmitted() }
+        { this.renderReviewComplete() }
+        { this.renderMainContent() }
+      </Fragment>
+    );
   }
 
   renderMainContent(){
+    if(this.props.isSubmitting) return null;
+    if(!this.props.deployment) return null;
+
     return(
-      <React.Fragment>
+      <Fragment>
         <LeftHeader
           graphicName={this.frameworkImage()}
-          title={this.bundle().msName}
+          title={this.props.deployment.name}
           subtitle={this.bundle().msDescription}
         />
-        <TextOverLineTitle text="Microservice Details"/>
-        { this.renderContentBody() }
-        <button className={s.confirm}  onClick={() => this.onAccepted()}>
-          Confirm & Review Next
-        </button>
-      </React.Fragment>
-    )
-  }
-
-  renderContentBody(){
-    if(this.props.deployment.isChecked){
-      return(
+        <TextOverLineTitle text={defaults.previewTitle}/>
+        <p>{defaults.previewIntro}</p>
         <MatchForm
           deployment={this.props.deployment}
           onInfoChanged={this.onInfoChanged}
           setIsFetching={this.props.setIsFetching}
-          hasGithub={this.props.hasGithub}
+          hasGitRemote={this.props.hasGitRemote}
+          hasImageRegistry={this.props.hasImageRegistry}
         />
-      )
-    } else {
-      let message = "Deployment not checked. It will not appear";
-      message += " in your workspace. Click to check it.";
-      return(
-        <CenterAnnouncement
-          iconName='toggle_off'
-          text={message}
-          action={() => this.props.notifyCheckChanged(this.props.deployment.name)}
-        />
-      )
-    }
+        <button className={s.confirm}  onClick={() => this.onAccepted()}>
+          Confirm & Review Next
+        </button>
+      </Fragment>
+    )
   }
 
   renderReviewComplete(){
+    if(!this.props.isReviewComplete) return null;
+
     return(
       <CenterAnnouncement
         action={this.props.submitFunction}
@@ -108,7 +83,8 @@ export default class MatchPreview extends React.Component {
     return this.state.bundle;
   }
 
-  static renderSubmitted(){
+  renderSubmitted(){
+    if(!this.props.isSubmitted) return null;
     return(
       <CenterAnnouncement
         contentType={'nav-link'}
@@ -117,10 +93,6 @@ export default class MatchPreview extends React.Component {
         text="All done. Click to continue."
       />
     )
-  }
-
-  static renderLoading(){
-    return <CenterLoader/>
   }
 
   onAccepted(){
@@ -134,4 +106,15 @@ export default class MatchPreview extends React.Component {
     const bundle = { ...this.state.bundle, ...hash };
     this.setState((s) => ({...s, bundle}));
   }
+
+  static propTypes = {
+    deployment: PropTypes.object,
+    isSubmitted: PropTypes.bool.isRequired,
+    isSubmitting: PropTypes.bool.isRequired,
+    isReviewComplete: PropTypes.bool.isRequired,
+    onDeploymentReviewed: PropTypes.func.isRequired,
+    submitFunction: PropTypes.func.isRequired,
+    hasGitRemote: PropTypes.bool.isRequired,
+    hasImageRegistry: PropTypes.bool.isRequired
+  };
 }
