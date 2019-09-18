@@ -166,10 +166,9 @@ class MatchingClass extends React.Component {
 
   submit(){
     if(this.state.isSubmitting || this.props.hasKubeError) return;
-    this.setState((s) => ({...s, isSubmitting: true}));
-    const checkedDeps = this.state.deployments;
+    const deps = this.state.deployments.filter(d => d.ms);
 
-    let formatted = checkedDeps.map((deployment) => {
+    let formatted = deps.map((deployment) => {
       const {gitRemoteName, gitRepoName} = deployment.ms;
       const {imgRemoteName, imgRepoName} = deployment.ms;
       const {framework} = deployment.ms;
@@ -182,8 +181,10 @@ class MatchingClass extends React.Component {
     });
 
     const payload = { data: DataUtils.objKeysToSnake(formatted) };
-    Backend.postJson('/microservices/', payload, (_) => {
-      this.setState((s) => ({...s, isSubmitting: false, areAllSubmitted: true}));
+    this.setState((s) => ({...s, isSubmitting: true}));
+
+    Backend.raisingPost(`/microservices`, payload, () => {
+      this.setState((s) => ({...s, isSubmitting: false}));
     });
   }
 }
