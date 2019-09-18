@@ -29,6 +29,7 @@ class WorkspaceShowClass extends React.Component{
   componentDidMount() {
     this.setState((s) => ({...s, isFetching: true}));
     this.fetchDeployments();
+    this.fetchMatchings();
   }
 
   fetchDeployments(){
@@ -43,6 +44,13 @@ class WorkspaceShowClass extends React.Component{
           isFetching: false
         }));
       }, this.props.kubeErrorCallback);
+    });
+  }
+
+  fetchMatchings(){
+    Backend.raisingFetch(`/microservices`, resp => {
+      const microservices = DataUtils.objKeysToCamel(resp).data;
+      this.setState(s => ({...s, microservices}));
     });
   }
 

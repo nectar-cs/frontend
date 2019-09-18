@@ -30,14 +30,27 @@ export default class DeploymentCard extends React.Component {
 
   renderHeader(){
     const dep = this.props.deployment;
-    let frameworkImg = MiscUtils.frameworkImage('docker');
+    const ms  = this.props.microservice;
+    let frameworkName = ms ? ms.framework : 'docker';
+    let frameworkImg = MiscUtils.frameworkImage(frameworkName);
+    let git = this.hasGit() ? `${ms.gitRemoteName}/${ms.gitRepoName}` : null;
+    const subtitle = git || "Not connected to Git";
+
     return(
       <div className={s.header}>
         <img className={s.headerImage} src={frameworkImg} alt='Language'/>
         <a href={this.detailPath()}><p className={s.headerTitle}>{dep.name}</p></a>
-        <p className={s.headerSubtitle}>Not connected to Git</p>
+        <p className={s.headerSubtitle}>{subtitle}</p>
       </div>
     )
+  }
+
+  hasMs(){
+    return !!this.props.microservice;
+  }
+
+  hasGit(){
+    return this.hasMs() && this.props.microservice.gitRemoteName;
   }
 
   renderContentRows(){
@@ -113,6 +126,11 @@ export default class DeploymentCard extends React.Component {
   static propTypes = {
     openModal: PropTypes.func.isRequired,
     refreshCallback: PropTypes.func.isRequired,
+    microservice: PropTypes.shape({
+      framework: PropTypes.string.isRequired,
+      gitRemoteName: PropTypes.string,
+      gitRepoName: PropTypes.string,
+    }),
     ...FULL_DEPLOYMENT
   };
 }
