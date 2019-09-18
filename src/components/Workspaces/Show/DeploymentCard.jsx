@@ -33,7 +33,7 @@ export default class DeploymentCard extends React.Component {
     const ms  = this.props.microservice;
     let frameworkName = ms ? ms.framework : 'docker';
     let frameworkImg = MiscUtils.frameworkImage(frameworkName);
-    let git = this.hasGit() ? `${ms.gitRemoteName}/${ms.gitRepoName}` : null;
+    let git = this.hasGit() ? `${ms.gitRemoteName} / ${ms.gitRepoName}` : null;
     const subtitle = git || "Not connected to Git";
 
     return(
