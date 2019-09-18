@@ -15,6 +15,7 @@ export default class MatchForm extends React.Component {
         <Fragment>
           { this.renderGitRemoteInput() }
           { this.renderRepoInput() }
+          { this.renderImgRegistrySelect() }
           { this.renderFrameworkSelect() }
         </Fragment>
       </ThemeProvider>
@@ -37,6 +38,27 @@ export default class MatchForm extends React.Component {
       'Git Repository',
       'gitRepoName',
       H.gitRepoOptions(gitRemoteList, gitRemoteName)
+    );
+  }
+
+  renderImgRegistrySelect(){
+    if(!this.props.hasImageRegistry) return null;
+
+    return this.makeSelect(
+      'Image Registry',
+      'imgRegistryName',
+      H.gitRemoteOptions(this.props.imgRegistryList)
+    );
+  }
+
+  renderImgRepoSelect(){
+    if(!this.props.hasImageRegistry) return null;
+    const { imgRegistryList, imgRegistryName } = this.props;
+
+    return this.makeSelect(
+      'Image Repo',
+      'imgRepoName',
+      H.gitRepoOptions(img, gitRemoteName)
     );
   }
 

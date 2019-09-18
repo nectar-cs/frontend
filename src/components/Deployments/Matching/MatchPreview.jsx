@@ -50,7 +50,6 @@ export default class MatchPreview extends React.Component {
     }
   }
 
-
   render(){
     return(
       <Fragment>
@@ -204,6 +203,15 @@ export default class MatchPreview extends React.Component {
   fetchGitRepos(){
     this.setState(s => ({...s, isGitFetching: true}));
     Backend.raisingFetch('/git_remotes/loaded', (payload) => {
+      const data = DataUtils.objKeysToCamel(payload)['data'];
+      this.updateBundle(this.setGitRemotesList(data));
+      this.setState(s => ({...s, isGitFetching: false}));
+    });
+  }
+
+  fetchImageRepos(){
+    this.setState(s => ({...s, isDockerFetching: true}));
+    Backend.raisingFetch('/image_registries/loaded', (payload) => {
       const data = DataUtils.objKeysToCamel(payload)['data'];
       this.updateBundle(this.setGitRemotesList(data));
       this.setState(s => ({...s, isGitFetching: false}));
