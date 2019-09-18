@@ -4,14 +4,13 @@ const StringSimilarity = require('string-similarity');
 
 export class FormHelper {
 
-  static remotesOptions(inst){
-    const names = inst.state.gitRemoteList.map(r => r.identifier);
+  static gitRemoteOptions(gitRemoteList){
+    const names = gitRemoteList.map(r => r.identifier);
     return MiscUtils.arrayOptions(names);
   }
 
-  static selectedRemote(inst, remoteName){
-    const list = Array.isArray(inst) ? inst : inst.state.gitRemoteList;
-    return list.find(
+  static selectedRemote(gitRemoteList, remoteName){
+    return gitRemoteList.find(
       remote => remote.identifier === remoteName
     )
   }
@@ -33,11 +32,9 @@ export class FormHelper {
   }
 
   static registryOptions(inst){
-
   }
 
   static imageRepoOptions(){
-
   }
 
   static frameworkOptions(){

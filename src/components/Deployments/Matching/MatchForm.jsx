@@ -9,43 +9,6 @@ import {theme} from "../../../assets/constants";
 
 export default class MatchForm extends React.Component {
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      gitRemoteList: [],
-      imgRegistryList: [],
-      deploymentName: null,
-    };
-
-    this.deploymentName = null;
-  }
-
-  componentDidMount(){
-    this.deploymentName = this.props.deployment.name;
-
-    if(this.props.hasGitRemote)
-      this.fetchGitRepos();
-
-    // if(this.props.hasImageRegistry)
-    //   this.fetchImageRegistries();
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.deployment){
-      this.deploymentName = nextProps.deployment.name;
-      if(this.props.deployment.name !== this.deploymentName){
-        if(this.props.hasGitRemote){
-          const repoName = H.guessRepo(
-            this.repoNames(),
-            this.deploymentName
-          );
-          this.props.notifyChanged({gitRepoName: repoName});
-        }
-      }
-    }
-  }
-
   render(){
     return(
       <ThemeProvider theme={theme}>
@@ -63,16 +26,17 @@ export default class MatchForm extends React.Component {
     return this.makeSelect(
       'Git Remote',
       'gitRemoteName',
-      H.remotesOptions(this)
+      H.gitRemoteOptions(this.props.gitRemoteList)
     );
   }
 
   renderRepoInput(){
     if(!this.props.hasGitRemote) return null;
+    const { gitRemoteList, gitRemoteName } = this.props;
     return this.makeSelect(
       'Git Repository',
       'gitRepoName',
-      H.gitRepoOptions(this, this.props.gitRemoteName)
+      H.gitRepoOptions(gitRemoteList, gitRemoteName)
     );
   }
 
@@ -84,29 +48,9 @@ export default class MatchForm extends React.Component {
     );
   }
 
-  fetchGitRepos(){
-    this.props.setIsGitFetching(true);
-    Backend.raisingFetch('/git_remotes/loaded', (payload) => {
-      const gitRemoteList = DataUtils.objKeysToCamel(payload)['data'];
-      const remote = gitRemoteList[0];
-      const remoteName = remote.identifier;
-      const repoNames = H.gitRepoNames(gitRemoteList, remoteName);
-      const repoName = H.guessRepo(repoNames, this.props.deployment.name);
-      const repo = H.selectedRepo(gitRemoteList, remoteName, repoName);
-
-      this.setState((s) => ({...s, gitRemoteList}));
-      this.props.notifyChanged({gitRemoteName: remoteName});
-      this.props.notifyChanged({gitRepoName: repoName});
-      this.props.notifyChanged({framework: repo.framework});
-      this.props.setIsGitFetching(false);
-    });
-  }
-
-  fetchImageRegistries(){}
-
   makeSelect(title, field, choices){
     const callback = (e) => {
-      this.props.notifyChanged({[field]: e.target.value});
+      this.props.notifyChanged(field, e.target.value);
     };
 
     return(
@@ -122,15 +66,13 @@ export default class MatchForm extends React.Component {
     )
   }
 
-  repoNames() { return H.gitRepoNames(this, this.props.gitRemoteName); }
-
   static propTypes = {
+    gitRemoteList: PropTypes.array,
+    imgRegistryList: PropTypes.array,
     gitRemoteName: PropTypes.string,
     gitRepoName: PropTypes.string,
     imgRegistryName: PropTypes.string,
     imgRepoName: PropTypes.string,
-    setIsGitFetching: PropTypes.func.isRequired,
-    setIsDockerFetching: PropTypes.func.isRequired,
     notifyChanged: PropTypes.func.isRequired,
     hasGitRemote: PropTypes.bool.isRequired,
     hasImageRegistry: PropTypes.bool.isRequired,

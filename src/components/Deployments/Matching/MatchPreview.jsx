@@ -9,9 +9,13 @@ import CenterAnnouncement from '../../../widgets/CenterAnnouncement/CenterAnnoun
 import defaults from './defaults'
 import { ROUTES } from '../../../containers/RoutesConsts';
 import TopLoader from "../../../widgets/TopLoader/TopLoader";
+import DataUtils from "../../../utils/DataUtils";
+import Backend from "../../../utils/Backend";
+import {FormHelper as H} from "./FormHelper";
 
 export default class MatchPreview extends React.Component {
   constructor(props){
+
     super(props);
     this.state = {
       bundle: {
@@ -19,14 +23,33 @@ export default class MatchPreview extends React.Component {
         gitRemoteName: '',
         gitRepoName: '',
         imgRegistryName: '',
-        imgRepoName: ''
+        imgRepoName: '',
+        gitRemoteList: [],
+        imgRegistryList: []
       },
       isGitFetching: false,
-      isDockerFetching: false
+      isDockerFetching: false,
     };
 
+    this.deploymentName = props.deployment.name;
     this.onFormDataChanged = this.onFormDataChanged.bind(this);
   }
+
+  componentDidMount() {
+    if (this.props.hasGitRemote)
+      this.fetchGitRepos();
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.deployment){
+      this.deploymentName = nextProps.deployment.name;
+      if(this.props.deployment.name !== this.deploymentName){
+        if(this.props.hasGitRemote)
+          this.onNewDeployment();
+      }
+    }
+  }
+
 
   render(){
     return(
@@ -73,15 +96,10 @@ export default class MatchPreview extends React.Component {
   }
 
   renderForm(){
-    const gFetch = (b) => this.setState(s => ({...s, isGitFetching: b}));
-    const dFetch = (b) => this.setState(s => ({...s, isDockerFetching: b}));
-
     return(
       <MatchForm
         deployment={this.props.deployment}
         notifyChanged={this.onFormDataChanged}
-        setIsGitFetching={gFetch}
-        setIsDockerFetching={dFetch}
         hasGitRemote={this.props.hasGitRemote}
         hasImageRegistry={this.props.hasImageRegistry}
         {...this.state.bundle}
@@ -96,8 +114,8 @@ export default class MatchPreview extends React.Component {
   }
 
   renderNextButton(){
-    if(this.state.isGitFetching ||  this.state.isGitFetching)
-      return null;
+    if(this.state.isGitFetching) return null;
+    if(this.state.isDockerFetching) return null;
 
     return(
       <button className={s.confirm}  onClick={() => this.onAccepted()}>
@@ -146,9 +164,54 @@ export default class MatchPreview extends React.Component {
     );
   }
 
-  onFormDataChanged(hash){
-    const bundle = {...this.state.bundle, ...hash};
-    this.setState((s) => ({...s, bundle}));
+  onFormDataChanged(key, value){
+    let change = {};
+    if(key === 'gitRemoteName')
+      change = this.setGitRemoteName(value);
+    else if(key === 'gitRepoName')
+      change = this.setGitRepoName(value);
+    else change = { [key]: value };
+
+    this.updateBundle(change);
+  }
+
+  onNewDeployment(){
+    const remotes = this.state.bundle.gitRemoteList;
+    this.updateBundle(this.setGitRemotesList(remotes));
+  }
+
+  setGitRemotesList(gitRemoteList){
+    const remote = gitRemoteList[0];
+    const remoteName = remote.identifier;
+    const downstream = this.setGitRemoteName(remoteName, {gitRemoteList});
+    return { gitRemoteList, ...downstream };
+  }
+
+  setGitRemoteName(gitRemoteName, upChanges){
+    const { gitRemoteList } = upChanges || this.state.bundle;
+    const repoNames = H.gitRepoNames(gitRemoteList, gitRemoteName);
+    const gitRepoName = H.guessRepo(repoNames, this.deploymentName);
+    const changes = {...upChanges, gitRemoteName};
+    return {gitRemoteName, ...this.setGitRepoName(gitRepoName, changes)};
+  }
+
+  setGitRepoName(gitRepoName, upChanges){
+    const { gitRemoteList, gitRemoteName } = upChanges || this.state.bundle;
+    const repo = H.selectedRepo(gitRemoteList, gitRemoteName, gitRepoName);
+    return { gitRepoName, framework: repo.framework }
+  }
+
+  fetchGitRepos(){
+    this.setState(s => ({...s, isGitFetching: true}));
+    Backend.raisingFetch('/git_remotes/loaded', (payload) => {
+      const data = DataUtils.objKeysToCamel(payload)['data'];
+      this.updateBundle(this.setGitRemotesList(data));
+      this.setState(s => ({...s, isGitFetching: false}));
+    });
+  }
+
+  updateBundle(changes){
+    this.setState(s => ({...s, bundle: {...s.bundle, ...changes}}));
   }
 
   static propTypes = {

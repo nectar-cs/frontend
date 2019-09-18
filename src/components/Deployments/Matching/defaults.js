@@ -1,6 +1,7 @@
 const defaults = {
   previewTitle: "Matching Git and Docker Repos",
-  previewIntro: "This no longer makes sense change me later.",
+  previewIntro: "Associate this deployment with a Git and Docker repo. " +
+    "This makes Mosaic much more useful down the line.",
 };
 
 export { defaults as default };
