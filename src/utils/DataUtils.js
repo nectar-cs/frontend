@@ -57,6 +57,30 @@ export default class DataUtils {
     return newO
   }
 
+  static objKeysToSnake(o) {
+    let newO, origKey, newKey, value;
+    if (o instanceof Array) {
+      return o.map((value) => {
+        if (typeof value === "object") {
+          value = this.objKeysToSnake(value)
+        }
+        return value
+      })
+    } else {
+      newO = {};
+      for (origKey in o) {
+        if (o.hasOwnProperty(origKey)) {
+          value = o[origKey];
+          if (value instanceof Array || (value !== null && value.constructor === Object)) {
+            value = this.objKeysToSnake(value)
+          }
+          newO[this.camelStringToSnake(origKey)] = value
+        }
+      }
+    }
+    return newO
+  }
+
   static snakeStringToCamel(s){
     return s.replace(/([-_][a-z])/ig, ($1) => {
       return $1.toUpperCase()
@@ -65,5 +89,10 @@ export default class DataUtils {
     });
   }
 
+  static camelStringToSnake(s){
+    return s.replace(/(?:^|\.?)([A-Z])/g,
+      function (x,y){return "_" + y.toLowerCase()}).replace(/^_/, ""
+    )
+  }
 
 }

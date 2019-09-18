@@ -72,4 +72,10 @@ export class FormHelper {
     if(type === 'git') output = {...output, framework: repo.framework};
     return output;
   }
+
+  static frameworkImage(inst){
+    const framework = inst.state.bundle.framework;
+    return MiscUtils.frameworkImage( framework || 'docker');
+  }
+
 }

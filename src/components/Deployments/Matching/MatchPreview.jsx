@@ -12,6 +12,9 @@ import TopLoader from "../../../widgets/TopLoader/TopLoader";
 import DataUtils from "../../../utils/DataUtils";
 import Backend from "../../../utils/Backend";
 import {FormHelper as H} from "./FormHelper";
+import {BigBottomButtons, BigButton} from "../../../assets/buttons";
+import {ThemeProvider} from "styled-components";
+import {theme} from "../../../assets/constants";
 
 export default class MatchPreview extends React.Component {
   constructor(props){
@@ -30,6 +33,8 @@ export default class MatchPreview extends React.Component {
 
     this.deploymentName = props.deployment.name;
     this.onFormDataChanged = this.onFormDataChanged.bind(this);
+    this.acceptMatch = this.acceptMatch.bind(this);
+    this.skipMatch = this.skipMatch.bind(this);
   }
 
   componentDidMount() {
@@ -44,19 +49,21 @@ export default class MatchPreview extends React.Component {
     if(nextProps.deployment){
       this.deploymentName = nextProps.deployment.name;
       if(this.props.deployment.name !== this.deploymentName){
-        if(this.props.hasGitRemote)
-          this.onNewDeployment();
+        if(this.props.hasGitRemote) this.onNewDeployment('git');
+        if(this.props.hasImageRegistry) this.onNewDeployment('img');
       }
     }
   }
 
   render(){
     return(
-      <Fragment>
-        { this.renderSubmitted() }
-        { this.renderReviewComplete() }
-        { this.renderMainContent() }
-      </Fragment>
+      <ThemeProvider theme={theme}>
+        <Fragment>
+          { this.renderSubmitted() }
+          { this.renderReviewComplete() }
+          { this.renderMainContent() }
+        </Fragment>
+      </ThemeProvider>
     );
   }
 
@@ -87,7 +94,7 @@ export default class MatchPreview extends React.Component {
   renderHeader(){
     return(
       <LeftHeader
-        graphicName={this.frameworkImage()}
+        graphicName={H.frameworkImage(this)}
         title={this.props.deployment.name}
         subtitle='A connected app'
       />
@@ -117,10 +124,15 @@ export default class MatchPreview extends React.Component {
     if(this.state.isDockerFetching) return null;
 
     return(
-      <button className={s.confirm}  onClick={() => this.onAccepted()}>
-        Confirm & Review Next
-      </button>
-    )
+      <BigBottomButtons>
+        <BigButton
+          emotion='idle'
+          onClick={this.skipMatch}>
+          Skip this one
+        </BigButton>
+        <BigButton onClick={this.acceptMatch}>Confirm & Next</BigButton>
+      </BigBottomButtons>
+    );
   }
 
   renderReviewComplete(){
@@ -135,15 +147,6 @@ export default class MatchPreview extends React.Component {
     )
   }
 
-  frameworkImage(){
-    const framework = this.state.bundle.framework;
-    return MiscUtils.frameworkImage( framework || 'docker');
-  }
-
-  bundle(){
-    return this.state.bundle;
-  }
-
   renderSubmitted(){
     if(!this.props.isSubmitted) return null;
     return(
@@ -156,11 +159,15 @@ export default class MatchPreview extends React.Component {
     )
   }
 
-  onAccepted(){
+  acceptMatch(){
     this.props.onDeploymentReviewed(
-      this.props.deployment.name,
-      this.bundle()
+      this.deploymentName,
+      this.state.bundle
     );
+  }
+
+  skipMatch(){
+    this.props.onDeploymentReviewed(this.deploymentName, null);
   }
 
   onFormDataChanged(key, value){
@@ -178,27 +185,26 @@ export default class MatchPreview extends React.Component {
     this.updateBundle(change);
   }
 
-  onNewDeployment(){
-    const remotes = this.state.bundle.gitRemoteList;
-    this.updateBundle(H.setRemotesList('git', this, remotes));
-    // this.updateBundle(H.setRemotesList('img', this, remotes));
+  onNewDeployment(type){
+    const remotes = this.state.bundle[`${type}RemoteList`];
+    this.updateBundle(H.setRemotesList(type, this, remotes));
   }
 
   fetchGitRepos(){
-    // this.setState(s => ({...s, isGitFetching: true}));
+    this.setState(s => ({...s, isGitFetching: true}));
     Backend.raisingFetch('/git_remotes/loaded', (payload) => {
       const data = DataUtils.objKeysToCamel(payload)['data'];
       this.updateBundle(H.setRemotesList('git', this, data));
-      // this.setState(s => ({...s, isGitFetching: false}));
+      this.setState(s => ({...s, isGitFetching: false}));
     });
   }
 
   fetchImageRepos(){
-    // this.setState(s => ({...s, isDockerFetching: true}));
+    this.setState(s => ({...s, isDockerFetching: true}));
     Backend.raisingFetch('/image_registries/loaded', (payload) => {
       const data = DataUtils.objKeysToCamel(payload)['data'];
       this.updateBundle(H.setRemotesList('img', this, data));
-      // this.setState(s => ({...s, isDockerFetching: false}));
+      this.setState(s => ({...s, isDockerFetching: false}));
     });
   }
 

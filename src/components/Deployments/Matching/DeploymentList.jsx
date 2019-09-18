@@ -22,16 +22,21 @@ function DeploymentItem(props) {
     <p key={ns} className={s.nsTag}>{ns}</p>
   ));
 
-  const icon = (done) => (
-    done ? <Icon good className={`material-icons ${s.check}`}>check</Icon> : null
-  );
+  const icon = (name) => {
+    if(props.isReviewed){
+      const bun = props.ms;
+      const material = bun && bun[name] ? 'check' : 'close';
+      const emotion = bun && bun[name] ? 'success' : 'idle';
+      return <Icon className='material-icons' emotion={emotion}>{material}</Icon>
+    } else return null;
+  };
 
   return(
     <tr className={isSelected ? s.focusedRow : s.row}>
       <td><p>{props.name}</p></td>
       <td>{namespaces}</td>
-      <td>{icon(props.gitDone)}</td>
-      <td>{icon(props.dockerDone)}</td>
+      <td>{icon('gitRepoName')}</td>
+      <td>{icon('imgRepoName')}</td>
     </tr>
   )
 }
@@ -72,7 +77,6 @@ export default class DeploymentList extends React.Component {
           {...deployment}
           isSelected={i === this.props.selectedIndex}
           notifyDeploymentSelected={this.props.notifyDeploymentSelected}
-          notifyCheckChanged={this.props.notifyCheckChanged}
         />
       )
     });

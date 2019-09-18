@@ -1,7 +1,5 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import Backend from "../../../utils/Backend";
-import DataUtils from "../../../utils/DataUtils";
 import {FormHelper as H} from "./FormHelper";
 import {InputLine, LineInput, LineLabel} from "../../../assets/input-combos";
 import {ThemeProvider} from "styled-components";
@@ -90,18 +88,21 @@ export default class MatchForm extends React.Component {
   }
 
   static propTypes = {
-    gitRemoteList: PropTypes.array,
-    imgRemoteList: PropTypes.array,
-    gitRemoteName: PropTypes.string,
-    gitRepoName: PropTypes.string,
-    imgRemoteName: PropTypes.string,
-    imgRepoName: PropTypes.string,
-    notifyChanged: PropTypes.func.isRequired,
     hasGitRemote: PropTypes.bool.isRequired,
     hasImageRegistry: PropTypes.bool.isRequired,
+
+    gitRemoteList: PropTypes.array,
+    imgRemoteList: PropTypes.array,
+
+    gitRemoteName: PropTypes.string,
+    imgRemoteName: PropTypes.string,
+
+    gitRepoName: PropTypes.string,
+    imgRepoName: PropTypes.string,
+
+    notifyChanged: PropTypes.func.isRequired,
     deployment: PropTypes.shape({
       name: PropTypes.string.isRequired
     }).isRequired
   };
-
 }

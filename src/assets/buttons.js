@@ -17,3 +17,19 @@ export const FixedSmallButton = styled(SmallButton)`
   margin: 0;
   width: 80px;
 `;
+
+export const BigBottomButtons = styled.div`
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 22px;
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+export const BigButton = styled(SmallButton)`
+  width: 40%;
+  padding: 0;
+  height: 45px;
+  font-weight: 900;
+`;

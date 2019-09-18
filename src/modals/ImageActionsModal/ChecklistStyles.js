@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import {ModSpinner} from "../../assets/loading-spinner";
 
+function colored(name, p){
+  if(name){
+    const color = p.theme.ali(name);
+    return p.theme.colors[color];
+  } else return p.theme.colors.primaryColor;
+}
+
 export const List = styled.ul`
   margin-top: 30px;
   margin-left: 30px;
@@ -24,7 +31,7 @@ export const Detail = styled.p`
 export const Icon = styled.div`
   margin-left: 24px;
   font-size: 21px;
-  color: ${p => p.good ? p.theme.colors.success : p.theme.colors.warn }
+  color: ${p => colored(p.emotion, p)};
 `;
 
 export const Spinner = styled(ModSpinner)`

@@ -13,6 +13,7 @@ import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import {theme} from "../../../assets/constants";
 import {ThemeProvider} from "styled-components";
 import {ROUTES} from "../../../containers/RoutesConsts";
+import DataUtils from "../../../utils/DataUtils";
 
 class MatchingClass extends React.Component {
   constructor(props){
@@ -134,9 +135,7 @@ class MatchingClass extends React.Component {
 
   isSubmitReady(){
     if(this.state.selectedIndex != null && this.state.deployments != null){
-      const checkedDeps = this.state.deployments.filter((d) => d.isChecked);
-      const reviewedMap = checkedDeps.map((d) => d.isReviewed);
-      return !reviewedMap.includes(false);
+      return this.state.selectedIndex === this.state.deployments.length;
     } else return false;
   }
 
@@ -170,15 +169,19 @@ class MatchingClass extends React.Component {
     this.setState((s) => ({...s, isSubmitting: true}));
     const checkedDeps = this.state.deployments;
 
-    let formatted = checkedDeps.map((deployment) => ({
-      deployment_name: deployment.name,
-      repo_name: deployment.ms.repoName,
-      ms_name: deployment.ms.msName,
-      ms_desc: deployment.ms.msDescription,
-      ms_framework: deployment.ms.msFramework
-    }));
+    let formatted = checkedDeps.map((deployment) => {
+      const {gitRemoteName, gitRepoName} = deployment.ms;
+      const {imgRemoteName, imgRepoName} = deployment.ms;
+      const {framework} = deployment.ms;
 
-    const payload = { data: formatted };
+      return {
+        deploymentName: deployment.name, framework,
+        gitRemoteName, gitRepoName,
+        imgRemoteName, imgRepoName,
+      }
+    });
+
+    const payload = { data: DataUtils.objKeysToSnake(formatted) };
     Backend.postJson('/microservices/', payload, (_) => {
       this.setState((s) => ({...s, isSubmitting: false, areAllSubmitted: true}));
     });
