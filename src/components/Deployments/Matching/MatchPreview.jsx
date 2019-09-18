@@ -36,8 +36,8 @@ export default class MatchPreview extends React.Component {
     if (this.props.hasGitRemote)
       this.fetchGitRepos();
 
-    // if (this.props.hasImageRegistry)
-    //   this.fetchImageRepos();
+    if (this.props.hasImageRegistry)
+      this.fetchImageRepos();
   }
 
   componentWillReceiveProps(nextProps){
@@ -194,11 +194,11 @@ export default class MatchPreview extends React.Component {
   }
 
   fetchImageRepos(){
-    this.setState(s => ({...s, isDockerFetching: true}));
+    // this.setState(s => ({...s, isDockerFetching: true}));
     Backend.raisingFetch('/image_registries/loaded', (payload) => {
       const data = DataUtils.objKeysToCamel(payload)['data'];
-      this.updateBundle(H.setRemotesList(this, data));
-      this.setState(s => ({...s, isDockerFetching: false}));
+      this.updateBundle(H.setRemotesList('img', this, data));
+      // this.setState(s => ({...s, isDockerFetching: false}));
     });
   }
 
