@@ -169,7 +169,7 @@ export default class MatchPreview extends React.Component {
       change = H.setRemoteName('git', this, value);
     else if(key === 'gitRepoName')
       change = H.setRepoName('git', this, value);
-    if(key === 'imgRemoteName')
+    else if(key === 'imgRemoteName')
       change = H.setRemoteName('img', this, value);
     else if(key === 'imgRepoName')
       change = H.setRepoName('img', this, value);
@@ -180,7 +180,8 @@ export default class MatchPreview extends React.Component {
 
   onNewDeployment(){
     const remotes = this.state.bundle.gitRemoteList;
-    this.updateBundle(H.setRemotesList(this, remotes));
+    this.updateBundle(H.setRemotesList('git', this, remotes));
+    // this.updateBundle(H.setRemotesList('img', this, remotes));
   }
 
   fetchGitRepos(){

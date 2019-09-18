@@ -14,7 +14,7 @@ export default class MatchForm extends React.Component {
       <ThemeProvider theme={theme}>
         <Fragment>
           { this.renderGitRemoteInput() }
-          { this.renderGitRepoInput() }
+          { this.renderGitRepoSelect() }
           { this.renderImgRemoteSelect() }
           { this.renderImgRepoSelect() }
           { this.renderFrameworkSelect() }
@@ -32,7 +32,7 @@ export default class MatchForm extends React.Component {
     );
   }
 
-  renderGitRepoInput(){
+  renderGitRepoSelect(){
     if(!this.props.hasGitRemote) return null;
     const { gitRemoteList, gitRemoteName } = this.props;
     return this.makeSelect(
