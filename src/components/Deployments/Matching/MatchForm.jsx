@@ -14,8 +14,9 @@ export default class MatchForm extends React.Component {
       <ThemeProvider theme={theme}>
         <Fragment>
           { this.renderGitRemoteInput() }
-          { this.renderRepoInput() }
-          { this.renderImgRegistrySelect() }
+          { this.renderGitRepoInput() }
+          { this.renderImgRemoteSelect() }
+          { this.renderImgRepoSelect() }
           { this.renderFrameworkSelect() }
         </Fragment>
       </ThemeProvider>
@@ -27,38 +28,38 @@ export default class MatchForm extends React.Component {
     return this.makeSelect(
       'Git Remote',
       'gitRemoteName',
-      H.gitRemoteOptions(this.props.gitRemoteList)
+      H.remoteOptions(this.props.gitRemoteList)
     );
   }
 
-  renderRepoInput(){
+  renderGitRepoInput(){
     if(!this.props.hasGitRemote) return null;
     const { gitRemoteList, gitRemoteName } = this.props;
     return this.makeSelect(
       'Git Repository',
       'gitRepoName',
-      H.gitRepoOptions(gitRemoteList, gitRemoteName)
+      H.repoOptions(gitRemoteList, gitRemoteName)
     );
   }
 
-  renderImgRegistrySelect(){
+  renderImgRemoteSelect(){
     if(!this.props.hasImageRegistry) return null;
 
     return this.makeSelect(
       'Image Registry',
-      'imgRegistryName',
-      H.gitRemoteOptions(this.props.imgRegistryList)
+      'imgRemoteName',
+      H.remoteOptions(this.props.imgRemoteList)
     );
   }
 
   renderImgRepoSelect(){
     if(!this.props.hasImageRegistry) return null;
-    const { imgRegistryList, imgRegistryName } = this.props;
+    const { imgRemoteList, imgRemoteName } = this.props;
 
     return this.makeSelect(
       'Image Repo',
       'imgRepoName',
-      H.gitRepoOptions(img, gitRemoteName)
+      H.repoOptions(imgRemoteList, imgRemoteName)
     );
   }
 
@@ -90,10 +91,10 @@ export default class MatchForm extends React.Component {
 
   static propTypes = {
     gitRemoteList: PropTypes.array,
-    imgRegistryList: PropTypes.array,
+    imgRemoteList: PropTypes.array,
     gitRemoteName: PropTypes.string,
     gitRepoName: PropTypes.string,
-    imgRegistryName: PropTypes.string,
+    imgRemoteName: PropTypes.string,
     imgRepoName: PropTypes.string,
     notifyChanged: PropTypes.func.isRequired,
     hasGitRemote: PropTypes.bool.isRequired,

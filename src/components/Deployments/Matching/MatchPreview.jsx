@@ -19,13 +19,10 @@ export default class MatchPreview extends React.Component {
     super(props);
     this.state = {
       bundle: {
-        framework: '',
-        gitRemoteName: '',
-        gitRepoName: '',
-        imgRegistryName: '',
-        imgRepoName: '',
-        gitRemoteList: [],
-        imgRegistryList: []
+        gitRemoteName: '', imgRemoteName: '',
+        gitRepoName: '', imgRepoName: '',
+        gitRemoteList: [], imgRemoteList: [],
+        framework: ''
       },
       isGitFetching: false,
       isDockerFetching: false,
@@ -38,6 +35,9 @@ export default class MatchPreview extends React.Component {
   componentDidMount() {
     if (this.props.hasGitRemote)
       this.fetchGitRepos();
+
+    // if (this.props.hasImageRegistry)
+    //   this.fetchImageRepos();
   }
 
   componentWillReceiveProps(nextProps){
@@ -166,9 +166,13 @@ export default class MatchPreview extends React.Component {
   onFormDataChanged(key, value){
     let change = {};
     if(key === 'gitRemoteName')
-      change = this.setGitRemoteName(value);
+      change = H.setRemoteName('git', this, value);
     else if(key === 'gitRepoName')
-      change = this.setGitRepoName(value);
+      change = H.setRepoName('git', this, value);
+    if(key === 'imgRemoteName')
+      change = H.setRemoteName('img', this, value);
+    else if(key === 'imgRepoName')
+      change = H.setRepoName('img', this, value);
     else change = { [key]: value };
 
     this.updateBundle(change);
@@ -176,36 +180,15 @@ export default class MatchPreview extends React.Component {
 
   onNewDeployment(){
     const remotes = this.state.bundle.gitRemoteList;
-    this.updateBundle(this.setGitRemotesList(remotes));
-  }
-
-  setGitRemotesList(gitRemoteList){
-    const remote = gitRemoteList[0];
-    const remoteName = remote.identifier;
-    const downstream = this.setGitRemoteName(remoteName, {gitRemoteList});
-    return { gitRemoteList, ...downstream };
-  }
-
-  setGitRemoteName(gitRemoteName, upChanges){
-    const { gitRemoteList } = upChanges || this.state.bundle;
-    const repoNames = H.gitRepoNames(gitRemoteList, gitRemoteName);
-    const gitRepoName = H.guessRepo(repoNames, this.deploymentName);
-    const changes = {...upChanges, gitRemoteName};
-    return {gitRemoteName, ...this.setGitRepoName(gitRepoName, changes)};
-  }
-
-  setGitRepoName(gitRepoName, upChanges){
-    const { gitRemoteList, gitRemoteName } = upChanges || this.state.bundle;
-    const repo = H.selectedRepo(gitRemoteList, gitRemoteName, gitRepoName);
-    return { gitRepoName, framework: repo.framework }
+    this.updateBundle(H.setRemotesList(this, remotes));
   }
 
   fetchGitRepos(){
-    this.setState(s => ({...s, isGitFetching: true}));
+    // this.setState(s => ({...s, isGitFetching: true}));
     Backend.raisingFetch('/git_remotes/loaded', (payload) => {
       const data = DataUtils.objKeysToCamel(payload)['data'];
-      this.updateBundle(this.setGitRemotesList(data));
-      this.setState(s => ({...s, isGitFetching: false}));
+      this.updateBundle(H.setRemotesList('git', this, data));
+      // this.setState(s => ({...s, isGitFetching: false}));
     });
   }
 
@@ -213,8 +196,8 @@ export default class MatchPreview extends React.Component {
     this.setState(s => ({...s, isDockerFetching: true}));
     Backend.raisingFetch('/image_registries/loaded', (payload) => {
       const data = DataUtils.objKeysToCamel(payload)['data'];
-      this.updateBundle(this.setGitRemotesList(data));
-      this.setState(s => ({...s, isGitFetching: false}));
+      this.updateBundle(H.setRemotesList(this, data));
+      this.setState(s => ({...s, isDockerFetching: false}));
     });
   }
 
