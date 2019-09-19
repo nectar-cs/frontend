@@ -1,4 +1,5 @@
 import MiscUtils from "../../../utils/MiscUtils";
+import {stacks} from "../../../misc/stacks";
 
 const StringSimilarity = require('string-similarity');
 
@@ -31,14 +32,8 @@ export class FormHelper {
     return selRemote.contents.find(remote => remote.name === repoName);
   }
 
-  static registryOptions(inst){ }
-
-  static imageRepoOptions(){  }
-
   static frameworkOptions(){
-    return MiscUtils.arrayOptions(
-      ["javascript", "go", "ruby", "c"]
-    );
+    return MiscUtils.arrayOptions(stacks.sort());
   }
 
   static guessRepo(repoNames, depName){
@@ -76,6 +71,11 @@ export class FormHelper {
   static frameworkImage(inst){
     const framework = inst.state.bundle.framework;
     return MiscUtils.frameworkImage( framework || 'docker');
+  }
+
+  static frameworkImage2(inst){
+    const framework = inst.state.bundle.framework;
+    return MiscUtils.frameworkImage2( framework || 'docker');
   }
 
 }
