@@ -12,6 +12,7 @@ export const stacks = [
   'java',
   'angularjs',
   'html5',
+  'html',
   'react',
   'electron',
   'nodejs',

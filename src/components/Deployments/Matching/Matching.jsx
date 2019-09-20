@@ -184,7 +184,10 @@ class MatchingClass extends React.Component {
     this.setState((s) => ({...s, isSubmitting: true}));
 
     Backend.raisingPost(`/microservices`, payload, () => {
-      this.setState((s) => ({...s, isSubmitting: false}));
+      this.setState((s) => ({...s,
+        isSubmitting: false,
+        areAllSubmitted: true
+      }));
     });
   }
 }

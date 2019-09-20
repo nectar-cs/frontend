@@ -7,7 +7,7 @@ import {Switch} from "react-router";
 
 export default class Root extends Component {
   render() {
-    const home = R.workspaces.index;
+    const home = R.deployments.detect;
 
     return (
       <Provider store={this.props.store}>

@@ -137,6 +137,7 @@ export default class MatchPreview extends React.Component {
 
   renderReviewComplete(){
     if(!this.props.isReviewComplete) return null;
+    if(this.props.isSubmitted) return null;
 
     return(
       <CenterAnnouncement
@@ -151,8 +152,8 @@ export default class MatchPreview extends React.Component {
     if(!this.props.isSubmitted) return null;
     return(
       <CenterAnnouncement
-        contentType={'nav-link'}
-        routeTo={ROUTES.workspaces.index.path}
+        contentType='nav-link'
+        action='/workspaces'
         iconName='done_all'
         text="All done. Click to continue."
       />
