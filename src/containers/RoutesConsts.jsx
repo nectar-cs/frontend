@@ -4,6 +4,7 @@ import LoginAndRegister from "../components/Auth/LoginAndRegister";
 import WorkspaceIndex from "../components/Workspaces/Index/WorkspaceIndex";
 import WorkspaceEdit from "../components/Workspaces/Edit/WorkspaceEdit";
 import WorkspaceShow from "../components/Workspaces/Show/WorkspaceShow";
+import DeploymentShow from "../components/Deployments/Show/DeploymentShow";
 
 export const ROUTES = {
   clusters: {
@@ -12,7 +13,7 @@ export const ROUTES = {
 
   deployments: {
     detect: { path: '/deployments/detect', comp: Matching },
-    show: { path: '/deployments/:ns/:id' }
+    show: { path: '/deployments/:ns/:id', comp: DeploymentShow }
   },
 
   workspaces: {
