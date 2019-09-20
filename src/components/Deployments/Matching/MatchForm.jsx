@@ -2,22 +2,18 @@ import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {FormHelper as H} from "./FormHelper";
 import {InputLine, LineInput, LineLabel} from "../../../assets/input-combos";
-import {ThemeProvider} from "styled-components";
-import {theme} from "../../../assets/constants";
 
 export default class MatchForm extends React.Component {
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <Fragment>
-          { this.renderGitRemoteInput() }
-          { this.renderGitRepoSelect() }
-          { this.renderImgRemoteSelect() }
-          { this.renderImgRepoSelect() }
-          { this.renderFrameworkSelect() }
-        </Fragment>
-      </ThemeProvider>
+      <Fragment>
+        { this.renderGitRemoteInput() }
+        { this.renderGitRepoSelect() }
+        { this.renderImgRemoteSelect() }
+        { this.renderImgRepoSelect() }
+        { this.renderFrameworkSelect() }
+      </Fragment>
     )
   }
 

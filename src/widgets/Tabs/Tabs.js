@@ -1,8 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {Separator, Tab, TabsLayout} from "./TabStyles";
-import {ThemeProvider} from "styled-components";
-import {theme} from "../../assets/constants";
 
 export default class Tabs extends React.Component {
 
@@ -15,15 +13,13 @@ export default class Tabs extends React.Component {
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <Fragment>
-          <TabsLayout>
-            { this.props.tabs.map((t, i) => this.renderTab(t, i)) }
-          </TabsLayout>
-          <Separator/>
-          { this.props.children[this.state.selectedInd] }
-        </Fragment>
-      </ThemeProvider>
+      <Fragment>
+        <TabsLayout>
+          { this.props.tabs.map((t, i) => this.renderTab(t, i)) }
+        </TabsLayout>
+        <Separator/>
+        { this.props.children[this.state.selectedInd] }
+      </Fragment>
     )
   }
 

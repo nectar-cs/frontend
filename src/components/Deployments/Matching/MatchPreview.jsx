@@ -1,20 +1,15 @@
 import React, {Fragment} from 'react';
 import LeftHeader from '../../../widgets/LeftHeader/LeftHeader';
 import PropTypes from 'prop-types'
-import MiscUtils from '../../../utils/MiscUtils';
 import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';
 import MatchForm from './MatchForm';
-import s from './MatchPreview.sass'
 import CenterAnnouncement from '../../../widgets/CenterAnnouncement/CenterAnnouncement';
 import defaults from './defaults'
-import { ROUTES } from '../../../containers/RoutesConsts';
 import TopLoader from "../../../widgets/TopLoader/TopLoader";
 import DataUtils from "../../../utils/DataUtils";
 import Backend from "../../../utils/Backend";
 import {FormHelper as H} from "./FormHelper";
 import {BigBottomButtons, BigButton} from "../../../assets/buttons";
-import {ThemeProvider} from "styled-components";
-import {theme} from "../../../assets/constants";
 
 export default class MatchPreview extends React.Component {
   constructor(props){
@@ -57,13 +52,11 @@ export default class MatchPreview extends React.Component {
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <Fragment>
-          { this.renderSubmitted() }
-          { this.renderReviewComplete() }
-          { this.renderMainContent() }
-        </Fragment>
-      </ThemeProvider>
+      <Fragment>
+        { this.renderSubmitted() }
+        { this.renderReviewComplete() }
+        { this.renderMainContent() }
+      </Fragment>
     );
   }
 

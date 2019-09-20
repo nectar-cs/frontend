@@ -15,6 +15,12 @@ export const theme = {
     fail: "darkred",
     warn: "tomato"
   },
+
+  dims: {
+    topBarHeight: "0px",
+    sideBarWidth: "220px"
+  },
+
   ali: (name) => {
     if(name === 'success') return 'success';
     if(name === 'connected') return "success";

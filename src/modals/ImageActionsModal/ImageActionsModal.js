@@ -6,8 +6,6 @@ import MiscUtils from "../../utils/MiscUtils";
 import {FULL_DEPLOYMENT} from "../../types/Deployment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import ImageForm from "./ImageForm";
-import {ThemeProvider} from "styled-components";
-import {theme} from "../../assets/constants";
 import Kapi from "../../utils/Kapi";
 import Checklist from "./Checklist";
 import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
@@ -65,18 +63,16 @@ export default class ImageActionsModal extends React.Component {
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <Container>
-          { this.renderHeader() }
-          { this.renderLoader() }
-          { this.renderIntro() }
-          { this.renderChecklist() }
-          { this.renderConclusion() }
-          { this.renderConfigForm() }
-          { this.renderPodList() }
-          { this.renderButton() }
-        </Container>
-      </ThemeProvider>
+      <Container>
+        { this.renderHeader() }
+        { this.renderLoader() }
+        { this.renderIntro() }
+        { this.renderChecklist() }
+        { this.renderConclusion() }
+        { this.renderConfigForm() }
+        { this.renderPodList() }
+        { this.renderButton() }
+      </Container>
     )
   }
 

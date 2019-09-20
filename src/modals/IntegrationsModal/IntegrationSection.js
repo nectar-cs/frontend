@@ -2,8 +2,6 @@ import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {S} from './IntegrationSectionStyles'
 import AddNew from "../../widgets/AddNew/AddNew";
-import {ThemeProvider} from "styled-components";
-import {theme} from "../../assets/constants";
 import defaults from "./defaults";
 import MiscUtils from "../../utils/MiscUtils";
 import {CenteredSpinner} from "../../assets/loading-spinner";
@@ -34,16 +32,14 @@ export default class IntegrationSection extends React.PureComponent {
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <Fragment>
-          { this.renderList() }
-          { this.renderAddNewButton() }
-          { this.renderLoading() }
-          { this.renderVendorChoices() }
-          { this.renderFormInputs() }
-          { this.renderFormButtons() }
-        </Fragment>
-      </ThemeProvider>
+      <Fragment>
+        { this.renderList() }
+        { this.renderAddNewButton() }
+        { this.renderLoading() }
+        { this.renderVendorChoices() }
+        { this.renderFormInputs() }
+        { this.renderFormButtons() }
+      </Fragment>
     )
   }
 

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import s from './GithubAuth.sass';
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
-import {ThemeProvider} from "styled-components";
-import {theme} from "../../../assets/constants";
 import {FixedSmallButton} from "../../../assets/buttons";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
@@ -27,13 +25,11 @@ const IntegrationsPromptClass = class extends React.Component {
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <Fragment>
-          { this.renderChecking() }
-          { this.renderPrompting() }
-          { this.renderDone() }
-        </Fragment>
-      </ThemeProvider>
+      <Fragment>
+        { this.renderChecking() }
+        { this.renderPrompting() }
+        { this.renderDone() }
+      </Fragment>
     )
   }
 

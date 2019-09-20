@@ -10,8 +10,6 @@ import Kapi from "../../../utils/Kapi";
 import IntegrationsPrompt from "./IntegrationsPrompt";
 import ErrComponent from "../../../hocs/ErrComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
-import {theme} from "../../../assets/constants";
-import {ThemeProvider} from "styled-components";
 import {ROUTES} from "../../../containers/RoutesConsts";
 import DataUtils from "../../../utils/DataUtils";
 
@@ -50,12 +48,10 @@ class MatchingClass extends React.Component {
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <React.Fragment>
-          { this.renderLeftSide() }
-          { this.renderRightSide() }
-        </React.Fragment>
-      </ThemeProvider>
+      <React.Fragment>
+        { this.renderLeftSide() }
+        { this.renderRightSide() }
+      </React.Fragment>
     )
   }
 

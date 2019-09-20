@@ -2,19 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import * as Styles from "./ConclusionStyles";
 import {BoldStatus, CleanStatus} from "../../assets/text-combos";
-import {ThemeProvider} from "styled-components";
-import {theme} from "../../assets/constants";
 
 export default class Conclusion extends React.Component {
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <Styles.Container>
-          { this.renderSuccess() }
-          { this.renderFailure() }
-        </Styles.Container>
-      </ThemeProvider>
+      <Styles.Container>
+        { this.renderSuccess() }
+        { this.renderFailure() }
+      </Styles.Container>
     )
   }
 

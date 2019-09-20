@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react'
+import {S} from './WorkspaceShowStyles'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
@@ -9,6 +10,9 @@ import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnoun
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import DataUtils from "../../../utils/DataUtils";
+import {createSelectable, SelectableGroup} from "react-selectable";
+
+const SelectableCard = createSelectable(DeploymentCard);
 
 class WorkspaceShowClass extends React.Component{
 
@@ -88,8 +92,8 @@ class WorkspaceShowClass extends React.Component{
   renderCards(){
     if(this.state.isFetching) return null;
 
-    return this.state.deployments.map((deployment) => (
-      <DeploymentCard
+    const cards = this.state.deployments.map((deployment) => (
+      <SelectableCard
         key={deployment.name}
         deployment={deployment}
         microservice={this.microserviceForDeployment(deployment)}
@@ -97,6 +101,14 @@ class WorkspaceShowClass extends React.Component{
         refreshCallback={this.fetchDeployments}
       />
     ));
+
+    return(
+      <SelectableGroup>
+        <S.CardGrid>
+          { cards }
+        </S.CardGrid>
+      </SelectableGroup>
+    )
   }
 
   microserviceForDeployment(deployment){

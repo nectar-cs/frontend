@@ -1,12 +1,19 @@
-import s from './TopBar.sass'
 import { connect } from "react-redux";
 import React from 'react';
+import {S} from "./TopBarStyles";
+
+function SearchInput(){
+  return(
+    <S.Search/>
+  )
+}
 
 class TopBarClass extends React.Component {
   render(){
     return(
-      <div className={s.topBar}>
-      </div>
+      <S.Container>
+        <SearchInput/>
+      </S.Container>
     )
   }
 }

@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Detail, Icon, Item, List, Name, Spinner} from "./ChecklistStyles";
-import {theme} from "../../assets/constants";
-import {ThemeProvider} from "styled-components";
 
 function ChecklistItem(props){
 
@@ -16,15 +14,13 @@ function ChecklistItem(props){
   else thirdItem = null;
 
   return(
-    <ThemeProvider theme={theme}>
-      <li>
-        <Item>
-          <Name>{props.name}: </Name>
-          <Detail>{props.detail}</Detail>
-          { thirdItem }
-        </Item>
-      </li>
-    </ThemeProvider>
+    <li>
+      <Item>
+        <Name>{props.name}: </Name>
+        <Detail>{props.detail}</Detail>
+        { thirdItem }
+      </Item>
+    </li>
   )
 }
 

@@ -1,22 +1,18 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {InputLine, LineInput, LineLabel} from "../../assets/input-combos";
-import {theme} from "../../assets/constants";
-import {ThemeProvider} from "styled-components";
 import MiscUtils from "../../utils/MiscUtils";
 
 export default class ImageForm extends React.Component {
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <Fragment>
-          { this.renderTypeLine() }
-          { this.renderImageNameLine() }
-          { this.renderScaleSelector() }
-          { this.renderRegistrySelectors() }
-          { this.renderRegRepoSelectors() }
-        </Fragment>
-      </ThemeProvider>
+      <Fragment>
+        { this.renderTypeLine() }
+        { this.renderImageNameLine() }
+        { this.renderScaleSelector() }
+        { this.renderRegistrySelectors() }
+        { this.renderRegRepoSelectors() }
+      </Fragment>
     )
   }
 

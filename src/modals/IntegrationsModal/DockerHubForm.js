@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import {InputLine, LineInput} from "../../assets/input-combos";
 import {S} from "./IntegrationSectionStyles";
 import defaults from "./defaults";
-import {ThemeProvider} from "styled-components";
-import {theme} from "../../assets/constants";
 import Backend from "../../utils/Backend";
 
 export default class DockerHubForm extends React.Component{
@@ -30,12 +28,10 @@ export default class DockerHubForm extends React.Component{
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <Fragment>
-          { this.renderFormInputs() }
-          { this.renderApology() }
-        </Fragment>
-      </ThemeProvider>
+      <Fragment>
+        { this.renderFormInputs() }
+        { this.renderApology() }
+      </Fragment>
     )
   }
 

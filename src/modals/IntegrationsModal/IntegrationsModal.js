@@ -7,8 +7,6 @@ import GitSection from "./GitSection";
 import defaults from "./defaults";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import PageVisibility from "react-page-visibility";
-import {ThemeProvider} from "styled-components";
-import {theme} from "../../assets/constants";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 
 export default class IntegrationsModal extends React.Component {
@@ -53,15 +51,13 @@ export default class IntegrationsModal extends React.Component {
     const Container = isModal ? ModalLayout : MosaicContainer;
     return(
       <PageVisibility onChange={this.onTabFocusChange}>
-        <ThemeProvider theme={theme}>
-          <Container>
-            <Header/>
-            <Intro>{defaults.intro}</Intro>
-            { this.renderDockerSection() }
-            { this.renderGitSection() }
-            { this.renderDoneButton() }
-          </Container>
-        </ThemeProvider>
+        <Container>
+          <Header/>
+          <Intro>{defaults.intro}</Intro>
+          { this.renderDockerSection() }
+          { this.renderGitSection() }
+          { this.renderDoneButton() }
+        </Container>
       </PageVisibility>
     )
   }
