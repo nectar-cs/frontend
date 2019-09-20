@@ -6,7 +6,7 @@ import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
 import PortActionsModal from "../../../modals/PortActionsModal/PortActionsModal";
 import CardRow from "./CardRow";
-import {FULL_DEPLOYMENT} from "../../../types/Deployment";
+import {FULL_DEPLOYMENT, Types} from "../../../types/Deployment";
 import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
 
 export default class DeploymentCard extends React.Component {
@@ -78,6 +78,7 @@ export default class DeploymentCard extends React.Component {
     const svc = this.props.deployment.services[0];
     const bundle = {
       deployment: this.props.deployment,
+      matching: this.props.microservice,
       targetHost: text,
       port: svc.fromPort
     };
@@ -88,6 +89,7 @@ export default class DeploymentCard extends React.Component {
   openImageModal(){
     const bundle = {
       deployment: this.props.deployment,
+      matching: this.props.microservice,
       refreshCallback: this.props.refreshCallback
     };
     this.props.openModal(ImageActionsModal, bundle);
@@ -124,13 +126,9 @@ export default class DeploymentCard extends React.Component {
   }
 
   static propTypes = {
+    deployment: Types.Deployment,
+    microservice: Types.Matching,
     openModal: PropTypes.func.isRequired,
-    refreshCallback: PropTypes.func.isRequired,
-    microservice: PropTypes.shape({
-      framework: PropTypes.string.isRequired,
-      gitRemoteName: PropTypes.string,
-      gitRepoName: PropTypes.string,
-    }),
-    ...FULL_DEPLOYMENT
+    refreshCallback: PropTypes.func.isRequired
   };
 }

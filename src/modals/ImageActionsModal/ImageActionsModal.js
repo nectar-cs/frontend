@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {Container} from "./ImageActionsModalStyles";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
-import {FULL_DEPLOYMENT} from "../../types/Deployment";
+import {Types} from "../../types/Deployment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import ImageForm from "./ImageForm";
 import Kapi from "../../utils/Kapi";
@@ -12,6 +12,7 @@ import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Conclusion from "./Conclusion";
+import {defaults} from "./defaults";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
@@ -77,11 +78,12 @@ export default class ImageActionsModal extends React.Component {
   }
 
   renderHeader(){
+    const { deployment, matching } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.frameworkImage('docker')}
-        title={`${this.props.deployment.name} / image ops`}
-        subtitle={'Not connected to Git'}
+        graphicName={MiscUtils.msImage(deployment, matching)}
+        title={`${deployment.name} / image ops`}
+        subtitle={defaults.copy.header}
       />
     )
   }
@@ -242,7 +244,8 @@ export default class ImageActionsModal extends React.Component {
   }
 
   static propTypes = {
-    ...FULL_DEPLOYMENT,
-    refreshCallback: PropTypes.func
+    deployment: Types.Deployment,
+    refreshCallback: PropTypes.func,
+    matching: Types.Matching
   }
 }

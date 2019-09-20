@@ -19,6 +19,11 @@ export default class MiscUtils {
     return `${IMG_BASE}/icons/${imageName}`;
   }
 
+  static msImage(deployment, matching){
+    const name = matching ? matching.framework : "docker";
+    return this.frameworkImage(name);
+  }
+
   static emptyOption(text){
     return(
       <option

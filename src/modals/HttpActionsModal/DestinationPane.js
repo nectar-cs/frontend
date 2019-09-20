@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import PropTypes from 'prop-types'
 import s from './DestinationPane.sass'
 import MiscUtils from "../../utils/MiscUtils";
-import {Service} from "../../types/Deployment";
+import {Types} from "../../types/Deployment";
 
 const HTTP_VERBS = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'];
 
@@ -66,6 +66,6 @@ export default class DestinationPane extends React.Component {
     host: PropTypes.string,
     path: PropTypes.string,
     verb: PropTypes.oneOf(HTTP_VERBS),
-    services: PropTypes.arrayOf(Service)
+    services: PropTypes.arrayOf(Types.Service)
   }
 }

@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import s from './HttpActionsModal.sass'
-import {FULL_DEPLOYMENT} from "../../types/Deployment";
+import {Types} from "../../types/Deployment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import Tabs from "../../widgets/Tabs/Tabs";
 import DestinationPane from "./DestinationPane";
@@ -86,14 +86,21 @@ export default class HttpActionsModal extends React.Component {
 
     return(
       <div className={s.modal}>
-        <LeftHeader
-          graphicName={MiscUtils.frameworkImage('docker')}
-          title={`${this.props.deployment.name} / http ops`}
-          subtitle={'Not connected to Git'}
-        />
+        { this.renderHeader() }
         { content }
       </div>
     )
+  }
+
+  renderHeader(){
+    const { deployment, matching } = this.props;
+    return(
+      <LeftHeader
+        graphicName={MiscUtils.msImage(deployment, matching)}
+        title={`${this.props.deployment.name} / http ops`}
+        subtitle={'Not connected to Git'}
+      />
+    );
   }
 
   renderEditPhase(){
@@ -277,7 +284,8 @@ export default class HttpActionsModal extends React.Component {
   }
 
   static propTypes = {
-    ...FULL_DEPLOYMENT,
+    deployment: Types.Deployment,
+    matching: Types.Matching,
     targetAddr: PropTypes.string,
     port: PropTypes.number
   }

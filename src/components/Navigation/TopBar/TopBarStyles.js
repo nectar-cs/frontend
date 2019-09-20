@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import {LineInput} from "../../../assets/input-combos";
 
 const Container = styled.div`
   background: ${p => p.theme.colors.primaryColor};
