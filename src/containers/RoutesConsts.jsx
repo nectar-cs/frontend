@@ -5,6 +5,7 @@ import WorkspaceIndex from "../components/Workspaces/Index/WorkspaceIndex";
 import WorkspaceEdit from "../components/Workspaces/Edit/WorkspaceEdit";
 import WorkspaceShow from "../components/Workspaces/Show/WorkspaceShow";
 import DeploymentShow from "../components/Deployments/Show/DeploymentShow";
+import NetworkTest from "../components/Laboratory/NetworkTest";
 
 export const ROUTES = {
   clusters: {
@@ -27,6 +28,13 @@ export const ROUTES = {
     authenticate: { path: '/auth/authenticate', comp: Authenticate },
     login: { path: '/auth/login', comp: LoginAndRegister },
     register: { path: '/auth/register', comp: LoginAndRegister }
+  },
+
+  experiments: {
+    networkTest: {
+      path: '/experiments/network_test/',
+      comp: NetworkTest
+    }
   }
 };
 

@@ -22,6 +22,7 @@ export default class Root extends Component {
             { Root.renderRoute(R.workspaces.new) }
             { Root.renderRoute(R.workspaces.edit) }
             { Root.renderRoute(R.workspaces.show) }
+            { Root.renderRoute(R.experiments.networkTest) }
             <Route path={'/'} exact component={home.comp}/>
           </Switch>
         </BrowserRouter>

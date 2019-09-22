@@ -17,11 +17,27 @@ export const Intro = styled.p`
   margin-top: 22px;
 `;
 
-export const Shaded = styled.div`
-  display: ${p => p.on ? 'default' : 'none'};
-  width: 100%;
-  height: 100%;
+const ContentContainer = styled.div`
   position: absolute;
-  z-index: 100000;
-  background: rgba(49, 54, 72, 0.8);
+  background: ${p => p.theme.colors.contrastColor};
+  padding: 12px 16px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 `;
+
+const LeftPanel = styled(ContentContainer)`
+  position: absolute;
+  width: 48%;
+  height: 96%;
+  left: 1.2%;
+`;
+
+const RightPanel = styled(LeftPanel)`
+  right: 1.2%;
+  left: auto;
+  overflow-y: scroll;
+`;
+
+const S = { LeftPanel, RightPanel };
+export { S };
