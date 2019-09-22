@@ -39,5 +39,11 @@ const RightPanel = styled(LeftPanel)`
   overflow-y: scroll;
 `;
 
-const S = { LeftPanel, RightPanel };
+const TextLine = styled.div`
+  display: flex;
+  justify-content: start;
+  width: 100%
+`;
+
+const S = { LeftPanel, RightPanel, TextLine };
 export { S };

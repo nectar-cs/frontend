@@ -2,17 +2,52 @@ import React, {Fragment} from 'react'
 import {S} from './../../assets/layouts'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Graph from "react-graph-vis";
-
-const FROM_COUNT = 2;
-const TO_COUNT = 20;
+import {theme} from "../../assets/constants";
+import {FROM_COUNT, TO_COUNT} from "./NetworkTest";
+import ModalButton from "../../widgets/Buttons/ModalButton";
+import TextOverLineTitle from "../../widgets/TextOverLineTitle/TextOverLineTitle";
+import {StatusTag} from "../../assets/text-combos";
 
 export default class NetworkGraph extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      isSuccess: false
+    }
+  }
+
   render(){
     return(
       <S.LeftPanel>
         { this.renderHeader() }
+        { this.renderIntro() }
         { this.renderGraph() }
+        { this.renderButton() }
       </S.LeftPanel>
+    )
+  }
+
+  renderButton(){
+    return(
+      <ModalButton callback={null} title={"Pause Experiment"}/>
+    )
+  }
+
+  renderIntro(){
+    return(
+      <Fragment>
+        <TextOverLineTitle text="Initial Conditions"/>
+        <ul>
+          <li>
+            <p>From pods: [news-crawl] | [news-listen] </p>
+          </li>
+          <li>
+            <p>From pods: [*nectar] | [*default] </p>
+          </li>
+
+        </ul>
+      </Fragment>
     )
   }
 
@@ -20,48 +55,48 @@ export default class NetworkGraph extends React.Component {
     const fromNodes = this.fromNodes();
     const toNodes = this.toNodes();
     const edges = this.edges();
-    console.log("from");
-    console.table(fromNodes);
-
-    console.log("to");
-    console.table(toNodes);
-
-    console.log("edges");
-    console.table(edges);
     const graph = {
       nodes: fromNodes.concat(toNodes),
       edges: edges
     };
 
     const options = {
-      layout: {
-        hierarchical: false
-      },
-      edges: {
-        color: "#000000"
-      }
+      layout: { hierarchical: false },
+      edges: { color: "#000000" }
     };
 
     return(
-      <Graph
-        graph={graph}
-        options={options}
-        style={{ height: "100%", width: "100%" }}
-      />
+      <Fragment>
+        <TextOverLineTitle text="Progress"/>
+        <Graph
+          graph={graph}
+          options={options}
+          style={{ height: "60%", width: "100%" }}
+        />
+      </Fragment>
+
     )
   }
 
   fromNodes(){
+    const color = theme.colors.primaryColor;
     return Array.from(Array(FROM_COUNT).keys()).map(i => (
-      { id: i + 1, color: "red" }
+      { id: i + 1, color }
     ));
   }
 
   toNodes(){
+    const doneColor =  theme.colors.secondaryColor;
+    const idleColor =  theme.colors.contentBackgroundColor;
     const offset = FROM_COUNT;
-    return Array.from(Array(TO_COUNT).keys()).map(i => (
-      { id: offset + i + 1, color: i % 2 === 0 ? "black" : "purple" }
-    ));
+    return Array.from(Array(TO_COUNT).keys()).map(i => {
+      const done = this.props.iTo === i;
+      const color = done ? doneColor : idleColor;
+      return{
+        id: offset + i + 1,
+        color
+      }
+    });
   }
 
   edges(){
@@ -70,7 +105,9 @@ export default class NetworkGraph extends React.Component {
       const from = i + 1;
       for(let j = 0; j < TO_COUNT; j++){
         const to = FROM_COUNT + j + 1;
-        edges.push({from, to});
+        const isCrt = i === this.props.iFrom && j === this.props.iTo;
+        const width = isCrt ? 8 : 2;
+        edges.push({from, to, width});
       }
     }
     return edges;
