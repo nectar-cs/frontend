@@ -170,9 +170,11 @@ class MatchingClass extends React.Component {
       const {framework} = deployment.ms;
 
       return {
-        deploymentName: deployment.name, framework,
+        deploymentName: deployment.name,
+        namespace: deployment.namespace,
         gitRemoteName, gitRepoName,
         imgRemoteName, imgRepoName,
+        framework
       }
     });
 

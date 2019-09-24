@@ -190,7 +190,7 @@ export default class IntegrationSection extends React.PureComponent {
 
   static propTypes = {
     setReloadPerformer: PropTypes.func.isRequired,
-    vendor: PropTypes.string.isRequired,
+    vendor: PropTypes.string,
     formShowing: PropTypes.oneOf([true, false]).isRequired,
     setMasterState: PropTypes.func.isRequired,
     notifyDataChanged: PropTypes.func.isRequired

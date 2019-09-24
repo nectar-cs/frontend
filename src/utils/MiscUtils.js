@@ -1,12 +1,16 @@
 import React from 'react'
-import layouts from './../assets/content-layouts.sass'
-import DataUtils from './DataUtils';
 import textCombos from './../assets/text-combos.sass'
 
 const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
 
 export default class MiscUtils {
+
+  static tor(func){
+    try{ return func() }
+    catch (_) { return null; }
+  }
+
   static image(name){
     return `${IMG_BASE}/${name}`;
   }
@@ -22,6 +26,10 @@ export default class MiscUtils {
   static msImage(deployment, matching){
     const name = matching ? matching.framework : "docker";
     return this.frameworkImage(name);
+  }
+
+  static gitSummary(ms){
+    return `${ms.gitRemoteName} / ${ms.gitRepoName}`;
   }
 
   static emptyOption(text){

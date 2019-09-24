@@ -30,13 +30,19 @@ const LeftPanel = styled(ContentContainer)`
   position: absolute;
   width: 48%;
   height: 96%;
-  left: 1.2%;
+  left: 14px;
 `;
 
 const RightPanel = styled(LeftPanel)`
-  right: 1.2%;
+  right: 14px;
   left: auto;
   overflow-y: scroll;
+`;
+
+const FullWidthPanel = styled(ContentContainer)`
+  left: 14px;
+  right: 14px;
+  min-height: 100%;
 `;
 
 const TextLine = styled.div`
@@ -45,5 +51,11 @@ const TextLine = styled.div`
   width: 100%
 `;
 
-const S = { LeftPanel, RightPanel, TextLine };
+const S = {
+  ContentContainer,
+  LeftPanel,
+  RightPanel,
+  TextLine ,
+  FullWidthPanel
+};
 export { S };

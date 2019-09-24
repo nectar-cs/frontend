@@ -1,7 +1,8 @@
 import styled from 'styled-components'
+import {S as Layouts} from './../../../assets/layouts'
 
-const Container = styled.div`
-
+const Container = styled(Layouts.FullWidthPanel)`
+  
 `;
 
 const S = {Container};

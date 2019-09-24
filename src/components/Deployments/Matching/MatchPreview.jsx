@@ -10,6 +10,7 @@ import DataUtils from "../../../utils/DataUtils";
 import Backend from "../../../utils/Backend";
 import {FormHelper as H} from "./FormHelper";
 import {BigBottomButtons, BigButton} from "../../../assets/buttons";
+import MiscUtils from "../../../utils/MiscUtils";
 
 export default class MatchPreview extends React.Component {
   constructor(props){
@@ -26,7 +27,7 @@ export default class MatchPreview extends React.Component {
       isDockerFetching: false,
     };
 
-    this.deploymentName = props.deployment.name;
+    this.deploymentName = MiscUtils.tor(() => props.deployment.name);
     this.onFormDataChanged = this.onFormDataChanged.bind(this);
     this.acceptMatch = this.acceptMatch.bind(this);
     this.skipMatch = this.skipMatch.bind(this);

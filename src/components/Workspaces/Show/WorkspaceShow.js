@@ -26,7 +26,6 @@ class WorkspaceShowClass extends React.Component{
       isEntered: false,
       isFetching: false
     };
-
     this.fetchDeployments = this.fetchDeployments.bind(this);
   }
 
@@ -82,7 +81,7 @@ class WorkspaceShowClass extends React.Component{
     return(
       <CenterAnnouncement
         contentType='nav-link'
-        text={"No Deployments. Edit your filters."}
+        text="No Deployments. Edit your filters."
         iconName='search'
         action={editPath}
       />
