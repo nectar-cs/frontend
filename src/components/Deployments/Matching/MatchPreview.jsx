@@ -54,19 +54,6 @@ export default class MatchPreview extends React.Component {
   render(){
     return(
       <Fragment>
-        { this.renderSubmitted() }
-        { this.renderReviewComplete() }
-        { this.renderMainContent() }
-      </Fragment>
-    );
-  }
-
-  renderMainContent(){
-    if(this.props.isSubmitting) return null;
-    if(!this.props.deployment) return null;
-
-    return(
-      <Fragment>
         { this.renderHeader() }
         { this.renderTopRightLoader() }
         { this.renderTitle() }
@@ -129,31 +116,6 @@ export default class MatchPreview extends React.Component {
     );
   }
 
-  renderReviewComplete(){
-    if(!this.props.isReviewComplete) return null;
-    if(this.props.isSubmitted) return null;
-
-    return(
-      <CenterAnnouncement
-        action={this.props.submitFunction}
-        iconName='done'
-        text="Review Complete. Click to commit."
-      />
-    )
-  }
-
-  renderSubmitted(){
-    if(!this.props.isSubmitted) return null;
-    return(
-      <CenterAnnouncement
-        contentType='nav-link'
-        action='/workspaces'
-        iconName='done_all'
-        text="All done. Click to continue."
-      />
-    )
-  }
-
   acceptMatch(){
     this.props.onDeploymentReviewed(
       this.deploymentName,
@@ -209,11 +171,7 @@ export default class MatchPreview extends React.Component {
 
   static propTypes = {
     deployment: PropTypes.object,
-    isSubmitted: PropTypes.bool.isRequired,
-    isSubmitting: PropTypes.bool.isRequired,
-    isReviewComplete: PropTypes.bool.isRequired,
     onDeploymentReviewed: PropTypes.func.isRequired,
-    submitFunction: PropTypes.func.isRequired,
     hasGitRemote: PropTypes.bool.isRequired,
     hasImageRegistry: PropTypes.bool.isRequired
   };

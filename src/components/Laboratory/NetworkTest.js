@@ -35,7 +35,7 @@ class NetworkTestClass extends React.Component {
   }
 
   componentDidMount(){
-    setTimeout(this.repeat, 1000);
+    setTimeout(this.repeat, 2000);
   }
 
   repeat(){
@@ -46,7 +46,7 @@ class NetworkTestClass extends React.Component {
       count = count + 1;
       return { ...s, iFrom, iTo, count }
     });
-    setTimeout(this.repeat, 1500);
+    setTimeout(this.repeat, 500);
   }
 }
 

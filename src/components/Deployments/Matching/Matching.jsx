@@ -12,6 +12,7 @@ import ErrComponent from "../../../hocs/ErrComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import {ROUTES} from "../../../containers/RoutesConsts";
 import DataUtils from "../../../utils/DataUtils";
+import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 
 class MatchingClass extends React.Component {
   constructor(props){
@@ -76,6 +77,8 @@ class MatchingClass extends React.Component {
         <Fragment>
           { this.renderIntegrationsPrompt() }
           { this.renderMatchingPreview() }
+          { this.renderOfferSubmit() }
+          { this.renderSubmitted() }
         </Fragment>
       </div>
     )
@@ -93,23 +96,48 @@ class MatchingClass extends React.Component {
     );
   }
 
-  renderMatchingPreview(){
-    if(!this.state.integrations) return null;
+  renderOfferSubmit(){
+    if(!this.isSubmitReady()) return;
+    if(this.state.isSubmitting) return;
+    if(this.state.areAllSubmitted) return;
 
     return(
-      <Fragment>
-        <MatchPreview
-          deployment={this.selectedDeployment()}
-          onDeploymentReviewed={this.onDeploymentReviewed}
-          isReviewComplete={this.isSubmitReady()}
-          submitFunction={this.submit}
-          isSubmitted={this.state.areAllSubmitted}
-          isSubmitting={this.state.isSubmitting}
-          setIsFetching={(v) => this.setState((s) => ({...s, isRightFetching: v}))}
-          hasGitRemote={this.state.integrations.hasGitRemote}
-          hasImageRegistry={this.state.integrations.hasImageRegistry}
-        />
-      </Fragment>
+      <CenterAnnouncement
+        action={this.submit}
+        iconName='done'
+        text="Review Complete. Click to commit."
+      />
+    )
+  }
+
+  renderSubmitted(){
+    if(!this.state.areAllSubmitted) return;
+
+    return(
+      <CenterAnnouncement
+        contentType='nav-link'
+        action='/workspaces'
+        iconName='done_all'
+        text="All done. Click to continue."
+      />
+    )
+  }
+
+
+  renderMatchingPreview(){
+    if(!this.state.integrations) return null;
+    if(this.state.isSubmitting) return null;
+    if(!this.selectedDeployment()) return null;
+
+    const sif = (v) => this.setState((s) => ({...s, isRightFetching: v}));
+    return(
+      <MatchPreview
+        deployment={this.selectedDeployment()}
+        onDeploymentReviewed={this.onDeploymentReviewed}
+        setIsFetching={sif}
+        hasGitRemote={this.state.integrations.hasGitRemote}
+        hasImageRegistry={this.state.integrations.hasImageRegistry}
+      />
     )
   }
 
@@ -120,6 +148,9 @@ class MatchingClass extends React.Component {
   }
 
   onDeploymentReviewed(name, bundle){
+    // if(this.state.isSubmitting) return;
+    console.log("CALLED");
+    console.log(bundle);
     const deployments = this.state.deployments.map((d) => {
       if(d.name === name)
         return { ...d, ms: bundle, isReviewed: true };
@@ -141,7 +172,12 @@ class MatchingClass extends React.Component {
       const bundle = { isChecked: true, isReviewed: false };
       const deployments = payload['data'].map((d) => ({...d, ...bundle}));
       const selectedIndex = deployments.length > 0 ? 0 : null;
-      this.setState((s) => ({...s, deployments, isFetching: false, selectedIndex}));
+      this.setState((s) => ({
+        ...s,
+        deployments,
+        isFetching: false,
+        selectedIndex
+      }));
     }, this.props.kubeErrorCallback);
   }
 
@@ -190,9 +226,15 @@ class MatchingClass extends React.Component {
   }
 }
 
-const DEFAULT_QUERY = [{field: "namespace", op: "one-of", challenge: ["default"]}];
+const DEFAULT_QUERY = [
+  {
+    field: "namespace",
+    op: "one-of",
+    challenge: ["default"]
+  }
+];
 
-const Header = function(){
+function Header(){
   return(
     <LeftHeader
       title='Deployment Matching'
@@ -201,7 +243,7 @@ const Header = function(){
       graphicName='developer_board'
     />
   )
-};
+}
 
 const Matching = AuthenticatedComponent.compose(
   ModalHostComposer.compose(
