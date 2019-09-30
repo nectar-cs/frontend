@@ -207,14 +207,16 @@ class MatchingClass extends React.Component {
 
       return {
         deploymentName: deployment.name,
-        namespace: deployment.namespace,
+        namespaces: deployment.namespaces,
         gitRemoteName, gitRepoName,
         imgRemoteName, imgRepoName,
         framework
       }
     });
 
+    console.table(formatted);
     const payload = { data: DataUtils.objKeysToSnake(formatted) };
+
     this.setState((s) => ({...s, isSubmitting: true}));
 
     Backend.raisingPost(`/microservices`, payload, () => {

@@ -4,23 +4,6 @@ const DEFAULT_URL = "http://localhost:3000";
 const BACKEND_URL = process.env['BACKEND_URL'] || DEFAULT_URL;
 
 export default class Backend {
-  static fetchJson(endPoint, callback){
-    let url = `${BACKEND_URL}${endPoint}`;
-    const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Token': this.accessToken()
-    };
-
-    fetch(url, {method: 'GET', headers: headers})
-    .then(res => res.json())
-    .then((result) =>  callback(result))
-    .catch(error => {
-      console.log(`WE HAVE ERROR for ${endPoint}`);
-      console.log(error);
-    })
-  }
 
   static raisingFetch(endpoint, callback, errorCallback=null){
     this.raisingRequest('GET', endpoint, null, callback, errorCallback);

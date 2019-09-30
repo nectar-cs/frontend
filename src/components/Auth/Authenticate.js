@@ -22,7 +22,7 @@ class AuthenticateClass extends React.Component {
 
   componentDidMount(){
     let endpoint = '/auth/authenticate';
-    Backend.fetchJson(endpoint, (response) => {
+    Backend.raisingFetch(endpoint, (response) => {
       this.setState((state) => {
         const success = !!response['data'];
         const authCheck = success ? AUTH_CHECK.AUTHENTICATED : AUTH_CHECK.INVALID;

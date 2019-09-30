@@ -1,9 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import S from './ShowStyles'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ErrComponent from "../../../hocs/ErrComponent";
 import Kapi from "../../../utils/Kapi";
+import Backend from "../../../utils/Backend";
 import DataUtils from "../../../utils/DataUtils";
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../../utils/MiscUtils";
@@ -30,13 +30,12 @@ class DeploymentShowClass extends React.Component{
   renderHeader(){
     const { deployment, matching } = this.state;
     if(!deployment) return null;
-    const subtitle = matching ? MiscUtils.gitSummary(matching) : '';
 
     return(
       <LeftHeader
         graphicName={MiscUtils.msImage(deployment, matching)}
         title={`${this.depNs()} / ${deployment.name}`}
-        subtitle={subtitle}
+        subtitle={matching && MiscUtils.gitSummary(matching)}
       />
     )
   }
@@ -58,8 +57,8 @@ class DeploymentShowClass extends React.Component{
 
   fetchMatching(){
     this.setFetch({match: true});
-    const ep = `/api/deployments/${this.depNs()}/${this.depName()}`;
-    Kapi.fetch(ep, resp => {
+    const ep = `/microservices/${this.depNs()}/${this.depName()}`;
+    Backend.raisingFetch(ep, resp => {
       this.setFetch({match: false});
       const matching = DataUtils.objKeysToCamel(resp);
       this.setState(s => ({...s, matching}));

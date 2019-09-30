@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 
+const POD_STATES = ['Running', 'Failed', 'Pending', 'Unknown'];
+
 const Service = PropTypes.shape({
   name: PropTypes.string.isRequired,
   fromPort: PropTypes.number.isRequired,
@@ -10,16 +12,16 @@ const Service = PropTypes.shape({
   longDns: PropTypes.string.isRequired
 });
 
+const LightPod = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  state: PropTypes.oneOf(POD_STATES)
+});
+
 const Deployment = PropTypes.shape({
   name: PropTypes.string.isRequired,
   imageName: PropTypes.string.isRequired,
   replicas: PropTypes.number.isRequired,
-  pods: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      state: PropTypes.oneOf(['Running', 'Failed', 'Pending', 'Unknown'])
-    })
-  ).isRequired,
+  pods: PropTypes.arrayOf(LightPod).isRequired,
   services: PropTypes.arrayOf(Service)
 });
 
