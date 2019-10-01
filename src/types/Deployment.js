@@ -28,7 +28,9 @@ const Deployment = PropTypes.shape({
 const Matching = PropTypes.shape({
   framework: PropTypes.string.isRequired,
   gitRemoteName: PropTypes.string,
-  gitRepoName: PropTypes.string
+  gitRepoName: PropTypes.string,
+  gitRemoteId: PropTypes.number,
+  imgRemoteId: PropTypes.number
 });
 
 export const Types = { Service, Deployment, Matching };

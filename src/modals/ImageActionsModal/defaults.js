@@ -1,4 +1,5 @@
 import React, {Fragment} from "react";
+import {S} from "./ImageFormStyles";
 
 export const defaults ={
   copy: {
@@ -20,6 +21,20 @@ export const defaults ={
       <ul>
         <li><p>asdsa</p></li>
       </ul>
+    ),
+    dockerNotSet: "Deployment not bound to Docker."
+  },
+
+  els: {
+    dockerBind: (path) => (
+      <Fragment>
+        And that you <a href={path}>bind</a> this deployment to a registry.
+      </Fragment>
+    ),
+    dockerConn: (action) => (
+      <Fragment>
+        Make sure you <a onClick={action}>connect</a> to Docker.
+      </Fragment>
     )
   }
 };

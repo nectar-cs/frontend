@@ -18,12 +18,10 @@ export default class DockerHubForm extends React.Component{
   }
 
   submit(){
-    const endpoint = `/image_registries/dockerhub`;
+    const endpoint = `/remotes/dockerhub`;
     const { username, password } = this.state;
     const payload = { identifier: username, secret: password };
-    Backend.raisingPost(endpoint, payload, () => {
-      this.props.notifySubmitted();
-    });
+    Backend.raisingPost(endpoint, payload, this.props.notifySubmitted);
   }
 
   render(){

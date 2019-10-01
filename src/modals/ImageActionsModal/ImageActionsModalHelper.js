@@ -21,14 +21,22 @@ export class ImageActionsModalHelper {
   }
 
   static fetchDockerImgs(inst){
-    const matching = inst.props.matching.id;
-    const ep = `/image_registries/${matching}/loaded`;
+    let {imgRemoteId, imgRepoName} = inst.props.matching;
+
+    if(!imgRemoteId || !imgRepoName) {
+      const imageTags = null;
+      inst.setState(s => ({...s, remotes: { ...s.remotes, imageTags }}));
+      return;
+    }
+
+    const ep = `/remotes/${imgRemoteId}/${imgRepoName}/branches`;
+
     Backend.raisingFetch(ep, resp => {
-      const imageRegs = DataUtils.objKeysToCamel(resp)['data'];
-      inst.setState(s => ({...s, imageRegs}));
-      inst.onAssignment({imgRegistry: imageRegs[0].identifier});
-      inst.onAssignment({imgRepo: this.guessImgRepo(imageRegs)});
-      inst.onAssignment({imgSource: this.guessImgSource(imageRegs)});
+      let imageTags = DataUtils.objKeysToCamel(resp)['data'];
+      imageTags = imageTags.map(t => this.fullImgTag(inst, t));
+      const imageTag = imageTags[0];
+      inst.setState(s => ({...s, remotes: { ...s.remotes, imageTags }}));
+      inst.setState(s => ({...s, choices: { ...s.choices, imageTag }}));
     })
   }
 
@@ -125,14 +133,14 @@ export class ImageActionsModalHelper {
   static coerceConfig(config, assignment){
     const key = Object.keys(assignment)[0];
     if(['imgRegistry', 'imgRepo', 'imgSource'].includes(key)){
-      const imageName = this.imgRegToImageName(config);
+      const imageName = this.fullImgTag(config);
       return {...config, imageName};
     } else return config;
   }
 
-  static imgRegToImageName(config){
-    const { imgRegistry, imgRepo, imgSource } = config;
-    return `${imgRegistry}/${imgRepo}:${imgSource}`;
+  static fullImgTag(inst, imageTag){
+    const {imgRemoteName, imgRepoName} = inst.props.matching;
+    return `${imgRemoteName}/${imgRepoName}:${imageTag}`;
   }
 
 }

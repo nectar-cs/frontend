@@ -23,7 +23,10 @@ export default class DeploymentCard extends React.Component {
 
   componentDidMount(){
     if(this.props.deployment.name === 'news-crawl'){
-      const bun = { deployment: this.props.deployment };
+      const bun = {
+        deployment: this.props.deployment,
+        matching: this.props.microservice
+      };
       this.props.openModal(ImageActionsModal, bun)
     }
   }

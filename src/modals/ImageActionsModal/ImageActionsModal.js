@@ -24,15 +24,15 @@ export default class ImageActionsModal extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      config: {
-        operationType: 'git',
+      choices: {
+        operationType: 'docker',
         imageName: this.imgDebug(),
         scaleTo: (props.deployment.replicas + 1).toString(),
         imgSource: '',
         gitBranch: '',
         gitCommit: ''
       },
-      remote: {
+      remotes: {
         imageTags: [],
         gitBranches: []
       },
@@ -132,17 +132,20 @@ export default class ImageActionsModal extends React.Component {
 
   renderConfigForm(){
     if(!this.isConfiguring()) return null;
+    const { choices, remotes } = this.state;
+    const deployment = this.props.deployment;
     return(
       <ImageForm
-        operationType={this.state.config.operationType}
-        scaleTo={this.state.config.scaleTo}
-        initialReplicas={this.props.deployment.replicas}
         onAssignment={(a) => this.onAssignment(a)}
-        imageRegs={this.state.imageRegs}
-        imgSource={this.state.config.imgSource}
-        gitBranches={null}
-        gitBranch={this.state.config.gitBranch}
-        gitCommit={this.state.config.gitCommit}
+        operationType={choices.operationType}
+        scaleTo={choices.scaleTo}
+        imageTag={choices.imgSource}
+        gitBranch={choices.gitBranch}
+        gitCommit={choices.gitCommit}
+        availableTags={remotes.imageTags}
+        availableRemotes={remotes.gitBranches}
+        initialReplicas={deployment.replicas}
+        replaceModal={this.props.replaceModal}
       />
     )
   }
@@ -182,8 +185,8 @@ export default class ImageActionsModal extends React.Component {
     const payload = {
       dep_namespace: this.props.deployment.namespace,
       dep_name: this.props.deployment.name,
-      scale_to: this.state.config.scaleTo,
-      target_name: this.state.config.imageName
+      scale_to: this.state.choices.scaleTo,
+      target_name: this.state.choices.imageName
     };
 
     const endpoint = `/api/run/${Helper.urlAction(this)}`;
@@ -237,9 +240,9 @@ export default class ImageActionsModal extends React.Component {
   isSubmitted(){ return this.state.phase === PHASE_SUBMITTED }
 
   onAssignment(assignment){
-    const merged = {...this.state.config, ...assignment};
+    const merged = {...this.state.choices, ...assignment};
     const cleaned = Helper.coerceConfig(merged, assignment);
-    this.setState(s => ({...s, config: cleaned}));
+    this.setState(s => ({...s, choices: cleaned}));
   }
 
   notifySubscribers(){

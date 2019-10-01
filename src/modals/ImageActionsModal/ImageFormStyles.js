@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
-export const Warning = styled.p`
-  margin-top: 48px
+const NoDockerOne = styled.p`
+  margin-top: 12px;
+  text-align: center;
 `;
+
+export const S = { NoDockerOne };

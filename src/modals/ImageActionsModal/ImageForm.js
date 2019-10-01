@@ -1,7 +1,13 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {InputLine, LineInput, LineLabel} from "../../assets/input-combos";
+import {S as LS} from "./../../assets/layouts"
+import { S } from './ImageFormStyles'
 import MiscUtils from "../../utils/MiscUtils";
+import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
+import {defaults} from "./defaults";
+import {ROUTES} from "../../containers/RoutesConsts";
+import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
 
 export default class ImageForm extends React.Component {
   render(){
@@ -11,6 +17,7 @@ export default class ImageForm extends React.Component {
         { this.renderImageNameLine() }
         { this.renderScaleSelector() }
         { this.renderMyImagesSelector() }
+        { this.renderDockBlock() }
       </Fragment>
     )
   }
@@ -68,6 +75,7 @@ export default class ImageForm extends React.Component {
 
   renderMyImagesSelector(){
     if(this.props.operationType !== 'docker') return null;
+    if(this.props.availableTags === null) return null;
 
     return(
       <InputLine>
@@ -76,14 +84,34 @@ export default class ImageForm extends React.Component {
           as='select'
           value={this.props.imageTag}
           onChange={(e) => this.onAssignment('imageTag', e)}>
-          { MiscUtils.arrayOptions(this.props.imageTags) }
+          { MiscUtils.arrayOptions(this.props.availableTags) }
         </LineInput>
       </InputLine>
     )
   }
 
+  renderDockBlock(){
+    if(this.props.operationType !== 'docker') return null;
+    if(this.props.availableTags) return null;
+
+    const replaceModal = this.props.replaceModal;
+    const bindPath = ROUTES.deployments.detect.path;
+    const connAction = () => replaceModal(IntegrationsModal);
+
+    return(
+      <CenterAnnouncement
+        iconName='sentiment_very_dissatisfied'
+        contentType='children'>
+        <S.NoDockerOne>{defaults.copy.dockerNotSet}</S.NoDockerOne>
+        <S.NoDockerOne>{defaults.els.dockerConn(connAction)}</S.NoDockerOne>
+        <S.NoDockerOne>{defaults.els.dockerBind(bindPath)}</S.NoDockerOne>
+      </CenterAnnouncement>
+    )
+  }
+
   onAssignment(name, event){
-    this.props.onAssignment({ [name]: event.target.value.toString() });
+    const setting = { [name]: event.target.value.toString() };
+    this.props.onAssignment(setting);
   }
 
   static operationTypeOptions(){
@@ -97,19 +125,20 @@ export default class ImageForm extends React.Component {
   }
 
   static propTypes = {
-    operationType: PropTypes.string.isRequired,
     onAssignment: PropTypes.func.isRequired,
+    operationType: PropTypes.string.isRequired,
     scaleTo: PropTypes.string.isRequired,
     initialReplicas: PropTypes.number.isRequired,
     imageTag: PropTypes.string,
     gitBranch: PropTypes.string,
     gitCommit: PropTypes.string,
-    imageTags: PropTypes.arrayOf(PropTypes.string).isRequired,
-    gitBranches: PropTypes.arrayOf(
+    availableTags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    availableBranches: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
         commits: PropTypes.arrayOf(PropTypes.string)
       })
-    )
+    ),
+    replaceModal: PropTypes.func.isRequired
   }
 }

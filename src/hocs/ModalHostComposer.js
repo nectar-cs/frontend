@@ -19,6 +19,7 @@ export default class ModalHostComposer{
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.timedClose = this.timedClose.bind(this);
+        this.replaceModal = this.replaceModal.bind(this);
       }
 
       render(){
@@ -28,6 +29,7 @@ export default class ModalHostComposer{
             <WrappedComponent
               openModal={this.openModal}
               closeModal={this.closeModal}
+              replaceModal={this.replaceModal}
               {...this.props}
             />
           </Fragment>
@@ -44,6 +46,11 @@ export default class ModalHostComposer{
         onClose && onClose();
       }
 
+      replaceModal(modalClass, modalProps){
+        this.closeModal();
+        this.openModal(modalClass, modalProps);
+      }
+
       renderModal(){
         if(!this.state.modalClass) return null;
         const ModalContentComponent = this.state.modalClass;
@@ -56,6 +63,7 @@ export default class ModalHostComposer{
             <ModalContentComponent
               onRequestClose={this.closeModal}
               closeModal={this.closeModal}
+              replaceModal={this.replaceModal}
               timedClose={this.timedClose}
               {...this.state.modalProps}
             />
