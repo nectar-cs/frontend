@@ -1,5 +1,4 @@
 import React from "react";
-import DockerHubForm from "./DockerHubForm";
 import defaults from "./defaults";
 import MiscUtils from "../../utils/MiscUtils";
 

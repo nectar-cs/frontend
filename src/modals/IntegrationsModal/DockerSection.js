@@ -8,25 +8,13 @@ import {S} from './IntegrationSectionStyles'
 
 export default class DockerSection extends IntegrationSection {
   performFetch(whenDone){
-    Backend.raisingFetch('/image_registries', (resp) => {
+    Backend.raisingFetch('/remotes?entity=docker', (resp) => {
       whenDone(DataUtils.objKeysToCamel(resp['data']));
     });
   }
 
   performAuthUrlsFetch(whenDone){
     whenDone([]);
-  }
-
-  performConnectionCheck(id, whenDone){
-    const ep = `/image_registries/${id}/check_connection`;
-    Backend.raisingFetch(ep, resp => {
-      whenDone(resp['data']['connected']);
-    })
-  }
-
-  performDelete(id, whenDone){
-    const endpoint = `/image_registries/${id}`;
-    Backend.raisingDelete(endpoint, whenDone);
   }
 
   formRenderer(extras){

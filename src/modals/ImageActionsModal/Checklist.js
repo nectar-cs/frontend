@@ -8,7 +8,7 @@ function ChecklistItem(props){
   if(props.status === 'working')
     thirdItem = <Spinner size='x-small'/>;
   else if(props.status === 'done')
-    thirdItem = <Icon good className='material-icons'>check</Icon>;
+    thirdItem = <Icon emotion={'good'} className='material-icons'>check</Icon>;
   else if(props.status === 'failed')
     thirdItem = <Icon className='material-icons'>bug_report</Icon>;
   else thirdItem = null;

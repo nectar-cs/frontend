@@ -21,6 +21,18 @@ export class ImageActionsModalHelper {
   }
 
   static fetchDockerImgs(inst){
+    const matching = inst.props.matching.id;
+    const ep = `/image_registries/${matching}/loaded`;
+    Backend.raisingFetch(ep, resp => {
+      const imageRegs = DataUtils.objKeysToCamel(resp)['data'];
+      inst.setState(s => ({...s, imageRegs}));
+      inst.onAssignment({imgRegistry: imageRegs[0].identifier});
+      inst.onAssignment({imgRepo: this.guessImgRepo(imageRegs)});
+      inst.onAssignment({imgSource: this.guessImgSource(imageRegs)});
+    })
+  }
+
+  static fetchGitBundle(inst){
     const ep = `/image_registries/loaded`;
     Backend.raisingFetch(ep, resp => {
       const imageRegs = DataUtils.objKeysToCamel(resp)['data'];

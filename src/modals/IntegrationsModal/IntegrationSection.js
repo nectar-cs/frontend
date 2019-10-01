@@ -6,6 +6,7 @@ import defaults from "./defaults";
 import MiscUtils from "../../utils/MiscUtils";
 import {CenteredSpinner} from "../../assets/loading-spinner";
 import IntegrationList from "./IntegrationList";
+import Backend from "../../utils/Backend";
 
 export default class IntegrationSection extends React.PureComponent {
 
@@ -159,6 +160,18 @@ export default class IntegrationSection extends React.PureComponent {
     this.performAuthUrlsFetch((authUrls) => {
       this.setState(s => ({...s, authUrls, isAuthUrlsFetching: false}));
     })
+  }
+
+  performConnectionCheck(id, whenDone){
+    const ep = `/remotes/${id}/check_connection`;
+    Backend.raisingFetch(ep, resp => {
+      whenDone(resp['data']['connected']);
+    })
+  }
+
+  performDelete(id, whenDone){
+    const endpoint = `/remotes/${id}`;
+    Backend.raisingDelete(endpoint, whenDone);
   }
 
   startConnectionCheck(id){

@@ -23,11 +23,13 @@ export const theme = {
 
   ali: (name) => {
     if(name === 'success') return 'success';
+    if(name === 'good') return 'success';
     if(name === 'connected') return "success";
     if(name === 'true') return "success";
     if(name === 'fail') return 'fail';
     if(name === 'failure') return 'fail';
     if(name === 'failed') return 'fail';
-    if(name === 'idle') return 'primaryFontLess'
+    if(name === 'idle') return 'primaryFontLess';
+    return 'primaryColor';
   }
 };

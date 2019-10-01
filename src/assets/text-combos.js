@@ -24,4 +24,5 @@ export const CleanStatus = styled.p`
 export const BoldStatus = styled(CleanStatus)`
   letter-spacing: 0.2px;
   font-weight: 800;
+  color: ${p => colored(p.emotion, p)};
 `;

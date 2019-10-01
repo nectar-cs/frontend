@@ -60,7 +60,7 @@ class DeploymentShowClass extends React.Component{
     const ep = `/microservices/${this.depNs()}/${this.depName()}`;
     Backend.raisingFetch(ep, resp => {
       this.setFetch({match: false});
-      const matching = DataUtils.objKeysToCamel(resp);
+      const matching = DataUtils.objKeysToCamel(resp)['data'];
       this.setState(s => ({...s, matching}));
     });
   }

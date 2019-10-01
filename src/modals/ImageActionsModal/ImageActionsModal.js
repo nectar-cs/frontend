@@ -25,16 +25,19 @@ export default class ImageActionsModal extends React.Component {
     super(props);
     this.state = {
       config: {
-        operationType: 'docker',
+        operationType: 'git',
         imageName: this.imgDebug(),
         scaleTo: (props.deployment.replicas + 1).toString(),
-        imgRegistry: '',
-        imgRepo: '',
         imgSource: '',
+        gitBranch: '',
+        gitCommit: ''
+      },
+      remote: {
+        imageTags: [],
+        gitBranches: []
       },
       phase: PHASE_CONFIG,
       initialPods: [],
-      imageRegs: [],
       updatedPods: null,
       conclusion: null,
       conclusionReason: null
@@ -136,9 +139,10 @@ export default class ImageActionsModal extends React.Component {
         initialReplicas={this.props.deployment.replicas}
         onAssignment={(a) => this.onAssignment(a)}
         imageRegs={this.state.imageRegs}
-        imgRegistry={this.state.config.imgRegistry}
-        imgRepo={this.state.config.imgRepo}
         imgSource={this.state.config.imgSource}
+        gitBranches={null}
+        gitBranch={this.state.config.gitBranch}
+        gitCommit={this.state.config.gitCommit}
       />
     )
   }

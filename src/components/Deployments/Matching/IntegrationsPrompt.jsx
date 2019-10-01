@@ -83,8 +83,8 @@ const IntegrationsPromptClass = class extends React.Component {
   }
 
   static checkGitOrDocker(callback){
-    Backend.raisingFetch(`/git_remotes/connected`, git => {
-      Backend.raisingFetch(`/image_registries/connected`, docker => {
+    Backend.raisingFetch(`/remotes/connected?entity=git`, git => {
+      Backend.raisingFetch(`/remotes/connected?entity=docker`, docker => {
         const hasGitRemote = git.data.length > 0;
         const hasImageRegistry = docker.data.length > 0;
         const done = hasGitRemote || hasImageRegistry;

@@ -93,6 +93,7 @@ class WorkspaceShowClass extends React.Component{
 
     const cards = this.state.deployments.map((deployment) => (
       <SelectableCard
+        selectableKey={deployment.name}
         key={deployment.name}
         deployment={deployment}
         microservice={this.microserviceForDeployment(deployment)}

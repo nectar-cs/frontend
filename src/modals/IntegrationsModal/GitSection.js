@@ -7,28 +7,16 @@ import {S} from './IntegrationSectionStyles'
 
 export default class GitSection extends IntegrationSection {
   performFetch(whenDone){
-    Backend.raisingFetch('/git_remotes', (resp) => {
+    Backend.raisingFetch('/remotes?entity=git', (resp) => {
       whenDone(DataUtils.objKeysToCamel(resp['data']));
     });
   }
 
-  performConnectionCheck(id, whenDone){
-    const ep = `/git_remotes/${id}/check_connection`;
-    Backend.raisingFetch(ep, resp => {
-      whenDone(resp['connected']);
-    })
-  }
-
   performAuthUrlsFetch(whenDone){
-    const endpoint = `/git_remotes/github/auth_url`;
+    const endpoint = `/remotes/auth_url?type=github`;
     Backend.raisingFetch(endpoint, resp => {
       whenDone({github: resp['auth_url']});
     });
-  }
-
-  performDelete(id, whenDone){
-    const endpoint = `/git_remotes/${id}`;
-    Backend.raisingDelete(endpoint, whenDone);
   }
 
   formRenderer(){

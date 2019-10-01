@@ -10,8 +10,7 @@ export default class ImageForm extends React.Component {
         { this.renderTypeLine() }
         { this.renderImageNameLine() }
         { this.renderScaleSelector() }
-        { this.renderRegistrySelectors() }
-        { this.renderRegRepoSelectors() }
+        { this.renderMyImagesSelector() }
       </Fragment>
     )
   }
@@ -67,67 +66,20 @@ export default class ImageForm extends React.Component {
     )
   }
 
-  renderRegistrySelectors(){
+  renderMyImagesSelector(){
     if(this.props.operationType !== 'docker') return null;
-    const allRegs = this.props.imageRegs;
-    const regs = allRegs.map(i => i.identifier);
-    const reg = this.crtImgRegistry();
-    const repos = reg ? reg.contents.map(i => i.name) : [];
-
-    return(
-      <InputLine>
-        <LineLabel>Source</LineLabel>
-        <LineInput
-          as='select'
-          value={this.props.imgRegistry}
-          onChange={(e) => this.onAssignment('imgRegistry', e)}>
-          { MiscUtils.arrayOptions(regs) }
-        </LineInput>
-        <LineInput
-          as='select'
-          value={this.props.imgRepo}
-          onChange={(e) => this.onAssignment('imgRepo', e)}>
-          { MiscUtils.arrayOptions(repos) }
-        </LineInput>
-      </InputLine>
-    )
-  }
-
-  renderRegRepoSelectors(){
-    if(this.props.operationType !== 'docker') return null;
-
 
     return(
       <InputLine>
         <LineLabel>Image</LineLabel>
         <LineInput
           as='select'
-          value={this.props.imgSource}
-          onChange={(e) => this.onAssignment('imgSource', e)}>
-          { MiscUtils.arrayOptions(this.crtRepoImages()) }
+          value={this.props.imageTag}
+          onChange={(e) => this.onAssignment('imageTag', e)}>
+          { MiscUtils.arrayOptions(this.props.imageTags) }
         </LineInput>
       </InputLine>
     )
-  }
-
-  crtImgRegistry(){
-    const selReg = this.props.imgRegistry;
-    const allRegs = this.props.imageRegs;
-    return selReg && allRegs.find(i => (
-      i.identifier === this.props.imgRegistry
-    ));
-  }
-
-  crtImgRepo(){
-    if (!this.crtImgRegistry()) return null;
-    return this.crtImgRegistry().contents.find(repo => (
-      repo.name === this.props.imgRepo
-    ));
-  }
-
-  crtRepoImages(){
-    if (!this.crtImgRepo()) return [];
-    return this.crtImgRepo().images.map(i => i.name);
   }
 
   onAssignment(name, event){
@@ -149,18 +101,14 @@ export default class ImageForm extends React.Component {
     onAssignment: PropTypes.func.isRequired,
     scaleTo: PropTypes.string.isRequired,
     initialReplicas: PropTypes.number.isRequired,
-    imgRegistry: PropTypes.string,
-    imgRepo: PropTypes.string,
-    imgSource: PropTypes.string,
-    imageRegs: PropTypes.arrayOf(
+    imageTag: PropTypes.string,
+    gitBranch: PropTypes.string,
+    gitCommit: PropTypes.string,
+    imageTags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    gitBranches: PropTypes.arrayOf(
       PropTypes.shape({
-        identifier: PropTypes.string.isRequired,
-        contents: PropTypes.arrayOf(
-          PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            images: PropTypes.arrayOf(PropTypes.string)
-          })
-        )
+        name: PropTypes.string.isRequired,
+        commits: PropTypes.arrayOf(PropTypes.string)
       })
     )
   }

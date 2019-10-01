@@ -149,7 +149,7 @@ export default class MatchPreview extends React.Component {
 
   fetchGitRepos(){
     this.setState(s => ({...s, isGitFetching: true}));
-    Backend.raisingFetch('/git_remotes/loaded', (payload) => {
+    Backend.raisingFetch('/remotes/loaded?entity=git', (payload) => {
       const data = DataUtils.objKeysToCamel(payload)['data'];
       this.updateBundle(H.setRemotesList('git', this, data));
       this.setState(s => ({...s, isGitFetching: false}));
@@ -158,7 +158,7 @@ export default class MatchPreview extends React.Component {
 
   fetchImageRepos(){
     this.setState(s => ({...s, isDockerFetching: true}));
-    Backend.raisingFetch('/image_registries/loaded', (payload) => {
+    Backend.raisingFetch('/remotes/loaded?entity=docker', (payload) => {
       const data = DataUtils.objKeysToCamel(payload)['data'];
       this.updateBundle(H.setRemotesList('img', this, data));
       this.setState(s => ({...s, isDockerFetching: false}));

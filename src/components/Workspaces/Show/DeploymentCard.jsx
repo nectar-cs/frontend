@@ -22,10 +22,10 @@ export default class DeploymentCard extends React.Component {
   }
 
   componentDidMount(){
-    // if(this.props.deployment.name === 'ruby-cluster'){
-    //   const bun = { deployment: this.props.deployment };
-    //   this.props.openModal(ImageActionsModal, bun)
-    // }
+    if(this.props.deployment.name === 'news-crawl'){
+      const bun = { deployment: this.props.deployment };
+      this.props.openModal(ImageActionsModal, bun)
+    }
   }
 
   renderHeader(){
