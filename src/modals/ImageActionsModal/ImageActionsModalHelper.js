@@ -138,6 +138,25 @@ export class ImageActionsModalHelper {
     } else return config;
   }
 
+  static setBranch(inst, gitBranch){
+    inst.setState(s => ({...s, choices: {...s.choices, gitBranch}}));
+    if(!inst.state.remotes.gitBranches[gitBranch]){
+      inst.setState(s => ({...s, isFetching: true}));
+      Backend.raisingFetch(``, resp => {
+        const commits = DataUtils.objKeysToCamel(resp)['data'];
+        inst.setState(s => ({
+          ...s,
+          remotes: {
+            ...s.remotes,
+            gitBranches: {
+              ...s.remotes.gitBranches,
+              [gitBranch]: commits
+            }}
+        }));
+      });
+    }
+  }
+
   static fullImgTag(inst, imageTag){
     const {imgRemoteName, imgRepoName} = inst.props.matching;
     return `${imgRemoteName}/${imgRepoName}:${imageTag}`;
