@@ -33,6 +33,13 @@ export default class DataUtils {
     return newHash;
   }
 
+  static aToO(array, valueCreator=()=>null){
+    const trans = (acc, crt) => (
+      { ...acc, [crt]: valueCreator(crt) }
+    );
+    return array.reduce(trans, {});
+  }
+
   static objKeysToCamel(o) {
     let newO, origKey, newKey, value;
     if (o instanceof Array) {

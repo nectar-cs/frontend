@@ -6,6 +6,7 @@ import SameTagOpHelper from "./OpHelpers/SameTagOpHelper";
 import DiffTagOpHelper from "./OpHelpers/DiffTagOpHelper";
 import ScalePodsHelper from "./OpHelpers/ScalePodsHelper";
 import Backend from "../../utils/Backend";
+import moment from "moment";
 
 export class ImageActionsModalHelper {
 
@@ -42,7 +43,6 @@ export class ImageActionsModalHelper {
 
   static fetchGitBranches(inst){
     let {gitRemoteId, gitRepoName} = inst.props.matching;
-    gitRepoName = null;
     if(!gitRemoteId || !gitRepoName) {
       const gitBranches = null;
       inst.setState(s => ({...s, remotes: { ...s.remotes, gitBranches }}));
@@ -52,7 +52,9 @@ export class ImageActionsModalHelper {
     const ep = `/remotes/${gitRemoteId}/${gitRepoName}/branches`;
 
     Backend.raisingFetch(ep, resp => {
-      const gitBranches = DataUtils.objKeysToCamel(resp)['data'];
+      const gitBranches = DataUtils.aToO(
+        DataUtils.objKeysToCamel(resp)['data']
+      );
       inst.setState(s => ({...s, remotes: {...s.remotes, gitBranches}}));
       this.setBranch(inst, Object.keys(gitBranches)[0])
     })
@@ -76,7 +78,7 @@ export class ImageActionsModalHelper {
 
   static setBranch(inst, gitBranch){
     inst.setState(s => ({...s, choices: {...s.choices, gitBranch}}));
-    if(!inst.state.remotes.gitBranches[gitBranch]){
+    if(inst.state.remotes.gitBranches[gitBranch] === null){
       this.fetchBranchCommits(inst, gitBranch);
     }
   }
@@ -155,6 +157,11 @@ export class ImageActionsModalHelper {
       conclusion,
       startTime: inst.startTime
     };
+  }
+
+  static commitToS(commit){
+    const at = moment(commit.timestamp).fromNow();
+    return `"${commit.message}" by ${commit.author} from ${at}`;
   }
 
 }

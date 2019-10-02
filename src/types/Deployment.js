@@ -33,4 +33,12 @@ const Matching = PropTypes.shape({
   imgRemoteId: PropTypes.number
 });
 
-export const Types = { Service, Deployment, Matching };
+const Commit = PropTypes.shape({
+  sha: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  timestamp: PropTypes.string.isRequired
+});
+
+
+export const Types = { Service, Deployment, Matching, Commit };

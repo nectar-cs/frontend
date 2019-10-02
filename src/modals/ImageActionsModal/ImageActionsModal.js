@@ -135,7 +135,6 @@ export default class ImageActionsModal extends React.Component {
     if(!this.isConfiguring()) return null;
     const { choices, remotes } = this.state;
     const deployment = this.props.deployment;
-    const selBranch = this.selBranchObj();
     const branchNames = Object.keys(remotes.gitBranches || {});
 
     return(
@@ -148,7 +147,7 @@ export default class ImageActionsModal extends React.Component {
         gitCommit={choices.gitCommit}
         availableTags={remotes.imageTags}
         availableBranches={remotes.gitBranches ? branchNames : null}
-        availableCommits={selBranch ? selBranch.commits : []}
+        availableCommits={this.selBranchObj()}
         initialReplicas={deployment.replicas}
         replaceModal={this.props.replaceModal}
       />
@@ -165,21 +164,14 @@ export default class ImageActionsModal extends React.Component {
   }
 
   renderButton(){
-    return(
-      <ModalButton
-        callback={() => this.submit()}
-        title='Apply'
-      />
-    )
+    return <ModalButton callback={() => this.submit()} title='Apply'/>
   }
 
   onFailure(){
-    console.log("Failure");
     this.setState(s => ({...s,  phase: PHASE_SUBMITTED}));
   }
 
   onSuccess(){
-    console.log("Success");
     this.submittedAt = new Date().getTime();
     this.setState(s => ({...s, phase: PHASE_SUBMITTED}));
     this.reloadPods(true);
@@ -250,11 +242,10 @@ export default class ImageActionsModal extends React.Component {
   }
 
   selBranchObj(){
-    if(this.state.remotes.gitBranches){
-      return this.state.remotes.gitBranches[
-        this.state.choices.gitBranch
-        ];
-    } else return null;
+    if(!this.state.remotes.gitBranches) return null;
+    return this.state.remotes.gitBranches[
+      this.state.choices.gitBranch
+    ];
   }
 
   notifySubscribers(){

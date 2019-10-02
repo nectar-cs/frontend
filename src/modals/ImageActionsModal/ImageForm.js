@@ -1,13 +1,14 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {InputLine, LineInput, LineLabel} from "../../assets/input-combos";
-import {S as LS} from "./../../assets/layouts"
 import { S } from './ImageFormStyles'
 import MiscUtils from "../../utils/MiscUtils";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import {defaults} from "./defaults";
 import {ROUTES} from "../../containers/RoutesConsts";
 import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
+import {Types} from "../../types/Deployment";
+import {ImageActionsModalHelper} from "./ImageActionsModalHelper";
 
 export default class ImageForm extends React.Component {
   render(){
@@ -18,6 +19,7 @@ export default class ImageForm extends React.Component {
         { this.renderScaleSelector() }
         { this.renderImgTagsSelector() }
         { this.renderGitBranchSelector() }
+        { this.renderGitCommitSelector() }
         { this.renderDockBlock() }
         { this.renderGitBlock() }
       </Fragment>
@@ -55,13 +57,6 @@ export default class ImageForm extends React.Component {
   renderScaleSelector(){
     if(this.props.operationType !== 'scale') return null;
 
-    const remover = (it) => it.value === this.props.initialReplicas ? null : it;
-    const text = (i) => `${i} Pods ${i === 0 ? '(Shut down)' : ''}`;
-    let options = Array.from({length: 20}, (v, i) => (
-      remover({ show: text(i), value: i })
-    ));
-    options = options.filter(op => op);
-
     return(
       <InputLine>
         <LineLabel>Scale to</LineLabel>
@@ -69,7 +64,7 @@ export default class ImageForm extends React.Component {
           as='select'
           value={this.props.scaleTo}
           onChange={(e) => this.onAssignment('scaleTo', e)}>
-          { MiscUtils.arrayOfHashesOptions(options) }
+          { MiscUtils.arrayOfHashesOptions(this.scaleOptions()) }
         </LineInput>
       </InputLine>
     )
@@ -77,7 +72,7 @@ export default class ImageForm extends React.Component {
 
   renderImgTagsSelector(){
     if(this.props.operationType !== 'docker') return null;
-    if(this.props.availableTags === null) return null;
+    if(!this.props.availableTags) return null;
 
     return(
       <InputLine>
@@ -94,16 +89,33 @@ export default class ImageForm extends React.Component {
 
   renderGitBranchSelector(){
     if(this.props.operationType !== 'git') return null;
-    if(this.props.availableBranches === null) return null;
+    if(!this.props.availableBranches) return null;
 
     return(
       <InputLine>
-        <LineLabel>Image</LineLabel>
+        <LineLabel>Branch</LineLabel>
         <LineInput
           as='select'
-          value={this.props.imageTag}
-          onChange={(e) => this.onAssignment('imageTag', e)}>
-          { MiscUtils.arrayOptions(this.props.availableTags) }
+          value={this.props.gitBranch}
+          onChange={(e) => this.onAssignment('gitBranch', e)}>
+          { MiscUtils.arrayOptions(this.props.availableBranches) }
+        </LineInput>
+      </InputLine>
+    )
+  }
+
+  renderGitCommitSelector(){
+    if(this.props.operationType !== 'git') return null;
+    if(!this.props.availableCommits) return null;
+
+    return(
+      <InputLine>
+        <LineLabel>Commit</LineLabel>
+        <LineInput
+          as='select'
+          value={this.props.gitCommit}
+          onChange={(e) => this.onAssignment('gitCommit', e)}>
+          { MiscUtils.arrayOfHashesOptions(this.commitOptions()) }
         </LineInput>
       </InputLine>
     )
@@ -128,6 +140,21 @@ export default class ImageForm extends React.Component {
     this.props.onAssignment(setting);
   }
 
+  commitOptions(){
+    return this.props.availableCommits.map(commit => ({
+      value: commit.sha,
+      show: ImageActionsModalHelper.commitToS(commit)
+    }));
+  }
+
+  scaleOptions(){
+    const initial = this.props.initialReplicas;
+    const remover = (it) => it.value === initial ? null : it;
+    const text = (i) => `${i} Pods ${i === 0 ? '(Shut down)' : ''}`;
+    const maker = (v, i) => remover({ show: text(i), value: i });
+    return Array.from({length: 20}, maker).filter(op => op);
+  }
+
   static operationTypeOptions(){
     return MiscUtils.hashOptions({
       reload: "Force pull & apply an image with the same name",
@@ -146,14 +173,10 @@ export default class ImageForm extends React.Component {
     imageTag: PropTypes.string,
     gitBranch: PropTypes.string,
     gitCommit: PropTypes.string,
-    availableTags: PropTypes.arrayOf(PropTypes.string).isRequired,
-    availableBranches: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        commits: PropTypes.arrayOf(PropTypes.string)
-      })
-    ),
-    replaceModal: PropTypes.func.isRequired
+    availableTags: PropTypes.arrayOf(PropTypes.string),
+    availableBranches: PropTypes.arrayOf(PropTypes.string),
+    replaceModal: PropTypes.func.isRequired,
+    availableCommits: PropTypes.arrayOf(Types.Commit),
   }
 }
 
@@ -167,7 +190,7 @@ function BlockPrompt(props){
   const icon = defaults.els.blockedIcon;
 
   return(
-    <CenterAnnouncement iconName={icon} contentType='children'>
+    <CenterAnnouncement iconName={icon} contentType='children' light={true}>
       <S.NoDockerOne>{l1}</S.NoDockerOne>
       <S.NoDockerOne>{l2}</S.NoDockerOne>
     </CenterAnnouncement>
