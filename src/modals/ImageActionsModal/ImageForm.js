@@ -16,8 +16,10 @@ export default class ImageForm extends React.Component {
         { this.renderTypeLine() }
         { this.renderImageNameLine() }
         { this.renderScaleSelector() }
-        { this.renderMyImagesSelector() }
+        { this.renderImgTagsSelector() }
+        { this.renderGitBranchSelector() }
         { this.renderDockBlock() }
+        { this.renderGitBlock() }
       </Fragment>
     )
   }
@@ -73,9 +75,26 @@ export default class ImageForm extends React.Component {
     )
   }
 
-  renderMyImagesSelector(){
+  renderImgTagsSelector(){
     if(this.props.operationType !== 'docker') return null;
     if(this.props.availableTags === null) return null;
+
+    return(
+      <InputLine>
+        <LineLabel>Image</LineLabel>
+        <LineInput
+          as='select'
+          value={this.props.imageTag}
+          onChange={(e) => this.onAssignment('imageTag', e)}>
+          { MiscUtils.arrayOptions(this.props.availableTags) }
+        </LineInput>
+      </InputLine>
+    )
+  }
+
+  renderGitBranchSelector(){
+    if(this.props.operationType !== 'git') return null;
+    if(this.props.availableBranches === null) return null;
 
     return(
       <InputLine>
@@ -93,20 +112,15 @@ export default class ImageForm extends React.Component {
   renderDockBlock(){
     if(this.props.operationType !== 'docker') return null;
     if(this.props.availableTags) return null;
+    const args = { remoteType:'Docker', remoteEntity: 'registry' };
+    return <BlockPrompt {...args} replaceModal={this.props.replaceModal} />;
+  }
 
-    const replaceModal = this.props.replaceModal;
-    const bindPath = ROUTES.deployments.detect.path;
-    const connAction = () => replaceModal(IntegrationsModal);
-
-    return(
-      <CenterAnnouncement
-        iconName='sentiment_very_dissatisfied'
-        contentType='children'>
-        <S.NoDockerOne>{defaults.copy.dockerNotSet}</S.NoDockerOne>
-        <S.NoDockerOne>{defaults.els.dockerConn(connAction)}</S.NoDockerOne>
-        <S.NoDockerOne>{defaults.els.dockerBind(bindPath)}</S.NoDockerOne>
-      </CenterAnnouncement>
-    )
+  renderGitBlock(){
+    if(this.props.operationType !== 'git') return null;
+    if(this.props.availableBranches) return null;
+    const args = { remoteType: 'Git', remoteEntity: 'repo' };
+    return <BlockPrompt {...args} replaceModal={this.props.replaceModal} />;
   }
 
   onAssignment(name, event){
@@ -142,3 +156,26 @@ export default class ImageForm extends React.Component {
     replaceModal: PropTypes.func.isRequired
   }
 }
+
+function BlockPrompt(props){
+  const replaceModal = props.replaceModal;
+  const bindPath = ROUTES.deployments.detect.path;
+  const connAction = () => replaceModal(IntegrationsModal);
+
+  const l1 = defaults.els.blockedConn(connAction, props.remoteType);
+  const l2 = defaults.els.blockedBind(bindPath, props.remoteEntity);
+  const icon = defaults.els.blockedIcon;
+
+  return(
+    <CenterAnnouncement iconName={icon} contentType='children'>
+      <S.NoDockerOne>{l1}</S.NoDockerOne>
+      <S.NoDockerOne>{l2}</S.NoDockerOne>
+    </CenterAnnouncement>
+  )
+}
+
+BlockPrompt.propTypes = {
+  replaceModal: PropTypes.func.isRequired,
+  remoteType: PropTypes.string.isRequired,
+  remoteEntity: PropTypes.string.isRequired
+};

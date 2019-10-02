@@ -26,15 +26,16 @@ export const defaults ={
   },
 
   els: {
-    dockerBind: (path) => (
+    blockedConn: (action, thing) => (
       <Fragment>
-        And that you <a href={path}>bind</a> this deployment to a registry.
+        Make sure you <a onClick={action}>connect</a> to {thing}.
       </Fragment>
     ),
-    dockerConn: (action) => (
+    blockedBind: (path, thing) => (
       <Fragment>
-        Make sure you <a onClick={action}>connect</a> to Docker.
+        And that you <a href={path}>bind</a> this deployment to a {thing}.
       </Fragment>
-    )
+    ),
+    blockedIcon: "sentiment_very_dissatisfied"
   }
 };

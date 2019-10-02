@@ -25,7 +25,7 @@ export default class ImageActionsModal extends React.Component {
     super(props);
     this.state = {
       choices: {
-        operationType: 'docker',
+        operationType: 'git',
         imageName: this.imgDebug(),
         scaleTo: (props.deployment.replicas + 1).toString(),
         imgSource: '',
@@ -58,7 +58,8 @@ export default class ImageActionsModal extends React.Component {
 
   componentDidMount(){
     Helper.fetchPods(this, 'initialPods');
-    Helper.fetchDockerImgs(this);
+    Helper.fetchImgTags(this);
+    Helper.fetchGitBranches(this);
   }
 
   componentWillUnmount(){
@@ -134,6 +135,9 @@ export default class ImageActionsModal extends React.Component {
     if(!this.isConfiguring()) return null;
     const { choices, remotes } = this.state;
     const deployment = this.props.deployment;
+    const selBranch = this.selBranchObj();
+    const branchNames = Object.keys(remotes.gitBranches || {});
+
     return(
       <ImageForm
         onAssignment={(a) => this.onAssignment(a)}
@@ -143,7 +147,8 @@ export default class ImageActionsModal extends React.Component {
         gitBranch={choices.gitBranch}
         gitCommit={choices.gitCommit}
         availableTags={remotes.imageTags}
-        availableRemotes={remotes.gitBranches}
+        availableBranches={remotes.gitBranches ? branchNames : null}
+        availableCommits={selBranch ? selBranch.commits : []}
         initialReplicas={deployment.replicas}
         replaceModal={this.props.replaceModal}
       />
@@ -241,8 +246,15 @@ export default class ImageActionsModal extends React.Component {
 
   onAssignment(assignment){
     const merged = {...this.state.choices, ...assignment};
-    const cleaned = Helper.coerceConfig(merged, assignment);
-    this.setState(s => ({...s, choices: cleaned}));
+    this.setState(s => ({...s, choices: merged}));
+  }
+
+  selBranchObj(){
+    if(this.state.remotes.gitBranches){
+      return this.state.remotes.gitBranches[
+        this.state.choices.gitBranch
+        ];
+    } else return null;
   }
 
   notifySubscribers(){
