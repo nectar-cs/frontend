@@ -71,9 +71,18 @@ export class ImageActionsModalHelper {
       inst.setState(s => {
         const branches = {...s.remotes.gitBranches, [gitBranch]: commits };
         const remotes = { ...s.remotes, gitBranches: branches };
-        return({...s, isFetching: false, remotes})
+        const choices = { ...s.choices, gitCommit: commits[0].sha };
+        return({...s, isFetching: false, remotes, choices})
       });
     });
+  }
+
+  static sideEffect(inst, field, value){
+    if(field === 'gitBranch') {
+      this.setBranch(inst, value);
+      return true;
+    }
+    return false;
   }
 
   static setBranch(inst, gitBranch){
@@ -110,7 +119,6 @@ export class ImageActionsModalHelper {
 
     if(!(inst.opHelper instanceof oughtToBeClass)){
       inst.opHelper = new oughtToBeClass();
-      // console.log(`New cached helper: ${oughtToBeClass.name}`)
     }
 
     inst.opHelper.refresh(this.makeOpHelperBundle(inst));
@@ -144,6 +152,11 @@ export class ImageActionsModalHelper {
       case "change": return "new_image";
       default: throw `No helper for op type ${opType}`;
     }
+  }
+
+  static defOutImageName(inst){
+    const { matching } = inst.props;
+    return `${matching.imgRemoteName}/${inst.imgRepoName}:latest`;
   }
 
   static makeOpHelperBundle(inst){

@@ -20,6 +20,7 @@ export default class ImageForm extends React.Component {
         { this.renderImgTagsSelector() }
         { this.renderGitBranchSelector() }
         { this.renderGitCommitSelector() }
+        { this.renderOutImageNameLine() }
         { this.renderDockBlock() }
         { this.renderGitBlock() }
       </Fragment>
@@ -121,6 +122,22 @@ export default class ImageForm extends React.Component {
     )
   }
 
+  renderOutImageNameLine(){
+    if(this.props.operationType !== 'git') return null;
+    if(!this.props.availableCommits) return null;
+
+    return(
+      <InputLine>
+        <LineLabel>Output Image</LineLabel>
+        <LineInput
+          disabled={this.props.operationType !== 'change'}
+          value={this.props.outImageName}
+          onChange={(e) => this.onAssignment('outImageName', e)}/>
+      </InputLine>
+    )
+  }
+
+
   renderDockBlock(){
     if(this.props.operationType !== 'docker') return null;
     if(this.props.availableTags) return null;
@@ -170,6 +187,8 @@ export default class ImageForm extends React.Component {
     operationType: PropTypes.string.isRequired,
     scaleTo: PropTypes.string.isRequired,
     initialReplicas: PropTypes.number.isRequired,
+    imageName: PropTypes.string,
+    outImageName: PropTypes.string,
     imageTag: PropTypes.string,
     gitBranch: PropTypes.string,
     gitCommit: PropTypes.string,

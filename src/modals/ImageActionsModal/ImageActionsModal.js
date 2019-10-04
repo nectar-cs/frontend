@@ -27,6 +27,7 @@ export default class ImageActionsModal extends React.Component {
       choices: {
         operationType: 'git',
         imageName: this.imgDebug(),
+        outImageName: Helper.defOutImageName(this),
         scaleTo: (props.deployment.replicas + 1).toString(),
         imgSource: '',
         gitBranch: '',
@@ -146,6 +147,7 @@ export default class ImageActionsModal extends React.Component {
         gitBranch={choices.gitBranch}
         gitCommit={choices.gitCommit}
         availableTags={remotes.imageTags}
+        outImageName={choices.outImageName}
         availableBranches={remotes.gitBranches ? branchNames : null}
         availableCommits={this.selBranchObj()}
         initialReplicas={deployment.replicas}
@@ -238,7 +240,11 @@ export default class ImageActionsModal extends React.Component {
 
   onAssignment(assignment){
     const merged = {...this.state.choices, ...assignment};
-    this.setState(s => ({...s, choices: merged}));
+    const key = Object.keys(assignment)[0];
+    const value = Object.values(assignment)[0];
+
+    if(!Helper.sideEffect(this, key, value))
+      this.setState(s => ({...s, choices: merged}));
   }
 
   selBranchObj(){
