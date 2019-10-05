@@ -266,6 +266,6 @@ export default class ImageActionsModal extends React.Component {
   };
 
   static defaultProps = {
-    operationType: "docker"
+    operationType: "change"
   }
 }

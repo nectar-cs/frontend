@@ -12,5 +12,4 @@ export default class Helper{
     const { statedBranch, statedCommit } = inst.props.deployment;
     return statedBranch && statedCommit;
   }
-
 }

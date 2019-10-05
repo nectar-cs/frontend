@@ -53,16 +53,31 @@ const HeaderSubtitle = styled(HeaderText)`
   bottom: 1px
 `;
 
-const PodStatusesBox = styled.div`
+const BottomBox = styled.div`
   position: absolute;
-  border-style: solid;
   border-width: 0;
-  border-color: #ddd;
   bottom: 0;
   left: -2px;
-  right: -2px;
+  right: 90px;
   display: flex;
   padding: 12px 0 12px 4px;
+`;
+
+const PodStatusesBox = styled.div`
+  flex-grow: 8;
+  display: flex;
+`;
+
+const AdditionalControlsBox = styled.div`
+  flex-grow: 1;
+  width: auto;
+  display: flex;
+  flex-direction: row-reverse;
+`;
+
+const ControlIcon = styled.i`
+  font-size: 19px;
+  color: ${p => p.theme.colors.contrastLessFont}
 `;
 
 const PodCircle = styled.div`
@@ -85,7 +100,10 @@ const S = {
   HeaderImage,
   HeaderTitle,
   HeaderSubtitle,
-  ContentRows
+  ContentRows,
+  BottomBox,
+  AdditionalControlsBox,
+  ControlIcon
 };
 
 export { S };

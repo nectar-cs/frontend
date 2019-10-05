@@ -22,15 +22,15 @@ export default class DeploymentCard extends React.Component {
       <S.Card>
         { this.renderHeader() }
         { this.renderContentRows() }
-        { this.renderPodStatuses() }
+        { this.renderBottomContent() }
       </S.Card>
     )
   }
 
   componentDidMount(){
-    if(this.props.deployment.name === 'news-crawl'){
-      this.openSourceModal();
-    }
+    // if(this.props.deployment.name === 'news-crawl'){
+    //   this.openSourceModal();
+    // }
   }
 
   renderHeader(){
@@ -75,6 +75,29 @@ export default class DeploymentCard extends React.Component {
         { this.buildRow('Ports', portText, null) }
       </tbody>
     </S.ContentRows>;
+  }
+
+  renderBottomContent(){
+    return(
+      <S.BottomBox>
+        { this.renderPodStatuses() }
+        { this.renderAdditionalControls() }
+      </S.BottomBox>
+    )
+  }
+
+  renderPodStatuses() {
+    const pods = this.props.deployment.pods;
+    const comps = pods.map(p => <S.PodCircle emotion={p.state} key={p.name}/>);
+    return <S.PodStatusesBox>{ comps }</S.PodStatusesBox>;
+  }
+
+  renderAdditionalControls(){
+    return(
+      <S.AdditionalControlsBox>
+        <ControlIcon icon='attach_money'/>
+      </S.AdditionalControlsBox>
+    )
   }
 
   sourceString(){
@@ -124,12 +147,6 @@ export default class DeploymentCard extends React.Component {
     )
   }
 
-  renderPodStatuses() {
-    const pods = this.props.deployment.pods;
-    const comps = pods.map(p => <S.PodCircle emotion={p.state} key={p.name}/>);
-    return <S.PodStatusesBox>{ comps }</S.PodStatusesBox>;
-  }
-
   detailPath(){
     return makeRoute(
       ROUTES.deployments.show.path, {
@@ -145,4 +162,12 @@ export default class DeploymentCard extends React.Component {
     openModal: PropTypes.func.isRequired,
     refreshCallback: PropTypes.func.isRequired
   };
+}
+
+function ControlIcon(props){
+  return(
+    <S.ControlIcon className='material-icons'>
+      { props.icon }
+    </S.ControlIcon>
+  )
 }

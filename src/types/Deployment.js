@@ -19,6 +19,7 @@ const LightPod = PropTypes.shape({
 
 const Deployment = PropTypes.shape({
   name: PropTypes.string.isRequired,
+  namespace: PropTypes.string.isRequired,
   imageName: PropTypes.string.isRequired,
   replicas: PropTypes.number.isRequired,
   pods: PropTypes.arrayOf(LightPod).isRequired,

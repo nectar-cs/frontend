@@ -18,6 +18,7 @@ const defaults = {
     ],
     lines2: [
       "You need to tag your Deployment when you're updating/reloading its image.",
+      "That way, Nectar can pick it up.",
       "Add the following to your CD logic: "
     ],
     lines3: [
@@ -26,10 +27,10 @@ const defaults = {
       "Click below to try, but remember to update your CD so it happens every time."
     ],
     commands: (name, ns) => [
-      `kubectl config set-context --current --namespace=my-${ns}`,
-      `kubectl annotate deployments ${name} branch=$BRANCH`,
-      `kubectl annotate deployments ${name} commit-message=$MSG`,
-      `kubectl annotate deployments ${name} commit=$COMMIT_SHA`
+      `kubectl config set-context --current --namespace=${ns}`,
+      `kubectl annotate deployment ${name} branch=$COMMIT_BRANCH`,
+      `kubectl annotate deployment ${name} commit-msg=$COMMIT_MSG`,
+      `kubectl annotate deployment ${name} commit-sha=$COMMIT_SHA`
     ]
   },
 };
