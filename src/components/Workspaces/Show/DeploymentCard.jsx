@@ -22,7 +22,8 @@ export default class DeploymentCard extends React.Component {
       <S.Card>
         { this.renderHeader() }
         { this.renderContentRows() }
-        { this.renderBottomContent() }
+        { this.renderPodStatuses() }
+        { this.renderAdditionalControls() }
       </S.Card>
     )
   }
@@ -64,7 +65,7 @@ export default class DeploymentCard extends React.Component {
     const svc = this.props.deployment.services[0];
 
     const dnsMaterial = svc.externalIp ? 'language' : null;
-    const portText = `${svc.toPort} <- ${svc.fromPort}`;
+    const portText = `Ok CPU, low RAM`;
     const dnsAction = () => this.openHttpModal(svc.shortDns);
 
     return <S.ContentRows>
@@ -72,30 +73,25 @@ export default class DeploymentCard extends React.Component {
         { this.buildRow('Image', dep.imageName, this.openImageModal) }
         { this.buildRow('Source', this.sourceString(), this.openSourceModal) }
         { this.buildRow('Quick DNS', svc.shortDns, dnsAction, dnsMaterial) }
-        { this.buildRow('Ports', portText, null) }
+        { this.buildRow('Status', portText, null) }
       </tbody>
     </S.ContentRows>;
   }
 
-  renderBottomContent(){
-    return(
-      <S.BottomBox>
-        { this.renderPodStatuses() }
-        { this.renderAdditionalControls() }
-      </S.BottomBox>
-    )
-  }
-
   renderPodStatuses() {
     const pods = this.props.deployment.pods;
-    const comps = pods.map(p => <S.PodCircle emotion={p.state} key={p.name}/>);
-    return <S.PodStatusesBox>{ comps }</S.PodStatusesBox>;
+    const views = pods.map(p =>
+      <S.PodCircle emotion={p.state} key={p.name}/>
+    );
+    return <S.PodStatusesBox>{views}</S.PodStatusesBox>
   }
 
   renderAdditionalControls(){
     return(
       <S.AdditionalControlsBox>
         <ControlIcon icon='attach_money'/>
+        <ControlIcon icon='call_merge'/>
+        <ControlIcon icon='import_export'/>
       </S.AdditionalControlsBox>
     )
   }

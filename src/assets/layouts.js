@@ -1,5 +1,10 @@
 import styled from 'styled-components'
 
+const Dims = {
+  containerPaddingVert: "12px",
+  containerPaddingHor: "16px",
+};
+
 export const MosaicContainer = styled.div`
   background: ${p => p.theme.colors.contrastColor};
 `;
@@ -19,7 +24,7 @@ export const Intro = styled.p`
 
 const ContentContainer = styled(MosaicContainer)`
   position: absolute;
-  padding: 12px 16px;
+  padding: ${Dims.containerPaddingVert} ${Dims.containerPaddingHor};
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -63,6 +68,7 @@ const Layout = {
   RightPanel,
   TextLine ,
   FullWidthPanel,
-  BigCodeViewer
+  BigCodeViewer,
+  Dims
 };
 export { Layout };

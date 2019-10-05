@@ -53,31 +53,33 @@ const HeaderSubtitle = styled(HeaderText)`
   bottom: 1px
 `;
 
-const BottomBox = styled.div`
+const PodStatusesBox = styled.div`
   position: absolute;
-  border-width: 0;
   bottom: 0;
   left: -2px;
-  right: 90px;
+  right: -2px;
   display: flex;
-  padding: 12px 0 12px 4px;
-`;
-
-const PodStatusesBox = styled.div`
-  flex-grow: 8;
-  display: flex;
-`;
+  padding: 12px 0 12px 4px;`
+;
 
 const AdditionalControlsBox = styled.div`
-  flex-grow: 1;
-  width: auto;
-  display: flex;
+  position: absolute;
+  bottom: -4px;
+  left: -2px;
+  right: 4px;
+  display: inline-flex;
   flex-direction: row-reverse;
+  padding: 12px 0 12px 4px;
 `;
 
 const ControlIcon = styled.i`
   font-size: 19px;
-  color: ${p => p.theme.colors.contrastLessFont}
+  margin-left: 7px;
+  color: ${p => p.theme.colors.contrastLessFont};
+  &:hover{
+    color: ${p => p.theme.colors.primaryColor};  
+    cursor: pointer;
+  }
 `;
 
 const PodCircle = styled.div`
@@ -101,7 +103,6 @@ const S = {
   HeaderTitle,
   HeaderSubtitle,
   ContentRows,
-  BottomBox,
   AdditionalControlsBox,
   ControlIcon
 };
