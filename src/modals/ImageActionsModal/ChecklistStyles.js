@@ -1,12 +1,6 @@
 import styled from "styled-components";
 import {ModSpinner} from "../../assets/loading-spinner";
-
-function colored(name, p){
-  if(name){
-    const color = p.theme.ali(name);
-    return p.theme.colors[color];
-  } else return p.theme.colors.primaryColor;
-}
+import {colored} from "../../assets/constants";
 
 export const List = styled.ul`
   margin-top: 30px;

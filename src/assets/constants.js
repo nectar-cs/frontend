@@ -13,7 +13,8 @@ export const theme = {
     lineColor: "#455D7A",
     success: "#326342",
     fail: "darkred",
-    warn: "tomato"
+    warn: "tomato",
+    warn2: "orange"
   },
 
   dims: {
@@ -22,14 +23,26 @@ export const theme = {
   },
 
   ali: (name) => {
+    name = name.toLowerCase();
     if(name === 'success') return 'success';
     if(name === 'good') return 'success';
     if(name === 'connected') return "success";
+    if(name === 'running') return "success";
     if(name === 'true') return "success";
     if(name === 'fail') return 'fail';
     if(name === 'failure') return 'fail';
+    if(name === 'terminating') return 'fail';
+    if(name === 'terminated') return 'fail';
     if(name === 'failed') return 'fail';
+    if(name === 'unknown') return 'primaryFontMuted';
     if(name === 'idle') return 'primaryFontLess';
     return 'primaryColor';
-  }
+  },
 };
+
+export function colored(name){
+  if(name){
+    const color = theme.ali(name);
+    return theme.colors[color];
+  } else return theme.colors.primaryColor;
+}

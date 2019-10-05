@@ -1,34 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import s from './DeploymentCard.sass'
 import MiscUtils from '../../../utils/MiscUtils';
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
 import PortActionsModal from "../../../modals/PortActionsModal/PortActionsModal";
 import CardRow from "./CardRow";
-import {FULL_DEPLOYMENT, Types} from "../../../types/Deployment";
+import {Types} from "../../../types/Deployment";
 import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
+import { S } from "./DeploymentCardStyles"
 
 export default class DeploymentCard extends React.Component {
 
   render(){
     return(
-      <div className={s.card}>
+      <S.Card>
         { this.renderHeader() }
         { this.renderContentRows() }
         { this.renderPodStatuses() }
-      </div>
+      </S.Card>
     )
   }
 
   componentDidMount(){
-    if(this.props.deployment.name === 'news-crawl'){
-      const bun = {
-        deployment: this.props.deployment,
-        matching: this.props.microservice
-      };
-      this.props.openModal(ImageActionsModal, bun)
-    }
+    // if(this.props.deployment.name === 'news-crawl'){
+    //   const bun = {
+    //     deployment: this.props.deployment,
+    //     matching: this.props.microservice
+    //   };
+    //   this.props.openModal(ImageActionsModal, bun)
+    // }
   }
 
   renderHeader(){
@@ -39,11 +39,13 @@ export default class DeploymentCard extends React.Component {
     const subtitle = git || "Not connected to Git";
 
     return(
-      <div className={s.header}>
-        <img className={s.headerImage} src={frameworkImg} alt='Language'/>
-        <a href={this.detailPath()}><p className={s.headerTitle}>{dep.name}</p></a>
-        <p className={s.headerSubtitle}>{subtitle}</p>
-      </div>
+      <S.Header>
+        <S.HeaderImage src={frameworkImg} alt='Language'/>
+        <a href={this.detailPath()}>
+          <S.HeaderTitle>{dep.name}</S.HeaderTitle>
+        </a>
+        <S.HeaderSubtitle>{subtitle}</S.HeaderSubtitle>
+      </S.Header>
     )
   }
 
@@ -66,14 +68,14 @@ export default class DeploymentCard extends React.Component {
     const ipAction = () => this.openHttpModal(svc.internalIp);
     const imageAction = () => this.openImageModal();
 
-    return <table className={s.contentRows}>
+    return <S.ContentRows>
       <tbody>
         { this.buildRow('Image', dep.imageName, imageAction) }
-        { this.buildRow('Ports', portText, PortActionsModal) }
+       { this.buildRow('Ports', portText, PortActionsModal) }
         { this.buildRow('Dns', svc.shortDns, dnsAction) }
         { this.buildRow(ipLabel, ipText, ipAction) }
       </tbody>
-    </table>;
+    </S.ContentRows>;
   }
 
   openHttpModal(text){
@@ -109,13 +111,9 @@ export default class DeploymentCard extends React.Component {
   }
 
   renderPodStatuses() {
-    const rows = this.props.deployment.pods.map((pod) => {
-      const statusCol = `podStatus${pod.state || "Unknown"}`;
-      return (
-        <div className={`${s.podCircle} ${s[statusCol]}`} key={pod.name}/>
-      )
-    });
-    return <div className={s.podStatusesBox}>{ rows }</div>;
+    const pods = this.props.deployment.pods;
+    const comps = pods.map(p => <S.PodCircle emotion={p.state} key={p.name}/>);
+    return <S.PodStatusesBox>{ comps }</S.PodStatusesBox>;
   }
 
   detailPath(){

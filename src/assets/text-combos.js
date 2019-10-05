@@ -1,9 +1,5 @@
 import styled from "styled-components";
-
-function colored(name, p){
-  const color = p.theme.ali(name);
-  return p.theme.colors[color];
-}
+import {colored} from "./constants";
 
 export const StatusTag = styled.p`
   border-radius: 3px;

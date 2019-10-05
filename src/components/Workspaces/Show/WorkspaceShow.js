@@ -10,9 +10,6 @@ import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnoun
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import DataUtils from "../../../utils/DataUtils";
-import {createSelectable, SelectableGroup} from "react-selectable";
-
-const SelectableCard = createSelectable(DeploymentCard);
 
 class WorkspaceShowClass extends React.Component{
 
@@ -92,7 +89,7 @@ class WorkspaceShowClass extends React.Component{
     if(this.state.isFetching) return null;
 
     const cards = this.state.deployments.map((deployment) => (
-      <SelectableCard
+      <DeploymentCard
         selectableKey={deployment.name}
         key={deployment.name}
         deployment={deployment}
@@ -103,11 +100,11 @@ class WorkspaceShowClass extends React.Component{
     ));
 
     return(
-      <SelectableGroup>
+      <div>
         <S.CardGrid>
           { cards }
         </S.CardGrid>
-      </SelectableGroup>
+      </div>
     )
   }
 

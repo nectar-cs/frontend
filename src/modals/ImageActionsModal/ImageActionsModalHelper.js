@@ -156,7 +156,7 @@ export class ImageActionsModalHelper {
 
   static defOutImageName(inst){
     const { matching } = inst.props;
-    return `${matching.imgRemoteName}/${inst.imgRepoName}:latest`;
+    return `${matching.imgRemoteName}/${matching.imgRepoName}:latest`;
   }
 
   static makeOpHelperBundle(inst){

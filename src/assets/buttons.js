@@ -1,11 +1,5 @@
 import styled from 'styled-components'
-
-function colored(name, p){
-  if(name){
-    const color = p.theme.ali(name);
-    return p.theme.colors[color];
-  } else return p.theme.colors.primaryColor;
-}
+import {colored} from "./constants";
 
 export const SmallButton = styled.button`
   color: ${p => p.theme.colors.contrastFont};

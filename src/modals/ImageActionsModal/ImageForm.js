@@ -130,7 +130,6 @@ export default class ImageForm extends React.Component {
       <InputLine>
         <LineLabel>Output Image</LineLabel>
         <LineInput
-          disabled={this.props.operationType !== 'change'}
           value={this.props.outImageName}
           onChange={(e) => this.onAssignment('outImageName', e)}/>
       </InputLine>
@@ -178,7 +177,7 @@ export default class ImageForm extends React.Component {
       change: "Supply a new image name",
       scale: "Scale the number of pods",
       docker: "Choose a docker image from your remote registry",
-      git: "Build an image from a git remote"
+      git: "Build & apply an image from a git remote"
     })
   }
 
