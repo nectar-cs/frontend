@@ -7,8 +7,15 @@ import CardRow from "./CardRow";
 import {Types} from "../../../types/Deployment";
 import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
 import { S } from "./DeploymentCardStyles"
+import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
 
 export default class DeploymentCard extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.openImageModal = this.openImageModal.bind(this);
+    this.openSourceModal = this.openSourceModal.bind(this);
+  }
 
   render(){
     return(
@@ -21,18 +28,14 @@ export default class DeploymentCard extends React.Component {
   }
 
   componentDidMount(){
-    // if(this.props.deployment.name === 'news-crawl'){
-    //   const bun = {
-    //     deployment: this.props.deployment,
-    //     matching: this.props.microservice
-    //   };
-    //   this.props.openModal(ImageActionsModal, bun)
-    // }
+    if(this.props.deployment.name === 'news-crawl'){
+      this.openSourceModal();
+    }
   }
 
   renderHeader(){
     const dep = this.props.deployment;
-    const ms  = this.props.microservice;
+    const ms  = this.props.matching;
     let frameworkImg = MiscUtils.msImage(dep, ms);
     let git = this.hasGit() ? MiscUtils.gitSummary(ms) : null;
     const subtitle = git || "Not connected to Git";
@@ -49,11 +52,11 @@ export default class DeploymentCard extends React.Component {
   }
 
   hasMs(){
-    return !!this.props.microservice;
+    return !!this.props.matching;
   }
 
   hasGit(){
-    return this.hasMs() && this.props.microservice.gitRemoteName;
+    return this.hasMs() && this.props.matching.gitRemoteName;
   }
 
   renderContentRows(){
@@ -63,12 +66,11 @@ export default class DeploymentCard extends React.Component {
     const dnsMaterial = svc.externalIp ? 'language' : null;
     const portText = `${svc.toPort} <- ${svc.fromPort}`;
     const dnsAction = () => this.openHttpModal(svc.shortDns);
-    const imageAction = () => this.openImageModal();
 
     return <S.ContentRows>
       <tbody>
-        { this.buildRow('Image', dep.imageName, imageAction) }
-        { this.buildRow('Source', this.sourceString(), null) }
+        { this.buildRow('Image', dep.imageName, this.openImageModal) }
+        { this.buildRow('Source', this.sourceString(), this.openSourceModal) }
         { this.buildRow('Quick DNS', svc.shortDns, dnsAction, dnsMaterial) }
         { this.buildRow('Ports', portText, null) }
       </tbody>
@@ -87,7 +89,7 @@ export default class DeploymentCard extends React.Component {
     const svc = this.props.deployment.services[0];
     const bundle = {
       deployment: this.props.deployment,
-      matching: this.props.microservice,
+      matching: this.props.matching,
       targetHost: text,
       port: svc.fromPort
     };
@@ -98,10 +100,16 @@ export default class DeploymentCard extends React.Component {
   openImageModal(){
     const bundle = {
       deployment: this.props.deployment,
-      matching: this.props.microservice,
+      matching: this.props.matching,
       refreshCallback: this.props.refreshCallback
     };
     this.props.openModal(ImageActionsModal, bundle);
+  }
+
+  openSourceModal(){
+    const { deployment, matching, replaceModal } = this.props;
+    let bundle = {deployment, matching, replaceModal};
+    this.props.openModal(DepSourceModal, bundle);
   }
 
   buildRow(label, text, openModalFunc, material){
@@ -133,7 +141,7 @@ export default class DeploymentCard extends React.Component {
 
   static propTypes = {
     deployment: Types.Deployment,
-    microservice: Types.Matching,
+    matching: Types.Matching,
     openModal: PropTypes.func.isRequired,
     refreshCallback: PropTypes.func.isRequired
   };

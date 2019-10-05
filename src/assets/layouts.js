@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const MosaicContainer = styled.div`
-  background: white;
+  background: ${p => p.theme.colors.contrastColor};
 `;
 
 export const StandardLayout = styled(MosaicContainer)`
@@ -17,9 +17,8 @@ export const Intro = styled.p`
   margin-top: 22px;
 `;
 
-const ContentContainer = styled.div`
+const ContentContainer = styled(MosaicContainer)`
   position: absolute;
-  background: ${p => p.theme.colors.contrastColor};
   padding: 12px 16px;
   box-sizing: border-box;
   border-radius: 4px;
@@ -51,11 +50,19 @@ const TextLine = styled.div`
   width: 100%
 `;
 
-const S = {
+const BigCodeViewer = styled.div`
+  margin-top: 18px;
+  padding: 20px 12px;
+  border-radius: 4px;
+  background: ${p => p.theme.colors.primaryColor};
+`;
+
+const Layout = {
   ContentContainer,
   LeftPanel,
   RightPanel,
   TextLine ,
-  FullWidthPanel
+  FullWidthPanel,
+  BigCodeViewer
 };
-export { S };
+export { Layout };

@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import {S} from './../../assets/layouts'
+import {Layout} from './../../assets/layouts'
 import TextOverLineTitle from "../../widgets/TextOverLineTitle/TextOverLineTitle";
 import {StatusTag} from "../../assets/text-combos";
 import {FROM_COUNT, TO_COUNT} from "./NetworkTest";
@@ -14,10 +14,10 @@ export default class TestResults extends React.Component {
 
   render(){
     return(
-      <S.RightPanel>
+      <Layout.RightPanel>
         <TextOverLineTitle text='Results'/>
         { this.renderTable() }
-      </S.RightPanel>
+      </Layout.RightPanel>
     )
   }
 

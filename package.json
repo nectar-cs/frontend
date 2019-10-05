@@ -68,6 +68,7 @@
     "react-selectable": "^2.0.2",
     "react-simple-code-editor": "^0.9.14",
     "react-svg": "^10.0.11",
+    "react-syntax-highlighter": "^11.0.2",
     "react-tag-autocomplete": "^5.11.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",

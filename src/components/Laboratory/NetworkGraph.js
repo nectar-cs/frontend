@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import {S} from './../../assets/layouts'
+import {Layout} from './../../assets/layouts'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Graph from "react-graph-vis";
 import {theme} from "../../assets/constants";
@@ -19,12 +19,12 @@ export default class NetworkGraph extends React.Component {
 
   render(){
     return(
-      <S.LeftPanel>
+      <Layout.LeftPanel>
         { this.renderHeader() }
         { this.renderIntro() }
         { this.renderGraph() }
         { this.renderButton() }
-      </S.LeftPanel>
+      </Layout.LeftPanel>
     )
   }
 

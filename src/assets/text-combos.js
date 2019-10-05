@@ -11,6 +11,10 @@ export const StatusTag = styled.p`
   background: ${p => colored(p.emotion, p)};
 `;
 
+const P = styled.p`
+  margin-top: 12px;
+`;
+
 export const CleanStatus = styled.p`
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -22,3 +26,12 @@ export const BoldStatus = styled(CleanStatus)`
   font-weight: 800;
   color: ${p => colored(p.emotion, p)};
 `;
+
+const Code = styled.code`
+  display: block;
+  margin-top: 2px;
+  color: ${p => p.theme.colors.contrastFont};
+`;
+
+const Text = { P, Code };
+export default Text;

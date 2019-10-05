@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { colored } from './../../../assets/constants'
-import { S as Layouts } from './../../../assets/layouts'
+import { Layout as Layouts } from './../../../assets/layouts'
 
 const podSize = "14px";
 const mult = 1.04;

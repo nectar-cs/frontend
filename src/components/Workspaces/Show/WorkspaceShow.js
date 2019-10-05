@@ -93,8 +93,9 @@ class WorkspaceShowClass extends React.Component{
         selectableKey={deployment.name}
         key={deployment.name}
         deployment={deployment}
-        microservice={this.microserviceForDeployment(deployment)}
+        matching={this.microserviceForDeployment(deployment)}
         openModal={this.props.openModal}
+        replaceModal={this.props.replaceModal}
         refreshCallback={this.fetchDeployments}
       />
     ));

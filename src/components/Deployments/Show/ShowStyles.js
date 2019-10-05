@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {S as Layouts} from './../../../assets/layouts'
+import {Layout as Layouts} from './../../../assets/layouts'
 
 const Container = styled(Layouts.FullWidthPanel)`
   

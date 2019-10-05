@@ -25,7 +25,7 @@ export default class ImageActionsModal extends React.Component {
     super(props);
     this.state = {
       choices: {
-        operationType: 'git',
+        operationType: props.operationType,
         imageName: this.imgDebug(),
         outImageName: Helper.defOutImageName(this),
         scaleTo: (props.deployment.replicas + 1).toString(),
@@ -262,6 +262,10 @@ export default class ImageActionsModal extends React.Component {
   static propTypes = {
     deployment: Types.Deployment,
     refreshCallback: PropTypes.func,
-    matching: Types.Matching
+    matching: Types.Matching,
+  };
+
+  static defaultProps = {
+    operationType: "docker"
   }
 }
