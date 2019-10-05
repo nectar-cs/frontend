@@ -22,6 +22,8 @@ const Deployment = PropTypes.shape({
   imageName: PropTypes.string.isRequired,
   replicas: PropTypes.number.isRequired,
   pods: PropTypes.arrayOf(LightPod).isRequired,
+  statedBranch: PropTypes.string,
+  statedCommit: PropTypes.string,
   services: PropTypes.arrayOf(Service)
 });
 

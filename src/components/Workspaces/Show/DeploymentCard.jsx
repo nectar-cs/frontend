@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import MiscUtils from '../../../utils/MiscUtils';
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
-import PortActionsModal from "../../../modals/PortActionsModal/PortActionsModal";
 import CardRow from "./CardRow";
 import {Types} from "../../../types/Deployment";
 import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
@@ -61,21 +60,27 @@ export default class DeploymentCard extends React.Component {
     const dep = this.props.deployment;
     const svc = this.props.deployment.services[0];
 
-    const ipLabel = `Internal${svc.externalIp ? ', External' : ''} IP`;
-    const ipText = `${svc.internalIp}${svc.externalIp ? `, ${svc.externalIp}` : ''}`;
+    const dnsMaterial = svc.externalIp ? 'language' : null;
     const portText = `${svc.toPort} <- ${svc.fromPort}`;
     const dnsAction = () => this.openHttpModal(svc.shortDns);
-    const ipAction = () => this.openHttpModal(svc.internalIp);
     const imageAction = () => this.openImageModal();
 
     return <S.ContentRows>
       <tbody>
         { this.buildRow('Image', dep.imageName, imageAction) }
-       { this.buildRow('Ports', portText, PortActionsModal) }
-        { this.buildRow('Dns', svc.shortDns, dnsAction) }
-        { this.buildRow(ipLabel, ipText, ipAction) }
+        { this.buildRow('Source', this.sourceString(), null) }
+        { this.buildRow('Quick DNS', svc.shortDns, dnsAction, dnsMaterial) }
+        { this.buildRow('Ports', portText, null) }
       </tbody>
     </S.ContentRows>;
+  }
+
+  sourceString(){
+    const dep = this.props.deployment;
+    if(dep.statedBranch && dep.statedCommit){
+      const commitPart = `"${dep.statedCommit.substring(0, 10)}"...`;
+      return `${dep.statedBranch}: ${commitPart}`;
+    } else return "Not annotated :(";
   }
 
   openHttpModal(text){
@@ -99,13 +104,14 @@ export default class DeploymentCard extends React.Component {
     this.props.openModal(ImageActionsModal, bundle);
   }
 
-  buildRow(label, text, openModalFunc){
+  buildRow(label, text, openModalFunc, material){
     return(
       <CardRow
         label={label}
         text={text}
         getDeployment={() => this.props.deployment}
         openModal={openModalFunc}
+        material={material}
       />
     )
   }
