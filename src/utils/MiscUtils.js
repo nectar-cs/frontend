@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import textCombos from './../assets/text-combos.sass'
+import Text from './../assets/text-combos'
 
 const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
@@ -29,7 +30,20 @@ export default class MiscUtils {
   }
 
   static gitSummary(ms){
-    return `${ms.gitRemoteName} / ${ms.gitRepoName}`;
+    const first = (
+      <Text.Discrete href={`https://www.github.com/${ms.gitRemoteName}`} target="_blank">
+        {ms.gitRemoteName}
+      </Text.Discrete>
+    );
+
+    const url = `https://www.github.com/${ms.gitRemoteName}/${ms.gitRepoName}`;
+    const second = (
+      <Text.Discrete href={url} target="_blank">
+        {ms.gitRepoName}
+      </Text.Discrete>
+    );
+
+    return <Fragment>{first} / {second}</Fragment>;
   }
 
   static emptyOption(text){

@@ -11,7 +11,7 @@ const Line = styled.div`
 `;
 
 const ChangesTable = styled.table`
-  margin-top: 10px;
+  margin-top: -5px;
 `;
 
 const S = { AuthorLine, ChangesTable, Line };

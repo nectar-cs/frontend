@@ -29,9 +29,9 @@ export default class DeploymentCard extends React.Component {
   }
 
   componentDidMount(){
-    if(this.props.deployment.name === 'news-crawl'){
-      this.openSourceModal();
-    }
+    // if(this.props.deployment.name === 'news-crawl'){
+    //   this.openSourceModal();
+    // }
   }
 
   renderHeader(){

@@ -15,6 +15,13 @@ const P = styled.p`
   margin-top: 12px;
 `;
 
+const Discrete = styled.a`
+  text-decoration: none;
+  &:hover{
+    text-decoration: underline;  
+  }
+`;
+
 export const CleanStatus = styled.p`
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -45,7 +52,8 @@ const Text = { P,
   BoldStatus,
   CleanStatus,
   StatusTag,
-  BoldRef
+  BoldRef,
+  Discrete
 };
 
 export default Text;
