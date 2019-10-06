@@ -17,15 +17,27 @@ const LightPod = PropTypes.shape({
   state: PropTypes.oneOf(POD_STATES)
 });
 
+const Commit = PropTypes.shape({
+  sha: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  timestamp: PropTypes.string.isRequired
+});
+
+const AnnotatedCommit = PropTypes.shape({
+  sha: PropTypes.string,
+  branch: PropTypes.string,
+  message: PropTypes.string,
+});
+
 const Deployment = PropTypes.shape({
   name: PropTypes.string.isRequired,
   namespace: PropTypes.string.isRequired,
   imageName: PropTypes.string.isRequired,
   replicas: PropTypes.number.isRequired,
   pods: PropTypes.arrayOf(LightPod).isRequired,
-  statedBranch: PropTypes.string,
-  statedCommit: PropTypes.string,
-  services: PropTypes.arrayOf(Service)
+  services: PropTypes.arrayOf(Service),
+  commit: AnnotatedCommit
 });
 
 const Matching = PropTypes.shape({
@@ -35,13 +47,5 @@ const Matching = PropTypes.shape({
   gitRemoteId: PropTypes.number,
   imgRemoteId: PropTypes.number
 });
-
-const Commit = PropTypes.shape({
-  sha: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
-  timestamp: PropTypes.string.isRequired
-});
-
 
 export const Types = { Service, Deployment, Matching, Commit };

@@ -29,24 +29,22 @@ export default class DeploymentCard extends React.Component {
   }
 
   componentDidMount(){
-    // if(this.props.deployment.name === 'news-crawl'){
-    //   this.openSourceModal();
-    // }
+    if(this.props.deployment.name === 'news-crawl'){
+      this.openSourceModal();
+    }
   }
 
   renderHeader(){
-    const dep = this.props.deployment;
-    const ms  = this.props.matching;
-    let frameworkImg = MiscUtils.msImage(dep, ms);
-    let git = this.hasGit() ? MiscUtils.gitSummary(ms) : null;
+    const { deployment, matching } = this.props;
+    let frameworkImg = MiscUtils.msImage(deployment, matching);
+    let git = this.hasGit() ? MiscUtils.gitSummary(matching) : null;
     const subtitle = git || "Not connected to Git";
+    const Ref = (p) => <a href={this.detailPath()}>{p.children}</a>;
 
     return(
       <S.Header>
         <S.HeaderImage src={frameworkImg} alt='Language'/>
-        <a href={this.detailPath()}>
-          <S.HeaderTitle>{dep.name}</S.HeaderTitle>
-        </a>
+        <Ref><S.HeaderTitle>{deployment.name}</S.HeaderTitle></Ref>
         <S.HeaderSubtitle>{subtitle}</S.HeaderSubtitle>
       </S.Header>
     )
@@ -73,15 +71,19 @@ export default class DeploymentCard extends React.Component {
         { this.buildRow('Image', dep.imageName, this.openImageModal) }
         { this.buildRow('Source', this.sourceString(), this.openSourceModal) }
         { this.buildRow('Quick DNS', svc.shortDns, dnsAction, dnsMaterial) }
-        { this.buildRow('Status', portText, null) }
+        { this.buildRow('Status', portText, () => alert("Bang!")) }
       </tbody>
     </S.ContentRows>;
   }
 
   renderPodStatuses() {
     const pods = this.props.deployment.pods;
-    const views = pods.map(p =>
-      <S.PodCircle emotion={p.state} key={p.name}/>
+    const views = pods.map(pod =>
+      <S.PodCircle
+        key={pod.name}
+        emotion={pod.state}
+        title={pod.name}
+      />
     );
     return <S.PodStatusesBox>{views}</S.PodStatusesBox>
   }
@@ -89,18 +91,19 @@ export default class DeploymentCard extends React.Component {
   renderAdditionalControls(){
     return(
       <S.AdditionalControlsBox>
-        <ControlIcon icon='attach_money'/>
-        <ControlIcon icon='call_merge'/>
-        <ControlIcon icon='import_export'/>
+        <ControlIcon icon='attach_money' title="CMD..."/>
+        <ControlIcon icon='arrow_upward' title="Proxy..."/>
+        <ControlIcon icon='import_export' title="Bind Local..."/>
       </S.AdditionalControlsBox>
     )
   }
 
   sourceString(){
-    const dep = this.props.deployment;
-    if(dep.statedBranch && dep.statedCommit){
-      const commitPart = `"${dep.statedCommit.substring(0, 10)}"...`;
-      return `${dep.statedBranch}: ${commitPart}`;
+    const commit = this.props.deployment.commit;
+    const { branch, message } = (commit || {});
+    if(branch && message){
+      const commitPart = `"${message.substring(0, 10)}"...`;
+      return `${branch}: ${commitPart}`;
     } else return "Not annotated :(";
   }
 
@@ -131,13 +134,13 @@ export default class DeploymentCard extends React.Component {
     this.props.openModal(DepSourceModal, bundle);
   }
 
-  buildRow(label, text, openModalFunc, material){
+  buildRow(label, text, callback, material){
     return(
       <CardRow
         label={label}
         text={text}
         getDeployment={() => this.props.deployment}
-        openModal={openModalFunc}
+        callback={callback}
         material={material}
       />
     )
@@ -162,7 +165,10 @@ export default class DeploymentCard extends React.Component {
 
 function ControlIcon(props){
   return(
-    <S.ControlIcon className='material-icons'>
+    <S.ControlIcon
+      className='material-icons'
+      title={props.title}
+      onClick={props.action}>
       { props.icon }
     </S.ControlIcon>
   )

@@ -7,13 +7,31 @@ import {Types} from "../../types/Deployment";
 import HowToAnnotate from "./HowToAnnotate";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import Helper from "./Helper";
+import CommitInfo from "./CommitInfo";
+import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 
 export default class DepSourceModal extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      isFetching: false,
+      commit: null
+    }
+  }
+
+  componentDidMount(){
+    if(Helper.isAnnotated(this))
+      Helper.fetchCommit(this);
+  }
+
   render(){
     return(
       <ModalLayout>
         { this.renderHeader() }
         { this.renderHowTo() }
+        { this.renderCommitInfo() }
+        { this.renderLoading() }
         { this.renderButton() }
       </ModalLayout>
     )
@@ -35,6 +53,23 @@ export default class DepSourceModal extends React.Component {
     return(
       <HowToAnnotate deployment={this.props.deployment}/>
     )
+  }
+
+  renderCommitInfo(){
+    if(!this.state.commit) return null;
+
+    return(
+      <CommitInfo
+        commit={this.state.commit}
+        deployment={this.props.deployment}
+        matching={this.props.matching}
+      />
+    )
+  }
+
+  renderLoading(){
+    if(!this.state.isFetching)  return null;
+    return <CenterLoader/>;
   }
 
   renderButton(){

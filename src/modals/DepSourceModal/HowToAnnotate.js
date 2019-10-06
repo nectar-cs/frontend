@@ -1,6 +1,4 @@
 import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
-import S from './HowToAnnotateStyles'
 import defaults from "./defaults";
 import { Layout } from './../../assets/layouts'
 import Text from './../../assets/text-combos'
@@ -10,12 +8,12 @@ export default class HowToAnnotate extends React.Component {
   render(){
     return(
       <Fragment>
-        <S.Title>{defaults.howTo.title}</S.Title>
+        <h4>{defaults.howTo.title}</h4>
         { this.renderLines(defaults.howTo.lines) }
-        <S.Title>{defaults.howTo.title2}</S.Title>
+        <h4>{defaults.howTo.title2}</h4>
         { this.renderLines(defaults.howTo.lines2) }
         { this.renderCodeExample() }
-        <S.Title>{defaults.howTo.title3}</S.Title>
+        <h4>{defaults.howTo.title3}</h4>
         { this.renderLines(defaults.howTo.lines3) }
       </Fragment>
     )
