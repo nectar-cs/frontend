@@ -69,6 +69,7 @@ const Layout = {
   TextLine ,
   FullWidthPanel,
   BigCodeViewer,
+  ModalLayout,
   Dims
 };
 export { Layout };

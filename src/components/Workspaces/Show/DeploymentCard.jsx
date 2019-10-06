@@ -8,6 +8,7 @@ import {Types} from "../../../types/Deployment";
 import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
 import { S } from "./DeploymentCardStyles"
 import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
+import DietProxyModal from "../../../modals/DietProxyModal/DietProxyModal";
 
 export default class DeploymentCard extends React.Component {
 
@@ -15,6 +16,7 @@ export default class DeploymentCard extends React.Component {
     super(props);
     this.openImageModal = this.openImageModal.bind(this);
     this.openSourceModal = this.openSourceModal.bind(this);
+    this.openProxyModal = this.openProxyModal.bind(this);
   }
 
   render(){
@@ -91,9 +93,19 @@ export default class DeploymentCard extends React.Component {
   renderAdditionalControls(){
     return(
       <S.AdditionalControlsBox>
-        <ControlIcon icon='attach_money' title="CMD..."/>
-        <ControlIcon icon='arrow_upward' title="Proxy..."/>
-        <ControlIcon icon='import_export' title="Bind Local..."/>
+        <ControlIcon
+          icon='attach_money'
+          title="CMD..."
+        />
+        <ControlIcon
+          icon='arrow_upward'
+          title="Proxy..."
+          action={this.openProxyModal}
+        />
+        <ControlIcon
+          icon='import_export'
+          title="Bind Local..."
+        />
       </S.AdditionalControlsBox>
     )
   }
@@ -132,6 +144,12 @@ export default class DeploymentCard extends React.Component {
     const { deployment, matching, replaceModal } = this.props;
     let bundle = {deployment, matching, replaceModal};
     this.props.openModal(DepSourceModal, bundle);
+  }
+
+  openProxyModal(){
+    const { deployment, matching } = this.props;
+    let bundle = {deployment, matching};
+    this.props.openModal(DietProxyModal, bundle);
   }
 
   buildRow(label, text, callback, material){
