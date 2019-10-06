@@ -33,5 +33,5 @@ const Code = styled.code`
   color: ${p => p.theme.colors.contrastFont};
 `;
 
-const Text = { P, Code };
+const Text = { P, Code, BoldStatus, CleanStatus, StatusTag };
 export default Text;

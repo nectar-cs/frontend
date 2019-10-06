@@ -61,8 +61,6 @@ export default class DepSourceModal extends React.Component {
     return(
       <CommitInfo
         commit={this.state.commit}
-        deployment={this.props.deployment}
-        matching={this.props.matching}
       />
     )
   }

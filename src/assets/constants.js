@@ -14,7 +14,8 @@ export const theme = {
     success: "#326342",
     fail: "darkred",
     warn: "tomato",
-    warn2: "orange"
+    warn2: "orange",
+    warnSoft: "#F6AE2D"
   },
 
   dims: {
@@ -42,6 +43,7 @@ export const theme = {
 
 export function colored(name){
   if(name){
+    if(theme.colors[name]) return theme.colors[name];
     const color = theme.ali(name);
     return theme.colors[color];
   } else return theme.colors.primaryColor;

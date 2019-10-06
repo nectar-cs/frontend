@@ -30,6 +30,23 @@ const AnnotatedCommit = PropTypes.shape({
   message: PropTypes.string,
 });
 
+const CommitChange = PropTypes.shape({
+  filename: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
+  blobUrl: PropTypes.string.isRequired,
+  patch: PropTypes.string.isRequired,
+});
+
+const DetailedCommit = PropTypes.shape({
+  sha: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  timestamp: PropTypes.string.isRequired,
+  authorAvatar: PropTypes.string,
+  authorUrl: PropTypes.string,
+  changes: PropTypes.arrayOf(CommitChange)
+});
+
 const Deployment = PropTypes.shape({
   name: PropTypes.string.isRequired,
   namespace: PropTypes.string.isRequired,
@@ -48,4 +65,11 @@ const Matching = PropTypes.shape({
   imgRemoteId: PropTypes.number
 });
 
-export const Types = { Service, Deployment, Matching, Commit };
+export const Types = {
+  Service,
+  Deployment,
+  Matching,
+  Commit,
+  DetailedCommit,
+  CommitChange
+};

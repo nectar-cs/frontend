@@ -102,8 +102,8 @@ export default class DeploymentCard extends React.Component {
     const commit = this.props.deployment.commit;
     const { branch, message } = (commit || {});
     if(branch && message){
-      const commitPart = `"${message.substring(0, 10)}"...`;
-      return `${branch}: ${commitPart}`;
+      const commitPart = `"${message.substring(0, 10)}..."`;
+      return `${commitPart} on ${branch}`;
     } else return "Not annotated :(";
   }
 

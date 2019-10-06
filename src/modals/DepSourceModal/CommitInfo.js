@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react'
 import {Types} from "../../types/Deployment";
+import FileChange from "./FileChange";
 
 export default class CommitInfo extends React.Component{
 
@@ -7,12 +8,29 @@ export default class CommitInfo extends React.Component{
     return(
       <Fragment>
         <h4>Commit information</h4>
+        { this.renderTable() }
       </Fragment>
     )
   }
 
+  renderTable(){
+    return(
+      <table>
+        <tbody>
+        { this.renderFileChanges() }
+        </tbody>
+      </table>
+    )
+  }
+
+  renderFileChanges(){
+    const { changes } = this.props.commit;
+    return changes.map(change =>
+      <FileChange change={change}/>
+    );
+  }
+
   static PropTypes = {
-    deployment: Types.Deployment,
-    matching: Types.Matching,
+    commit: Types.DetailedCommit
   }
 }
