@@ -28,7 +28,7 @@ export default class FileChange extends React.Component{
     const { change } = this.props;
     return(
       <a href={change.blobUrl} target='_blank'>
-        <p>{change.filename}</p>
+        <code>{change.filename}</code>
       </a>
     )
   }

@@ -33,5 +33,19 @@ const Code = styled.code`
   color: ${p => p.theme.colors.contrastFont};
 `;
 
-const Text = { P, Code, BoldStatus, CleanStatus, StatusTag };
+const BoldRef = styled.p`
+  text-decoration: underline;
+  font-weight: bold;
+  margin-right: ${p => p.push ? "3px" : '0'}
+  margin-left: ${p => p.pushed ? "3px" : '0'}
+`;
+
+const Text = { P,
+  Code,
+  BoldStatus,
+  CleanStatus,
+  StatusTag,
+  BoldRef
+};
+
 export default Text;

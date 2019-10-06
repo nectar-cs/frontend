@@ -39,6 +39,7 @@ const CommitChange = PropTypes.shape({
 
 const DetailedCommit = PropTypes.shape({
   sha: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   timestamp: PropTypes.string.isRequired,
