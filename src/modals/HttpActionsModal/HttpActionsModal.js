@@ -98,7 +98,7 @@ export default class HttpActionsModal extends React.Component {
       <LeftHeader
         graphicName={MiscUtils.msImage(deployment, matching)}
         title={`${this.props.deployment.name} / http ops`}
-        subtitle={'Not connected to Git'}
+        subtitle='Send HTTP requests to this deployment'
       />
     );
   }

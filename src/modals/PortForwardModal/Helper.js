@@ -28,8 +28,8 @@ export default class Helper{
     return defaults.sectionTwo.command(
       resType.toLowerCase(),
       resName,
-      fromPort,
       "9000",
+      fromPort,
       inst.props.deployment.namespace
     );
   }

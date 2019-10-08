@@ -9,6 +9,7 @@ import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsMod
 import { S } from "./DeploymentCardStyles"
 import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
 import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
+import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
 
 export default class DeploymentCard extends React.Component {
 
@@ -17,6 +18,7 @@ export default class DeploymentCard extends React.Component {
     this.openImageModal = this.openImageModal.bind(this);
     this.openSourceModal = this.openSourceModal.bind(this);
     this.openPortForwardModal = this.openPortForwardModal.bind(this);
+    this.openCommandsModal = this.openCommandsModal.bind(this);
   }
 
   render(){
@@ -32,7 +34,7 @@ export default class DeploymentCard extends React.Component {
 
   componentDidMount(){
     if(this.props.deployment.name === 'news-crawl'){
-      this.openPortForwardModal();
+      this.openCommandsModal();
     }
   }
 
@@ -96,6 +98,7 @@ export default class DeploymentCard extends React.Component {
         <ControlIcon
           icon='attach_money'
           title="CMD..."
+          action={this.openCommandsModal}
         />
         <ControlIcon
           icon='arrow_upward'
@@ -150,6 +153,12 @@ export default class DeploymentCard extends React.Component {
     const { deployment, matching } = this.props;
     let bundle = {deployment, matching};
     this.props.openModal(PortForwardModal, bundle);
+  }
+
+  openCommandsModal(){
+    const { deployment, matching } = this.props;
+    let bundle = {deployment, matching};
+    this.props.openModal(CommandsModal, bundle);
   }
 
   buildRow(label, text, callback, material){

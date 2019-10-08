@@ -26,7 +26,7 @@ export default class FormComponent {
         )
       }
 
-      makeInput(title, field){
+      makeInput(title, field, placeholder){
         const callback = (e) => { this.parentCallback(field, e.target.value); };
         return(
           <InputLine>
@@ -35,6 +35,7 @@ export default class FormComponent {
               as='input'
               value={this.props[field]}
               onChange={(e) => callback(e)}
+              placeholder={placeholder}
             />
           </InputLine>
         )
