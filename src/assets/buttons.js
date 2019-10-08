@@ -27,3 +27,12 @@ export const BigButton = styled(SmallButton)`
   height: 45px;
   font-weight: 900;
 `;
+
+const Button = {
+  SmallButton,
+  FixedSmallButton,
+  BigBottomButtons,
+  BigButton
+};
+
+export default Button;

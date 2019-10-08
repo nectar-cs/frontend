@@ -8,7 +8,7 @@ import {Types} from "../../../types/Deployment";
 import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
 import { S } from "./DeploymentCardStyles"
 import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
-import DietProxyModal from "../../../modals/DietProxyModal/DietProxyModal";
+import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
 
 export default class DeploymentCard extends React.Component {
 
@@ -16,7 +16,7 @@ export default class DeploymentCard extends React.Component {
     super(props);
     this.openImageModal = this.openImageModal.bind(this);
     this.openSourceModal = this.openSourceModal.bind(this);
-    this.openProxyModal = this.openProxyModal.bind(this);
+    this.openPortForwardModal = this.openPortForwardModal.bind(this);
   }
 
   render(){
@@ -31,9 +31,9 @@ export default class DeploymentCard extends React.Component {
   }
 
   componentDidMount(){
-    // if(this.props.deployment.name === 'news-crawl'){
-    //   this.openSourceModal();
-    // }
+    if(this.props.deployment.name === 'news-crawl'){
+      this.openPortForwardModal();
+    }
   }
 
   renderHeader(){
@@ -99,8 +99,8 @@ export default class DeploymentCard extends React.Component {
         />
         <ControlIcon
           icon='arrow_upward'
-          title="Proxy..."
-          action={this.openProxyModal}
+          title="Port Forward..."
+          action={this.openPortForwardModal}
         />
         <ControlIcon
           icon='import_export'
@@ -146,10 +146,10 @@ export default class DeploymentCard extends React.Component {
     this.props.openModal(DepSourceModal, bundle);
   }
 
-  openProxyModal(){
+  openPortForwardModal(){
     const { deployment, matching } = this.props;
     let bundle = {deployment, matching};
-    this.props.openModal(DietProxyModal, bundle);
+    this.props.openModal(PortForwardModal, bundle);
   }
 
   buildRow(label, text, callback, material){
