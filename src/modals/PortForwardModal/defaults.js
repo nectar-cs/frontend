@@ -1,6 +1,8 @@
+import React, {Fragment} from "react";
+
 const defaults = {
   header: {
-    title: (name) => `${name} / proxy`,
+    title: (name) => `${name} / port forward`,
     subtitle: "Port Forwarding Wizard"
   },
   sectionOne: {
@@ -13,12 +15,12 @@ const defaults = {
   },
   sectionTwo: {
     title: "Copy Pasta",
-    command: (type, res, from, to) =>
-      `kubectl port-forward ${type}/${res} ${from}:${to}`,
+    command: (type, res, from, to, ns) =>
+      `kubectl port-forward ${type}/${res} ${from}:${to} --namespace=${ns}`,
     instr: "Paste the following command into your terminal: ",
     lines: (fromPort, toPort, link) => [
       `Your computer's port ${fromPort} will forward to your cluster's port ${toPort}`,
-      `Get the ${link} to do this in one shot.`
+      <Fragment>Get <a href={link} target='_blank'>Mosaic Desktop</a> to do this in one shot.</Fragment>
     ],
     desktop: "https://github.com/robonectar/news_crawler"
   },

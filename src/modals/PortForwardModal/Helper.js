@@ -29,7 +29,8 @@ export default class Helper{
       resType.toLowerCase(),
       resName,
       fromPort,
-      "9000"
+      "9000",
+      inst.props.deployment.namespace
     );
   }
 
@@ -41,9 +42,7 @@ export default class Helper{
   static setChoice(inst, key, value){
     let defSet = () => ({ [key]: value });
     let setter = Helper.assignmentMap[key] || defSet;
-    const merger =  setter(inst, value);
-    console.log(merger);
-    return merger;
+    return setter(inst, value);
   }
 
   static setResType(inst, resType){

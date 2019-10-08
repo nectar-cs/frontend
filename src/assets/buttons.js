@@ -1,10 +1,28 @@
 import styled from 'styled-components'
 import {colored} from "./constants";
 
+function marg(pure){
+  return pure ? '17px' : '40px';
+}
+
 export const SmallButton = styled.button`
   color: ${p => p.theme.colors.contrastFont};
   background: ${p => colored(p.emotion, p)};
   padding: 7px 11px;
+  margin-top: ${p => marg(p.pure)};
+`;
+
+const SmallClearButton = styled.button`
+  color: ${p => p.theme.colors.primaryFont};
+  background: transparent;
+  padding: 7px 11px;
+  border-width: 1.5px;
+  border-style: solid;
+  border-color: ${p => p.theme.colors.primaryColor}
+  margin-top: ${p => marg(p.pure)};
+  &:hover{
+    background: ${p => p.theme.secondaryColor};
+  }
 `;
 
 export const FixedSmallButton = styled(SmallButton)`
@@ -32,7 +50,8 @@ const Button = {
   SmallButton,
   FixedSmallButton,
   BigBottomButtons,
-  BigButton
+  BigButton,
+  SmallClearButton
 };
 
 export default Button;

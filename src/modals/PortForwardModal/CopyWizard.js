@@ -15,16 +15,17 @@ export default function CopyWizard(props){
   };
 
   const button = (
-    <Button.SmallButton onClick={apply} >
+    <Button.SmallClearButton
+      onClick={apply}
+      pure={true}>
       Copy to Clipboard
-    </Button.SmallButton>
+    </Button.SmallClearButton>
   );
-
 
   const follow = defaults.sectionTwo.lines(
     props.fromPort,
     props.toPort,
-    <a href={defaults.sectionTwo.desktop}>Mosaic Desktop</a>
+    defaults.sectionTwo.desktop
   );
 
   const followPs = follow.map(t => <Text.P key={t}>{t}</Text.P>);
@@ -44,5 +45,5 @@ export default function CopyWizard(props){
 CopyWizard.propTypes = {
   command: PropTypes.string.isRequired,
   fromPort: PropTypes.any.isRequired,
-  toPort: PropTypes.any.isRequired
+  toPort: PropTypes.any.isRequired,
 };

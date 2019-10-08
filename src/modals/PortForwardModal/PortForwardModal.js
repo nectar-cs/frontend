@@ -7,6 +7,7 @@ import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLin
 import PortForwardForm from "./PortForwardForm";
 import Helper from "./Helper";
 import CopyWizard from "./CopyWizard";
+import {Types} from "../../types/Deployment";
 
 export default class PortForwardModal extends React.Component{
 
@@ -24,8 +25,8 @@ export default class PortForwardModal extends React.Component{
   }
 
   componentDidMount(){
-    // const defaultType = defaults.sectionOne.resTypes[0];
-    // Helper.applyChoice(this, "resType",  defaultType);
+    const defaultType = defaults.sectionOne.resTypes[0];
+    Helper.applyChoice(this, "resType",  defaultType);
   }
 
   render(){
@@ -78,5 +79,10 @@ export default class PortForwardModal extends React.Component{
 
   formCallback(key, value){
     Helper.applyChoice(this, key, value);
+  }
+
+  static propTypes = {
+    deployment: Types.Deployment,
+    matching: Types.Matching
   }
 }
