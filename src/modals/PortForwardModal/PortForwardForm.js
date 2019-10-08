@@ -2,6 +2,7 @@ import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import FormComponent from "../../hocs/FormComponent";
 import MiscUtils from "../../utils/MiscUtils";
+import defaults from "./defaults";
 
 class PortForwardFormClass extends React.Component{
 
@@ -14,6 +15,7 @@ class PortForwardFormClass extends React.Component{
   render(){
     return(
       <Fragment>
+        <p>{defaults.sectionOne.intro}</p>
         { this.renderResTypeSelect() }
         { this.renderResNameSelect() }
         { this.renderFromPortInput() }

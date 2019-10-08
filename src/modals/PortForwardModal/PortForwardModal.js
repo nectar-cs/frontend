@@ -23,6 +23,11 @@ export default class PortForwardModal extends React.Component{
     this.formCallback = this.formCallback.bind(this);
   }
 
+  componentDidMount(){
+    // const defaultType = defaults.sectionOne.resTypes[0];
+    // Helper.applyChoice(this, "resType",  defaultType);
+  }
+
   render(){
     return(
       <Layout.ModalLayout>
@@ -61,17 +66,17 @@ export default class PortForwardModal extends React.Component{
   }
 
   renderPasta(){
+    const choices = this.state.choices;
     return(
       <CopyWizard
         command={Helper.pastaCommand(this)}
+        fromPort={choices.fromPort}
+        toPort={choices.toPort}
       />
     )
   }
 
-  formCallback(field, value){
-    this.setState(s => {
-      const choices = {...s.choices, [field]: value };
-      return { ...s, choices };
-    });
+  formCallback(key, value){
+    Helper.applyChoice(this, key, value);
   }
 }

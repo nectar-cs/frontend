@@ -20,6 +20,15 @@ export default function CopyWizard(props){
     </Button.SmallButton>
   );
 
+
+  const follow = defaults.sectionTwo.lines(
+    props.fromPort,
+    props.toPort,
+    <a href={defaults.sectionTwo.desktop}>Mosaic Desktop</a>
+  );
+
+  const followPs = follow.map(t => <Text.P key={t}>{t}</Text.P>);
+
   return(
     <Fragment>
       <p>{defaults.sectionTwo.instr}</p>
@@ -27,10 +36,13 @@ export default function CopyWizard(props){
         <Text.Code ref={ref}>{props.command}</Text.Code>
       </Layout.BigCodeViewer>
       { button }
+      { followPs }
     </Fragment>
   )
 }
 
 CopyWizard.propTypes = {
-  command: PropTypes.string.isRequired
+  command: PropTypes.string.isRequired,
+  fromPort: PropTypes.any.isRequired,
+  toPort: PropTypes.any.isRequired
 };
