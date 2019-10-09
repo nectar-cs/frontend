@@ -9,8 +9,8 @@ function Pending(props){
 }
 
 function Output(props){
-  if(props.output && !props.eraseOutput)
-    return <Text.Code>{props.output}</Text.Code>;
+  if(props.output)
+    return <Text.Code><br/>=> {props.output}</Text.Code>;
   else return null;
 }
 

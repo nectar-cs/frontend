@@ -42,4 +42,17 @@ export default class Helper {
     const { command, podName } = inst.state.choices;
     return `$ kubectl exec ${command} ${podName} --namespace=${namespace}`
   }
+
+  static hasPods(inst){
+    const { deployment } = inst.props;
+    const runningPods = deployment.pods.filter(pod => (
+      pod.state.toLowerCase() === 'running'
+    ));
+    return runningPods.length > 0;
+  }
+
+  static defaultPod(inst){
+    const { deployment } = inst.props;
+    return Helper.hasPods(inst) ? deployment.pods[0].name : null;
+  }
 }

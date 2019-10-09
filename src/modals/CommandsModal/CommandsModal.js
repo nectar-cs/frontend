@@ -16,20 +16,18 @@ export default class CommandsModal extends React.Component{
 
   constructor(props){
     super(props);
-    const { deployment } = props;
-    const dPod = this.hasPods(props) ? deployment.pods[0].name : null;
 
     this.state = {
       choices: {
-        podName: dPod,
+        podName: Helper.defaultPod(this, props),
         command: 'rake db:migrate'
       },
       output: null,
       isExecuting: false,
-      eraseOutput: true
     };
     this.formCallback = this.formCallback.bind(this);
     this.downstreamReloader = null;
+    this.eraseOutput = false;
   }
 
   render(){
@@ -68,15 +66,14 @@ export default class CommandsModal extends React.Component{
     return(
       <Preview
         command={Helper.previewCommand(this)}
-        output={this.state.output}
+        output={!this.eraseOutput && this.state.output}
         isExecuting={this.state.isExecuting}
-        eraseOutput={this.state.eraseOutput}
       />
     )
   }
 
   renderForm(){
-    if(!this.hasPods()) return null;
+    if(!Helper.hasPods(this)) return null;
     const { choices } = this.state;
     const { deployment } = this.props;
     return(
@@ -90,7 +87,7 @@ export default class CommandsModal extends React.Component{
   }
 
   renderHistory(){
-    if(!this.hasPods()) return null;
+    if(!Helper.hasPods(this)) return null;
     const reloadTriggerSetter = (v) => { this.downstreamReloader = v };
 
     return(
@@ -102,7 +99,7 @@ export default class CommandsModal extends React.Component{
   }
 
   renderNoHealthyPods(){
-    if(this.hasPods()) return null;
+    if(Helper.hasPods(this)) return null;
     return(
       <CenterAnnouncement
         iconName='sentiment_dissatisfied'
@@ -121,6 +118,7 @@ export default class CommandsModal extends React.Component{
   }
 
   formCallback(key, value){
+    this.eraseOutput = true;
     this.setState(s => {
       const choices = { ...s.choices, [key]: value };
       return {...s, choices, eraseOutput: true};
@@ -130,19 +128,12 @@ export default class CommandsModal extends React.Component{
   submit(){
     this.setState(s => ({...s, isExecuting: true}));
     Helper.submitCommand(this, (resp) => {
+      this.eraseOutput = false;
       const output = resp['data'];
       const state = { eraseOutput: true, isExecuting: false, output };
       this.setState(s => ({...s, ...state}));
       Helper.recordCommand(this, () => this.downstreamReloader());
     });
-  }
-
-  hasPods(source){
-    const { deployment } = (source || this.props);
-    const runningPods = deployment.pods.filter(pod => (
-      pod.state.toLowerCase() === 'running'
-    ));
-    return runningPods.length > 0;
   }
 
   static propTypes = {
