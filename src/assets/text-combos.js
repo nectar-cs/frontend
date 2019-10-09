@@ -40,6 +40,11 @@ const Code = styled.code`
   color: ${p => p.theme.colors.contrastFont};
 `;
 
+const ContrastCode = styled(Code)`
+  color: ${p => p.theme.colors.primaryFont};
+`;
+
+
 const BoldRef = styled.p`
   text-decoration: underline;
   font-weight: bold;
@@ -53,7 +58,8 @@ const Text = { P,
   CleanStatus,
   StatusTag,
   BoldRef,
-  Discrete
+  Discrete,
+  ContrastCode
 };
 
 export default Text;

@@ -1,16 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Icon, Identifier, Status, Trash} from "./IntegrationListStyles";
+import {Icon as Ic, Identifier, Status} from "./IntegrationListStyles";
+import Icon from './../../assets/icons'
 import Helper from "./Helper";
 import {ModSpinner} from "../../assets/loading-spinner";
 
 function IntegrationItem(props) {
   const delCol = (
-    <Trash
+    <Icon.Trash
       className='material-icons'
       onClick={props.requestDelete}>
       delete_outline
-    </Trash>
+    </Icon.Trash>
   );
 
   let statusWidget = null;
@@ -28,7 +29,7 @@ function IntegrationItem(props) {
 
   return(
     <tr>
-      <td><Icon src={Helper.imgName(props.type)}/></td>
+      <td><Ic src={Helper.imgName(props.type)}/></td>
       <td><Identifier>{props.identifier}</Identifier></td>
       <td>{statusWidget}</td>
       <td>{delCol}</td>

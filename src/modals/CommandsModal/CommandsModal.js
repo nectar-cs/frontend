@@ -10,6 +10,8 @@ import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncem
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import TopLoader from "../../widgets/TopLoader/TopLoader";
+import CommandHistory from "./CommandHistory";
+import Helper from "./Helper";
 
 export default class CommandsModal extends React.Component{
 
@@ -21,11 +23,12 @@ export default class CommandsModal extends React.Component{
     this.state = {
       choices: {
         podName: dPod,
-        command: ''
+        command: 'rake db:migrate'
       },
       isExecuting: false
     };
     this.formCallback = this.formCallback.bind(this);
+    this.downstreamReloader = null;
   }
 
   render(){
@@ -79,20 +82,25 @@ export default class CommandsModal extends React.Component{
     const { choices } = this.state;
     const { deployment } = this.props;
     return(
-      <Fragment>
-        <CommandForm
-          podName={choices.podName}
-          command={choices.command}
-          podNameOptions={deployment.pods.map(p => p.name)}
-          notifyFormValueChanged={this.formCallback}
-        />
-      </Fragment>
+      <CommandForm
+        podName={choices.podName}
+        command={choices.command}
+        podNameOptions={deployment.pods.map(p => p.name)}
+        notifyFormValueChanged={this.formCallback}
+      />
     )
   }
 
   renderHistory(){
     if(!this.hasPods()) return null;
+    const reloadTriggerSetter = (v) => { this.downstreamReloader = v };
 
+    return(
+      <CommandHistory
+        deployment={this.props.deployment}
+        setReloadTrigger={reloadTriggerSetter}
+      />
+    )
   }
 
   renderNoHealthyPods(){
@@ -122,8 +130,11 @@ export default class CommandsModal extends React.Component{
   }
 
   submit(){
-    alert("BANG");
     this.setState(s => ({...s, isExecuting: true}));
+    Helper.recordCommand(this, () => {
+      this.setState(s => ({...s, isExecuting: false}));
+      this.downstreamReloader();
+    });
   }
 
   hasPods(source){

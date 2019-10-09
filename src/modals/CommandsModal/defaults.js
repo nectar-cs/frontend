@@ -10,7 +10,8 @@ const defaults = {
     title: "Preview"
   },
   sectionThree: {
-    title: "History"
+    title: "History",
+    confirmDelete: "Are you sure?"
   }
 };
 
