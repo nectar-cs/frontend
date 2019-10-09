@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react'
 import {Layout} from './../../assets/layouts'
-import S from './CommandsModalStyles'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
@@ -12,6 +11,9 @@ import ModalButton from "../../widgets/Buttons/ModalButton";
 import TopLoader from "../../widgets/TopLoader/TopLoader";
 import CommandHistory from "./CommandHistory";
 import Helper from "./Helper";
+import Preview from "./Preview";
+import Kapi from "../../utils/Kapi";
+import DataUtils from "../../utils/DataUtils";
 
 export default class CommandsModal extends React.Component{
 
@@ -25,6 +27,7 @@ export default class CommandsModal extends React.Component{
         podName: dPod,
         command: 'rake db:migrate'
       },
+      output: null,
       isExecuting: false
     };
     this.formCallback = this.formCallback.bind(this);
@@ -63,17 +66,13 @@ export default class CommandsModal extends React.Component{
     )
   }
 
-  renderSectionTitle(section){
-    if(!this.hasPods()) return null;
-    return <TextOverLineSubtitle text={section.title}/>
-  }
-
   renderPreview(){
     return(
-      <Fragment>
-        <S.Preview>
-        </S.Preview>
-      </Fragment>
+      <Preview
+        command={Helper.previewCommand(this)}
+        output={this.state.output}
+        isExecuting={this.state.isExecuting}
+      />
     )
   }
 
@@ -131,9 +130,10 @@ export default class CommandsModal extends React.Component{
 
   submit(){
     this.setState(s => ({...s, isExecuting: true}));
-    Helper.recordCommand(this, () => {
-      this.setState(s => ({...s, isExecuting: false}));
-      this.downstreamReloader();
+    Helper.submitCommand(this, (resp) => {
+      const output = resp['data'];
+      this.setState(s => ({...s, isExecuting: false, output}));
+      Helper.recordCommand(this, () => this.downstreamReloader());
     });
   }
 

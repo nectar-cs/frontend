@@ -1,5 +1,6 @@
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
+import Kapi from "../../utils/Kapi";
 
 export default class Helper {
   static baseEp(inst){
@@ -26,5 +27,19 @@ export default class Helper {
     Backend.raisingDelete(`/dep_attachments/${id}`, () => {
       whenDone();
     });
+  }
+
+  static submitCommand(inst, whenDone, whenFailed){
+    const podNamespace = inst.props.deployment.namespace;
+    const { podName, command } = inst.state.choices;
+    let payload = {podNamespace, podName, command};
+    payload = DataUtils.objKeysToSnake(payload);
+    Kapi.post("/api/run/cmd", payload, whenDone, whenFailed)
+  }
+
+  static previewCommand(inst){
+    const { namespace } = inst.props.deployment;
+    const { command, podName } = inst.state.choices;
+    return `$ kubectl exec ${command} ${podName} --namespace=${namespace}`
   }
 }
