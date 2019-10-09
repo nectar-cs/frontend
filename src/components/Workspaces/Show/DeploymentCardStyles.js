@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import { colored } from './../../../assets/constants'
-import { Layout as Layouts } from './../../../assets/layouts'
+import Layout from './../../../assets/layouts'
 
 const podSize = "14px";
 const mult = 1.04;
 const headerSize = "42px";
 const headerLeft = "15px";
 
-const Card = styled(Layouts.ContentContainer)`
+const Card = styled(Layout.ContentContainer)`
   position: relative;
   display: inline-block;
   width: calc(360px * ${mult});

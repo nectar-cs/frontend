@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {StatusTag} from "../../assets/text-combos";
+import Text from "../../assets/text-combos";
 
 const iconSize = '30px';
 
@@ -12,6 +12,6 @@ export const Identifier = styled.p`
   width: 100px;
 `;
 
-export const Status = styled(StatusTag)`
+export const Status = styled(Text.StatusTag)`
   width: 84px
 `;

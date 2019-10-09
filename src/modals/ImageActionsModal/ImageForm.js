@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {InputLine, LineInput, LineLabel} from "../../assets/input-combos";
+import In from "../../assets/input-combos";
 import { S } from './ImageFormStyles'
 import MiscUtils from "../../utils/MiscUtils";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
@@ -29,15 +29,15 @@ export default class ImageForm extends React.Component {
 
   renderTypeLine(){
     return(
-      <InputLine>
-        <LineLabel>I want to</LineLabel>
-        <LineInput
+      <In.InputLine>
+        <In.LineLabel>I want to</In.LineLabel>
+        <In.LineInput
           as='select'
           value={this.props.operationType}
           onChange={(e) => this.onAssignment('operationType', e)}>
           { ImageForm.operationTypeOptions() }
-        </LineInput>
-      </InputLine>
+        </In.LineInput>
+      </In.InputLine>
     )
   }
 
@@ -45,13 +45,13 @@ export default class ImageForm extends React.Component {
     if(this.props.operationType !== 'change') return null;
 
     return(
-      <InputLine>
-        <LineLabel>Image Name</LineLabel>
-        <LineInput
+      <In.InputLine>
+        <In.LineLabel>Image Name</In.LineLabel>
+        <In.LineInput
           disabled={this.props.operationType !== 'change'}
           value={this.props.imageName}
           onChange={(e) => this.onAssignment('imageName', e)}/>
-      </InputLine>
+      </In.InputLine>
     )
   }
 
@@ -59,15 +59,15 @@ export default class ImageForm extends React.Component {
     if(this.props.operationType !== 'scale') return null;
 
     return(
-      <InputLine>
-        <LineLabel>Scale to</LineLabel>
-        <LineInput
+      <In.InputLine>
+        <In.LineLabel>Scale to</In.LineLabel>
+        <In.LineInput
           as='select'
           value={this.props.scaleTo}
           onChange={(e) => this.onAssignment('scaleTo', e)}>
           { MiscUtils.arrayOfHashesOptions(this.scaleOptions()) }
-        </LineInput>
-      </InputLine>
+        </In.LineInput>
+      </In.InputLine>
     )
   }
 
@@ -76,15 +76,15 @@ export default class ImageForm extends React.Component {
     if(!this.props.availableTags) return null;
 
     return(
-      <InputLine>
-        <LineLabel>Image</LineLabel>
-        <LineInput
+      <In.InputLine>
+        <In.LineLabel>Image</In.LineLabel>
+        <In.LineInput
           as='select'
           value={this.props.imageTag}
           onChange={(e) => this.onAssignment('imageTag', e)}>
           { MiscUtils.arrayOptions(this.props.availableTags) }
-        </LineInput>
-      </InputLine>
+        </In.LineInput>
+      </In.InputLine>
     )
   }
 
@@ -93,15 +93,15 @@ export default class ImageForm extends React.Component {
     if(!this.props.availableBranches) return null;
 
     return(
-      <InputLine>
-        <LineLabel>Branch</LineLabel>
-        <LineInput
+      <In.InputLine>
+        <In.LineLabel>Branch</In.LineLabel>
+        <In.LineInput
           as='select'
           value={this.props.gitBranch}
           onChange={(e) => this.onAssignment('gitBranch', e)}>
           { MiscUtils.arrayOptions(this.props.availableBranches) }
-        </LineInput>
-      </InputLine>
+        </In.LineInput>
+      </In.InputLine>
     )
   }
 
@@ -110,15 +110,15 @@ export default class ImageForm extends React.Component {
     if(!this.props.availableCommits) return null;
 
     return(
-      <InputLine>
-        <LineLabel>Commit</LineLabel>
-        <LineInput
+      <In.InputLine>
+        <In.LineLabel>Commit</In.LineLabel>
+        <In.LineInput
           as='select'
           value={this.props.gitCommit}
           onChange={(e) => this.onAssignment('gitCommit', e)}>
           { MiscUtils.arrayOfHashesOptions(this.commitOptions()) }
-        </LineInput>
-      </InputLine>
+        </In.LineInput>
+      </In.InputLine>
     )
   }
 
@@ -127,12 +127,12 @@ export default class ImageForm extends React.Component {
     if(!this.props.availableCommits) return null;
 
     return(
-      <InputLine>
-        <LineLabel>Output Image</LineLabel>
-        <LineInput
+      <In.InputLine>
+        <In.LineLabel>Output Image</In.LineLabel>
+        <In.LineInput
           value={this.props.outImageName}
           onChange={(e) => this.onAssignment('outImageName', e)}/>
-      </InputLine>
+      </In.InputLine>
     )
   }
 

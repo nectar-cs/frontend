@@ -1,5 +1,4 @@
 import React from 'react'
-import S from './ShowStyles'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ErrComponent from "../../../hocs/ErrComponent";
 import Kapi from "../../../utils/Kapi";
@@ -7,6 +6,7 @@ import Backend from "../../../utils/Backend";
 import DataUtils from "../../../utils/DataUtils";
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../../utils/MiscUtils";
+import Layout from "../../../assets/layouts";
 
 class DeploymentShowClass extends React.Component{
 
@@ -21,9 +21,9 @@ class DeploymentShowClass extends React.Component{
 
   render(){
     return(
-      <S.Container>
+      <Layout.FullWidthPanel>
         { this.renderHeader() }
-      </S.Container>
+      </Layout.FullWidthPanel>
     )
   }
 

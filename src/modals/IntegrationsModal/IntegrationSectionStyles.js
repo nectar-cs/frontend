@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {SmallButton} from "../../assets/buttons";
+import Button from "../../assets/buttons";
 
 const less = (p) => p.theme.colors.contrastLessFont;
 const secondary = (p) => p.theme.colors.secondaryColor;
@@ -50,12 +50,12 @@ export const S = {
     justify-content: space-between;
   `,
 
-  CancelButton: styled(SmallButton)`
+  CancelButton: styled(Button.SmallButton)`
     margin: 0;
     background: ${p => less(p)};
   `,
 
-  OkButton: styled(SmallButton)`
+  OkButton: styled(Button.SmallButton)`
     margin: 0
   `,
 

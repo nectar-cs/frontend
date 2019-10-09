@@ -1,7 +1,7 @@
-import React, {Fragment} from 'react'
-import {Layout} from './../../assets/layouts'
+import React from 'react'
+import Layout from './../../assets/layouts'
 import TextOverLineTitle from "../../widgets/TextOverLineTitle/TextOverLineTitle";
-import {StatusTag} from "../../assets/text-combos";
+import Text from "../../assets/text-combos";
 import {FROM_COUNT, TO_COUNT} from "./NetworkTest";
 import faker from 'faker'
 
@@ -42,7 +42,7 @@ export default class TestResults extends React.Component {
         <tr key={i}>
           <td><p>{data.from}</p></td>
           <td><p>{data.to}</p></td>
-          <td><StatusTag emotion={emotion}>{word}</StatusTag></td>
+          <td><Text.StatusTag emotion={emotion}>{word}</Text.StatusTag></td>
         </tr>
       )
     });

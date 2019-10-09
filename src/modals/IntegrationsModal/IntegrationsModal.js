@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {MosaicContainer, Intro, ModalLayout} from "../../assets/layouts";
+import Layout from "../../assets/layouts";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";
@@ -47,17 +47,15 @@ export default class IntegrationsModal extends React.Component {
   };
 
   render(){
-    const isModal = this.props.mode === 'modal';
-    const Container = isModal ? ModalLayout : MosaicContainer;
     return(
       <PageVisibility onChange={this.onTabFocusChange}>
-        <Container>
+        <Layout.ModalLayout>
           <Header/>
-          <Intro>{defaults.intro}</Intro>
+          <Layout.Intro>{defaults.intro}</Layout.Intro>
           { this.renderDockerSection() }
           { this.renderGitSection() }
           { this.renderDoneButton() }
-        </Container>
+        </Layout.ModalLayout>
       </PageVisibility>
     )
   }

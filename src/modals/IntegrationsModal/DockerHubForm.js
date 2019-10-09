@@ -1,27 +1,22 @@
 import React, {Fragment} from "react";
 import PropTypes from 'prop-types'
-import {InputLine, LineInput} from "../../assets/input-combos";
+import In from "../../assets/input-combos";
 import {S} from "./IntegrationSectionStyles";
 import defaults from "./defaults";
 import Backend from "../../utils/Backend";
 
 export default class DockerHubForm extends React.Component{
-
   constructor(props){
     super(props);
-    this.state = { username: '', password: '' };
+    this.state = {
+      username: '',
+      password: ''
+    };
     this.submit = this.submit.bind(this);
   }
 
   componentDidMount(){
     this.props.setSubmitPerformer(this.submit);
-  }
-
-  submit(){
-    const endpoint = `/remotes/dockerhub`;
-    const { username, password } = this.state;
-    const payload = { identifier: username, secret: password };
-    Backend.raisingPost(endpoint, payload, this.props.notifySubmitted);
   }
 
   render(){
@@ -33,6 +28,13 @@ export default class DockerHubForm extends React.Component{
     )
   }
 
+  submit(){
+    const endpoint = `/remotes/dockerhub`;
+    const { username, password } = this.state;
+    const payload = { identifier: username, secret: password };
+    Backend.raisingPost(endpoint, payload, this.props.notifySubmitted);
+  }
+
   renderFormInputs(){
     const make = (e, name) => {
       const value = e.target.value;
@@ -40,19 +42,19 @@ export default class DockerHubForm extends React.Component{
     };
 
     return(
-      <InputLine>
-        <LineInput
+      <In.InputLine>
+        <In.LineInput
           value={this.state.username}
           onChange={(e) => make(e, 'username')}
           placeholder='DockerHub Username'
         />
-        <LineInput
+        <In.LineInput
           value={this.state.password}
           onChange={(e) => make(e, 'password')}
           placeholder='DockerHub Password'
           type={'password'}
         />
-      </InputLine>
+      </In.InputLine>
     )
   }
 

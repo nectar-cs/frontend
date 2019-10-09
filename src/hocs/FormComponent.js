@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types'
-import {InputLine, LineInput, LineLabel} from "../assets/input-combos";
+import In from "../assets/input-combos";
 
 export default class FormComponent {
   static compose(InnerComponent)  {
@@ -14,30 +14,30 @@ export default class FormComponent {
       makeSelect(title, field, choices){
         const callback = (e) => { this.parentCallback(field, e.target.value); };
         return(
-          <InputLine>
-            <LineLabel size='large'>{title}</LineLabel>
-            <LineInput
+          <In.InputLine>
+            <In.LineLabel size='large'>{title}</In.LineLabel>
+            <In.LineInput
               as='select'
               value={this.props[field]}
               onChange={(e) => callback(e)}>
               { choices }
-            </LineInput>
-          </InputLine>
+            </In.LineInput>
+          </In.InputLine>
         )
       }
 
       makeInput(title, field, placeholder){
         const callback = (e) => { this.parentCallback(field, e.target.value); };
         return(
-          <InputLine>
-            <LineLabel size='large'>{title}</LineLabel>
-            <LineInput
+          <In.InputLine>
+            <In.LineLabel size='large'>{title}</In.LineLabel>
+            <In.LineInput
               as='input'
               value={this.props[field]}
               onChange={(e) => callback(e)}
               placeholder={placeholder}
             />
-          </InputLine>
+          </In.InputLine>
         )
       }
 

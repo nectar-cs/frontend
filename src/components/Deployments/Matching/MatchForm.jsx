@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {FormHelper as H} from "./FormHelper";
-import {InputLine, LineInput, LineLabel} from "../../../assets/input-combos";
+import In from "../../../assets/input-combos";
 
 export default class MatchForm extends React.Component {
 
@@ -71,15 +71,15 @@ export default class MatchForm extends React.Component {
     };
 
     return(
-      <InputLine>
-        <LineLabel size='large'>{title}</LineLabel>
-        <LineInput
+      <In.InputLine>
+        <In.LineLabel size='large'>{title}</In.LineLabel>
+        <In.LineInput
           as='select'
           value={this.props[field]}
           onChange={(e) => callback(e)}>
           { choices }
-        </LineInput>
-      </InputLine>
+        </In.LineInput>
+      </In.InputLine>
     )
   }
 

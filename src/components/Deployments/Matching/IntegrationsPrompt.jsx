@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types'
 import s from './GithubAuth.sass';
+import defaults from './defaults'
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
-import {FixedSmallButton} from "../../../assets/buttons";
+import Button from "../../../assets/buttons";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 import Backend from "../../../utils/Backend";
@@ -58,12 +59,16 @@ const IntegrationsPromptClass = class extends React.Component {
     return(
       <div className={s.connectContainer}>
         <div className={s.innerBox}>
-          <p className={s.text}>For matching, you need to connect to Git and/or Docker.</p>
+          <p className={s.text}>{defaults.integration.reason}</p>
           <i className={`${s.containerIcon} material-icons`}>extension</i>
-          <p className={s.text}>If you chose to skip, you will proceed to the application.</p>
+          <p className={s.text}>{defaults.integration.skip}</p>
           <div className={s.buttons}>
-            <FixedSmallButton emotion={'idle'} onClick={skip}>Skip</FixedSmallButton>
-            <FixedSmallButton onClick={cont}>Connect</FixedSmallButton>
+            <Button.FixedSmallButton emotion={'idle'} onClick={skip}>
+              Skip
+            </Button.FixedSmallButton>
+            <Button.FixedSmallButton onClick={cont}>
+              Connect
+            </Button.FixedSmallButton>
           </div>
         </div>
       </div>

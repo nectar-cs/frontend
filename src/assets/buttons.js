@@ -5,7 +5,7 @@ function marg(pure){
   return pure ? '17px' : '40px';
 }
 
-export const SmallButton = styled.button`
+const SmallButton = styled.button`
   color: ${p => p.theme.colors.contrastFont};
   background: ${p => colored(p.emotion, p)};
   padding: 7px 11px;
@@ -25,12 +25,12 @@ const SmallClearButton = styled.button`
   }
 `;
 
-export const FixedSmallButton = styled(SmallButton)`
+const FixedSmallButton = styled(SmallButton)`
   margin: 0;
   width: 80px;
 `;
 
-export const BigBottomButtons = styled.div`
+const BigBottomButtons = styled.div`
   position: absolute;
   left: 20px;
   right: 20px;
@@ -39,7 +39,7 @@ export const BigBottomButtons = styled.div`
   justify-content: space-evenly;
 `;
 
-export const BigButton = styled(SmallButton)`
+const BigButton = styled(SmallButton)`
   width: 40%;
   padding: 0;
   height: 45px;

@@ -3,13 +3,12 @@ import LeftHeader from '../../../widgets/LeftHeader/LeftHeader';
 import PropTypes from 'prop-types'
 import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';
 import MatchForm from './MatchForm';
-import CenterAnnouncement from '../../../widgets/CenterAnnouncement/CenterAnnouncement';
 import defaults from './defaults'
 import TopLoader from "../../../widgets/TopLoader/TopLoader";
 import DataUtils from "../../../utils/DataUtils";
 import Backend from "../../../utils/Backend";
 import {FormHelper as H} from "./FormHelper";
-import {BigBottomButtons, BigButton} from "../../../assets/buttons";
+import Button from "../../../assets/buttons";
 import MiscUtils from "../../../utils/MiscUtils";
 
 export default class MatchPreview extends React.Component {
@@ -105,14 +104,14 @@ export default class MatchPreview extends React.Component {
     if(this.state.isDockerFetching) return null;
 
     return(
-      <BigBottomButtons>
-        <BigButton
+      <Button.BigBottomButtons>
+        <Button.BigButton
           emotion='idle'
           onClick={this.skipMatch}>
           Skip this one
-        </BigButton>
+        </Button.BigButton>
         <BigButton onClick={this.acceptMatch}>Confirm & Next</BigButton>
-      </BigBottomButtons>
+      </Button.BigBottomButtons>
     );
   }
 

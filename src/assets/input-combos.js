@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const InputLine = styled.div`
+const InputLine = styled.div`
   height: auto;
   display: flex;
   width: 100%;
@@ -10,7 +10,7 @@ export const InputLine = styled.div`
   justify-content: space-between;
 `;
 
-export const LineInput = styled.input`
+const LineInput = styled.input`
   width: 100%;
   border-color: ${p => p.theme.colors.primaryColor};
   border-width: 0 0 1px 0;
@@ -32,7 +32,10 @@ function labelSize(p){
   return '100px';
 }
 
-export const LineLabel = styled.p`
+const LineLabel = styled.p`
   width: ${p => labelSize(p)};
   min-width: 120px;
 `;
+
+const In = {InputLine, LineInput, LineLabel };
+export default In;

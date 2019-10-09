@@ -1,6 +1,6 @@
 import PodTable from "./PodTable";
 import React from "react";
-import {CleanStatus} from "../../assets/text-combos";
+import Text from "../../assets/text-combos";
 
 export function StdPodTable(props){
   return(
@@ -9,7 +9,7 @@ export function StdPodTable(props){
       fields={['Name', 'State', 'Image']}
       mappers={[
         (p) => <p>{p.name}</p>,
-        (p) => <CleanStatus>{p.state}</CleanStatus>,
+        (p) => <Text.CleanStatus>{p.state}</Text.CleanStatus>,
         (p) => <p>{p.imageName}</p>,
       ]}
     />
@@ -23,8 +23,8 @@ export function DesiredStatePodTable(props){
       fields={['Name', 'State', 'Desired']}
       mappers={[
         (p) => <p>{p.name}</p>,
-        (p) => <CleanStatus>{p.state}</CleanStatus>,
-        (p) => <CleanStatus>{p.desiredState}</CleanStatus>,
+        (p) => <Text.CleanStatus>{p.state}</Text.CleanStatus>,
+        (p) => <Text.CleanStatus>{p.desiredState}</Text.CleanStatus>,
       ]}
     />
   )

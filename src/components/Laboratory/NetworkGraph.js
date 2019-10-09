@@ -1,12 +1,11 @@
 import React, {Fragment} from 'react'
-import {Layout} from './../../assets/layouts'
+import Layout from './../../assets/layouts'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Graph from "react-graph-vis";
 import {theme} from "../../assets/constants";
 import {FROM_COUNT, TO_COUNT} from "./NetworkTest";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import TextOverLineTitle from "../../widgets/TextOverLineTitle/TextOverLineTitle";
-import {StatusTag} from "../../assets/text-combos";
 
 export default class NetworkGraph extends React.Component {
 

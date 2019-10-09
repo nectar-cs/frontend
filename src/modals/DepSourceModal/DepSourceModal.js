@@ -1,5 +1,5 @@
 import React from 'react'
-import {ModalLayout} from "../../assets/layouts";
+import Layout from "../../assets/layouts";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
@@ -27,13 +27,13 @@ export default class DepSourceModal extends React.Component {
 
   render(){
     return(
-      <ModalLayout>
+      <Layout.ModalLayout>
         { this.renderHeader() }
         { this.renderHowTo() }
         { this.renderCommitInfo() }
         { this.renderLoading() }
         { this.renderButton() }
-      </ModalLayout>
+      </Layout.ModalLayout>
     )
   }
 

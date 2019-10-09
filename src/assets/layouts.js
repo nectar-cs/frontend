@@ -5,15 +5,8 @@ const Dims = {
   containerPaddingHor: "16px",
 };
 
-export const MosaicContainer = styled.div`
-  background: ${p => p.theme.colors.contrastColor};
-`;
-
-export const StandardLayout = styled(MosaicContainer)`
+const ModalLayout = styled.div`
   padding: 14px 20px 14px 20px;
-`;
-
-export const ModalLayout = styled(StandardLayout)`
   width: 580px;
   height: 700px;
 `;
@@ -22,12 +15,13 @@ export const Intro = styled.p`
   margin-top: 22px;
 `;
 
-const ContentContainer = styled(MosaicContainer)`
+const ContentContainer = styled.div`
   position: absolute;
   padding: ${Dims.containerPaddingVert} ${Dims.containerPaddingHor};
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  background: ${p => p.theme.colors.contrastColor};
 `;
 
 const LeftPanel = styled(ContentContainer)`
@@ -72,4 +66,4 @@ const Layout = {
   ModalLayout,
   Dims
 };
-export { Layout };
+export default Layout;
