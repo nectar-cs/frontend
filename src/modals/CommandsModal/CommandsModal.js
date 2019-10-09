@@ -6,14 +6,11 @@ import defaults from "./defaults";
 import {Types} from "../../types/Deployment";
 import CommandForm from "./CommandForm";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import TopLoader from "../../widgets/TopLoader/TopLoader";
 import CommandHistory from "./CommandHistory";
 import Helper from "./Helper";
 import Preview from "./Preview";
-import Kapi from "../../utils/Kapi";
-import DataUtils from "../../utils/DataUtils";
 
 export default class CommandsModal extends React.Component{
 
@@ -28,7 +25,8 @@ export default class CommandsModal extends React.Component{
         command: 'rake db:migrate'
       },
       output: null,
-      isExecuting: false
+      isExecuting: false,
+      eraseOutput: true
     };
     this.formCallback = this.formCallback.bind(this);
     this.downstreamReloader = null;
@@ -72,6 +70,7 @@ export default class CommandsModal extends React.Component{
         command={Helper.previewCommand(this)}
         output={this.state.output}
         isExecuting={this.state.isExecuting}
+        eraseOutput={this.state.eraseOutput}
       />
     )
   }
@@ -124,7 +123,7 @@ export default class CommandsModal extends React.Component{
   formCallback(key, value){
     this.setState(s => {
       const choices = { ...s.choices, [key]: value };
-      return {...s, choices};
+      return {...s, choices, eraseOutput: true};
     });
   }
 
@@ -132,7 +131,8 @@ export default class CommandsModal extends React.Component{
     this.setState(s => ({...s, isExecuting: true}));
     Helper.submitCommand(this, (resp) => {
       const output = resp['data'];
-      this.setState(s => ({...s, isExecuting: false, output}));
+      const state = { eraseOutput: true, isExecuting: false, output };
+      this.setState(s => ({...s, ...state}));
       Helper.recordCommand(this, () => this.downstreamReloader());
     });
   }

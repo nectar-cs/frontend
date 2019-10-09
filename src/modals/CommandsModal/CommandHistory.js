@@ -82,9 +82,7 @@ export default class CommandHistory extends React.Component{
   }
 
   deleteItem(id){
-    if(window.confirm(defaults.sectionThree.confirmDelete)) {
-      Helper.deleteCommand(this, id, this.reloadHistory);
-    }
+    Helper.deleteCommand(this, id, this.reloadHistory);
   }
 
   static propTypes = {

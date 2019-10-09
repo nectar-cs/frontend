@@ -9,7 +9,8 @@ function Pending(props){
 }
 
 function Output(props){
-  if(props.output) return <Text.Code>{props.output}</Text.Code>;
+  if(props.output && !props.eraseOutput)
+    return <Text.Code>{props.output}</Text.Code>;
   else return null;
 }
 
@@ -26,5 +27,5 @@ export default function Preview(props){
 Preview.propTypes = {
   command: PropTypes.string.isRequired,
   output: PropTypes.string,
-  isExecuting: PropTypes.bool.isRequired
+  isExecuting: PropTypes.bool.isRequired,
 };
