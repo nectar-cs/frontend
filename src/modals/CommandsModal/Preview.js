@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import S from "./PreviewStyles";
 import Text from './../../assets/text-combos'

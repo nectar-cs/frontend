@@ -3,13 +3,12 @@ import {S} from './WorkspaceShowStyles'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
-import Kapi from "../../../utils/Kapi";
-import Backend from "../../../utils/Backend";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
-import DataUtils from "../../../utils/DataUtils";
+import Helper from "./Helper";
+import Breadcrumbs from "../../../widgets/Breadcrumbs/Breadcrumbs";
 
 class WorkspaceShowClass extends React.Component{
 
@@ -32,36 +31,27 @@ class WorkspaceShowClass extends React.Component{
     this.fetchMatchings();
   }
 
-  fetchDeployments(){
-    Backend.raisingFetch(`/workspaces/${this.workspaceId()}`, (workspace) => {
-      workspace = DataUtils.objKeysToCamel(workspace);
-      Kapi.filterFetch('/api/deployments', workspace, (depsResp) => {
-        const deployments = DataUtils.objKeysToCamel(depsResp)['data'];
-        this.setState((s) => ({
-          ...s,
-          workspace,
-          deployments,
-          isFetching: false
-        }));
-      }, this.props.kubeErrorCallback);
-    });
-  }
-
-  fetchMatchings(){
-    Backend.raisingFetch(`/microservices`, resp => {
-      const microservices = DataUtils.objKeysToCamel(resp).data;
-      this.setState(s => ({...s, microservices}));
-    });
-  }
-
   render(){
     return(
       <Fragment>
         { this.renderLoading() }
         { this.renderCards() }
         { this.renderEmpty() }
+        { this.renderBreadcrumbs() }
       </Fragment>
     );
+  }
+
+  renderBreadcrumbs(){
+    const workspace = this.state.workspace;
+    const name = workspace ? workspace.name : this.workspaceId();
+
+    const parts = [
+      { name: "Workspaces", url: "/workspaces" },
+      { name: name, url: `/workspaces/${this.workspaceId()}` }
+    ];
+
+    return <Breadcrumbs parts={parts}/>
   }
 
   renderLoading(){
@@ -118,6 +108,9 @@ class WorkspaceShowClass extends React.Component{
   workspaceId(){
     return this.props.match.params['id'];
   }
+
+  fetchDeployments(){ Helper.fetchDeployments(this); }
+  fetchMatchings(){ Helper.fetchMatchings(this); }
 }
 
 const WorkspaceShow = AuthenticatedComponent.compose(

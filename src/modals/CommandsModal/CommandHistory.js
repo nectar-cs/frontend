@@ -5,14 +5,13 @@ import Text from './../../assets/text-combos'
 import Icon from './../../assets/icons'
 import Helper from "./Helper";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import defaults from "./defaults";
 
 
 function HistoryRow(props){
   const status = props.status;
   const emotion = status === 0 ? 'good' : 'warn';
 
-  const trash = (
+  const Trash = () => (
     <Icon.Trash
       className='material-icons'
       onClick={props.deleteCallback}>
@@ -20,11 +19,18 @@ function HistoryRow(props){
     </Icon.Trash>
   );
 
+  const Command = () => <Text.ContrastCode>{props.command}</Text.ContrastCode>;
+  const Status = () => (
+    <Text.StatusTag emotion={emotion}>
+      Code {props.status}
+    </Text.StatusTag>
+  );
+
   return(
     <tr>
-      <td><Text.ContrastCode>{props.command}</Text.ContrastCode></td>
-      <td><Text.StatusTag emotion={emotion}>Code {props.status}</Text.StatusTag></td>
-      <td>{trash}</td>
+      <td><Command/></td>
+      <td><Status/></td>
+      <td><Trash/></td>
     </tr>
   )
 }
