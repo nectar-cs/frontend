@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 14px;
-  left: 24px;
+  left: 244px;
   display: inline-flex;
   z-index: 10;
 `;

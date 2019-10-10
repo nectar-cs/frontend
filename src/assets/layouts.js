@@ -22,7 +22,7 @@ const ContentContainer = styled.div`
 
 const LeftPanel = styled(ContentContainer)`
   position: absolute;
-  width: 48%;
+  width: 48.8%;
   height: 96%;
   left: 14px;
 `;
