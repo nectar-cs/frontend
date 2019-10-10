@@ -110,7 +110,7 @@ export default class MatchPreview extends React.Component {
           onClick={this.skipMatch}>
           Skip this one
         </Button.BigButton>
-        <BigButton onClick={this.acceptMatch}>Confirm & Next</BigButton>
+        <Button.BigButton onClick={this.acceptMatch}>Confirm & Next</Button.BigButton>
       </Button.BigBottomButtons>
     );
   }

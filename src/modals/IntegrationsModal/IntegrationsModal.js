@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import Layout from "../../assets/layouts";
+import Text from "../../assets/text-combos";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";
@@ -51,7 +52,7 @@ export default class IntegrationsModal extends React.Component {
       <PageVisibility onChange={this.onTabFocusChange}>
         <Layout.ModalLayout>
           <Header/>
-          <Layout.Intro>{defaults.intro}</Layout.Intro>
+          <Text.P>{defaults.intro}</Text.P>
           { this.renderDockerSection() }
           { this.renderGitSection() }
           { this.renderDoneButton() }

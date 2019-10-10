@@ -11,10 +11,6 @@ const ModalLayout = styled.div`
   height: 700px;
 `;
 
-export const Intro = styled.p`
-  margin-top: 22px;
-`;
-
 const ContentContainer = styled.div`
   position: absolute;
   padding: ${Dims.containerPaddingVert} ${Dims.containerPaddingHor};

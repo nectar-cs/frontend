@@ -8,7 +8,6 @@ const Container = styled.div`
   z-index: 10;
 `;
 
-
 const Crumb = styled.p`
   font-size: 18px;
   text-decoration: none;
@@ -20,5 +19,4 @@ const Slash = styled(Crumb)`
 `;
 
 const S = { Container, Crumb, Slash };
-
 export default S;

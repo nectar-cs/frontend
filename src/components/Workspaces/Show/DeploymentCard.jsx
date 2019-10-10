@@ -64,20 +64,28 @@ export default class DeploymentCard extends React.Component {
 
   renderContentRows(){
     const dep = this.props.deployment;
-    const svc = this.props.deployment.services[0];
 
-    const dnsMaterial = svc.externalIp ? 'language' : null;
     const portText = `Ok CPU, low RAM`;
-    const dnsAction = () => this.openHttpModal(svc.shortDns);
 
     return <S.ContentRows>
       <tbody>
         { this.buildRow('Image', dep.imageName, this.openImageModal) }
         { this.buildRow('Source', this.sourceString(), this.openSourceModal) }
-        { this.buildRow('Quick DNS', svc.shortDns, dnsAction, dnsMaterial) }
+        { this.renderDnsRow() }
         { this.buildRow('Status', portText, () => alert("Bang!")) }
       </tbody>
     </S.ContentRows>;
+  }
+
+  renderDnsRow(){
+    const svc = this.props.deployment.services[0];
+    if(svc){
+      const dnsMaterial = svc.externalIp ? 'language' : null;
+      const dnsAction = () => this.openHttpModal(svc.shortDns);
+      return this.buildRow('Quick DNS', svc.shortDns, dnsAction, dnsMaterial)
+    } else {
+      return this.buildRow('Quick DNS', "No Services", null)
+    }
   }
 
   renderPodStatuses() {
