@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
 import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
-import ls from '../../../assets/content-layouts.sass';
 import LeftHeader, { ICON} from '../../../widgets/LeftHeader/LeftHeader';
 import Backend from '../../../utils/Backend';
 import DeploymentList from './DeploymentList';
@@ -13,6 +12,7 @@ import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import {ROUTES} from "../../../containers/RoutesConsts";
 import DataUtils from "../../../utils/DataUtils";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
+import Layout from "../../../assets/layouts";
 
 class MatchingClass extends React.Component {
   constructor(props){
@@ -58,7 +58,7 @@ class MatchingClass extends React.Component {
 
   renderLeftSide(){
     return(
-      <div className={ls.halfScreePanelLeft}>
+      <Layout.LeftPanel>
         <Header/>
         <TopLoader isFetching={this.state.isFetching}/>
         <DeploymentList
@@ -66,13 +66,13 @@ class MatchingClass extends React.Component {
           selectedIndex={this.state.selectedIndex}
           notifyDeploymentSelected={this.notifyDeploymentSelected}
         />
-      </div>
+      </Layout.LeftPanel>
     )
   }
 
   renderRightSide(){
     return(
-      <div className={ls.halfScreePanelRight}>
+      <Layout.RightPanel>
         <TopLoader isFetching={this.state.isRightFetching}/>
         <Fragment>
           { this.renderIntegrationsPrompt() }
@@ -80,7 +80,7 @@ class MatchingClass extends React.Component {
           { this.renderOfferSubmit() }
           { this.renderSubmitted() }
         </Fragment>
-      </div>
+      </Layout.RightPanel>
     )
   }
 

@@ -20,17 +20,20 @@ const ContentContainer = styled.div`
   background: ${p => p.theme.colors.contrastColor};
 `;
 
+const halfPanelOffset = "14px";
+
 const LeftPanel = styled(ContentContainer)`
   position: absolute;
-  width: 48.8%;
+  width: calc(50% - calc(${halfPanelOffset} * 1.5));
+  left: ${halfPanelOffset};
   height: 96%;
-  left: 14px;
 `;
 
-const RightPanel = styled(LeftPanel)`
-  right: 14px;
-  left: auto;
-  overflow-y: scroll;
+const RightPanel = styled(ContentContainer)`
+  position: absolute;
+  width: calc(50% - calc(${halfPanelOffset} * 1.5));
+  right: ${halfPanelOffset};
+  height: 96%;
 `;
 
 const FullWidthPanel = styled(ContentContainer)`
