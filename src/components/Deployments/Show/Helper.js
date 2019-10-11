@@ -3,12 +3,20 @@ import Kapi from "../../../utils/Kapi";
 import DataUtils from "../../../utils/DataUtils";
 import Backend from "../../../utils/Backend";
 import NetworkDebugSection from "./NetworkDebugSection";
+import PodDebugSection from "./PodDebugSection";
+import ImageOpsSection from "./ImageOpsSection";
+import LoggingSection from "./LoggingSection";
+import IntegrationsSection from "./IntegrationsSection";
 
 export default class Helper {
 
   static sectionClasses = [
     OverviewSection,
-    NetworkDebugSection
+    NetworkDebugSection,
+    PodDebugSection,
+    IntegrationsSection,
+    ImageOpsSection,
+    LoggingSection
   ];
 
   static defaultSection = OverviewSection;

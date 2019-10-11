@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+const halfPanelOffset = "14px";
+
 const Dims = {
   containerPaddingVert: "12px",
   containerPaddingHor: "16px",
@@ -19,8 +21,6 @@ const ContentContainer = styled.div`
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   background: ${p => p.theme.colors.contrastColor};
 `;
-
-const halfPanelOffset = "14px";
 
 const LeftPanel = styled(ContentContainer)`
   position: absolute;
