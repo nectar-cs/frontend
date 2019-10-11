@@ -2,7 +2,6 @@ import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ErrComponent from "../../../hocs/ErrComponent";
 import Helper from "./Helper";
-import Layout from "../../../assets/layouts";
 import S from './DeploymentShowStyles'
 
 class DeploymentShowClass extends React.Component{
@@ -17,6 +16,7 @@ class DeploymentShowClass extends React.Component{
     };
 
     this.setDefaultDetailFn = this.setDefaultDetailFn.bind(this);
+    this.onClicked = this.onClicked.bind(this);
     this.defDetailFns = {};
   }
 
@@ -35,8 +35,9 @@ class DeploymentShowClass extends React.Component{
         key={Section.name}
         deployment={this.state.deployment}
         matching={this.state.matching}
-        isFocused={false}
+        isChosen={Section.name === this.state.focusedSection}
         defaultDetailSetter={this.setDefaultDetailFn}
+        onClicked={this.onClicked}
       />
     ));
 
@@ -45,6 +46,15 @@ class DeploymentShowClass extends React.Component{
         <Sections/>
       </S.LeftPanel>
     )
+  }
+
+  onClicked(sectionName){
+    const defSection = Helper.defaultSection.name;
+    this.setState(s => {
+      const isClosing = sectionName === s.focusedSection;
+      const focusedSection = isClosing ? defSection : sectionName;
+      return { ...s, focusedSection };
+    });
   }
 
   renderDetail(){

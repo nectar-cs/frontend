@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import Layout from "../../../assets/layouts";
 
 const RightPanel = styled(Layout.RightPanel)`
-  box-shadow: none;
 `;
 
 const LeftPanel = styled(Layout.LeftPanel)`

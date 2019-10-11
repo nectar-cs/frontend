@@ -7,6 +7,9 @@ const Section = styled(Layout.ContentContainer)`
   box-shadow: none;
   height: auto;
   width: 100%;
+  border-color: ${p => p.chosen ?  p.theme.colors.primaryColor : "transparent"};
+  border-width: 2px;
+  border-style: solid;
   &:not(:nth-child(1)){
     margin-top: 14px;
   }
@@ -17,6 +20,10 @@ const Relaxed = styled(Section)`
 
 const Collapsed = styled(Section)`
   position: relative;
+  &:hover{
+    background: ${p => p.theme.colors.primaryFontMuted};
+    cursor: pointer;
+  }
 `;
 
 const LeftBox = styled.div`
@@ -27,7 +34,7 @@ const LeftBox = styled.div`
 
 const CollapsedTitle = styled.p`
   font-size: 15px;
-  margin-bottom: 1px;
+  margin-bottom: 0.5px;
 `;
 
 const ToggleArrow = styled.i`
