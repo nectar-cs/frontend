@@ -30,7 +30,7 @@ class DeploymentShowClass extends React.Component{
   }
 
   renderSections(){
-    return Helper.sectionClasses.map(Section => (
+    const Sections = () => Helper.sectionClasses.map(Section => (
       <Section
         key={Section.name}
         deployment={this.state.deployment}
@@ -39,6 +39,12 @@ class DeploymentShowClass extends React.Component{
         defaultDetailSetter={this.setDefaultDetailFn}
       />
     ));
+
+    return(
+      <S.LeftPanel>
+        <Sections/>
+      </S.LeftPanel>
+    )
   }
 
   renderDetail(){

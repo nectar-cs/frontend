@@ -40,7 +40,7 @@ export default class LeftHeader extends React.Component {
 
   static propTypes = {
     title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
+    subtitle: PropTypes.any.isRequired,
     graphicType: PropTypes.string,
     graphicName: PropTypes.string.isRequired,
   };

@@ -1,10 +1,55 @@
 import styled from 'styled-components'
 import Layout from "../../../assets/layouts";
 
-const Collapsed = styled(Layout.LeftPanel)`
+const Section = styled(Layout.ContentContainer)`
+  padding: ${Layout.Dims.containerPaddingVert} ${Layout.Dims.containerPaddingHor};
+  position: static;
   box-shadow: none;
-  height: 40px;
+  height: auto;
+  width: 100%;
+  &:not(:nth-child(1)){
+    margin-top: 14px;
+  }
 `;
 
-const S = { Collapsed };
+const Relaxed = styled(Section)`
+`;
+
+const Collapsed = styled(Section)`
+  position: relative;
+`;
+
+const LeftBox = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-top: 3px;
+`;
+
+const CollapsedTitle = styled.p`
+  font-size: 15px;
+  margin-bottom: 1px;
+`;
+
+const ToggleArrow = styled.i`
+  position: absolute;
+  top: 0;
+  right: 8px;
+  font-size: 28px;
+  transform: translateY(50%);
+`;
+
+const CollapsedIcon = styled.i`
+  color: ${p => p.theme.colors.primaryColor};
+  margin-right: 8px;
+  font-size: 24px;
+`;
+
+const S = {
+  Collapsed,
+  Relaxed,
+  CollapsedIcon,
+  LeftBox,
+  CollapsedTitle,
+  ToggleArrow
+};
 export default S;
