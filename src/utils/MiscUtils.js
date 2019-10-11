@@ -31,14 +31,14 @@ export default class MiscUtils {
 
   static modalImage(inst, icon){
     const { deployment, matching, mode } = inst.props;
-    if(mode === 'modal'){
+    if(!mode || mode === 'modal'){
       return this.msImage(deployment, matching);
     } else return icon;
   }
 
   static modalGraphicType(inst){
     const { mode } = inst.props;
-    return mode === 'modal' ? 'image' : 'icon';
+    return !mode || mode === 'modal' ? 'image' : 'icon';
   }
 
   static gitSummary(ms){

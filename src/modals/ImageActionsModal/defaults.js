@@ -2,6 +2,13 @@ import React, {Fragment} from "react";
 import {S} from "./ImageFormStyles";
 
 export const defaults ={
+
+  header: {
+    title: (name, mode) => {
+      if(mode === 'modal') return `${name} / image ops`;
+      else return "Image Operations"
+    }
+  },
   copy: {
     header: 'Do things to the images or pods for this deployment',
     intro: {

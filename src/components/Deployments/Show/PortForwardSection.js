@@ -1,18 +1,17 @@
 import React from 'react'
 import Section from "./Section";
-import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
+import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
+import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
 
-export default class ImageOpsSection extends Section {
-
+export default class PortForwardSection extends Section {
   defaultDetail(){
     const { deployment, matching } = this.props;
     return(
-      <ImageActionsModal
+      <PortForwardModal
         mode='fragment'
         deployment={deployment}
         matching={matching}
       />
     );
   }
-
 }

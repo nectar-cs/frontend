@@ -8,6 +8,7 @@ import PortForwardForm from "./PortForwardForm";
 import Helper from "./Helper";
 import CopyWizard from "./CopyWizard";
 import {Types} from "../../types/Deployment";
+import FlexibleModal from "../../hocs/FlexibleModal";
 
 export default class PortForwardModal extends React.Component{
 
@@ -31,22 +32,23 @@ export default class PortForwardModal extends React.Component{
 
   render(){
     return(
-      <Layout.ModalLayout>
+      <FlexibleModal mode={this.props.mode}>
         { this.renderHeader() }
         <TextOverLineSubtitle text={defaults.sectionOne.title}/>
         { this.renderForm() }
         <TextOverLineSubtitle text={defaults.sectionTwo.title}/>
         { this.renderPasta() }
-      </Layout.ModalLayout>
+      </FlexibleModal>
     )
   }
 
   renderHeader(){
-    const { deployment, matching } = this.props;
+    const { deployment, mode } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.msImage(deployment, matching)}
-        title={defaults.header.title(deployment.name)}
+        graphicName={MiscUtils.modalImage(this, "arrow_upward")}
+        graphicType={MiscUtils.modalGraphicType(this)}
+        title={defaults.header.title(deployment.name, mode)}
         subtitle={defaults.header.subtitle}
       />
     )

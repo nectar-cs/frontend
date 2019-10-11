@@ -15,6 +15,7 @@ import MiscUtils from "../../utils/MiscUtils";
 import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response";
 import HistoryList from "./HistoryList";
 import Backend from "../../utils/Backend";
+import FlexibleModal from "../../hocs/FlexibleModal";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -85,10 +86,10 @@ export default class HttpActionsModal extends React.Component {
       content = this.renderResponsePhase();
 
     return(
-      <div className={s.modal}>
+      <FlexibleModal mode={this.props.mode}>
         { this.renderHeader() }
         { content }
-      </div>
+      </FlexibleModal>
     )
   }
 
@@ -96,8 +97,9 @@ export default class HttpActionsModal extends React.Component {
     const { deployment, matching } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.msImage(deployment, matching)}
-        title={`${this.props.deployment.name} / http ops`}
+        graphicName={MiscUtils.modalImage(this, "http")}
+        graphicType={MiscUtils.modalGraphicType(this)}
+        title={`${deployment.name} / http ops`}
         subtitle='Send HTTP requests to this deployment'
       />
     );

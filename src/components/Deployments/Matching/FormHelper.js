@@ -69,13 +69,21 @@ export class FormHelper {
   }
 
   static frameworkImage(inst){
-    const framework = inst.state.bundle.framework;
-    return MiscUtils.frameworkImage( framework || 'docker');
+    if(inst.props.mode === 'detail'){
+      return "extension";
+    } else {
+      const framework = inst.state.bundle.framework;
+      return MiscUtils.frameworkImage(framework || 'docker');
+    }
   }
 
-  static frameworkImage2(inst){
-    const framework = inst.state.bundle.framework;
-    return MiscUtils.frameworkImage2( framework || 'docker');
+  static graphicType(inst) {
+    return inst.props.mode === 'detail' ? "icon" : 'image';
   }
 
+  static title(inst){
+    if(inst.props.mode === 'detail')
+      return "Git and Docker Matching";
+    else return inst.props.deployment.name;
+  }
 }

@@ -8,17 +8,21 @@ import ImageOpsSection from "./ImageOpsSection";
 import LoggingSection from "./LoggingSection";
 import IntegrationsSection from "./IntegrationsSection";
 import CommandsSection from "./CommandsSection";
+import PortForwardSection from "./PortForwardSection";
+import HttpOpsSection from "./HttpOpsSection";
 
 export default class Helper {
 
   static sectionClasses = [
     OverviewSection,
     LoggingSection,
+    PortForwardSection,
     NetworkDebugSection,
     PodDebugSection,
     IntegrationsSection,
     ImageOpsSection,
-    CommandsSection
+    HttpOpsSection,
+    CommandsSection,
   ];
 
   static defaultSection = OverviewSection;

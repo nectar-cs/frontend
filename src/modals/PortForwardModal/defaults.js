@@ -2,7 +2,10 @@ import React, {Fragment} from "react";
 
 const defaults = {
   header: {
-    title: (name) => `${name} / port forward`,
+    title: (name, mode) => {
+      if(mode === 'modal') return `${name} / port forward`;
+      else return "Port Forward";
+    },
     subtitle: "Port Forwarding Wizard"
   },
   sectionOne: {

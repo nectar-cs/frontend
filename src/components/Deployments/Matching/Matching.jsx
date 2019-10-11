@@ -123,7 +123,6 @@ class MatchingClass extends React.Component {
     )
   }
 
-
   renderMatchingPreview(){
     if(!this.state.integrations) return null;
     if(this.state.isSubmitting) return null;

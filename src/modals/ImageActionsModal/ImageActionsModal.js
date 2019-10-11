@@ -13,6 +13,7 @@ import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLin
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Conclusion from "./Conclusion";
 import {defaults} from "./defaults";
+import FlexibleModal from "../../hocs/FlexibleModal";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
@@ -69,7 +70,7 @@ export default class ImageActionsModal extends React.Component {
 
   render(){
     return(
-      <Container>
+      <FlexibleModal mode={this.props.mode}>
         { this.renderHeader() }
         { this.renderLoader() }
         { this.renderIntro() }
@@ -78,16 +79,17 @@ export default class ImageActionsModal extends React.Component {
         { this.renderConfigForm() }
         { this.renderPodList() }
         { this.renderButton() }
-      </Container>
+      </FlexibleModal>
     )
   }
 
   renderHeader(){
-    const { deployment, matching } = this.props;
+    const { deployment, mode} = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.msImage(deployment, matching)}
-        title={`${deployment.name} / image ops`}
+        graphicName={MiscUtils.modalImage(this, "camera_alt")}
+        graphicType={MiscUtils.modalGraphicType(this)}
+        title={defaults.header.title(deployment, mode)}
         subtitle={defaults.copy.header}
       />
     )

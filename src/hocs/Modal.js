@@ -1,0 +1,33 @@
+import React from 'react'
+import FlexibleModal from "./FlexibleModal";
+import LeftHeader from "../widgets/LeftHeader/LeftHeader";
+import MiscUtils from "../utils/MiscUtils";
+
+export default class Modal extends React.Component{
+  render(){
+    return(
+      <FlexibleModal mode={this.props.mode}>
+        { this.renderHeader() }
+        { this.renderContent() }
+      </FlexibleModal>
+    )
+  }
+
+  renderHeader(){
+    const { deployment, mode } = this.props;
+    const defaults = this.defaults();
+    return(
+      <LeftHeader
+        graphicName={MiscUtils.modalImage(this, defaults.header.icon)}
+        graphicType={MiscUtils.modalGraphicType(this)}
+        title={defaults.header.title(mode, deployment.name)}
+        subtitle={defaults.header.subtitle}
+      />
+    )
+  }
+
+  renderContent(){
+  }
+
+  defaults(){ return {} }
+}

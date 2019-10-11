@@ -75,8 +75,9 @@ export default class MatchPreview extends React.Component {
     return(
       <LeftHeader
         graphicName={H.frameworkImage(this)}
-        title={this.props.deployment.name}
-        subtitle='A connected app'
+        graphicType={H.graphicType(this)}
+        title={H.title(this)}
+        subtitle='Wizard'
       />
     )
   }

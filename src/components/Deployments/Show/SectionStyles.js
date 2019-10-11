@@ -21,7 +21,7 @@ const Relaxed = styled(Section)`
 const Collapsed = styled(Section)`
   position: relative;
   &:hover{
-    border-color: ${p => p.theme.colors.primaryColor};
+    border-color: ${p => p.theme.colors.contrastLessFont};
     cursor: pointer;
   }
 `;

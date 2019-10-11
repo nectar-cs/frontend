@@ -42,7 +42,7 @@ export default class Section extends React.Component {
   }
 
   renderDetail(){
-    return <p>Unimplemented</p>;
+    return null;
   }
 
   onClicked(){

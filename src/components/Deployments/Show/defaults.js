@@ -39,6 +39,15 @@ const defaults = {
       title: "Cost Analysis",
       iconName: "account_balance"
     },
+
+    portForward: {
+      title: "Port Forwarding",
+      iconName: "arrow_upward"
+    },
+    httpOps: {
+      title: "HTTP Operations",
+      iconName: "http"
+    }
   }
 };
 
