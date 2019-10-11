@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react'
-import Layout from './../../assets/layouts'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
@@ -11,6 +10,7 @@ import TopLoader from "../../widgets/TopLoader/TopLoader";
 import CommandHistory from "./CommandHistory";
 import Helper from "./Helper";
 import Preview from "./Preview";
+import FlexibleModal from "../../hocs/FlexibleModal";
 
 export default class CommandsModal extends React.Component{
 
@@ -32,7 +32,7 @@ export default class CommandsModal extends React.Component{
 
   render(){
     return(
-      <Layout.ModalLayout>
+      <FlexibleModal mode={this.props.mode}>
         { this.renderHeader() }
         { this.renderNoHealthyPods() }
         { this.renderTopLoader() }
@@ -40,16 +40,17 @@ export default class CommandsModal extends React.Component{
         { this.renderPreview() }
         { this.renderHistory() }
         { this.renderButton() }
-      </Layout.ModalLayout>
+      </FlexibleModal>
     )
   }
 
   renderHeader(){
-    const { deployment, matching } = this.props;
+    const { deployment, mode } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.msImage(deployment, matching)}
-        title={defaults.header.title(deployment.name)}
+        graphicName={MiscUtils.modalImage(this, "attach_money")}
+        graphicType={MiscUtils.modalGraphicType(this)}
+        title={defaults.header.title(deployment.name, mode)}
         subtitle={defaults.header.subtitle}
       />
     )
@@ -139,5 +140,6 @@ export default class CommandsModal extends React.Component{
   static propTypes = {
     deployment: Types.Deployment.isRequired,
     matching: Types.Matching,
-  }
+    ...FlexibleModal.propTypes
+  };
 }

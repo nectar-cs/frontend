@@ -40,12 +40,7 @@ class DeploymentShowClass extends React.Component{
         onClicked={this.onClicked}
       />
     ));
-
-    return(
-      <S.LeftPanel>
-        <Sections/>
-      </S.LeftPanel>
-    )
+    return <S.LeftPanel><Sections/></S.LeftPanel>;
   }
 
   onClicked(sectionName){
@@ -58,7 +53,16 @@ class DeploymentShowClass extends React.Component{
   }
 
   renderDetail(){
-    return <S.RightPanel><p>ho</p></S.RightPanel>
+    const {focusedSection} = this.state;
+    const detailFunc = this.defDetailFns[focusedSection];
+    console.log(focusedSection);
+    console.log(this.defDetailFns);
+
+    return(
+      <S.RightPanel>
+        { detailFunc && detailFunc() }
+      </S.RightPanel>
+    )
   }
 
   componentDidMount(){
@@ -70,8 +74,8 @@ class DeploymentShowClass extends React.Component{
     this.setState(s => ({...s, isFetch: {...s.isFetch, ...assign}}));
   }
 
-  setDefaultDetailFn(klass, defaultFn){
-    this.defDetailFns[klass.name] = defaultFn;
+  setDefaultDetailFn(name, defaultFn){
+    this.defDetailFns[name] = defaultFn;
   }
 }
 

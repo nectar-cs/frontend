@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {Types} from "../../../types/Deployment";
 import S from './SectionStyles'
@@ -9,32 +9,40 @@ export default class Section extends React.Component {
   constructor(props){
     super(props);
     this.onClicked = this.onClicked.bind(this);
+    this.props.defaultDetailSetter(
+      this.constructor.name,
+      () => this.defaultDetail()
+    );
   }
 
   render(){
-    if(this.props.isChosen && this.props.deployment)
-      return this.renderCollapsed();
-    else return this.renderCollapsed();
-  }
-
-  renderExpanded(){
+    const {isChosen} = this.props;
     return(
-      <Fragment>
-        { this.renderCollapsed() }
-      </Fragment>
-    )
-  }
-
-  renderCollapsed(){
-    return(
-      <S.Collapsed onClick={this.onClicked} chosen={this.props.isChosen} >
-        <S.LeftBox>
-          { this.renderIcon() }
-          { this.renderTitle() }
-        </S.LeftBox>
+      <S.Collapsed onClick={this.onClicked} chosen={isChosen}>
+        { this.renderTitleBox() }
         { this.renderToggleArrow() }
+        { this.renderContent() }
       </S.Collapsed>
+    );
+  }
+
+  renderTitleBox(){
+    return(
+      <S.LeftBox>
+        { this.renderIcon() }
+        { this.renderTitle() }
+      </S.LeftBox>
     )
+  }
+
+  renderContent(){
+    const {isChosen, deployment} = this.props;
+    if(!(isChosen && deployment)) return null;
+    return this.renderDetail();
+  }
+
+  renderDetail(){
+    return <p>Unimplemented</p>;
   }
 
   onClicked(){
@@ -58,13 +66,17 @@ export default class Section extends React.Component {
     </S.CollapsedIcon>);
   }
 
-  iconName(){ return defaults.sections[this.key()].iconName }
-  title(){ return defaults.sections[this.key()].title  }
+  defaultDetail(){
+    return <p>Unimplemented</p>;
+  }
 
   key(){
     const key = this.constructor.name.replace("Section", "");
     return key.charAt(0).toLowerCase() + key.slice(1);
   }
+
+  iconName(){ return defaults.sections[this.key()].iconName }
+  title(){ return defaults.sections[this.key()].title  }
 
   static propTypes = {
     isChosen: PropTypes.bool.isRequired,

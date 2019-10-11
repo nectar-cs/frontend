@@ -29,6 +29,18 @@ export default class MiscUtils {
     return this.frameworkImage(name);
   }
 
+  static modalImage(inst, icon){
+    const { deployment, matching, mode } = inst.props;
+    if(mode === 'modal'){
+      return this.msImage(deployment, matching);
+    } else return icon;
+  }
+
+  static modalGraphicType(inst){
+    const { mode } = inst.props;
+    return mode === 'modal' ? 'image' : 'icon';
+  }
+
   static gitSummary(ms){
     const first = (
       <Text.Discrete href={`https://www.github.com/${ms.gitRemoteName}`} target="_blank">
