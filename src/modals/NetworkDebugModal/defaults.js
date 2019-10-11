@@ -6,7 +6,11 @@ const defaults = {
       else return `${name} / debug networking`
     },
     icon: "bug_report",
-    subtitle: "Root cause for networking WTFs"
+    subtitle: "Root cause analysis for networking WTFs"
+  },
+  general: {
+    consolePrompt: "Click below to start",
+    runCheck: "Run the Check"
   },
   dockerPortStep: {
     title: "Check 1: Image Accepts Traffic?",

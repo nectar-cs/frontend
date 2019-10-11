@@ -7,6 +7,14 @@ import Text from './../../assets/text-combos'
 import Helper from "./Helper";
 
 export default class CheckStep extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasStarted: false
+    }
+  }
+
   render(){
     return(
       <Fragment>
@@ -16,6 +24,7 @@ export default class CheckStep extends React.Component {
         { this.renderVerdict() }
         { this.renderAnalysis() }
         { this.renderNextStepText() }
+        { this.renderStartButton() }
       </Fragment>
     )
   }
@@ -25,9 +34,17 @@ export default class CheckStep extends React.Component {
   }
 
   renderConsole(){
+    const {hasStarted} = this.state;
+    const strings = hasStarted ? this.terminalOutput() :
+      [this.genConfig().consolePrompt];
+
+    const Content = () => strings.map(s => (
+      <Text.Code key={s}>{s}</Text.Code>
+    ));
+
     return(
       <Layout.BigCodeViewer>
-        <Text.Code>Hey</Text.Code>
+        <Content/>
       </Layout.BigCodeViewer>
     )
   }
@@ -37,13 +54,17 @@ export default class CheckStep extends React.Component {
       <li key={exp}><p>{exp}</p></li>
     ));
     return(
-      <S.Explanation>
-        <Points/>
-      </S.Explanation>
+      <Fragment>
+        <Text.P>Game Plan:</Text.P>
+        <S.Explanation>
+          <Points/>
+        </S.Explanation>
+      </Fragment>
     )
   }
 
   renderVerdict(){
+    if(!this.state.hasStarted) return null;
     const verdict = false;
 
     return(
@@ -59,21 +80,36 @@ export default class CheckStep extends React.Component {
   }
 
   renderAnalysis() {
-    const verdict = false;
-    if (verdict) return null;
+    if(!this.state.hasStarted) return null;
+
     const Points = () => this.analysis().map(exp => (
       <li key={exp}><p>{exp}</p></li>
     ));
     return <S.Explanation><Points/></S.Explanation>;
   }
 
-
   renderNextStepText() {
-    const verdict = false;
-    if (!verdict) return null;
-    return(<Fragment>
+    if(!this.state.hasStarted) return null;
 
-    </Fragment>)
+    const verdict = true;
+    if (!verdict) return null;
+    return(
+      <Fragment>
+        <S.NextButton>Run Next Check</S.NextButton>
+      </Fragment>
+    )
+  }
+
+  renderStartButton(){
+    return(
+      <S.StartButton>
+        { this.genConfig().runCheck }
+      </S.StartButton>
+    )
+  }
+
+  terminalOutput(){
+    return "console.log('nada');"
   }
 
   key(){
@@ -83,4 +119,5 @@ export default class CheckStep extends React.Component {
 
   analysis(){ return ["This is broken", "So is that"]; }
   config() { return defaults[this.key()] }
+  genConfig() { return defaults.general }
 }

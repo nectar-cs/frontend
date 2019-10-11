@@ -5,6 +5,14 @@ import DockerPortStep from "./DockerPortStep";
 
 export default class NetworkDebugModal extends Modal {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: 0
+    }
+  }
+
+
   renderContent(){
     return(
       <Fragment>

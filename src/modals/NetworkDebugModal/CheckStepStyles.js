@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Layout from "../../assets/layouts";
+import Button from "../../assets/buttons";
 
 const Explanation = styled.ol`
   margin-top: 12px;
@@ -9,5 +10,14 @@ const VerdictLine = styled(Layout.TextLine)`
   margin-top: 22px;
 `;
 
-const S = { Explanation, VerdictLine };
+const StartButton = styled(Button.SmallClearButton)`
+  display: block;
+  margin: 22px auto 0 auto;
+`;
+
+const NextButton = styled(Button.SmallClearButton)`
+  margin-top: 2px;
+`;
+
+const S = { Explanation, VerdictLine, NextButton, StartButton };
 export default S;
