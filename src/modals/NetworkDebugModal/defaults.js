@@ -7,6 +7,13 @@ const defaults = {
     },
     icon: "bug_report",
     subtitle: "Root cause for networking WTFs"
+  },
+  dockerPortStep: {
+    title: "Check 1: Image Accepts Traffic?",
+    explanation: [
+      "Read the Dockerfile, determine expected open ports",
+      "Run image locally, cURL determined ports"
+    ],
   }
 };
 

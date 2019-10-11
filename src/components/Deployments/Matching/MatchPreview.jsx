@@ -10,6 +10,7 @@ import Backend from "../../../utils/Backend";
 import {FormHelper as H} from "./FormHelper";
 import Button from "../../../assets/buttons";
 import MiscUtils from "../../../utils/MiscUtils";
+import {Types} from "../../../types/Deployment";
 
 export default class MatchPreview extends React.Component {
   constructor(props){
@@ -171,6 +172,7 @@ export default class MatchPreview extends React.Component {
 
   static propTypes = {
     deployment: PropTypes.object,
+    matching: Types.Deployment,
     onDeploymentReviewed: PropTypes.func.isRequired,
     hasGitRemote: PropTypes.bool.isRequired,
     hasImageRegistry: PropTypes.bool.isRequired

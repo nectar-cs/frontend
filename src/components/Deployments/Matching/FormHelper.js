@@ -70,7 +70,7 @@ export class FormHelper {
 
   static frameworkImage(inst){
     if(inst.props.mode === 'detail'){
-      return "extension";
+      return "attachment";
     } else {
       const framework = inst.state.bundle.framework;
       return MiscUtils.frameworkImage(framework || 'docker');

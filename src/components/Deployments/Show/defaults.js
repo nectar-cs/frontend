@@ -17,7 +17,7 @@ const defaults = {
 
     integrations: {
       title: "Git & Docker",
-      iconName: "extension"
+      iconName: "attachment"
     },
 
     logging: {

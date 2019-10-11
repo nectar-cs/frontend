@@ -32,6 +32,8 @@ const BoldStatus = styled(CleanStatus)`
   letter-spacing: 0.2px;
   font-weight: 800;
   color: ${p => colored(p.emotion, p)};
+  margin-right: ${p => p.push ? "3px" : '0'}
+  margin-left: ${p => p.pushed ? "3px" : '0'}
 `;
 
 const Code = styled.code`
