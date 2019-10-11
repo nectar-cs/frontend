@@ -15,9 +15,6 @@ export default class MiscUtils {
   static image(name){
     return `${IMG_BASE}/${name}`;
   }
-  static frameworkImage2(framework){
-    return this.frameworkImage(framework, 'original.svg');
-  }
 
   static frameworkImage(framework, suffix='plain.svg'){
     const imageName = `${framework}/${framework}-${suffix}`;

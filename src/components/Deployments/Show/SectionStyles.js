@@ -11,7 +11,7 @@ const Section = styled(Layout.ContentContainer)`
   border-width: 2px;
   border-style: solid;
   &:not(:nth-child(1)){
-    margin-top: 14px;
+    margin-top: 10px;
   }
 `;
 

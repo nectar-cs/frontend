@@ -63,6 +63,7 @@ const Layout = {
   FullWidthPanel,
   BigCodeViewer,
   ModalLayout,
-  Dims
+  Dims,
+  halfPanelOffset
 };
 export default Layout;

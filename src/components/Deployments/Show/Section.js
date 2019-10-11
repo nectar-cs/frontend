@@ -9,9 +9,10 @@ export default class Section extends React.Component {
   constructor(props){
     super(props);
     this.onClicked = this.onClicked.bind(this);
+    this.defaultDetail = this.defaultDetail.bind(this);
     this.props.defaultDetailSetter(
       this.constructor.name,
-      () => this.defaultDetail()
+      this.defaultDetail
     );
   }
 
@@ -61,13 +62,15 @@ export default class Section extends React.Component {
   }
 
   renderIcon(){
-    return(<S.CollapsedIcon className='material-icons'>
-      { this.iconName() }
-    </S.CollapsedIcon>);
+    return(
+      <S.CollapsedIcon className='material-icons'>
+        { this.iconName() }
+      </S.CollapsedIcon>
+    );
   }
 
-  defaultDetail(){
-    return <p>Unimplemented</p>;
+  defaultDetail(source){
+    return <p>Unimplemented ({this.constructor.name})</p>;
   }
 
   key(){

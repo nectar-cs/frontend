@@ -25,23 +25,19 @@ export default class Helper {
     CommandsSection,
   ];
 
-  static defaultSection = OverviewSection;
+  static defaultSection = NetworkDebugSection;
 
   static fetchDeployment(inst){
-    inst.setFetch({dep: true});
     const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;
     Kapi.fetch(ep, resp => {
-      inst.setFetch({dep: false});
       const deployment = DataUtils.objKeysToCamel(resp);
       inst.setState(s => ({...s, deployment}));
     });
   }
 
   static fetchMatching(inst){
-    inst.setFetch({match: true});
     const ep = `/microservices/${this.depNs(inst)}/${this.depName(inst)}`;
     Backend.raisingFetch(ep, resp => {
-      inst.setFetch({match: false});
       const matching = DataUtils.objKeysToCamel(resp)['data'];
       inst.setState(s => ({...s, matching}));
     });

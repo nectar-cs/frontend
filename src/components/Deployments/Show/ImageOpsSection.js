@@ -4,8 +4,8 @@ import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsMod
 
 export default class ImageOpsSection extends Section {
 
-  defaultDetail(){
-    const { deployment, matching } = this.props;
+  defaultDetail(source){
+    const { deployment, matching } = source || this.props;
     return(
       <ImageActionsModal
         mode='fragment'

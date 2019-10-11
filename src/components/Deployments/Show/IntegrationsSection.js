@@ -4,8 +4,8 @@ import MatchPreview from "../Matching/MatchPreview";
 
 export default class IntegrationsSection extends Section {
 
-  defaultDetail(){
-    const { deployment } = this.props;
+  defaultDetail(source){
+    const { deployment } = source || this.props;
     return(
       <MatchPreview
         mode='detail'

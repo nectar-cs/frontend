@@ -9,7 +9,6 @@ class DeploymentShowClass extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      isFetch: { dep: false, match: false },
       deployment: null,
       matching: null,
       focusedSection: Helper.defaultSection.name
@@ -53,14 +52,12 @@ class DeploymentShowClass extends React.Component{
   }
 
   renderDetail(){
-    const {focusedSection} = this.state;
+    const {deployment, focusedSection, matching} = this.state;
     const detailFunc = this.defDetailFns[focusedSection];
-    console.log(focusedSection);
-    console.log(this.defDetailFns);
-
+    const bundle = { deployment, matching };
     return(
       <S.RightPanel>
-        { detailFunc && detailFunc() }
+        { deployment && detailFunc && detailFunc(bundle) }
       </S.RightPanel>
     )
   }
@@ -68,10 +65,6 @@ class DeploymentShowClass extends React.Component{
   componentDidMount(){
     Helper.fetchDeployment(this);
     Helper.fetchMatching(this);
-  }
-
-  setFetch(assign){
-    this.setState(s => ({...s, isFetch: {...s.isFetch, ...assign}}));
   }
 
   setDefaultDetailFn(name, defaultFn){
