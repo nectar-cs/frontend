@@ -12,6 +12,14 @@ const defaults = {
           title: "Pods not Running",
           iconName: "pause_circle_outline"
         },
+        accessDebug: {
+          title: "Access Woes",
+          iconName: 'gavel'
+        },
+        ingressDebug: {
+          title: "Routing/Ingress",
+          iconName: 'settings_ethernet'
+        }
       }
     },
 

@@ -17,27 +17,28 @@ const Section = styled(Layout.ContentContainer)`
 `;
 
 const ActivitiesContainer = styled.div`
-  margin-top: 12px;
   margin-left: -20px;
   width: 100%;
   display: inline-flex;
+  flex-wrap: wrap;
 `;
 
 function activityColor(p){
   const colors = p.theme.colors;
-  return p.isChosen ? colors.contrastLessFont : "transparent";
+  return p.isChosen ? colors.primaryColor : "transparent";
 }
 
 const ActivityContainer = styled.div`
   width: 130px;
   border-color: ${p => activityColor(p)};
-  border-radius: 3px;
+  border-radius: 4px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1.5px;
   margin-left: 20px;
+  margin-top: 12px;
   padding: 6px 0 10px 0;
   &:hover{
-    border-color: ${p => p.theme.colors.contrastLessFont};  
+    border-color: ${p => p.theme.colors.primaryColor};  
   }
 `;
 
@@ -55,7 +56,7 @@ const ActivityTitle = styled.p`
 const Collapsed = styled(Section)`
   position: relative;
   &:hover{
-    border-color: ${p => p.theme.colors.contrastLessFont};
+    border-color: ${p => p.chosen ? p.theme.colors.primaryColor : p.theme.colors.contrastLessFont};
     cursor: pointer;
   }
 `;
