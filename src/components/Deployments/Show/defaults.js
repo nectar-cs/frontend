@@ -6,10 +6,10 @@ const defaults = {
       activities: {
         networkingDebug: {
           title: "Simple Networking",
-          iconName: "settings_input_hdmi"
+          iconName: "settings_input_hdmi",
         },
         podDebug: {
-          title: "Pod(s) not Running",
+          title: "Pods not Running",
           iconName: "pause_circle_outline"
         },
       }

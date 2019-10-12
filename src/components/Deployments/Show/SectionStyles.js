@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Layout from "../../../assets/layouts";
+import {colored} from "../../../assets/constants";
 
 const Section = styled(Layout.ContentContainer)`
   padding: ${Layout.Dims.containerPaddingVert} ${Layout.Dims.containerPaddingHor};
@@ -15,7 +16,51 @@ const Section = styled(Layout.ContentContainer)`
   }
 `;
 
-const Relaxed = styled(Section)`
+const ActivitiesContainer = styled.div`
+  margin-top: 12px;
+  margin-left: -20px;
+  width: 100%;
+  display: inline-flex;
+`;
+
+function activityColor(p){
+  const colors = p.theme.colors;
+  return p.isChosen ? colors.primaryColor : "transparent";
+}
+
+const ActivityContainer = styled.div`
+  width: 130px;
+  border-color: ${p => activityColor(p)};
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 2px;
+  margin-left: 20px;
+  padding: 6px 0 10px 0;
+  &:hover{
+    border-color: ${p => p.theme.colors.primaryColor};  
+  }
+`;
+
+const ActivityIcon = styled.i`
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+`;
+
+const ActivityTitle = styled.p`
+  text-align: center;
+  margin-top: 3px;
+`;
+
+const ActivitySubtitle = styled.p`
+  text-align: center;
+  margin-top: 3px;
+`;
+
+const ActivityDivider = styled.div`
+  width: 88%;
+  margin: 8px auto 0 auto;
+  background: ${p => p.theme.colors.primaryColor};
 `;
 
 const Collapsed = styled(Section)`
@@ -52,11 +97,17 @@ const CollapsedIcon = styled.i`
 `;
 
 const S = {
+  Section,
   Collapsed,
-  Relaxed,
   CollapsedIcon,
+  ActivitiesContainer,
+  ActivityContainer,
   LeftBox,
   CollapsedTitle,
-  ToggleArrow
+  ToggleArrow,
+  ActivityTitle,
+  ActivityIcon,
+  ActivityDivider,
+  ActivitySubtitle
 };
 export default S;

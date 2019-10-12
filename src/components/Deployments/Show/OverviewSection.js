@@ -8,9 +8,9 @@ export default class OverviewSection extends Section {
 
   render(){
     return(
-      <S.Relaxed onClick={this.onClicked}>
+      <S.Section onClick={this.onClicked}>
         { this.renderHeader() }
-      </S.Relaxed>
+      </S.Section>
     )
   }
 

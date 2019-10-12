@@ -10,6 +10,7 @@ class DeploymentShowClass extends React.Component{
     super(props);
     const focusedSection = Helper.defaultSection.name;
     const focusedActivity = Helper.defaultActivity(focusedSection);
+    console.log("DEF ACT " + focusedActivity);
 
     this.state = {
       deployment: null,
