@@ -4,6 +4,10 @@ import {Types} from "../../../types/Deployment";
 import S from './SectionStyles'
 import defaults from "./defaults";
 
+class Activity extends React.Component{
+
+}
+
 export default class Section extends React.Component {
 
   constructor(props){
@@ -46,6 +50,23 @@ export default class Section extends React.Component {
     return null;
   }
 
+  renderActivities(){
+    const bundles = this.config().activities;
+    const activityKeys = Object.keys(bundles || {});
+    const { chosenActivity } = this.props;
+    if(activityKeys.length <= 1) return null;
+
+    const Activities = () => activityKeys.map(key =>
+      <Activity
+        isChosen={key === chosenActivity}
+        {...bundles[key]}
+      />
+    );
+    return <S.ActivitiesContainer>
+      <Activities/>
+    </S.ActivitiesContainer>
+  }
+
   onClicked(){
     this.props.onClicked(this.constructor.name);
   }
@@ -78,11 +99,13 @@ export default class Section extends React.Component {
     return key.charAt(0).toLowerCase() + key.slice(1);
   }
 
-  iconName(){ return defaults.sections[this.key()].iconName }
-  title(){ return defaults.sections[this.key()].title  }
+  config() { return defaults.sections[this.key()] }
+  iconName(){ return this.config().iconName }
+  title(){ return this.config().title  }
 
   static propTypes = {
     isChosen: PropTypes.bool.isRequired,
+    chosenActivity: PropTypes.string,
     defaultDetailSetter: PropTypes.func.isRequired,
     deployment: Types.Deployment,
     matching: Types.Matching,

@@ -2,8 +2,7 @@ import OverviewSection from "./OverviewSection";
 import Kapi from "../../../utils/Kapi";
 import DataUtils from "../../../utils/DataUtils";
 import Backend from "../../../utils/Backend";
-import NetworkDebugSection from "./NetworkDebugSection";
-import PodDebugSection from "./PodDebugSection";
+import InfraDebugSection from "./InfraDebugSection";
 import ImageOpsSection from "./ImageOpsSection";
 import LoggingSection from "./LoggingSection";
 import IntegrationsSection from "./IntegrationsSection";
@@ -17,15 +16,14 @@ export default class Helper {
     OverviewSection,
     LoggingSection,
     PortForwardSection,
-    NetworkDebugSection,
-    PodDebugSection,
+    InfraDebugSection,
     IntegrationsSection,
     ImageOpsSection,
     HttpOpsSection,
     CommandsSection,
   ];
 
-  static defaultSection = NetworkDebugSection;
+  static defaultSection = InfraDebugSection;
 
   static fetchDeployment(inst){
     const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;

@@ -11,7 +11,8 @@ class DeploymentShowClass extends React.Component{
     this.state = {
       deployment: null,
       matching: null,
-      focusedSection: Helper.defaultSection.name
+      focusedSection: Helper.defaultSection.name,
+      focusedActivity: Helper.defaultSection.defaultActivity
     };
 
     this.setDefaultDetailFn = this.setDefaultDetailFn.bind(this);

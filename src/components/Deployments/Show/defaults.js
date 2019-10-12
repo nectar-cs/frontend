@@ -1,13 +1,18 @@
 const defaults = {
   sections: {
-    networkDebug: {
-      title: "Debug Networking",
-      iconName: "bug_report"
-    },
-
-    podDebug: {
-      title: "Debug Pods",
-      iconName: "bug_report"
+    infraDebug: {
+      title: "Debugging & Troubleshooting",
+      iconName: "bug_report",
+      activities: {
+        networkingDebug: {
+          title: "Debug Networking",
+          iconName: "settings_input_hdmi"
+        },
+        podDebug: {
+          title: "Debug Pods",
+          iconName: "bug_report"
+        },
+      }
     },
 
     imageOps: {
