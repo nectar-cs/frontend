@@ -4,7 +4,7 @@ import MatchPreview from "../Matching/MatchPreview";
 
 export default class IntegrationsSection extends Section {
 
-  defaultDetail(source){
+  renderDefaultModal(source){
     const { deployment } = source || this.props;
     return(
       <MatchPreview

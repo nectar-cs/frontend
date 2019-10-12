@@ -4,7 +4,7 @@ import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
 import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
 
 export default class PortForwardSection extends Section {
-  defaultDetail(source){
+  renderDefaultModal(source){
     const { deployment, matching } = source || this.props;
     return(
       <PortForwardModal

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import {Types} from "../../../types/Deployment";
 import S from './SectionStyles'
 import defaults from "./defaults";
+import Helper from "./Helper";
 
-class Activity extends React.Component{
+class ActivityOffering extends React.Component{
 
 }
 
@@ -13,10 +14,10 @@ export default class Section extends React.Component {
   constructor(props){
     super(props);
     this.onClicked = this.onClicked.bind(this);
-    this.defaultDetail = this.defaultDetail.bind(this);
+    this.renderActivityModal = this.renderActivityModal.bind(this);
     this.props.defaultDetailSetter(
       this.constructor.name,
-      this.defaultDetail
+      this.renderActivityModal
     );
   }
 
@@ -25,7 +26,6 @@ export default class Section extends React.Component {
     return(
       <S.Collapsed onClick={this.onClicked} chosen={isChosen}>
         { this.renderTitleBox() }
-        { this.renderToggleArrow() }
         { this.renderContent() }
       </S.Collapsed>
     );
@@ -50,32 +50,25 @@ export default class Section extends React.Component {
     return null;
   }
 
-  renderActivities(){
+  renderActivityIcons(){
     const bundles = this.config().activities;
     const activityKeys = Object.keys(bundles || {});
     const { chosenActivity } = this.props;
     if(activityKeys.length <= 1) return null;
 
-    const Activities = () => activityKeys.map(key =>
-      <Activity
+    const ActivityOfferings = () => activityKeys.map(key =>
+      <ActivityOffering
         isChosen={key === chosenActivity}
         {...bundles[key]}
       />
     );
     return <S.ActivitiesContainer>
-      <Activities/>
+      <ActivityOfferings/>
     </S.ActivitiesContainer>
   }
 
   onClicked(){
     this.props.onClicked(this.constructor.name);
-  }
-
-  renderToggleArrow(){
-    const {isChosen} = this.props;
-    return(<S.ToggleArrow className='material-icons'>
-      { `keyboard_arrow_${isChosen ? 'up' : 'down'}` }
-    </S.ToggleArrow>);
   }
 
   renderTitle(){
@@ -90,13 +83,20 @@ export default class Section extends React.Component {
     );
   }
 
-  defaultDetail(source){
+  renderActivityModal(key, source){
+    return this._renderActivityModal(key, source);
+  }
+
+  _renderActivityModal(key, source){
+    return this.renderDefaultModal(source);
+  }
+
+  renderDefaultModal(source){
     return <p>Unimplemented ({this.constructor.name})</p>;
   }
 
   key(){
-    const key = this.constructor.name.replace("Section", "");
-    return key.charAt(0).toLowerCase() + key.slice(1);
+    return Helper.classNameToKey(this.constructor.name);
   }
 
   config() { return defaults.sections[this.key()] }

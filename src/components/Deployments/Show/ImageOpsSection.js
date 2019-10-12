@@ -4,7 +4,7 @@ import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsMod
 
 export default class ImageOpsSection extends Section {
 
-  defaultDetail(source){
+  renderDefaultModal(source){
     const { deployment, matching } = source || this.props;
     return(
       <ImageActionsModal

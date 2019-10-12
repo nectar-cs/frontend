@@ -3,15 +3,16 @@ import Section from "./Section";
 import NetworkDebugModal from "../../../modals/NetworkDebugModal/NetworkDebugModal";
 
 export default class InfraDebugSection extends Section {
-  defaultDetail(source){
+  renderDefaultModal(source){
     return this.renderNetworkDebugModal(source);
   }
 
-  renderActivityModal(key, source){
+  _renderActivityModal(key, source){
     if(key === 'networkingDebug')
       return this.renderNetworkDebugModal(source);
     else if(key === 'podDebug')
       return this.renderPodDebugModal(source);
+    else return null;
   }
 
   renderNetworkDebugModal(source){

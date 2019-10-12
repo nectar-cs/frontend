@@ -8,15 +8,18 @@ class DeploymentShowClass extends React.Component{
 
   constructor(props){
     super(props);
+    const focusedSection = Helper.defaultSection.name;
+    const focusedActivity = Helper.defaultActivity(focusedSection);
+
     this.state = {
       deployment: null,
       matching: null,
-      focusedSection: Helper.defaultSection.name,
-      focusedActivity: Helper.defaultSection.defaultActivity
+      focusedSection,
+      focusedActivity
     };
 
     this.setDefaultDetailFn = this.setDefaultDetailFn.bind(this);
-    this.onClicked = this.onClicked.bind(this);
+    this.onSectionToggled = this.onSectionToggled.bind(this);
     this.defDetailFns = {};
   }
 
@@ -24,7 +27,7 @@ class DeploymentShowClass extends React.Component{
     return(
       <Fragment>
         { this.renderSections() }
-        { this.renderDetail() }
+        { this.renderRightSideModal() }
       </Fragment>
     )
   }
@@ -37,13 +40,13 @@ class DeploymentShowClass extends React.Component{
         matching={this.state.matching}
         isChosen={Section.name === this.state.focusedSection}
         defaultDetailSetter={this.setDefaultDetailFn}
-        onClicked={this.onClicked}
+        onClicked={this.onSectionToggled}
       />
     ));
     return <S.LeftPanel><Sections/></S.LeftPanel>;
   }
 
-  onClicked(sectionName){
+  onSectionToggled(sectionName){
     const defSection = Helper.defaultSection.name;
     this.setState(s => {
       const isClosing = sectionName === s.focusedSection;
@@ -52,13 +55,16 @@ class DeploymentShowClass extends React.Component{
     });
   }
 
-  renderDetail(){
-    const {deployment, focusedSection, matching} = this.state;
+  renderRightSideModal(){
+    const { focusedSection, focusedActivity } = this.state;
+    const { deployment, matching } = this.state;
     const detailFunc = this.defDetailFns[focusedSection];
     const bundle = { deployment, matching };
+    if(!(deployment && detailFunc)) return null;
+
     return(
       <S.RightPanel>
-        { deployment && detailFunc && detailFunc(bundle) }
+        { detailFunc(focusedActivity, bundle) }
       </S.RightPanel>
     )
   }

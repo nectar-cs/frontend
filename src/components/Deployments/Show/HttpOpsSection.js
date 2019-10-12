@@ -6,7 +6,7 @@ import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsMod
 
 export default class HttpOpsSection extends Section {
 
-  defaultDetail(source){
+  renderDefaultModal(source){
     const { deployment, matching } = source || this.props;
     return(
       <HttpActionsModal

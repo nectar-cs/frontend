@@ -5,12 +5,12 @@ const defaults = {
       iconName: "bug_report",
       activities: {
         networkingDebug: {
-          title: "Debug Networking",
+          title: "Simple Networking",
           iconName: "settings_input_hdmi"
         },
         podDebug: {
-          title: "Debug Pods",
-          iconName: "bug_report"
+          title: "Pod(s) not Running",
+          iconName: "pause_circle_outline"
         },
       }
     },

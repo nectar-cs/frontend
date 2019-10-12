@@ -9,6 +9,7 @@ import IntegrationsSection from "./IntegrationsSection";
 import CommandsSection from "./CommandsSection";
 import PortForwardSection from "./PortForwardSection";
 import HttpOpsSection from "./HttpOpsSection";
+import defaults from "./defaults";
 
 export default class Helper {
 
@@ -24,6 +25,18 @@ export default class Helper {
   ];
 
   static defaultSection = InfraDebugSection;
+
+  static classNameToKey(className){
+    const key = className.replace("Section", "");
+    return key.charAt(0).toLowerCase() + key.slice(1);
+  }
+
+  static defaultActivity(sectionClassName){
+    const key = this.classNameToKey(sectionClassName);
+    const activities = defaults.sections[key].activities;
+    const activityKeys = Object.keys(activities || {});
+    return activityKeys[0];
+  }
 
   static fetchDeployment(inst){
     const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;
