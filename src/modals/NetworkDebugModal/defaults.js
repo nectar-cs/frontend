@@ -12,13 +12,21 @@ const defaults = {
     consolePrompt: "Click below to start",
     runCheck: "Run the Check"
   },
-  dockerPortStep: {
-    title: "Check 1: Image Accepts Traffic?",
+  staticChecksStep: {
+    title: "Check 1: Static Analysis",
     explanation: [
-      "Read the Dockerfile, determine expected open ports",
+      "Check that ",
+      "Check that service.port == dep.port",
       "Run image locally, cURL determined ports"
     ],
-  }
+  },
+  dockerPortStep: {
+    title: "Check 2: Image Accepts Traffic?",
+    explanation: [
+      "Determine ports expected to be reachable on image",
+      "Run image locally, cURL determined ports"
+    ],
+  },
 };
 
 export default defaults;
