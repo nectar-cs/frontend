@@ -25,7 +25,7 @@ const ActivitiesContainer = styled.div`
 
 function activityColor(p){
   const colors = p.theme.colors;
-  return p.isChosen ? colors.primaryColor : "transparent";
+  return p.isChosen ? colors.contrastLessFont : "transparent";
 }
 
 const ActivityContainer = styled.div`
@@ -37,7 +37,7 @@ const ActivityContainer = styled.div`
   margin-left: 20px;
   padding: 6px 0 10px 0;
   &:hover{
-    border-color: ${p => p.theme.colors.primaryColor};  
+    border-color: ${p => p.theme.colors.contrastLessFont};  
   }
 `;
 
@@ -50,17 +50,6 @@ const ActivityIcon = styled.i`
 const ActivityTitle = styled.p`
   text-align: center;
   margin-top: 3px;
-`;
-
-const ActivitySubtitle = styled.p`
-  text-align: center;
-  margin-top: 3px;
-`;
-
-const ActivityDivider = styled.div`
-  width: 88%;
-  margin: 8px auto 0 auto;
-  background: ${p => p.theme.colors.primaryColor};
 `;
 
 const Collapsed = styled(Section)`
@@ -106,8 +95,6 @@ const S = {
   CollapsedTitle,
   ToggleArrow,
   ActivityTitle,
-  ActivityIcon,
-  ActivityDivider,
-  ActivitySubtitle
+  ActivityIcon
 };
 export default S;

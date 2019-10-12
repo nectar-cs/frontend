@@ -10,7 +10,6 @@ class DeploymentShowClass extends React.Component{
     super(props);
     const focusedSection = Helper.defaultSection.name;
     const focusedActivity = Helper.defaultActivity(focusedSection);
-    console.log("DEF ACT " + focusedActivity);
 
     this.state = {
       deployment: null,
@@ -21,6 +20,7 @@ class DeploymentShowClass extends React.Component{
 
     this.setDefaultDetailFn = this.setDefaultDetailFn.bind(this);
     this.onSectionToggled = this.onSectionToggled.bind(this);
+    this.onActivityToggled = this.onActivityToggled.bind(this);
     this.defDetailFns = {};
   }
 
@@ -40,20 +40,13 @@ class DeploymentShowClass extends React.Component{
         deployment={this.state.deployment}
         matching={this.state.matching}
         isChosen={Section.name === this.state.focusedSection}
+        chosenActivity={this.state.focusedActivity}
         defaultDetailSetter={this.setDefaultDetailFn}
         onClicked={this.onSectionToggled}
+        onActivityClicked={this.onActivityToggled}
       />
     ));
     return <S.LeftPanel><Sections/></S.LeftPanel>;
-  }
-
-  onSectionToggled(sectionName){
-    const defSection = Helper.defaultSection.name;
-    this.setState(s => {
-      const isClosing = sectionName === s.focusedSection;
-      const focusedSection = isClosing ? defSection : sectionName;
-      return { ...s, focusedSection };
-    });
   }
 
   renderRightSideModal(){
@@ -77,6 +70,19 @@ class DeploymentShowClass extends React.Component{
 
   setDefaultDetailFn(name, defaultFn){
     this.defDetailFns[name] = defaultFn;
+  }
+
+  onSectionToggled(sectionName){
+    const defSection = Helper.defaultSection.name;
+    this.setState(s => {
+      const isClosing = sectionName === s.focusedSection;
+      const focusedSection = isClosing ? defSection : sectionName;
+      return { ...s, focusedSection };
+    });
+  }
+
+  onActivityToggled(focusedActivity){
+    this.setState(s => ({...s, focusedActivity}));
   }
 }
 

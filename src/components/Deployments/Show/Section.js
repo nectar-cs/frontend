@@ -69,18 +69,17 @@ export default class Section extends React.Component {
 
   renderActivityOfferings(){
     const {chosenActivity, isChosen, deployment} = this.props;
+    const { onActivityClicked } = this.props;
     if(!(isChosen && deployment)) return null;
-
     const bundles = this.config().activities;
     const activityKeys = Object.keys(bundles || {});
-
     if(activityKeys.length <= 1) return null;
 
     const ActivityOfferings = () => activityKeys.map(key =>
       <ActivityOffering
         key={key}
-        isChosen={key === Helper.classNameToKey(chosenActivity)}
-        callback={() => console.log("Bang!")}
+        isChosen={key === chosenActivity}
+        callback={() => onActivityClicked(key)}
         {...bundles[key]}
       />
     );
@@ -131,6 +130,7 @@ export default class Section extends React.Component {
     defaultDetailSetter: PropTypes.func.isRequired,
     deployment: Types.Deployment,
     matching: Types.Matching,
-    onClicked: PropTypes.func.isRequired
+    onClicked: PropTypes.func.isRequired,
+    onActivityClicked: PropTypes.func.isRequired
   }
 }
