@@ -4,7 +4,10 @@ const logoSide = "21px";
 
 const arrow = (t) => ({
   color: t.colors.contrastColor,
-  fontSize: "20px"
+  fontSize: "20px",
+  ":hover": {
+    cursor: "pointer"
+  }
 });
 
 const sectionIcon = (t) => ({

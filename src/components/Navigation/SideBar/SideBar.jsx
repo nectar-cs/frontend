@@ -14,8 +14,9 @@ class SideBarItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isExpanded: false
-    }
+      isExpanded: !!props.eager
+    };
+    this.toggle =  this.toggle.bind(this);
   }
 
   renderHref(){
@@ -33,15 +34,35 @@ class SideBarItem extends React.Component {
     return<S.ItemText onClick={action}>{title}</S.ItemText>;
   }
 
+  renderIcon(){
+    const { isExpanded } = this.state;
+    return(
+      <Micon
+        callback={this.toggle}
+        n={`keyboard_arrow_${isExpanded ? 'up' : 'down'}`}
+        e={S.arrow(theme)}
+      />
+    )
+  }
+
+  renderGrandchildren(){
+    if(this.state.isExpanded) return null;
+    return null;
+  }
+
   render(){
     const { path } = this.props;
-    const Item = () => path ? this.renderHref() : this.renderModalAction();
     return(
       <S.ItemRow>
-        <Micon n='keyboard_arrow_down' e={S.arrow(theme)}/>
-        <Item/>
+        { this.renderIcon() }
+        { path ? this.renderHref() : this.renderModalAction() }
+        { this.renderGrandchildren() }
       </S.ItemRow>
     )
+  }
+
+  toggle(){
+    this.setState(s => ({...s, isExpanded: !s.isExpanded}));
   }
 }
 

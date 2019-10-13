@@ -4,7 +4,12 @@ const workbench = {
   title: 'Workbench',
   icon: 'developer_board',
   items: [
-    { title: "Workspaces", path: '/workspaces' },
+    {
+      key: 'workspaces',
+      title: "Workspaces",
+      path: '/workspaces',
+      eager: true
+    },
     { title: "Playground", path: '/1' },
     { title: "Observatory", path: '/2' }
   ]

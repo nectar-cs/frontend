@@ -4,7 +4,10 @@ import PropTypes from 'prop-types'
 
 export default function Micon(props){
   return(
-    <S.Micon className='material-icons' extras={props.e}>
+    <S.Micon
+      onClick={props.callback}
+      className='material-icons'
+      extras={props.e}>
       { props.n }
     </S.Micon>
   )
@@ -12,7 +15,8 @@ export default function Micon(props){
 
 Micon.propTypes = {
   n: PropTypes.string.isRequired,
-  e: PropTypes.object
+  e: PropTypes.object,
+  callback: PropTypes.func
 };
 
 Micon.defaultProps = {
