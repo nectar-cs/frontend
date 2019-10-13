@@ -6,9 +6,13 @@ import { ROUTES as R} from './RoutesConsts';
 import {Switch} from "react-router";
 
 export default class Root extends Component {
+
+  componentDidMount(){
+    console.log("MOUNT");
+  }
+
   render() {
     const home = R.deployments.detect;
-
     return (
       <Provider store={this.props.store}>
         <BrowserRouter history={this.props.history}>
