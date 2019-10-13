@@ -7,9 +7,11 @@ import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Micon from "../../../widgets/Micon/Micon";
 import {theme} from "../../../assets/constants";
 
-class SideBarSubItem extends React.Component{}
+function SideBarSubItem(props){
+  return <p>{props.name}</p>
+}
 
-class SideBarItem extends React.Component {
+class SideBarItemClass extends React.Component {
 
   constructor(props) {
     super(props);
@@ -47,7 +49,12 @@ class SideBarItem extends React.Component {
 
   renderGrandchildren(){
     if(this.state.isExpanded) return null;
-    return null;
+    const {workspaces} = this.props;
+    if(!workspaces) return null;
+
+    return workspaces.map(w => (
+      <SideBarSubItem key={w.id} {...w} />
+    ))
   }
 
   render(){
@@ -64,7 +71,16 @@ class SideBarItem extends React.Component {
   toggle(){
     this.setState(s => ({...s, isExpanded: !s.isExpanded}));
   }
+
+  static mapStateToProps(state){
+    const { workspaces } = state;
+    return { workspaces };
+  }
 }
+
+const cls = SideBarItemClass;
+const SideBarItem = connect(cls.mapStateToProps)(cls);
+
 
 function SideBarItems(props){
   return props.items.map((item) => (

@@ -5,10 +5,8 @@ import is from "../../assets/input-combos.sass";
 import {Redirect} from "react-router";
 import {Link} from "react-router-dom";
 import Backend from "../../utils/Backend";
-import {setSignedIn} from "../../actions/profileAction";
-import {connect} from "react-redux";
 
-export class RegisterClass extends React.Component{
+export default class LoginAndRegister extends React.Component{
 
   constructor(props){
     super(props);
@@ -28,7 +26,7 @@ export class RegisterClass extends React.Component{
 
   render(){
     if (this.state.authenticated) {
-      return RegisterClass.renderAuthenticated();
+      return LoginAndRegister.renderAuthenticated();
     } else {
       if(this.state.isLoading)
         return this.renderLoading();
@@ -153,7 +151,7 @@ export class RegisterClass extends React.Component{
   }
 
   onRegisterSuccess(data){
-    this.props.setSignedIn(data['accessToken']);
+    Backend.kvSet('accessToken', data['accessToken']);
     this.setState((s) => ({...s, isLoading: false, authenticated: true}));
   }
 
@@ -161,13 +159,3 @@ export class RegisterClass extends React.Component{
     this.setState((s) => ({...s, isLoading: false, errors: data['reasons']}));
   }
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setSignedIn: bundle => dispatch(setSignedIn(bundle))
-  };
-}
-
-const connector = connect(null, mapDispatchToProps);
-const LoginAndRegister = connector(RegisterClass);
-export default LoginAndRegister;

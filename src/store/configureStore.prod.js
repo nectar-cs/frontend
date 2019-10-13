@@ -5,13 +5,13 @@ import { routerMiddleware } from 'connected-react-router';
 
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
-import profileReducer from './../reducers/profileReducer';
+import mainReducer from '../reducers/reducer';
 
 const history = createHashHistory();
 
 const reducer = combineReducers({
   router: connectRouter(history),
-  profileReducer: profileReducer
+  mainReducer
 });
 
 const router = routerMiddleware(history);

@@ -2,26 +2,19 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import S from './BreadcrumbStyles'
 
-function makeCrumb(part, i){
+function Crumb({url, name}){
   return(
-    <a href={part.url} key={i}>
-      <S.Crumb>
-        {part.name}
-      </S.Crumb>
-    </a>
+    <a href={url}><S.Crumb>{name}</S.Crumb></a>
   )
 }
 
 export default function Breadcrumbs(props){
   const slash = <S.Slash>></S.Slash>;
-  const crumbs = props.parts.map((part, i) => makeCrumb(part, i));
-  const assembled = crumbs.reduce((prev, curr) => [prev, slash, curr]);
-
-  return(
-    <S.Container>
-      { assembled }
-    </S.Container>
-  );
+  const crumbs = props.parts.map(part => (
+    <Crumb key={part.name} {...part} />
+  ));
+  const Glued = ()=>crumbs.reduce((prev, curr) => [prev, slash, curr]);
+  return<S.Container><Glued/></S.Container>;
 }
 
 Breadcrumbs.propTypes = {
