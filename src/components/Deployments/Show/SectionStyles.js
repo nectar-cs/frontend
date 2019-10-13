@@ -29,7 +29,7 @@ function activityColor(p){
 }
 
 const ActivityContainer = styled.div`
-  width: 130px;
+  width: 120px;
   border-color: ${p => activityColor(p)};
   border-radius: 4px;
   border-style: solid;
