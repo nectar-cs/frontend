@@ -4,8 +4,7 @@ const logoSide = "21px";
 
 const arrow = (t) => ({
   color: t.colors.contrastColor,
-  margin: "0 6px 1.5px 0",
-  fontSize: "22px"
+  fontSize: "20px"
 });
 
 const sectionIcon = (t) => ({
@@ -78,10 +77,26 @@ const ItemRow = styled.div`
   margin-top: 5px;
 `;
 
+const Item = styled.a`
+  text-decoration: none;
+  &:hover{
+    text-decoration: underline
+  }
+`;
+
+const ItemText = styled.p`
+  margin-left: 4px;
+  font-size: 13.5px;
+  color: ${p => p.theme.colors.contrastColor};
+  &:hover{
+    cursor: pointer
+  }
+`;
+
 const S = {
   Sidebar, LogoBox, TitleLogo, TitleText, Content,
   SectionRow, SectionTitle, SubSection, arrow,
-  ItemRow, sectionIcon
+  ItemRow, sectionIcon, Item, ItemText
 };
 
 export default S;
