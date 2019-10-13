@@ -4,12 +4,12 @@ const initialState = {
   workspaces: []
 };
 
-export default function mainReducer(state = initialState, action) {
+export default function mainReducer(s = initialState, action) {
   switch (action.type) {
     case actionKeys.SetWorkspaces:
       const { workspaces } = action;
-      return({...state, workspaces});
+      return({...s, workspaces});
     default:
-      return state;
+      return s;
   }
 }

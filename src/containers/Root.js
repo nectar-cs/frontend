@@ -7,10 +7,6 @@ import {Switch} from "react-router";
 
 export default class Root extends Component {
 
-  componentDidMount(){
-    console.log("MOUNT");
-  }
-
   render() {
     const home = R.deployments.detect;
     return (

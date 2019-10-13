@@ -49,7 +49,7 @@ class SideBarItemClass extends React.Component {
 
   renderGrandchildren(){
     if(this.state.isExpanded) return null;
-    const {workspaces} = this.props;
+    const { workspaces } = this.props;
     if(!workspaces) return null;
 
     return workspaces.map(w => (
@@ -71,15 +71,14 @@ class SideBarItemClass extends React.Component {
   toggle(){
     this.setState(s => ({...s, isExpanded: !s.isExpanded}));
   }
-
-  static mapStateToProps(state){
-    const { workspaces } = state;
-    return { workspaces };
-  }
 }
 
-const cls = SideBarItemClass;
-const SideBarItem = connect(cls.mapStateToProps)(cls);
+function s2P(state){
+  const { workspaces } = state.mainReducer;
+  return { workspaces };
+}
+
+const SideBarItem = connect(s2P)(SideBarItemClass);
 
 
 function SideBarItems(props){
