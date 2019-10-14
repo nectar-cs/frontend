@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react'
+import PropTypes from 'prop-types'
 import defaults from './defaults'
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import S from './CheckStepStyles'
@@ -107,9 +108,11 @@ export default class CheckStep extends React.Component {
   }
 
   renderStartButton(){
-    if(!this.state.isActive) return null;
+    if(!this.props.isActive) return null;
+    if(this.state.hasStarted) return null;
+
     return(
-      <S.StartButton>
+      <S.StartButton onClick={this.props.nextStepCallback}>
         { this.genConfig().runCheck }
       </S.StartButton>
     )
@@ -127,4 +130,9 @@ export default class CheckStep extends React.Component {
   analysis(){ return ["This is broken", "So is that"]; }
   config() { return defaults.steps[this.key()] }
   genConfig() { return defaults.general }
+
+  static propTypes = {
+    isActive: PropTypes.bool.isRequired,
+    nextStepCallback: PropTypes.func.isRequired,
+  }
 }

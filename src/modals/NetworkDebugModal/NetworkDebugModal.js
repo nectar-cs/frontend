@@ -19,7 +19,10 @@ export default class NetworkDebugModal extends Modal {
         origin: Helper2.defaultOrigin()
       },
       stepI: 0
-    }
+    };
+
+    this.onFormChanged = this.onFormChanged.bind(this);
+    this.beginNextStep = this.beginNextStep.bind(this);
   }
 
   renderContent(){
@@ -32,22 +35,36 @@ export default class NetworkDebugModal extends Modal {
   }
 
   renderForm(){
+    if(this.state.stepI >= 0) return null;
+
     return(
       <ExpectationsForm
         {...this.state.choices}
+        beginCallback={this.beginNextStep}
         serviceChoices={Helper2.serviceChoices(this)}
       />
     )
   }
 
   renderSteps(){
+    if(this.state.stepI < 0) return null;
+
     const { stepI } = this.state;
     return NetworkDebugModal.stepClasses.map((Step, i) => (
       <Step
         key={i}
-        isActive={i <= stepI}
+        isActive={i === stepI}
+        nextStepCallback={this.beginNextStep}
       />
     ))
+  }
+
+  onFormChanged(key, value){
+    this.setState(s => ({...s, choices: { ...s.choices, [key]: value }}));
+  }
+
+  beginNextStep(){
+    this.setState(s => ({...s, stepI: s.stepI + 1}));
   }
 
   key(){

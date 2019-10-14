@@ -9,7 +9,7 @@ const defaults = {
   },
   general: {
     consolePrompt: "Click below to start",
-    runCheck: "Run the Check"
+    runCheck: "Start this Step"
   },
 
   form: {
