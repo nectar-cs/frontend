@@ -34,7 +34,10 @@ export default class CheckStep extends React.Component {
   }
 
   renderConsole(){
+    if(!this.props.isActive) return null;
+
     const {hasStarted} = this.state;
+
     const strings = hasStarted ? this.terminalOutput() :
       [this.genConfig().consolePrompt];
 
@@ -50,6 +53,8 @@ export default class CheckStep extends React.Component {
   }
 
   renderExplanation(){
+    if(!this.props.isActive) return null;
+
     const Points = () => this.config().explanation.map(exp => (
       <li key={exp}><p>{exp}</p></li>
     ));
@@ -64,6 +69,7 @@ export default class CheckStep extends React.Component {
   }
 
   renderVerdict(){
+    if(!this.props.isActive) return null;
     if(!this.state.hasStarted) return null;
     const verdict = false;
 
@@ -101,6 +107,7 @@ export default class CheckStep extends React.Component {
   }
 
   renderStartButton(){
+    if(!this.state.isActive) return null;
     return(
       <S.StartButton>
         { this.genConfig().runCheck }
@@ -118,6 +125,6 @@ export default class CheckStep extends React.Component {
   }
 
   analysis(){ return ["This is broken", "So is that"]; }
-  config() { return defaults[this.key()] }
+  config() { return defaults.steps[this.key()] }
   genConfig() { return defaults.general }
 }

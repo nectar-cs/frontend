@@ -34,13 +34,15 @@ class DeploymentShowClass extends React.Component{
   }
 
   renderSections(){
+    const { deployment, matching  } = this.state;
+    const { focusedSection, focusedActivity } = this.state;
     const Sections = () => Helper.sectionClasses.map(Section => (
       <Section
         key={Section.name}
-        deployment={this.state.deployment}
-        matching={this.state.matching}
-        isChosen={Section.name === this.state.focusedSection}
-        chosenActivity={this.state.focusedActivity}
+        deployment={deployment}
+        matching={matching}
+        isChosen={Section.name === focusedSection}
+        chosenActivity={focusedActivity}
         defaultDetailSetter={this.setDefaultDetailFn}
         onClicked={this.onSectionToggled}
         onActivityClicked={this.onActivityToggled}
@@ -50,8 +52,8 @@ class DeploymentShowClass extends React.Component{
   }
 
   renderRightSideModal(){
-    const { focusedSection, focusedActivity } = this.state;
     const { deployment, matching } = this.state;
+    const { focusedSection, focusedActivity } = this.state;
     const detailFunc = this.defDetailFns[focusedSection];
     const bundle = { deployment, matching };
     if(!(deployment && detailFunc)) return null;
@@ -72,13 +74,9 @@ class DeploymentShowClass extends React.Component{
     this.defDetailFns[name] = defaultFn;
   }
 
-  onSectionToggled(sectionName){
-    const defSection = Helper.defaultSection.name;
-    this.setState(s => {
-      const isClosing = sectionName === s.focusedSection;
-      const focusedSection = isClosing ? defSection : sectionName;
-      return { ...s, focusedSection };
-    });
+  onSectionToggled(focusedSection){
+    if(focusedSection === this.state.focusedSection) return;
+    this.setState(s => ({ ...s, focusedSection }));
   }
 
   onActivityToggled(focusedActivity){

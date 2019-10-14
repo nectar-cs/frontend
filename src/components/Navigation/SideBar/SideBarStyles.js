@@ -82,13 +82,6 @@ const ItemRow = styled.div`
   margin-top: 5px;
 `;
 
-const Item = styled.a`
-  text-decoration: none;
-  &:hover{
-    text-decoration: underline
-  }
-`;
-
 const ItemText = styled.p`
   margin-left: ${itemMargin};
   font-size: 13.5px;
@@ -115,7 +108,7 @@ const SubItemText = styled.p`
 const S = {
   Sidebar, LogoBox, TitleLogo, TitleText, Content,
   SectionRow, SectionTitle, SubSection, arrow,
-  ItemRow, sectionIcon, Item, ItemText,
+  ItemRow, sectionIcon, ItemText,
   SubItemsContainer, SubItem, SubItemText
 };
 

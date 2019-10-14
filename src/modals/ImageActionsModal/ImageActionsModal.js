@@ -268,6 +268,6 @@ export default class ImageActionsModal extends React.Component {
   };
 
   static defaultProps = {
-    operationType: "change"
+    operationType: "git"
   }
 }

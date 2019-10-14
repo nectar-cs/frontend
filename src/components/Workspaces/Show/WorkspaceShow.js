@@ -48,7 +48,7 @@ class WorkspaceShowClass extends React.Component{
 
     const parts = [
       { name: "Workspaces", url: "/workspaces" },
-      { name: name, url: `/workspaces/${this.workspaceId()}` }
+      { name: name, url: `/workspaces/${this.workspaceId()}/edit` }
     ];
 
     return <Breadcrumbs parts={parts}/>

@@ -31,9 +31,9 @@ class SideBarItemClass extends React.Component {
   renderHref(){
     const { path, title } = this.props;
     return(
-      <S.Item href={path}>
+      <Text.A href={path}>
         <S.ItemText>{title}</S.ItemText>
-      </S.Item>
+      </Text.A>
     )
   }
 
