@@ -5,7 +5,7 @@ const workbench = {
   icon: 'developer_board',
   items: [
     {
-      key: 'workspaces',
+      identifier: 'workspaces',
       title: "Workspaces",
       path: '/workspaces',
       eager: true

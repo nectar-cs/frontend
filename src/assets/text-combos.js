@@ -15,10 +15,11 @@ const P = styled.p`
   margin-top: 12px;
 `;
 
-const Discrete = styled.a`
+const A = styled.a`
   text-decoration: none;
   &:hover{
-    text-decoration: underline;  
+    text-decoration: underline;
+    text-decoration-color: ${p => p.theme.colors.contrastFont};  
   }
 `;
 
@@ -54,13 +55,13 @@ const BoldRef = styled.p`
   margin-left: ${p => p.pushed ? "3px" : '0'}
 `;
 
-const Text = { P,
+const Text = {
+  P, A,
   Code,
   BoldStatus,
   CleanStatus,
   StatusTag,
   BoldRef,
-  Discrete,
   ContrastCode
 };
 

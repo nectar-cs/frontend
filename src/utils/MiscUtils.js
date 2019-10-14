@@ -40,16 +40,16 @@ export default class MiscUtils {
 
   static gitSummary(ms){
     const first = (
-      <Text.Discrete href={`https://www.github.com/${ms.gitRemoteName}`} target="_blank">
+      <Text.A href={`https://www.github.com/${ms.gitRemoteName}`} target="_blank">
         {ms.gitRemoteName}
-      </Text.Discrete>
+      </Text.A>
     );
 
     const url = `https://www.github.com/${ms.gitRemoteName}/${ms.gitRepoName}`;
     const second = (
-      <Text.Discrete href={url} target="_blank">
+      <Text.A href={url} target="_blank">
         {ms.gitRepoName}
-      </Text.Discrete>
+      </Text.A>
     );
 
     return <Fragment>{first} / {second}</Fragment>;

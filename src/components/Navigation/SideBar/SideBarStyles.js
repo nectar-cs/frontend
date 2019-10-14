@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 
 const logoSide = "21px";
+const arrowSide = "20px";
+const itemMargin = "4px";
 
 const arrow = (t) => ({
   color: t.colors.contrastColor,
-  fontSize: "20px",
+  fontSize: `${arrowSide}`,
   ":hover": {
     cursor: "pointer"
   }
@@ -88,7 +90,7 @@ const Item = styled.a`
 `;
 
 const ItemText = styled.p`
-  margin-left: 4px;
+  margin-left: ${itemMargin};
   font-size: 13.5px;
   color: ${p => p.theme.colors.contrastColor};
   &:hover{
@@ -96,10 +98,25 @@ const ItemText = styled.p`
   }
 `;
 
+const SubItemsContainer = styled.ul`
+  margin-top: -2px;
+  margin-bottom: 6px;
+`;
+
+const SubItem = styled.li`
+  color: ${p => p.theme.colors.contrastFont};
+  margin-left: 2px;
+`;
+
+const SubItemText = styled.p`
+  color: ${p => p.theme.colors.contrastFont};
+`;
+
 const S = {
   Sidebar, LogoBox, TitleLogo, TitleText, Content,
   SectionRow, SectionTitle, SubSection, arrow,
-  ItemRow, sectionIcon, Item, ItemText
+  ItemRow, sectionIcon, Item, ItemText,
+  SubItemsContainer, SubItem, SubItemText
 };
 
 export default S;

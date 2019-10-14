@@ -6,9 +6,16 @@ import sections from './sections'
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Micon from "../../../widgets/Micon/Micon";
 import {theme} from "../../../assets/constants";
+import Text from "../../../assets/text-combos";
 
-function SideBarSubItem(props){
-  return <p>{props.name}</p>
+function SideBarSubItem({name, url}){
+  return(
+    <S.SubItem>
+      <Text.A href={url}>
+        <S.SubItemText>{name}</S.SubItemText>
+      </Text.A>
+    </S.SubItem>
+  )
 }
 
 class SideBarItemClass extends React.Component {
@@ -48,23 +55,27 @@ class SideBarItemClass extends React.Component {
   }
 
   renderGrandchildren(){
-    if(this.state.isExpanded) return null;
-    const { workspaces } = this.props;
-    if(!workspaces) return null;
+    if(!this.state.isExpanded) return null;
+    const content = this.props[this.props.identifier];
+    if(!content || content.length < 1) return null;
 
-    return workspaces.map(w => (
-      <SideBarSubItem key={w.id} {...w} />
-    ))
+    return(
+      <S.SubItemsContainer>
+        { content.map(w => <SideBarSubItem key={w.id} {...w} />) }
+      </S.SubItemsContainer>
+    )
   }
 
   render(){
     const { path } = this.props;
     return(
-      <S.ItemRow>
-        { this.renderIcon() }
-        { path ? this.renderHref() : this.renderModalAction() }
+      <Fragment>
+        <S.ItemRow>
+          { this.renderIcon() }
+          { path ? this.renderHref() : this.renderModalAction() }
+        </S.ItemRow>
         { this.renderGrandchildren() }
-      </S.ItemRow>
+      </Fragment>
     )
   }
 
@@ -74,12 +85,16 @@ class SideBarItemClass extends React.Component {
 }
 
 function s2P(state){
-  const { workspaces } = state.mainReducer;
+  const workspaces = state.mainReducer.workspaces.map(w => ({
+    id: w.id,
+    name: w.name,
+    url: `/workspaces/${w.id}`
+  })).slice(0, 3);
+
   return { workspaces };
 }
 
 const SideBarItem = connect(s2P)(SideBarItemClass);
-
 
 function SideBarItems(props){
   return props.items.map((item) => (
