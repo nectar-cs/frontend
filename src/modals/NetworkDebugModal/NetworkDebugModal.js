@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react'
-
 import Modal from "../../hocs/Modal";
 import defaults from "./defaults";
 import DockerPortStep from "./DockerPortStep";
@@ -13,12 +12,14 @@ import Helper2 from "./Helper2";
 export default class NetworkDebugModal extends Modal {
   constructor(props) {
     super(props);
+    const defaultService = Helper2.defaultService(this);
     this.state = {
       choices: {
-        service: Helper2.defaultService(props),
-        origin: Helper2.defaultOrigin()
+        service: defaultService,
+        origin: Helper2.defaultOrigin(),
+        port: Helper2.defaultPort(this, defaultService)
       },
-      stepI: 0
+      stepI: -1
     };
 
     this.onFormChanged = this.onFormChanged.bind(this);
@@ -40,8 +41,10 @@ export default class NetworkDebugModal extends Modal {
     return(
       <ExpectationsForm
         {...this.state.choices}
+        notifyFormValueChanged={this.onFormChanged}
         beginCallback={this.beginNextStep}
         serviceChoices={Helper2.serviceChoices(this)}
+        portChoices={Helper2.portChoices(this)}
       />
     )
   }

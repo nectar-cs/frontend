@@ -50,7 +50,7 @@ const defaults = {
       ],
     },
     interferenceStep: {
-      title: "Check 5: NetPol/Ingress Interference",
+      title: "Check 5: NetPol/Ingress",
       explanation: [
         "Determine ports expected to be reachable on image",
         "Run image locally, cURL determined ports"

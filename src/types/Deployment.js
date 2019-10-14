@@ -9,7 +9,13 @@ const Service = PropTypes.shape({
   internalIp: PropTypes.string,
   externalIp: PropTypes.string,
   shortDns: PropTypes.string.isRequired,
-  longDns: PropTypes.string.isRequired
+  longDns: PropTypes.string.isRequired,
+  ports: PropTypes.arrayOf(
+    PropTypes.shape({
+      fromPort: PropTypes.number.isRequired,
+      toPort: PropTypes.number.isRequired
+    })
+  )
 });
 
 const LightPod = PropTypes.shape({

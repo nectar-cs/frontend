@@ -4,7 +4,6 @@ import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLin
 import FormComponent from "../../hocs/FormComponent";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
-import Button from "../../assets/buttons";
 import S from './MiscStyles'
 
 class ExpectationsFormClass extends React.Component{
@@ -13,6 +12,7 @@ class ExpectationsFormClass extends React.Component{
       <Fragment>
         <TextOverLineSubtitle text='Expectations'/>
         { this.renderServiceSelector() }
+        { this.renderPortSelector() }
         { this.renderOriginSelector() }
         { this.renderButton() }
       </Fragment>
@@ -36,6 +36,15 @@ class ExpectationsFormClass extends React.Component{
     )
   }
 
+  renderPortSelector(){
+    const { makeSelect, portChoices } = this.props;
+    return makeSelect(
+      "Through port ",
+      "port",
+      MiscUtils.arrayOptions(portChoices)
+    )
+  }
+
   renderButton(){
     return(
       <S.BeginButton onClick={this.props.beginCallback}>
@@ -53,6 +62,9 @@ class ExpectationsFormClass extends React.Component{
     origin: PropTypes.string.isRequired,
     beginCallback: PropTypes.func.isRequired,
     serviceChoices: PropTypes.arrayOf(
+      PropTypes.string
+    ).isRequired,
+    portChoices: PropTypes.arrayOf(
       PropTypes.string
     ).isRequired
   }
