@@ -1,4 +1,3 @@
-
 const defaults = {
   header: {
     title: (mode, name) => {
@@ -12,13 +11,21 @@ const defaults = {
     consolePrompt: "Click below to start",
     runCheck: "Run the Check"
   },
+
+  form: {
+    origins: {
+      inNamespace: "Inside the cluster, same namespace",
+      outNamespace: "Inside the cluster, different namespace",
+      outCluster: "Outside the cluster"
+    }
+  },
+
   steps: {
     staticChecksStep: {
       title: "Check 1: Static Analysis",
       explanation: [
-        "Check that ",
-        "Check that service.port == dep.port",
-        "Run image locally, cURL determined ports"
+        "Check that the service is the right type",
+        "Check that service.port == dep.port"
       ],
     },
     dockerPortStep: {
@@ -43,7 +50,7 @@ const defaults = {
       ],
     },
     interferenceStep: {
-      title: "Check 5: Network Policy Interference",
+      title: "Check 5: NetPol/Ingress Interference",
       explanation: [
         "Determine ports expected to be reachable on image",
         "Run image locally, cURL determined ports"

@@ -5,8 +5,12 @@ const defaults = {
       iconName: "bug_report",
       activities: {
         networkingDebug: {
-          title: "Simple Networking",
+          title: "Networking BS",
           iconName: "settings_input_hdmi",
+        },
+        certsDebug: {
+          title: "Certificate BS",
+          iconName: 'lock_open'
         },
         podDebug: {
           title: "Pods not Running",
