@@ -46,7 +46,23 @@ const BigButton = styled(SmallButton)`
   font-weight: 900;
 `;
 
+const FloatingPlus = styled.button`
+  z-index: 100;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: ${p => p.theme.colors.primaryColor};
+  font-size: 40px;
+  color: white;
+  text-align: center;
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  padding-top: -50px;
+`;
+
 const Button = {
+  FloatingPlus,
   SmallButton,
   FixedSmallButton,
   BigBottomButtons,

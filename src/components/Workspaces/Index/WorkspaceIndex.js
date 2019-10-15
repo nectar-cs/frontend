@@ -1,6 +1,5 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import s from './WorkspaceIndex.sass'
-import ts from './../../../assets/text-combos.sass'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
@@ -10,6 +9,7 @@ import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import Backend from "../../../utils/Backend";
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import ColoredLabelList from "../../../widgets/ColoredLabelList/ColoredLabelList";
+import Button from "../../../assets/buttons";
 
 class WorkspaceIndexClass extends React.Component{
 
@@ -29,16 +29,26 @@ class WorkspaceIndexClass extends React.Component{
   }
 
   render(){
-    if(this.state.isLoading){
-      return this.renderLoading();
-    } else if(this.state.workspaces.length > 0){
-      return this.renderMainContent();
-    } else if(this.state.workspaces.length === 0){
-      return WorkspaceIndexClass.renderEmpty();
-    }
+    return(
+      <Fragment>
+        { this.renderLoading() }
+        { this.renderMainContent() }
+        { this.renderEmpty() }
+        { this.renderAddButton() }
+      </Fragment>
+    )
+  }
+
+  renderAddButton(){
+    return(
+      <Button.FloatingPlus>
+        +
+      </Button.FloatingPlus>
+    )
   }
 
   renderLoading(){
+    if(!this.state.isLoading) return null;
     return(
       <div className={s.content}>
         <CenterLoader/>
@@ -47,6 +57,8 @@ class WorkspaceIndexClass extends React.Component{
   }
 
   renderMainContent(){
+    if(this.state.workspaces.length < 1) return null;
+
     return(
       <div className={s.content}>
         <table>
@@ -65,7 +77,9 @@ class WorkspaceIndexClass extends React.Component{
     );
   }
 
-  static renderEmpty(){
+  renderEmpty(){
+    if(this.state.workspaces.length > 0) return null;
+
     return(
       <CenterCard>
         <CenterAnnouncement
