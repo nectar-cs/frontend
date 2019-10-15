@@ -24,7 +24,6 @@ export default class Helper2 {
     );
   }
 
-
   static defaultOrigin(){
     return "inNamespace";
   }

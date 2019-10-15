@@ -70,8 +70,6 @@ export default class CheckStep extends React.Component {
   }
 
   renderVerdict(){
-    if(!this.props.isActive) return null;
-    if(!this.state.hasStarted) return null;
     const verdict = false;
 
     return(
@@ -87,7 +85,6 @@ export default class CheckStep extends React.Component {
   }
 
   renderAnalysis() {
-    if(!this.state.hasStarted) return null;
 
     const Points = () => this.analysis().map(exp => (
       <li key={exp}><p>{exp}</p></li>

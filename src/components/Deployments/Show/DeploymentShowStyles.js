@@ -3,6 +3,7 @@ import Layout from "../../../assets/layouts";
 
 const RightPanel = styled(Layout.RightPanel)`
   box-shadow: none;
+  overflow-y: scroll;
 `;
 
 const LeftPanel = styled(Layout.LeftPanel)`

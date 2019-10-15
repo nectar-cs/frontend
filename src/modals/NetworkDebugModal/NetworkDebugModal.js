@@ -19,7 +19,7 @@ export default class NetworkDebugModal extends Modal {
         origin: Helper2.defaultOrigin(),
         port: Helper2.defaultPort(this, defaultService)
       },
-      stepI: -1
+      stepI: 0
     };
 
     this.onFormChanged = this.onFormChanged.bind(this);
@@ -49,6 +49,8 @@ export default class NetworkDebugModal extends Modal {
     )
   }
 
+
+
   renderSteps(){
     if(this.state.stepI < 0) return null;
 
@@ -63,7 +65,13 @@ export default class NetworkDebugModal extends Modal {
   }
 
   onFormChanged(key, value){
-    this.setState(s => ({...s, choices: { ...s.choices, [key]: value }}));
+    let assignment = { [key]: value };
+    if(key === 'service'){
+      const port = Helper2.defaultPort(this, value);
+      const portChoices = Helper2.portChoices(this, value);
+      assignment = {...assignment, port, portChoices};
+    }
+    this.setState(s => ({...s, choices: { ...s.choices, ...assignment }}));
   }
 
   beginNextStep(){
