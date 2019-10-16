@@ -181,7 +181,6 @@ export default class ImageOpsModal extends React.Component {
   }
 
   onSuccess(){
-    this.submittedAt = new Date().getTime();
     this.setState(s => ({...s, phase: PHASE_SUBMITTED}));
     this.reloadPods(true);
     this.notifySubscribers();
@@ -276,6 +275,6 @@ export default class ImageOpsModal extends React.Component {
   };
 
   static defaultProps = {
-    operationType: "git"
+    operationType: "reload"
   }
 }

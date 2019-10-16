@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import s from './HttpActionsModal.sass'
 import {Types} from "../../types/Deployment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import Tabs from "../../widgets/Tabs/Tabs";
@@ -8,7 +7,7 @@ import DestinationPane from "./DestinationPane";
 import SourcePane from "./SourcePane";
 import Kapi from "../../utils/Kapi";
 import CodeEditor from "./CodeEditor";
-import {defaultBody, defaultHeaders, sampleOut} from "./defaults";
+import {defaultBody, defaultHeaders} from "./defaults";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
@@ -16,6 +15,10 @@ import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response
 import HistoryList from "./HistoryList";
 import Backend from "../../utils/Backend";
 import FlexibleModal from "../../hocs/FlexibleModal";
+import Layout from "../../assets/layouts";
+import Text from './../../assets/text-combos'
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import Helper from './Helper'
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -40,7 +43,7 @@ export default class HttpActionsModal extends React.Component {
       namespaces: [],
       labelCombos: [],
       phase: 'editing',
-      httpResp: {body: sampleOut},
+      httpResp: '',
       showHistory: true
     };
 
@@ -77,18 +80,12 @@ export default class HttpActionsModal extends React.Component {
   }
 
   render(){
-    let content = null;
-    if(this.state.phase === 'editing')
-      content = this.renderEditPhase();
-    else if(this.state.phase === 'submitting')
-      content = this.renderSubmittingPhase();
-    else if(this.state.phase === 'response')
-      content = this.renderResponsePhase();
-
     return(
       <FlexibleModal mode={this.props.mode}>
         { this.renderHeader() }
-        { content }
+        { this.renderEditPhase() }
+        { this.renderSubmittingPhase() }
+        { this.renderResponsePhase() }
       </FlexibleModal>
     )
   }
@@ -106,26 +103,48 @@ export default class HttpActionsModal extends React.Component {
   }
 
   renderEditPhase(){
+    if(this.state.phase !== 'editing') return null;
+
     return(
       <Fragment>
         { this.renderRequestTabs() }
+        { this.renderGamePlan() }
         { this.renderHistory() }
         { this.renderRunButton() }
       </Fragment>
     )
   }
 
+  renderSubmittingPhase(){
+    if(this.state.phase !== 'submitting') return null;
+    return <CenterLoader/>;
+  }
+
   renderResponsePhase(){
+    if(this.state.phase !== 'response') return null;
+
     return(
       <Fragment>
         { this.renderResponseTabs() }
+        { this.renderGamePlan() }
         { this.renderRunButton() }
       </Fragment>
     )
   }
 
-  renderSubmittingPhase(){
-    return <CenterLoader/>;
+  renderGamePlan(){
+    const Lines = () => Helper.previewCommands(this).map(cmd => (
+      <Text.Code key={cmd} chill>{cmd}</Text.Code>
+    ));
+
+    return(
+      <Fragment>
+        <TextOverLineSubtitle text='Game Plan'/>
+        <Layout.BigCodeViewer>
+          <Lines/>
+        </Layout.BigCodeViewer>
+      </Fragment>
+    )
   }
 
   renderHistory(){

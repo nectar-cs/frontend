@@ -24,7 +24,7 @@ export default class Helper {
     CommandsSection,
   ];
 
-  static defaultSection = ImageOpsSection;
+  static defaultSection = HttpOpsSection;
 
   static classNameToKey(className){
     const key = className.replace("Section", "");

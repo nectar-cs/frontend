@@ -19,6 +19,7 @@ export default class Tabs extends React.Component {
         </TabsLayout>
         <Separator/>
         { this.props.children[this.state.selectedInd] }
+        <br/>
       </Fragment>
     )
   }
