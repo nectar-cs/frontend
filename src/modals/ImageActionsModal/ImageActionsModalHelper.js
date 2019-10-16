@@ -200,4 +200,13 @@ export class ImageActionsModalHelper {
     };
     return defaults.previewCommands[type](interp);
   }
+
+  static isInputValid(inst){
+    const { operationType, imageName, outImageName } = inst.state.choices;
+    switch(operationType){
+      case 'change': return !!imageName;
+      case 'git': return !!outImageName;
+      default: return true;
+    }
+  }
 }

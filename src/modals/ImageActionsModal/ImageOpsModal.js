@@ -28,7 +28,7 @@ export default class ImageOpsModal extends React.Component {
     this.state = {
       choices: {
         operationType: props.operationType,
-        imageName: this.imgDebug(),
+        imageName: '',
         outImageName: Helper.defOutImageName(this),
         scaleTo: (props.deployment.replicas + 1).toString(),
         imgSource: '',
@@ -53,12 +53,6 @@ export default class ImageOpsModal extends React.Component {
     this.onFailure = this.onFailure.bind(this);
     this.submit = this.submit.bind(this);
     this.config = this.config.bind(this);
-  }
-
-  imgDebug(){
-    if(this.props.deployment.imageName.includes('rube'))
-      return 'nginx';
-    else return 'xnectar/rube:latest';
   }
 
   componentDidMount(){
@@ -175,9 +169,11 @@ export default class ImageOpsModal extends React.Component {
   }
 
   renderButton(){
+    const valid = Helper.isInputValid(this);
+    const enabled = (this.isConfiguring() && valid) || this.isConcluded();
     const callback = this.isConfiguring() ? this.submit : this.config;
     const text = this.isConfiguring() ? "Apply" : "New Operation";
-    return <ModalButton callback={callback} title={text}/>
+    return <ModalButton isEnabled={enabled} callback={callback} title={text}/>
   }
 
   onFailure(){
@@ -263,10 +259,9 @@ export default class ImageOpsModal extends React.Component {
   }
 
   selBranchObj(){
-    if(!this.state.remotes.gitBranches) return null;
-    return this.state.remotes.gitBranches[
-      this.state.choices.gitBranch
-    ];
+    const { gitBranches } = this.state.remotes;
+    if(!gitBranches) return null;
+    return gitBranches[this.state.choices.gitBranch];
   }
 
   notifySubscribers(){
