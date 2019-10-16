@@ -4,5 +4,12 @@ const Table = styled.table`
   margin-top: -18px;
 `;
 
-const S = { Table };
+const Row = styled.tr`
+  &:hover{
+    background: ${p => p.theme.colors.contentBackgroundColor};
+    cursor: pointer;
+  }
+`;
+
+const S = { Table, Row };
 export default S;

@@ -27,18 +27,19 @@ function HistoryRow(props){
   );
 
   return(
-    <tr>
+    <S.Row onClick={props.selectedCallback}>
       <td><Command/></td>
       <td><Status/></td>
       <td><Trash/></td>
-    </tr>
+    </S.Row>
   )
 }
 
 HistoryRow.propTypes = {
   command: PropTypes.string.isRequired,
   status: PropTypes.number.isRequired,
-  deleteCallback: PropTypes.func.isRequired
+  deleteCallback: PropTypes.func.isRequired,
+  selectedCallback: PropTypes.func.isRequired
 };
 
 export default class CommandHistory extends React.Component{
@@ -78,6 +79,7 @@ export default class CommandHistory extends React.Component{
       <HistoryRow
         key={item.id}
         deleteCallback={() => this.deleteItem(item.id)}
+        selectedCallback={() => this.applyItem(item)}
         {...item.extras}
       />
     ));
@@ -91,7 +93,12 @@ export default class CommandHistory extends React.Component{
     Helper.deleteCommand(this, id, this.reloadHistory);
   }
 
+  applyItem(item){
+    this.props.applyCallback(item.extras);
+  }
+
   static propTypes = {
-    setReloadTrigger: PropTypes.func.isRequired
+    setReloadTrigger: PropTypes.func.isRequired,
+    applyCallback: PropTypes.func.isRequired
   }
 }

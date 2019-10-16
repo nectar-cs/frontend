@@ -25,7 +25,9 @@ export default class CommandsModal extends React.Component{
       output: null,
       isExecuting: false,
     };
+
     this.formCallback = this.formCallback.bind(this);
+    this.useHistoryItem = this.useHistoryItem.bind(this);
     this.downstreamReloader = null;
     this.eraseOutput = false;
   }
@@ -95,6 +97,7 @@ export default class CommandsModal extends React.Component{
       <CommandHistory
         deployment={this.props.deployment}
         setReloadTrigger={reloadTriggerSetter}
+        applyCallback={this.useHistoryItem}
       />
     )
   }
@@ -124,6 +127,10 @@ export default class CommandsModal extends React.Component{
       const choices = { ...s.choices, [key]: value };
       return {...s, choices, eraseOutput: true};
     });
+  }
+
+  useHistoryItem({command}){
+    this.formCallback("command", command);
   }
 
   submit(){
