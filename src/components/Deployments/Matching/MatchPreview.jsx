@@ -105,8 +105,8 @@ export default class MatchPreview extends React.Component {
   }
 
   renderButtons(){
-    // if(this.state.isGitFetching) return null;
-    // if(this.state.isDockerFetching) return null;
+    if(this.state.isGitFetching) return null;
+    if(this.state.isDockerFetching) return null;
 
     const NegativeButton = () => (
       Helper.showNeg(this) && <Button.BigButton

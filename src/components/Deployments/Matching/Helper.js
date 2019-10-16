@@ -46,8 +46,6 @@ export default class Helper{
     const {name, namespace} = inst.props.deployment;
     const deployment = { ...inst.state.bundle, name, namespace };
     const payload = { data: [this.makePayload(deployment)] };
-    console.log("SEND");
-    console.log(payload);
     Backend.raisingPost(`/microservices`, payload, () => {
       this.fetchMatching(inst);
     });
