@@ -51,6 +51,8 @@ export default class ImageOpsModal extends React.Component {
     this.reloadPods = this.reloadPods.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
     this.onFailure = this.onFailure.bind(this);
+    this.submit = this.submit.bind(this);
+    this.config = this.config.bind(this);
   }
 
   imgDebug(){
@@ -173,7 +175,9 @@ export default class ImageOpsModal extends React.Component {
   }
 
   renderButton(){
-    return <ModalButton callback={() => this.submit()} title='Apply'/>
+    const callback = this.isConfiguring() ? this.submit : this.config;
+    const text = this.isConfiguring() ? "Apply" : "New Operation";
+    return <ModalButton callback={callback} title={text}/>
   }
 
   onFailure(){
@@ -196,9 +200,6 @@ export default class ImageOpsModal extends React.Component {
     };
 
     const endpoint = `/api/run/${Helper.urlAction(this)}`;
-    console.log("PAUYLOAD");
-    console.log(endpoint);
-    console.log(payload);
     this.setState(s => ({...s, phase: PHASE_SUBMITTING}));
     Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
   }
@@ -241,6 +242,10 @@ export default class ImageOpsModal extends React.Component {
     if(force || this.isSubmitted()){
       Helper.fetchPods(this, 'updatedPods', this.repeater)
     }
+  }
+
+  config(){
+    this.setState(s => ({...s, phase: PHASE_CONFIG}));
   }
 
   isSubmitting(){ return this.state.phase === PHASE_SUBMITTING }

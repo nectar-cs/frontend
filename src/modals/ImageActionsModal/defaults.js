@@ -10,7 +10,7 @@ export const defaults ={
     ],
     change: ({dep, ns, img}) => [
       `container=$(kubectl get deployment/${dep} -o json --namespace=${ns} | 
-      jq .spec.template.spec.containers[0].name)`,
+      jq .spec.template.spec.containers[0].name | tr -d \\")`,
       `kubectl set image deploy ${dep} $container=${img} --namespace=${ns}`
     ],
     scale:  ({dep, ns, scaleTo}) => [
@@ -18,7 +18,7 @@ export const defaults ={
     ],
     docker: ({dep, ns, dImg}) => [
       `container=$(kubectl get deployment/${dep} -o json --namespace=${ns} | 
-      jq .spec.template.spec.containers[0].name)`,
+      jq .spec.template.spec.containers[0].name | tr -d \\")`,
       `kubectl set image deploy ${dep} $container=${dImg} --namespace=${ns}`
     ],
     git: ({gRem, gRep, sha, dep, ns, dImg}) => [
@@ -27,7 +27,7 @@ export const defaults ={
       `docker build . -t ${dImg}`,
       `docker push ${dImg}`,
       `container=$(kubectl get deployment/${dep} -o json --namespace=${ns} | 
-      jq .spec.template.spec.containers[0].name)`,
+      jq .spec.template.spec.containers[0].name | tr -d \\")`,
       `kubectl set image deploy ${dep} $container=${dImg} --namespace=${ns}`
     ],
   },
