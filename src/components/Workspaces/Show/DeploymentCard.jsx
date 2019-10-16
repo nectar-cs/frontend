@@ -5,7 +5,7 @@ import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
 import CardRow from "./CardRow";
 import {Types} from "../../../types/Deployment";
-import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
+import ImageOpsModal from "../../../modals/ImageActionsModal/ImageOpsModal";
 import { S } from "./DeploymentCardStyles"
 import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
 import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
@@ -33,9 +33,9 @@ export default class DeploymentCard extends React.Component {
   }
 
   componentDidMount(){
-    // if(this.props.deployment.name === 'news-crawl'){
-    //   this.openCommandsModal();
-    // }
+    if(this.props.deployment.name === 'news-crawl'){
+      this.openImageModal();
+    }
   }
 
   renderHeader(){
@@ -150,7 +150,7 @@ export default class DeploymentCard extends React.Component {
       refreshCallback: this.props.refreshCallback,
       mode: 'modal'
     };
-    this.props.openModal(ImageActionsModal, bundle);
+    this.props.openModal(ImageOpsModal, bundle);
   }
 
   openSourceModal(){

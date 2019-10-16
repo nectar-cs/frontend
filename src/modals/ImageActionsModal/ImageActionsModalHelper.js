@@ -7,6 +7,7 @@ import DiffTagOpHelper from "./OpHelpers/DiffTagOpHelper";
 import ScalePodsHelper from "./OpHelpers/ScalePodsHelper";
 import Backend from "../../utils/Backend";
 import moment from "moment";
+import {defaults} from "./defaults";
 
 export class ImageActionsModalHelper {
 
@@ -179,4 +180,24 @@ export class ImageActionsModalHelper {
     return `"${commit.message}" by ${commit.author} from ${at}`;
   }
 
+  static previewCommands(inst){
+    const type = inst.state.choices.operationType;
+    const { name, namespace, replicas} = inst.props.deployment;
+    const { scaleTo, imageName, outImageName } = inst.state.choices;
+    const { gitCommit } = inst.state.choices;
+    const {gitRemoteName, gitRepoName} = inst.props.matching;
+
+    const interp = {
+      dep: name,
+      ns: namespace,
+      orig: replicas,
+      img: imageName,
+      dImg: outImageName,
+      sha: gitCommit,
+      gRem: gitRemoteName,
+      gRep: gitRepoName,
+      scaleTo
+    };
+    return defaults.previewCommands[type](interp);
+  }
 }

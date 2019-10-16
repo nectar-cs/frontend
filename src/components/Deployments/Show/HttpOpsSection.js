@@ -2,7 +2,7 @@ import React from 'react'
 import Section from "./Section";
 import MatchPreview from "../Matching/MatchPreview";
 import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
-import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
+import ImageOpsModal from "../../../modals/ImageActionsModal/ImageOpsModal";
 
 export default class HttpOpsSection extends Section {
 

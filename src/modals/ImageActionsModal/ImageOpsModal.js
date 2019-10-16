@@ -1,6 +1,5 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Container} from "./ImageActionsModalStyles";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import {Types} from "../../types/Deployment";
@@ -14,13 +13,15 @@ import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Conclusion from "./Conclusion";
 import {defaults} from "./defaults";
 import FlexibleModal from "../../hocs/FlexibleModal";
+import Layout from "../../assets/layouts";
+import Text from "./../../assets/text-combos"
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
 const PHASE_SUBMITTED = 'submitted';
 const PHASE_CONCLUDED = 'concluded';
 
-export default class ImageActionsModal extends React.Component {
+export default class ImageOpsModal extends React.Component {
 
   constructor(props){
     super(props);
@@ -77,6 +78,7 @@ export default class ImageActionsModal extends React.Component {
         { this.renderChecklist() }
         { this.renderConclusion() }
         { this.renderConfigForm() }
+        { this.renderCodeView() }
         { this.renderPodList() }
         { this.renderButton() }
       </FlexibleModal>
@@ -90,7 +92,7 @@ export default class ImageActionsModal extends React.Component {
         graphicName={MiscUtils.modalImage(this, "camera_alt")}
         graphicType={MiscUtils.modalGraphicType(this)}
         title={defaults.header.title(deployment.name, mode)}
-        subtitle={defaults.copy.header}
+        subtitle={defaults.header.subtitle}
       />
     )
   }
@@ -155,6 +157,21 @@ export default class ImageActionsModal extends React.Component {
         initialReplicas={deployment.replicas}
         replaceModal={this.props.replaceModal}
       />
+    )
+  }
+
+  renderCodeView(){
+    const Lines = () => Helper.previewCommands(this).map(cmd => (
+      <Text.Code key={cmd} chill>{cmd}</Text.Code>
+    ));
+
+    return(
+      <Fragment>
+        <TextOverLineSubtitle text='Game Plan'/>
+        <Layout.BigCodeViewer>
+          <Lines/>
+        </Layout.BigCodeViewer>
+      </Fragment>
     )
   }
 

@@ -48,14 +48,16 @@ const BoldStatus = styled(CleanStatus)`
 
 const Code = styled.code`
   display: block;
-  margin-top: 2px;
+  margin-top: ${p => p.chill ? "6px" : "2px"};
   color: ${p => p.theme.colors.contrastFont};
+  &:first-child{
+    margin-top: 2px;
+  }
 `;
 
 const ContrastCode = styled(Code)`
   color: ${p => p.theme.colors.primaryFont};
 `;
-
 
 const BoldRef = styled.p`
   text-decoration: underline;

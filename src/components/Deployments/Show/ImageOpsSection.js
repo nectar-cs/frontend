@@ -1,13 +1,13 @@
 import React from 'react'
 import Section from "./Section";
-import ImageActionsModal from "../../../modals/ImageActionsModal/ImageActionsModal";
+import ImageOpsModal from "../../../modals/ImageActionsModal/ImageOpsModal";
 
 export default class ImageOpsSection extends Section {
 
   renderDefaultModal(source){
     const { deployment, matching } = source || this.props;
     return(
-      <ImageActionsModal
+      <ImageOpsModal
         mode='fragment'
         deployment={deployment}
         matching={matching}

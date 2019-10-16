@@ -1,4 +1,4 @@
-import ImageActionsModal from "../ImageActionsModal/ImageActionsModal";
+import ImageOpsModal from "../ImageActionsModal/ImageOpsModal";
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
 
@@ -7,7 +7,7 @@ export default class Helper{
     const { deployment, matching } = inst.props;
     let bundle = { deployment, matching };
     bundle = {...bundle, operationType: 'git'};
-    inst.props.replaceModal(ImageActionsModal, bundle);
+    inst.props.replaceModal(ImageOpsModal, bundle);
   }
 
   static isAnnotated(inst){
