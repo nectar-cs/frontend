@@ -15,7 +15,11 @@ export class BodyResponseView extends React.Component {
           </code>
         </div>
       )
-    } else return <code>{this.props.body}</code>;
+    } else {
+      return(
+        <iframe className={s.holder} srcDoc={this.props.body}/>
+      )
+    }
   }
 
   static propTypes = {

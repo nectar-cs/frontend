@@ -42,7 +42,7 @@ export default class HttpActionsModal extends React.Component {
       bodyText: '',
       namespaces: [],
       labelCombos: [],
-      phase: 'editing',
+      phase: 'response',
       httpResp: '',
       showHistory: true
     };
@@ -104,7 +104,6 @@ export default class HttpActionsModal extends React.Component {
 
   renderEditPhase(){
     if(this.state.phase !== 'editing') return null;
-
     return(
       <Fragment>
         { this.renderRequestTabs() }
@@ -122,7 +121,6 @@ export default class HttpActionsModal extends React.Component {
 
   renderResponsePhase(){
     if(this.state.phase !== 'response') return null;
-
     return(
       <Fragment>
         { this.renderResponseTabs() }
