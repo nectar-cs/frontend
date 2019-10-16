@@ -42,7 +42,7 @@ export default class HttpActionsModal extends React.Component {
       bodyText: '',
       namespaces: [],
       labelCombos: [],
-      phase: 'response',
+      phase: 'editing',
       httpResp: '',
       showHistory: true
     };

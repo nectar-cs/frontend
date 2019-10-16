@@ -86,15 +86,19 @@ export default class CommandHistory extends React.Component{
   }
 
   reloadHistory(){
-    Helper.reloadHistory(this, this.applyHistory);
+    Helper.reloadHistory(this, items => {
+      this.applyHistory(items);
+      // this.applyItem(items[0], false);
+    });
   }
 
   deleteItem(id){
     Helper.deleteCommand(this, id, this.reloadHistory);
   }
 
-  applyItem(item){
-    this.props.applyCallback(item.extras);
+  applyItem(item, erase){
+    if(item)
+      this.props.applyCallback(item.extras, erase);
   }
 
   static propTypes = {

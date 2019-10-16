@@ -20,7 +20,7 @@ export default class CommandsModal extends React.Component{
     this.state = {
       choices: {
         podName: Helper.defaultPod(this, props),
-        command: 'rake db:migrate'
+        command: ''
       },
       output: null,
       isExecuting: false,
@@ -112,11 +112,13 @@ export default class CommandsModal extends React.Component{
   }
 
   renderButton(){
+    const { executing, choices} = this.state;
+    const ready = !!choices.command;
     return(
       <ModalButton
         title='Execute'
         callback={() => this.submit()}
-        isEnabled={!this.state.isExecuting}
+        isEnabled={ready && !executing}
       />
     )
   }
