@@ -136,7 +136,8 @@ export default class DeploymentCard extends React.Component {
       deployment: this.props.deployment,
       matching: this.props.matching,
       targetHost: text,
-      port: svc.fromPort
+      port: svc.fromPort,
+      mode: 'modal'
     };
 
     this.props.openModal(HttpActionsModal, bundle);
@@ -146,26 +147,27 @@ export default class DeploymentCard extends React.Component {
     const bundle = {
       deployment: this.props.deployment,
       matching: this.props.matching,
-      refreshCallback: this.props.refreshCallback
+      refreshCallback: this.props.refreshCallback,
+      mode: 'modal'
     };
     this.props.openModal(ImageActionsModal, bundle);
   }
 
   openSourceModal(){
     const { deployment, matching, replaceModal } = this.props;
-    let bundle = {deployment, matching, replaceModal};
+    let bundle = {deployment, matching, replaceModal, mode: 'modal'};
     this.props.openModal(DepSourceModal, bundle);
   }
 
   openPortForwardModal(){
     const { deployment, matching } = this.props;
-    let bundle = {deployment, matching};
+    let bundle = {deployment, matching, mode: 'modal'};
     this.props.openModal(PortForwardModal, bundle);
   }
 
   openCommandsModal(){
     const { deployment, matching } = this.props;
-    let bundle = {deployment, matching};
+    let bundle = {deployment, matching, mode: 'modal'};
     this.props.openModal(CommandsModal, bundle);
   }
 

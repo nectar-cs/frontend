@@ -133,6 +133,7 @@ class MatchingClass extends React.Component {
     const sif = (v) => this.setState((s) => ({...s, isRightFetching: v}));
     return(
       <MatchPreview
+        mode='tutorial'
         deployment={this.selectedDeployment()}
         onDeploymentReviewed={this.onDeploymentReviewed}
         setIsFetching={sif}

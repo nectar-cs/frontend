@@ -19,7 +19,8 @@ export class FormHelper {
   static repoNames(remoteList, remoteName){
     if(!remoteName) return [];
     const selRemote = this.selectedRemote(remoteList, remoteName);
-    return selRemote.contents.map(repo => repo.name);
+    if(selRemote) return selRemote.contents.map(repo => repo.name);
+    else return [];
   }
 
   static repoOptions(inst, remoteName){

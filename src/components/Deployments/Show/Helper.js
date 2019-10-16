@@ -24,7 +24,7 @@ export default class Helper {
     CommandsSection,
   ];
 
-  static defaultSection = InfraDebugSection;
+  static defaultSection = IntegrationsSection;
 
   static classNameToKey(className){
     const key = className.replace("Section", "");

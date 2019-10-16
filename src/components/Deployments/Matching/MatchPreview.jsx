@@ -11,6 +11,7 @@ import Button from "../../../assets/buttons";
 import MiscUtils from "../../../utils/MiscUtils";
 import {Types} from "../../../types/Deployment";
 import Loader from "../../../assets/loading-spinner";
+import Helper from "./Helper";
 
 export default class MatchPreview extends React.Component {
   constructor(props){
@@ -25,6 +26,8 @@ export default class MatchPreview extends React.Component {
       },
       isGitFetching: false,
       isDockerFetching: false,
+      isSubmitting: false,
+      matching: null
     };
 
     this.deploymentName = MiscUtils.tor(() => props.deployment.name);
@@ -58,7 +61,7 @@ export default class MatchPreview extends React.Component {
         { this.renderTopRightLoader() }
         { this.renderTitle() }
         { this.renderForm() }
-        { this.renderNextButton() }
+        { this.renderButtons() }
       </Fragment>
     )
   }
@@ -101,31 +104,43 @@ export default class MatchPreview extends React.Component {
     else return null;
   }
 
-  renderNextButton(){
-    if(this.state.isGitFetching) return null;
-    if(this.state.isDockerFetching) return null;
+  renderButtons(){
+    // if(this.state.isGitFetching) return null;
+    // if(this.state.isDockerFetching) return null;
 
+    const NegativeButton = () => (
+      Helper.showNeg(this) && <Button.BigButton
+        emotion='idle'
+        onClick={this.skipMatch}>
+        { defaults.previewButtons.negative[mode] }
+      </Button.BigButton>
+    );
+
+    const { mode } = this.props;
     return(
       <Button.BigBottomButtons>
-        <Button.BigButton
-          emotion='idle'
-          onClick={this.skipMatch}>
-          Skip this one
+        <NegativeButton/>
+        <Button.BigButton onClick={this.acceptMatch}>
+          { defaults.previewButtons.positive[mode] }
         </Button.BigButton>
-        <Button.BigButton onClick={this.acceptMatch}>Confirm & Next</Button.BigButton>
       </Button.BigBottomButtons>
     );
   }
 
   acceptMatch(){
-    this.props.onDeploymentReviewed(
-      this.deploymentName,
-      this.state.bundle
-    );
+    const { mode, onDeploymentReviewed } = this.props;
+    const deployment = this.state.bundle;
+    if(mode === 'tutorial')
+      onDeploymentReviewed(this.deploymentName, deployment);
+    else Helper.submitSingle(this, deployment);
   }
 
   skipMatch(){
-    this.props.onDeploymentReviewed(this.deploymentName, null);
+    const { mode, onDeploymentReviewed } = this.props;
+    const deployment = this.state.bundle;
+    if(mode === 'tutorial')
+      onDeploymentReviewed(this.deploymentName, null);
+    else Helper.submitDelete(this, deployment);
   }
 
   onFormDataChanged(key, value){
@@ -154,6 +169,7 @@ export default class MatchPreview extends React.Component {
       const data = DataUtils.objKeysToCamel(payload)['data'];
       this.updateBundle(H.setRemotesList('git', this, data));
       this.setState(s => ({...s, isGitFetching: false}));
+      Helper.fetchMatching(this);
     });
   }
 
@@ -163,6 +179,7 @@ export default class MatchPreview extends React.Component {
       const data = DataUtils.objKeysToCamel(payload)['data'];
       this.updateBundle(H.setRemotesList('img', this, data));
       this.setState(s => ({...s, isDockerFetching: false}));
+      Helper.fetchMatching(this);
     });
   }
 
@@ -173,8 +190,9 @@ export default class MatchPreview extends React.Component {
   static propTypes = {
     deployment: PropTypes.object,
     matching: Types.Deployment,
-    onDeploymentReviewed: PropTypes.func.isRequired,
+    onDeploymentReviewed: PropTypes.func,
     hasGitRemote: PropTypes.bool.isRequired,
-    hasImageRegistry: PropTypes.bool.isRequired
+    hasImageRegistry: PropTypes.bool.isRequired,
+    mode: PropTypes.oneOf(['detail', 'tutorial']).isRequired
   };
 }

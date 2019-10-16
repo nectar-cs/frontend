@@ -89,7 +89,7 @@ export default class ImageActionsModal extends React.Component {
       <LeftHeader
         graphicName={MiscUtils.modalImage(this, "camera_alt")}
         graphicType={MiscUtils.modalGraphicType(this)}
-        title={defaults.header.title(deployment, mode)}
+        title={defaults.header.title(deployment.name, mode)}
         subtitle={defaults.copy.header}
       />
     )

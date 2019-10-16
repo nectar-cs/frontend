@@ -24,6 +24,11 @@ class DeploymentShowClass extends React.Component{
     this.defDetailFns = {};
   }
 
+  componentDidMount(){
+    Helper.fetchDeployment(this);
+    Helper.fetchMatching(this);
+  }
+
   render(){
     return(
       <Fragment>
@@ -63,11 +68,6 @@ class DeploymentShowClass extends React.Component{
         { detailFunc(focusedActivity, bundle) }
       </S.RightPanel>
     )
-  }
-
-  componentDidMount(){
-    Helper.fetchDeployment(this);
-    Helper.fetchMatching(this);
   }
 
   setDefaultDetailFn(name, defaultFn){

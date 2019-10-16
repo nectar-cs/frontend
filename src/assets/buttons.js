@@ -58,7 +58,7 @@ const FloatingPlus = styled.button`
   position: fixed;
   right: 40px;
   bottom: 40px;
-  padding-bottom: 10px;
+  padding-bottom: 6px;
   box-shadow: 2px 2px 3px #999;
 `;
 

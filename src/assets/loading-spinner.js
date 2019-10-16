@@ -48,7 +48,7 @@ const TopRightSpinner = styled(ModSpinner)`
   position: absolute;
   top: 12px;
   right: -14px;
-  display: ${p => p.there ? 'block' : 'none'};
+  display: ${p => (p.there || p.there === undefined) ? 'block' : 'none'};
 `;
 
 export const CenteredSpinner = styled(ModSpinner)`
