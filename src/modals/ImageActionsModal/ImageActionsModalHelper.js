@@ -99,7 +99,7 @@ export class ImageActionsModalHelper {
   }
 
   static opHelper(inst){
-    const opType = inst.state.config.operationType;
+    const opType = inst.state.choices.operationType;
 
     let oughtToBeClass;
     switch (opType) {
@@ -129,7 +129,7 @@ export class ImageActionsModalHelper {
   static podsRenderer(inst){
     if(inst.isConfiguring()) return StdPodTable;
     else if(inst.isSubmitted() || inst.isConcluded()){
-      return this.podRendererAfterSubmit(inst.state.config.operationType)
+      return this.podRendererAfterSubmit(inst.state.choices.operationType)
     }
   }
 
@@ -144,7 +144,7 @@ export class ImageActionsModalHelper {
   }
 
   static urlAction(inst){
-    const opType = inst.state.config.operationType;
+    const opType = inst.state.choices.operationType;
 
     switch (opType) {
       case "reload": return "image_reload";
@@ -164,7 +164,7 @@ export class ImageActionsModalHelper {
 
   static makeOpHelperBundle(inst){
     const { initialPods, updatedPods, conclusion } = inst.state;
-    const { imageName, scaleTo } = inst.state.config;
+    const { imageName, scaleTo } = inst.state.choices;
     return {
       initialPods,
       updatedPods,

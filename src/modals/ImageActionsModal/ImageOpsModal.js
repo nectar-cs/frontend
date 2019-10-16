@@ -74,11 +74,10 @@ export default class ImageOpsModal extends React.Component {
       <FlexibleModal mode={this.props.mode}>
         { this.renderHeader() }
         { this.renderLoader() }
-        { this.renderIntro() }
-        { this.renderChecklist() }
-        { this.renderConclusion() }
         { this.renderConfigForm() }
         { this.renderCodeView() }
+        { this.renderChecklist() }
+        { this.renderConclusion() }
         { this.renderPodList() }
         { this.renderButton() }
       </FlexibleModal>
@@ -103,22 +102,11 @@ export default class ImageOpsModal extends React.Component {
     else return null;
   }
 
-  renderIntro(){
-    if(this.isSubmitting()) return null;
-    const title = this.isConfiguring() ? 'Options' : 'Progress';
-    return <TextOverLineSubtitle text={title}/>;
-  }
-
   renderChecklist(){
     if(!(this.isSubmitted() || this.isConcluded())) return null;
-
     const { initialPods, updatedPods } = this.state;
     const opHelper = Helper.opHelper(this);
-    const items = opHelper.progressItems(
-      initialPods,
-      updatedPods
-    );
-
+    const items = opHelper.progressItems(initialPods, updatedPods);
     return <Checklist items={items}/>
   }
 
@@ -208,6 +196,9 @@ export default class ImageOpsModal extends React.Component {
     };
 
     const endpoint = `/api/run/${Helper.urlAction(this)}`;
+    console.log("PAUYLOAD");
+    console.log(endpoint);
+    console.log(payload);
     this.setState(s => ({...s, phase: PHASE_SUBMITTING}));
     Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
   }

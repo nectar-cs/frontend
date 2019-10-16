@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {Detail, Icon, Item, List, Name, Spinner} from "./ChecklistStyles";
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 function ChecklistItem(props){
 
@@ -39,9 +40,12 @@ export default function Checklist(props) {
   ));
 
   return(
-    <List>
-      { itemComponents }
-    </List>
+    <Fragment>
+      <TextOverLineSubtitle text='Progress'/>
+      <List>
+        { itemComponents }
+      </List>
+    </Fragment>
   );
 }
 

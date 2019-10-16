@@ -9,11 +9,13 @@ import {ROUTES} from "../../containers/RoutesConsts";
 import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
 import {Types} from "../../types/Deployment";
 import {ImageActionsModalHelper} from "./ImageActionsModalHelper";
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 export default class ImageForm extends React.Component {
   render(){
     return(
       <Fragment>
+        <TextOverLineSubtitle text='Options'/>
         { this.renderTypeLine() }
         { this.renderImageNameLine() }
         { this.renderScaleSelector() }
