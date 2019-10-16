@@ -51,7 +51,7 @@ export default class Helper {
     Backend.raisingFetch(ep, resp => {
       const matching = DataUtils.objKeysToCamel(resp)['data'];
       inst.setState(s => ({...s, matching}));
-    });
+    }, () => inst.setState(s => ({...s, matching: null})));
   }
 
   static depName(inst){ return inst.props.match.params['id'] }

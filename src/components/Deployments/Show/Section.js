@@ -131,6 +131,7 @@ export default class Section extends React.Component {
     deployment: Types.Deployment,
     matching: Types.Matching,
     onClicked: PropTypes.func.isRequired,
-    onActivityClicked: PropTypes.func.isRequired
+    onActivityClicked: PropTypes.func.isRequired,
+    refreshCallback: PropTypes.func.isRequired
   }
 }

@@ -21,12 +21,12 @@ class DeploymentShowClass extends React.Component{
     this.setDefaultDetailFn = this.setDefaultDetailFn.bind(this);
     this.onSectionToggled = this.onSectionToggled.bind(this);
     this.onActivityToggled = this.onActivityToggled.bind(this);
+    this.reload = this.reload.bind(this);
     this.defDetailFns = {};
   }
 
   componentDidMount(){
-    Helper.fetchDeployment(this);
-    Helper.fetchMatching(this);
+    this.reload();
   }
 
   render(){
@@ -51,6 +51,7 @@ class DeploymentShowClass extends React.Component{
         defaultDetailSetter={this.setDefaultDetailFn}
         onClicked={this.onSectionToggled}
         onActivityClicked={this.onActivityToggled}
+        refreshCallback={this.reload}
       />
     ));
     return <S.LeftPanel><Sections/></S.LeftPanel>;
@@ -81,6 +82,11 @@ class DeploymentShowClass extends React.Component{
 
   onActivityToggled(focusedActivity){
     this.setState(s => ({...s, focusedActivity}));
+  }
+
+  reload(){
+    Helper.fetchDeployment(this);
+    Helper.fetchMatching(this);
   }
 }
 

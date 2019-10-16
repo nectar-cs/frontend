@@ -14,6 +14,7 @@ export default class IntegrationsSection extends Section {
         setIsFetching={null}
         hasGitRemote={true}
         hasImageRegistry={true}
+        refreshCallback={this.props.refreshCallback}
       />
     )
   }

@@ -11,8 +11,8 @@ export default class ImageOpsSection extends Section {
         mode='fragment'
         deployment={deployment}
         matching={matching}
+        refreshCallback={this.props.refreshCallback}
       />
     );
   }
-
 }

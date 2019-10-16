@@ -48,19 +48,24 @@ export default class Helper{
     inst.setState((s) => ({...s, isSubmitting: true}));
     const deployment = { ...inst.state.bundle, name, namespace };
     const payload = { data: [this.makePayload(deployment)] };
-    Backend.raisingPost(`/microservices`, payload, () => {
-      inst.setState((s) => ({...s, isSubmitting: false}));
-      this.fetchMatching(inst);
-    });
+    Backend.raisingPost(`/microservices`, payload, () => this.reload(inst));
   }
 
   static submitDelete(inst){
     const ep = `/microservices/${inst.state.matchingId}`;
     inst.setState((s) => ({...s, isSubmitting: true}));
-    Backend.raisingDelete(ep, () => {
-      inst.setState((s) => ({...s, isSubmitting: false}));
-      this.fetchMatching(inst);
-    });
+    Backend.raisingDelete(ep, () => this.reload(inst));
+  }
+
+  static reload(inst){
+    inst.setState((s) => ({...s, isSubmitting: false}));
+    this.fetchMatching(inst);
+    this.notifySubscribers(inst);
+  }
+
+  static notifySubscribers(inst){
+    const broadcast = inst.props.refreshCallback;
+    if(broadcast) broadcast();
   }
 
   static fetchMatching(inst){
