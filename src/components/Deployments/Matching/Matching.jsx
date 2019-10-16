@@ -3,7 +3,6 @@ import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
 import LeftHeader, { ICON} from '../../../widgets/LeftHeader/LeftHeader';
 import Backend from '../../../utils/Backend';
 import DeploymentList from './DeploymentList';
-import TopLoader from '../../../widgets/TopLoader/TopLoader';
 import MatchPreview from './MatchPreview';
 import Kapi from "../../../utils/Kapi";
 import IntegrationsPrompt from "./IntegrationsPrompt";
@@ -13,6 +12,7 @@ import {ROUTES} from "../../../containers/RoutesConsts";
 import DataUtils from "../../../utils/DataUtils";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 import Layout from "../../../assets/layouts";
+import Loader from "../../../assets/loading-spinner";
 
 class MatchingClass extends React.Component {
   constructor(props){
@@ -57,10 +57,11 @@ class MatchingClass extends React.Component {
   }
 
   renderLeftSide(){
+    const { isFetching } = this.state;
     return(
       <Layout.LeftPanel>
         <Header/>
-        <TopLoader isFetching={this.state.isFetching}/>
+        <Loader.TopRightSpinner there={isFetching}/>
         <DeploymentList
           deployments={this.state.deployments}
           selectedIndex={this.state.selectedIndex}
@@ -71,9 +72,10 @@ class MatchingClass extends React.Component {
   }
 
   renderRightSide(){
+    const { isRightFetching } = this.state;
     return(
       <Layout.RightPanel>
-        <TopLoader isFetching={this.state.isRightFetching}/>
+        <Loader.TopRightSpinner there={isRightFetching}/>
         <Fragment>
           { this.renderIntegrationsPrompt() }
           { this.renderMatchingPreview() }

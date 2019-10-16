@@ -4,13 +4,13 @@ import PropTypes from 'prop-types'
 import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';
 import MatchForm from './MatchForm';
 import defaults from './defaults'
-import TopLoader from "../../../widgets/TopLoader/TopLoader";
 import DataUtils from "../../../utils/DataUtils";
 import Backend from "../../../utils/Backend";
 import {FormHelper as H} from "./FormHelper";
 import Button from "../../../assets/buttons";
 import MiscUtils from "../../../utils/MiscUtils";
 import {Types} from "../../../types/Deployment";
+import Loader from "../../../assets/loading-spinner";
 
 export default class MatchPreview extends React.Component {
   constructor(props){
@@ -97,7 +97,7 @@ export default class MatchPreview extends React.Component {
 
   renderTopRightLoader(){
     if(this.state.isGitFetching || this.state.isDockerFetching)
-      return <TopLoader isFetching={true}/>;
+      return <Loader.TopRightSpinner/>;
     else return null;
   }
 

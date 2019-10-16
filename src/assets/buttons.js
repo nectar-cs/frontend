@@ -52,13 +52,14 @@ const FloatingPlus = styled.button`
   height: 50px;
   border-radius: 50%;
   background: ${p => p.theme.colors.primaryColor};
-  font-size: 40px;
+  font-size: 30px;
   color: white;
   text-align: center;
   position: fixed;
   right: 40px;
   bottom: 40px;
-  padding-top: -50px;
+  padding-bottom: 10px;
+  box-shadow: 2px 2px 3px #999;
 `;
 
 const Button = {

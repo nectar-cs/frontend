@@ -9,13 +9,13 @@ import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import Helper from "./Helper";
 import Breadcrumbs from "../../../widgets/Breadcrumbs/Breadcrumbs";
+import {connect} from "react-redux";
 
 class WorkspaceShowClass extends React.Component{
 
   constructor(props){
     super(props);
     this.state = {
-      workspace: null,
       deployments: [],
       microservices: [],
       selectedIndex: 0,
@@ -23,15 +23,25 @@ class WorkspaceShowClass extends React.Component{
       isFetching: false
     };
     this.fetchDeployments = this.fetchDeployments.bind(this);
+    this.repeater = this.repeater.bind(this);
   }
 
   componentDidMount() {
     this.setState((s) => ({...s, isFetching: true}));
-    this.fetchDeployments();
     this.fetchMatchings();
   }
 
+  componentWillReceiveProps(nextProps){
+    if(!this.props.workspace){
+      if(nextProps.workspace){
+        Helper.fetchDeployments(this, nextProps);
+      }
+    }
+  }
+
   render(){
+    console.log("NOW WS");
+    console.log(this.props.workspace);
     return(
       <Fragment>
         { this.renderLoading() }
@@ -43,7 +53,7 @@ class WorkspaceShowClass extends React.Component{
   }
 
   renderBreadcrumbs(){
-    const workspace = this.state.workspace;
+    const workspace = this.props.workspace;
     const name = workspace ? workspace.name : this.workspaceId();
 
     const parts = [
@@ -77,15 +87,16 @@ class WorkspaceShowClass extends React.Component{
 
   renderCards(){
     if(this.state.isFetching) return null;
+    const { openModal, replaceModal} = this.props;
 
     const cards = this.state.deployments.map((deployment) => (
       <DeploymentCard
         selectableKey={deployment.name}
         key={deployment.name}
         deployment={deployment}
-        matching={this.microserviceForDeployment(deployment)}
-        openModal={this.props.openModal}
-        replaceModal={this.props.replaceModal}
+        matching={this.matchingForDep(deployment)}
+        openModal={openModal}
+        replaceModal={replaceModal}
         refreshCallback={this.fetchDeployments}
       />
     ));
@@ -99,9 +110,9 @@ class WorkspaceShowClass extends React.Component{
     )
   }
 
-  microserviceForDeployment(deployment){
-    return this.state.microservices.find((microservice) => (
-      microservice.deploymentName === deployment.name
+  matchingForDep(deployment){
+    return this.state.microservices.find((matching) => (
+      matching.deploymentName === deployment.name
     ));
   }
 
@@ -111,12 +122,27 @@ class WorkspaceShowClass extends React.Component{
 
   fetchDeployments(){ Helper.fetchDeployments(this); }
   fetchMatchings(){ Helper.fetchMatchings(this); }
+
+  repeater(){
+    this.fetchDeployments();
+    setTimeout(this.repeater, 8000);
+  }
 }
+
+function s2P(state, props){
+  const {workspaces} = state.mainReducer;
+  const target = props.match.params['id'].toString();
+  const finder = (ws) => ws.id.toString() === target;
+  const workspace = workspaces.find(finder);
+  return { workspace };
+}
+
+const connected = connect(s2P)(WorkspaceShowClass);
 
 const WorkspaceShow = AuthenticatedComponent.compose(
   ModalHostComposer.compose(
     ErrComponent.compose(
-      WorkspaceShowClass
+      connected
     )
   )
 );

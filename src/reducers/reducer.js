@@ -7,7 +7,7 @@ const initialState = {
 export default function mainReducer(s = initialState, action) {
   switch (action.type) {
     case actionKeys.SetWorkspaces:
-      const { workspaces } = action;
+      const { workspaces } = action; //TODO wtf about action.type
       return({...s, workspaces});
     default:
       return s;

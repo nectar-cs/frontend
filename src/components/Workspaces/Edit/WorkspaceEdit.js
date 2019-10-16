@@ -3,7 +3,6 @@ import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
 import ls from "../../../assets/content-layouts.sass";
-import TopLoader from "../../../widgets/TopLoader/TopLoader";
 import LeftHeader, {ICON} from "../../../widgets/LeftHeader/LeftHeader";
 import WorkspaceForm from "./WorkspaceForm";
 import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
@@ -15,6 +14,7 @@ import Backend from "../../../utils/Backend";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
+import Loader from "../../../assets/loading-spinner";
 
 class WorkspaceEditClass extends React.Component{
 
@@ -22,7 +22,7 @@ class WorkspaceEditClass extends React.Component{
     super(props);
     this.state = {
       wip: null,
-      isFetching: false,
+      isFetching: true,
       submit: null,
       filtersChanged: true,
       workspaceName: '',
@@ -66,8 +66,10 @@ class WorkspaceEditClass extends React.Component{
   }
 
   renderDone(){
-    const editPath = makeRoute(ROUTES.workspaces.edit.path, {id: this.state.wip});
-    const continuePath = makeRoute(ROUTES.workspaces.show.path, {id: this.state.wip});
+    const { wip } = this.state;
+    const bundle = ROUTES.workspaces;
+    const editPath = makeRoute(bundle.edit.path, {id: wip});
+    const continuePath = makeRoute(bundle.show.path, {id: wip});
 
     return(
       <div className={ls.fullScreen}>
@@ -75,9 +77,13 @@ class WorkspaceEditClass extends React.Component{
           contentType='children'
           action={ROUTES.workspaces.index.path}
           iconName='done_all'>
-          <p className={s.doneText}>{this.state.workspaceName} saved.</p>
           <p className={s.doneText}>
-            <a href={editPath}>Keep editing</a>, or, <a href={continuePath}>continue</a>.
+            {this.state.workspaceName} saved.
+          </p>
+          <p className={s.doneText}>
+            <a href={editPath}>Keep editing</a>,
+            or,
+            <a href={continuePath}>continue</a>.
           </p>
         </CenterAnnouncement>
       </div>
@@ -93,6 +99,10 @@ class WorkspaceEditClass extends React.Component{
   }
 
   renderLeftSide(){
+    const { isFetching } = this.state;
+    const { workspaceName, namespaces, labels } = this.state;
+    const Load = () => isFetching && <Loader.TopRightSpinner/>;
+
     return(
       <div className={ls.halfScreePanelLeft}>
         <LeftHeader
@@ -101,17 +111,13 @@ class WorkspaceEditClass extends React.Component{
           title={this.state.workspaceName || "My New Workspace"}
           subtitle={"Made for organizing"}
         />
-        <TopLoader isFetching={this.state.isFetching}/>
-
-        <div className={s.introBox}>
-          { explanation }
-        </div>
-
+        <Load/>
+        <div className={s.introBox}>{ explanation }</div>
         <WorkspaceForm
           onFieldsChanged={this.onFieldsChanged}
-          workspaceName={this.state.workspaceName}
-          namespaces={this.state.namespaces}
-          labels={this.state.labels}
+          workspaceName={workspaceName}
+          namespaces={namespaces}
+          labels={labels}
         />
       </div>
     )

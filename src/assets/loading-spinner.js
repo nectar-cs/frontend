@@ -44,6 +44,13 @@ export const ModSpinner = styled(LoadingSpinner)`
   }    
 `;
 
+const TopRightSpinner = styled(ModSpinner)`
+  position: absolute;
+  top: 12px;
+  right: -14px;
+  display: ${p => p.there ? 'block' : 'none'};
+`;
+
 export const CenteredSpinner = styled(ModSpinner)`
   position: absolute;
   top: 50%;
@@ -51,4 +58,11 @@ export const CenteredSpinner = styled(ModSpinner)`
   transform: translateX(-50%) translateY(-50%);
 `;
 
+const Loader = {
+  ModSpinner,
+  CenteredSpinner,
+  LoadingSpinner,
+  TopRightSpinner
+};
 
+export default Loader;

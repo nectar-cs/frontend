@@ -23,6 +23,15 @@ const A = styled.a`
   }
 `;
 
+const PA = styled.p`
+  text-decoration: none;
+  &:hover{
+    text-decoration: underline;
+    text-decoration-color: ${p => p.theme.colors.contrastFont};  
+  }
+`;
+
+
 const CleanStatus = styled.p`
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -56,7 +65,7 @@ const BoldRef = styled.p`
 `;
 
 const Text = {
-  P, A,
+  P, A, PA,
   Code,
   BoldStatus,
   CleanStatus,

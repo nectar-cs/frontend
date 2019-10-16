@@ -2,7 +2,7 @@ import React, {Fragment} from 'react'
 import s from './WorkspaceDepsPreview.sass'
 import PropTypes from 'prop-types'
 import Kapi from "../../../utils/Kapi";
-import TopLoader from "../../../widgets/TopLoader/TopLoader";
+import Loader from "../../../assets/loading-spinner";
 
 export default class WorkspaceDepsPreview extends React.Component{
 
@@ -27,7 +27,7 @@ export default class WorkspaceDepsPreview extends React.Component{
   render(){
     return (
       <Fragment>
-        <TopLoader isFetching={this.state.isFetching}/>
+        { this.renderLoader() }
         <h4 className={s.title}>Preview</h4>
         <p>The following deployments will appear in your workspace:</p>
         <table className={s.table}>
@@ -38,6 +38,11 @@ export default class WorkspaceDepsPreview extends React.Component{
         </table>
       </Fragment>
     )
+  }
+
+  renderLoader(){
+    if(!this.state.isFetching) return null;
+    return <Loader.TopRightSpinner/>;
   }
 
   renderRows(){

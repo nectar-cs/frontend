@@ -10,6 +10,8 @@ import Backend from "../../../utils/Backend";
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import ColoredLabelList from "../../../widgets/ColoredLabelList/ColoredLabelList";
 import Button from "../../../assets/buttons";
+import Text from './../../../assets/text-combos'
+import Layout from './../../../assets/layouts'
 
 class WorkspaceIndexClass extends React.Component{
 
@@ -24,7 +26,8 @@ class WorkspaceIndexClass extends React.Component{
   componentDidMount(){
     this.setState(s => ({...s, isLoading: true}));
     Backend.raisingFetch('/workspaces', (payload) => {
-      this.setState((s) => ({...s, isLoading: false, workspaces: payload['data']}));
+      const workspaces = payload['data'];
+      this.setState((s) => ({...s, isLoading: false, workspaces }));
     }, this.props.apiErrorCallback);
   }
 
@@ -40,11 +43,10 @@ class WorkspaceIndexClass extends React.Component{
   }
 
   renderAddButton(){
-    return(
-      <Button.FloatingPlus>
-        +
-      </Button.FloatingPlus>
-    )
+    const goto = ROUTES.workspaces.new.path;
+    const callback = () => { window.location = goto };
+    const Btn = Button.FloatingPlus;
+    return<Btn onClick={callback}>+</Btn>;
   }
 
   renderLoading(){
@@ -78,6 +80,7 @@ class WorkspaceIndexClass extends React.Component{
   }
 
   renderEmpty(){
+    if(this.state.isLoading) return null;
     if(this.state.workspaces.length > 0) return null;
 
     return(
@@ -105,8 +108,19 @@ function WorkspaceHeader() {
 }
 
 function WorkspaceRow(props) {
-  const showPath = makeRoute(ROUTES.workspaces.show.path, {id: props.id});
-  const editPath = makeRoute(ROUTES.workspaces.edit.path, {id: props.id});
+  const bundle = ROUTES.workspaces;
+  const showPath = makeRoute(bundle.show.path, {id: props.id});
+  const editPath = makeRoute(bundle.edit.path, {id: props.id});
+
+  const onDelete = () => {
+    if(window.confirm("Are you sure?")){
+      const ep = `/workspaces/${props.id}`;
+      Backend.raisingDelete(ep, () => {
+        window.location = bundle.index.path;
+      });
+    }
+  };
+
   return(
     <tr>
       <td><p>
@@ -124,9 +138,13 @@ function WorkspaceRow(props) {
           labels={props.lb_filters}
         />
       </td>
-      <td><p>
-        <a href={editPath}>Edit</a>
-      </p></td>
+      <td>
+        <Layout.TextLine>
+          <a href={editPath}><p>Edit</p></a>
+          <p>&nbsp;&nbsp;</p>
+          <a><p onClick={onDelete}>Delete</p></a>
+        </Layout.TextLine>
+      </td>
     </tr>
   )
 }

@@ -6,11 +6,11 @@ import {Types} from "../../types/Deployment";
 import CommandForm from "./CommandForm";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import ModalButton from "../../widgets/Buttons/ModalButton";
-import TopLoader from "../../widgets/TopLoader/TopLoader";
 import CommandHistory from "./CommandHistory";
 import Helper from "./Helper";
 import Preview from "./Preview";
 import FlexibleModal from "../../hocs/FlexibleModal";
+import Loader from "../../assets/loading-spinner";
 
 export default class CommandsModal extends React.Component{
 
@@ -59,7 +59,7 @@ export default class CommandsModal extends React.Component{
   renderTopLoader(){
     if(!this.state.isExecuting) return null;
     return(
-      <TopLoader isFetching={true} />
+      <Loader.TopRightSpinner isFetching={true} />
     )
   }
 
