@@ -70,6 +70,7 @@
     "react-svg": "^10.0.11",
     "react-syntax-highlighter": "^11.0.2",
     "react-tag-autocomplete": "^5.11.1",
+    "react-toastify": "^5.4.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "string-similarity": "^3.0.0",

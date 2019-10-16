@@ -1,5 +1,6 @@
 import DataUtils from "../../../utils/DataUtils";
 import Backend from "../../../utils/Backend";
+import { toast } from 'react-toastify';
 
 export default class Helper{
 
@@ -44,14 +45,23 @@ export default class Helper{
 
   static submitSingle(inst){
     const {name, namespace} = inst.props.deployment;
+    inst.setState((s) => ({...s, isSubmitting: true}));
     const deployment = { ...inst.state.bundle, name, namespace };
     const payload = { data: [this.makePayload(deployment)] };
     Backend.raisingPost(`/microservices`, payload, () => {
+      inst.setState((s) => ({...s, isSubmitting: false}));
       this.fetchMatching(inst);
     });
   }
 
-  static submitDelete(inst, asd){}
+  static submitDelete(inst){
+    const ep = `/microservices/${inst.state.matchingId}`;
+    inst.setState((s) => ({...s, isSubmitting: true}));
+    Backend.raisingDelete(ep, () => {
+      inst.setState((s) => ({...s, isSubmitting: false}));
+      this.fetchMatching(inst);
+    });
+  }
 
   static fetchMatching(inst){
     const { name, namespace } = inst.props.deployment;
@@ -62,6 +72,8 @@ export default class Helper{
       const bundle = { ...inst.state.bundle, ...merger };
       const matchingId = matching.id;
       inst.setState(s => ({...s, bundle, matchingId }));
+    }, () => {
+      inst.setState(s => ({...s, matchingId: null }));
     });
   }
 
@@ -72,5 +84,10 @@ export default class Helper{
       const { matchingId } = inst.state;
       return (matchingId) ? true : null;
     }
+  }
+
+  static isLoading(inst){
+    const { isGitFetching, isDockerFetching, isSubmitting } = inst.state;
+    return isGitFetching || isDockerFetching || isSubmitting;
   }
 }

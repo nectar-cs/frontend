@@ -99,14 +99,12 @@ export default class MatchPreview extends React.Component {
   }
 
   renderTopRightLoader(){
-    if(this.state.isGitFetching || this.state.isDockerFetching)
-      return <Loader.TopRightSpinner/>;
-    else return null;
+    if(!Helper.isLoading(this)) return null;
+    return <Loader.TopRightSpinner/>;
   }
 
   renderButtons(){
-    if(this.state.isGitFetching) return null;
-    if(this.state.isDockerFetching) return null;
+    if(Helper.isLoading(this)) return null;
 
     const NegativeButton = () => (
       Helper.showNeg(this) && <Button.BigButton

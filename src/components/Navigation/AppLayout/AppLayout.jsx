@@ -27,8 +27,6 @@ class AppLayoutClass extends React.Component {
   componentDidMount(){
     Backend.raisingFetch(`/workspaces`, resp => {
       const workspaces = DataUtils.objKeysToCamel(resp['data']);
-      console.log("SETTING");
-      console.table(workspaces);
       this.props.setWorkspaces(workspaces);
     });
   }
