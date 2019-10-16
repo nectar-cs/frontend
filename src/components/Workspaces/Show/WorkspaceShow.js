@@ -13,6 +13,8 @@ import {connect} from "react-redux";
 
 class WorkspaceShowClass extends React.Component{
 
+  static REFRESH_RATE = 6000;
+
   constructor(props){
     super(props);
     this.state = {
@@ -29,6 +31,7 @@ class WorkspaceShowClass extends React.Component{
   componentDidMount() {
     this.setState((s) => ({...s, isFetching: true}));
     this.fetchMatchings();
+    this.repeater(false);
   }
 
   componentWillReceiveProps(nextProps){
@@ -40,8 +43,6 @@ class WorkspaceShowClass extends React.Component{
   }
 
   render(){
-    console.log("NOW WS");
-    console.log(this.props.workspace);
     return(
       <Fragment>
         { this.renderLoading() }
@@ -123,9 +124,9 @@ class WorkspaceShowClass extends React.Component{
   fetchDeployments(){ Helper.fetchDeployments(this); }
   fetchMatchings(){ Helper.fetchMatchings(this); }
 
-  repeater(){
-    this.fetchDeployments();
-    setTimeout(this.repeater, 8000);
+  repeater(immediate=true){
+    if(immediate) this.fetchDeployments();
+    setTimeout(this.repeater, WorkspaceShowClass.REFRESH_RATE);
   }
 }
 

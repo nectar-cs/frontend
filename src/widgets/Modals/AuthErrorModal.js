@@ -24,9 +24,7 @@ export default class AuthErrorModal extends React.Component{
           graphicType={TYPE_ICON}
           graphicName={'person'}
         />
-
         <p>You logged out</p>
-
         <ModalButton
           title={'Login again'}
           callback={this.submitRetry}

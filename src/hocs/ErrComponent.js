@@ -15,6 +15,7 @@ export default class ErrComponent{
         super(props);
         this.state = {
           hasKubeError: false,
+          hasFatalError: false,
           error: null
         };
         this.kubeErrorCallback = this.kubeErrorCallback.bind(this);
@@ -35,6 +36,7 @@ export default class ErrComponent{
             kubeErrorCallback={this.kubeErrorCallback}
             apiErrorCallback={this.apiErrorCallback}
             hasKubeError={this.state.hasKubeError}
+            hasFatalError={this.state.hasFatalError}
             {...this.props}
           />
         )
@@ -42,7 +44,20 @@ export default class ErrComponent{
 
       apiErrorCallback(bundle){
         if (bundle.status === 401)
-          this.props.openModal(AuthErrorModal)
+          this.handleAuthError();
+        else if(bundle.status === 500){
+          this.handleInternalServerError();
+        }
+      }
+
+      handleInternalServerError(){
+        this.setState(s => ({...s, hasFatalError: true}));
+        this.props.openModal(AuthErrorModal);
+      }
+
+      handleAuthError(){
+        this.setState(s => ({...s, hasFatalError: true}));
+        this.props.openModal(AuthErrorModal);
       }
 
       kubeErrorCallback(error){
