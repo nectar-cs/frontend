@@ -10,13 +10,11 @@ export default class Helper{
 
   static structToState(tree){
     if(tree === 'done'){
-      return {
-        name: "Terminal"
-      }
+      return { name: "Terminal" }
     } else {
-      console.log("TREE");
-      console.log(tree);
       return {
+        key: tree.ask,
+        _collapsed: true,
         name: tree.friendly,
         children: [
           this.structToState(tree.negative),
@@ -42,11 +40,10 @@ export default class Helper{
     }, () => inst.setState(s => ({...s, matching: null})));
   }
 
-  static fetchTreeStruct(inst){
+  static fetchTreeStruct(inst, callback){
     const ep = `/api/debug/${inst.type()}/decision_tree`;
     Kapi.fetch(ep, resp => {
-      const treeStruct = DataUtils.objKeysToCamel(resp['data']);
-      inst.setState(s => ({...s, treeStruct}));
+      callback(DataUtils.objKeysToCamel(resp['data']));
     });
   }
 }

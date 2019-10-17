@@ -20,7 +20,6 @@ export default class DecisionTree extends React.Component{
   render(){
     const { treeStruct } = this.props;
     const formatted = Helper.structToState(treeStruct);
-
     return(
       <S.TreeContainer ref={r => this.treeRef = r}>
         <Tree
@@ -46,6 +45,11 @@ export default class DecisionTree extends React.Component{
   }
 
   static propTypes = {
-    treeStruct: PropTypes.any.isRequired
+    treeStruct: PropTypes.shape({
+      ask: PropTypes.string,
+      positive: PropTypes.any,
+      negative: PropTypes.any,
+      friendly: PropTypes.string
+    })
   }
 }

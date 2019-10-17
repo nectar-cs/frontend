@@ -8,16 +8,27 @@ const TreeContainer = styled.div`
   width: 100%;
 `;
 
+const nodeSide = 27;
+
 const nodeShape = {
   shape: 'rect',
   shapeProps: {
-    width: 30,
-    height: 30,
-    stroke: "red",
+    width: nodeSide,
+    height: nodeSide,
+    fill: theme.colors.contrastColor,
+    strokeWidth: 3,
+    stroke: theme.colors.primaryColor,
     transform: "rotate(-45 0 0)",
-    x: -15,
-    y: -15,
+    x: nodeSide / -2,
+    y: nodeSide / -2,
   }
+};
+
+const textBase = {
+  font: "normal 16px lato",
+  strokeWidth: 0,
+  fill: theme.colors.primaryFont,
+  x: 100
 };
 
 const treeStyles = {
@@ -27,10 +38,10 @@ const treeStyles = {
   },
   nodes: {
     node: {
-      name: {
-        color: 'red',
-        marginLeft: "19px"
-      }
+      name: textBase
+    },
+    leafNode: {
+      name: textBase
     }
   }
 };

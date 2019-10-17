@@ -11,12 +11,18 @@ export default class OverviewSide extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      treeStruct: null
+      treeStruct: null,
+      current: null,
+      execution: null,
+      history: {}
     };
   }
 
   componentDidMount(){
-    Helper.fetchTreeStruct(this);
+    Helper.fetchTreeStruct(this, treeStruct => {
+      const current = treeStruct.ask;
+      this.setState(s => ({...s, treeStruct, current}));
+    });
   }
 
   render(){
