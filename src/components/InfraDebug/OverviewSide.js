@@ -3,11 +3,18 @@ import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
 import {Types} from "../../types/Deployment";
+import Tree from 'react-d3-tree';
+import DecisionTree from "./DecisionTree";
+
+
 
 export default class OverviewSide extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+
+    }
   }
 
   componentDidMount(){
@@ -17,8 +24,13 @@ export default class OverviewSide extends React.Component {
     return(
       <Fragment>
         { this.renderHeader() }
+        { this.renderTree() }
       </Fragment>
     )
+  }
+
+  renderTree(){
+    return <DecisionTree/>
   }
 
   renderHeader(){

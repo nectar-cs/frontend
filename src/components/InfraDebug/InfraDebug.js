@@ -9,13 +9,10 @@ class InfraDebugClass extends React.Component {
 
   constructor(props) {
     super(props);
-
     const source = ((props.location || {}).state) || {};
     this.state = {
       deployment: source.deployment,
-      matching: source.matching,
-      isDepFetching: false,
-      isMatFetching: false
+      matching: source.matching
     };
   }
 
@@ -27,6 +24,7 @@ class InfraDebugClass extends React.Component {
   render(){
     return(
       <Fragment>
+        { this.renderLoader() }
         { this.renderOverviewSide() }
         { this.renderActionSide() }
       </Fragment>
