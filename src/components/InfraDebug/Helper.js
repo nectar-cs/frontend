@@ -8,6 +8,24 @@ export default class Helper{
   static depName(inst){ return inst.props.match.params['id'] }
   static depNs(inst){ return inst.props.match.params['ns'] }
 
+  static structToState(tree){
+    if(tree === 'done'){
+      return {
+        name: "Terminal"
+      }
+    } else {
+      console.log("TREE");
+      console.log(tree);
+      return {
+        name: tree.friendly,
+        children: [
+          this.structToState(tree.negative),
+          this.structToState(tree.positive)
+        ]
+      }
+    }
+  }
+
   static fetchDeployment(inst){
     const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;
     Kapi.fetch(ep, resp => {
@@ -24,5 +42,11 @@ export default class Helper{
     }, () => inst.setState(s => ({...s, matching: null})));
   }
 
-
+  static fetchTreeStruct(inst){
+    const ep = `/api/debug/${inst.type()}/decision_tree`;
+    Kapi.fetch(ep, resp => {
+      const treeStruct = DataUtils.objKeysToCamel(resp['data']);
+      inst.setState(s => ({...s, treeStruct}));
+    });
+  }
 }

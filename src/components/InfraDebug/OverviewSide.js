@@ -3,21 +3,20 @@ import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
 import {Types} from "../../types/Deployment";
-import Tree from 'react-d3-tree';
 import DecisionTree from "./DecisionTree";
-
-
+import Helper from './Helper'
 
 export default class OverviewSide extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-
-    }
+      treeStruct: null
+    };
   }
 
   componentDidMount(){
+    Helper.fetchTreeStruct(this);
   }
 
   render(){
@@ -30,7 +29,9 @@ export default class OverviewSide extends React.Component {
   }
 
   renderTree(){
-    return <DecisionTree/>
+    const {treeStruct} = this.state;
+    if(!treeStruct) return null;
+    return <DecisionTree treeStruct={treeStruct}/>
   }
 
   renderHeader(){

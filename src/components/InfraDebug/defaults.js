@@ -31,15 +31,4 @@ const defaults = {
   ]
 };
 
-export const nodeShape = {
-  shape: 'rect',
-  shapeProps: {
-    width: 30,
-    height: 30,
-    transform: "rotate(-45 0 0)",
-    x: -15,
-    y: -15,
-  }
-};
-
 export default defaults;
