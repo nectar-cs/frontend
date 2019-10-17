@@ -26,14 +26,14 @@ const LeftPanel = styled(ContentContainer)`
   position: absolute;
   width: calc(50% - calc(${halfPanelOffset} * 1.5));
   left: ${halfPanelOffset};
-  height: 96%;
+  height: 97%;
 `;
 
 const RightPanel = styled(ContentContainer)`
   position: absolute;
   width: calc(50% - calc(${halfPanelOffset} * 1.5));
   right: ${halfPanelOffset};
-  height: 96%;
+  height: 97%;
 `;
 
 const FullWidthPanel = styled(ContentContainer)`

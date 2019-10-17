@@ -60,7 +60,13 @@ export default class ChooseDebugTypeModal extends React.Component {
     const activity  = this.state.selectedActivity;
     const base = ROUTES.deployments.debug.path;
     const goToFunc = activity && defaults.activities[activity].path;
-    return <Redirect to={goToFunc(base, name, namespace)}/>
+    const { deployment, matching } = this.props;
+    return(
+      <Redirect
+        to={goToFunc(base, namespace, name)}
+        state={{deployment, matching}}
+      />
+    )
   }
 
   renderDiagnosis(){
