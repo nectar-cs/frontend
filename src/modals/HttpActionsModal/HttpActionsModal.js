@@ -19,6 +19,7 @@ import Layout from "../../assets/layouts";
 import Text from './../../assets/text-combos'
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import Helper from './Helper'
+import Checklist from "../ImageActionsModal/Checklist";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -116,7 +117,17 @@ export default class HttpActionsModal extends React.Component {
 
   renderSubmittingPhase(){
     if(this.state.phase !== 'submitting') return null;
-    return <CenterLoader/>;
+    const items = [
+      { name: "cURL Pod created/found", detail: "", status: "working" },
+      { name: "cURL Pod running", detail: "", status: "working" },
+      { name: "cURL Command returned", detail: "", status: "working" },
+    ];
+    return(
+      <Fragment>
+        { this.renderGamePlan() }
+        <Checklist items={items}/>
+      </Fragment>
+    )
   }
 
   renderResponsePhase(){

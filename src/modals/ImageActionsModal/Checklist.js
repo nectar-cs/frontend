@@ -50,5 +50,7 @@ export default function Checklist(props) {
 }
 
 Checklist.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape(ChecklistItem.propTypes))
+  items: PropTypes.arrayOf(
+    PropTypes.shape(ChecklistItem.propTypes)
+  )
 };
