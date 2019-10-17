@@ -1,14 +1,32 @@
 import Kapi from "../../utils/Kapi";
 import DataUtils from "../../utils/DataUtils";
 import Backend from "../../utils/Backend";
+import S from './DecisionTreeStyles'
 
+const mult = 120 / 17;
+
+const boxSide = S.nodeShape.shapeProps.height;
+const boxDiag = Math.sqrt((boxSide ** 2) * 2) / 2;
+const offset = (boxDiag / 2) + 8;
 
 export default class Helper{
 
   static depName(inst){ return inst.props.match.params['id'] }
   static depNs(inst){ return inst.props.match.params['ns'] }
 
-  static structToState(tree){
+  static textLayout(side, text){
+    const boxWidth = text.length * mult;
+    const boxHeight = 30;
+
+    if(side === "top")
+      return { x: -boxWidth / 2, y: -boxHeight - 10 };
+    else if(side === 'left')
+      return { x: -boxWidth - offset, y: -offset };
+    else if(side === 'right')
+      return { x: offset, y: -offset };
+  }
+
+  static structToState(tree, side="top"){
     if(tree === 'done'){
       return { name: "Terminal" }
     } else {
@@ -16,9 +34,10 @@ export default class Helper{
         key: tree.ask,
         _collapsed: true,
         name: tree.friendly,
+        textLayout: this.textLayout(side, tree.friendly),
         children: [
-          this.structToState(tree.negative),
-          this.structToState(tree.positive)
+          this.structToState(tree.negative, "left"),
+          this.structToState(tree.positive, "right")
         ]
       }
     }

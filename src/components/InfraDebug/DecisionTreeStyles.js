@@ -4,7 +4,7 @@ import {theme} from "../../assets/constants";
 const TreeContainer = styled.div`
   display: block;
   margin: 30px auto 0 auto;
-  height: 80%;
+  height: 100%;
   width: 100%;
 `;
 

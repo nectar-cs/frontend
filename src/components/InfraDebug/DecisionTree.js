@@ -29,6 +29,9 @@ export default class DecisionTree extends React.Component{
           orientation='vertical'
           zoomable={false}
           translate={this.state.translate}
+          pathFunc='elbow'
+          separation={{siblings: 0.8, nonSiblings: 0.9}}
+          textLayout={{x: 30, y: 30}}
         />
       </S.TreeContainer>
     );
@@ -39,7 +42,7 @@ export default class DecisionTree extends React.Component{
     this.setState({
       translate: {
         x: dimensions.width / 2,
-        y: S.nodeShape.shapeProps.height
+        y: S.nodeShape.shapeProps.height + 30
       }
     });
   }

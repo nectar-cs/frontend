@@ -7,28 +7,9 @@ const defaults = {
       }
     }
   },
-
-  treeData: [
-    {
-      name: 'Top Level',
-      children: [
-        {
-          name: 'Level 2: A',
-          children: [
-            {
-              name: 'Level 2: A',
-            },
-            {
-              name: 'Level 2: B',
-            },
-          ],
-        },
-        {
-          name: 'Level 2: B',
-        },
-      ],
-    },
-  ]
+  decisionTree: {
+    title: "Decision Tree"
+  }
 };
 
 export default defaults;

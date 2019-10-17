@@ -5,6 +5,7 @@ import defaults from "./defaults";
 import {Types} from "../../types/Deployment";
 import DecisionTree from "./DecisionTree";
 import Helper from './Helper'
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 export default class OverviewSide extends React.Component {
 
@@ -37,7 +38,12 @@ export default class OverviewSide extends React.Component {
   renderTree(){
     const {treeStruct} = this.state;
     if(!treeStruct) return null;
-    return <DecisionTree treeStruct={treeStruct}/>
+    return(
+      <Fragment>
+        <TextOverLineSubtitle text={defaults.decisionTree.title}/>
+        <DecisionTree treeStruct={treeStruct}/>
+      </Fragment>
+    )
   }
 
   renderHeader(){
