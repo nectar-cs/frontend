@@ -4,10 +4,7 @@ import Backend from "../../utils/Backend";
 import S from './DecisionTreeStyles'
 
 const mult = 120 / 17;
-
-const boxSide = S.nodeShape.shapeProps.height;
-const boxDiag = Math.sqrt((boxSide ** 2) * 2) / 2;
-const offset = (boxDiag / 2) + 8;
+const offset = (S.boxDiag / 2) + 2;
 
 export default class Helper{
 
@@ -28,12 +25,17 @@ export default class Helper{
 
   static structToState(tree, side="top"){
     if(tree === 'done'){
-      return { name: "Terminal" }
+      return {
+        name: "Terminal",
+        nodeSvgShape: S.leafShape,
+        textLayout: this.textLayout(side, "Terminal"),
+      }
     } else {
       return {
         key: tree.ask,
         _collapsed: true,
         name: tree.friendly,
+        nodeSvgShape: S.nodeShape,
         textLayout: this.textLayout(side, tree.friendly),
         children: [
           this.structToState(tree.negative, "left"),

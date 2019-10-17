@@ -38,12 +38,7 @@ export default class OverviewSide extends React.Component {
   renderTree(){
     const {treeStruct} = this.state;
     if(!treeStruct) return null;
-    return(
-      <Fragment>
-        <TextOverLineSubtitle text={defaults.decisionTree.title}/>
-        <DecisionTree treeStruct={treeStruct}/>
-      </Fragment>
-    )
+    return <DecisionTree treeStruct={treeStruct}/>;
   }
 
   renderHeader(){

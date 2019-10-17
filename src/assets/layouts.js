@@ -46,7 +46,8 @@ const FullWidthPanel = styled(ContentContainer)`
 const TextLine = styled.div`
   display: flex;
   justify-content: start;
-  width: 100%
+  width: 100%;
+  align-items: ${p => p.center ? 'center' : 'stretch'};
 `;
 
 const BigCodeViewer = styled.div`

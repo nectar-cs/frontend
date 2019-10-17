@@ -12,7 +12,9 @@ const StatusTag = styled.p`
 `;
 
 const P = styled.p`
-  margin-top: 12px;
+  margin-top: ${p => p.raw ? 0 : "12px"};
+  margin-right: ${p => p.push ? "3px" : '0'}
+  margin-left: ${p => p.pushed ? "3px" : '0'}
 `;
 
 const A = styled.a`

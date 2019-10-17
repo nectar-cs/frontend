@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 import {theme} from "../../assets/constants";
 
+const Container = styled.div`
+  position: relative;
+  height: 100%;
+`;
+
 const TreeContainer = styled.div`
   display: block;
   margin: 30px auto 0 auto;
@@ -8,7 +13,15 @@ const TreeContainer = styled.div`
   width: 100%;
 `;
 
+const LegendContainer = styled.div`
+  position: absolute;
+  top: 50px;
+  height: 40px;
+  width: 120px;
+`;
+
 const nodeSide = 27;
+const boxDiag = Math.sqrt((nodeSide ** 2) * 2);
 
 const nodeShape = {
   shape: 'rect',
@@ -16,11 +29,18 @@ const nodeShape = {
     width: nodeSide,
     height: nodeSide,
     fill: theme.colors.contrastColor,
-    strokeWidth: 3,
     stroke: theme.colors.primaryColor,
+    strokeWidth: 3,
     transform: "rotate(-45 0 0)",
     x: nodeSide / -2,
     y: nodeSide / -2,
+  }
+};
+
+const leafShape = {...nodeShape,
+  shape: "circle",
+  shapeProps: {...nodeShape.shapeProps,
+    r: boxDiag / 2 - 1,
   }
 };
 
@@ -47,9 +67,14 @@ const treeStyles = {
 };
 
 const S = {
+  nodeSide,
+  boxDiag,
   TreeContainer,
   nodeShape,
-  treeStyles
+  leafShape,
+  treeStyles,
+  LegendContainer,
+  Container
 };
 
 export default S;
