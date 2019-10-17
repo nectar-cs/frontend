@@ -6,6 +6,7 @@ import WorkspaceEdit from "../components/Workspaces/Edit/WorkspaceEdit";
 import WorkspaceShow from "../components/Workspaces/Show/WorkspaceShow";
 import DeploymentShow from "../components/Deployments/Show/DeploymentShow";
 import NetworkTest from "../components/Laboratory/NetworkTest";
+import InfraDebug from "../components/InfraDebug/InfraDebug";
 
 export const ROUTES = {
   clusters: {
@@ -14,6 +15,7 @@ export const ROUTES = {
 
   deployments: {
     detect: { path: '/deployments/detect', comp: Matching },
+    debug: { path: '/deployments/:ns/:id/debug/:type', comp: InfraDebug },
     show: { path: '/deployments/:ns/:id', comp: DeploymentShow }
   },
 

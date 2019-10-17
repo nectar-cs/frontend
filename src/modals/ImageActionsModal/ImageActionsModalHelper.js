@@ -53,6 +53,8 @@ export class ImageActionsModalHelper {
     const ep = `/remotes/${gitRemoteId}/${gitRepoName}/branches`;
 
     Backend.raisingFetch(ep, resp => {
+      console.log("GIT GIT");
+      console.log(resp);
       const gitBranches = DataUtils.aToO(
         DataUtils.objKeysToCamel(resp)['data']
       );
@@ -185,7 +187,7 @@ export class ImageActionsModalHelper {
     const { name, namespace, replicas} = inst.props.deployment;
     const { scaleTo, imageName, outImageName } = inst.state.choices;
     const { gitCommit } = inst.state.choices;
-    const {gitRemoteName, gitRepoName} = inst.props.matching;
+    const {gitRemoteName, gitRepoName} = inst.props.matching || {};
 
     const interp = {
       dep: name,
@@ -198,7 +200,7 @@ export class ImageActionsModalHelper {
       gRep: gitRepoName,
       scaleTo
     };
-    return defaults.previewCommands[type](interp);
+    return defaults.previewCommands[type](interp) || [];
   }
 
   static isInputValid(inst){

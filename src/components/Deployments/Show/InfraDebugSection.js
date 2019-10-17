@@ -1,31 +1,17 @@
 import React from 'react'
 import Section from "./Section";
-import NetworkDebugModal from "../../../modals/NetworkDebugModal/NetworkDebugModal";
+import ChooseDebugTypeModal from "../../../modals/ChoseDebugTypeModal/ChooseDebugTypeModal";
 
 export default class InfraDebugSection extends Section {
+
   renderDefaultModal(source){
-    return this.renderNetworkDebugModal(source);
-  }
-
-  _renderActivityModal(key, source){
-    if(key === 'networkingDebug')
-      return this.renderNetworkDebugModal(source);
-    else if(key === 'podDebug')
-      return this.renderPodDebugModal(source);
-    else return null;
-  }
-
-  renderNetworkDebugModal(source){
-    const { deployment } = source || this.props;
+    const { deployment, matching } = source || this.props;
     return(
-      <NetworkDebugModal
+      <ChooseDebugTypeModal
         mode='fragment'
         deployment={deployment}
+        matching={matching}
       />
-    )
-  }
-
-  renderPodDebugModal(){
-    return <p>Pod debug coming soon ;)</p>;
+    );
   }
 }

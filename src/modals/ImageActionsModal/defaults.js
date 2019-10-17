@@ -21,7 +21,7 @@ export const defaults ={
       jq .spec.template.spec.containers[0].name | tr -d \\")`,
       `kubectl set image deploy ${dep} $container=${dImg} --namespace=${ns}`
     ],
-    git: ({gRem, gRep, sha, dep, ns, dImg}) => [
+    git: ({gRem, gRep, sha, dep, ns, dImg}) => gRem && [
       `git clone git@github.com:${gRem}/${gRep}.git`,
       `git fetch origin ${sha}`,
       `docker build . -t ${dImg}`,

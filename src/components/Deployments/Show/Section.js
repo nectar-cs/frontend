@@ -5,25 +5,6 @@ import S from './SectionStyles'
 import defaults from "./defaults";
 import Helper from "./Helper";
 
-function ActivityOffering(props){
-  return(
-    <S.ActivityContainer
-      onClick={props.callback}
-      isChosen={props.isChosen}>
-      <S.ActivityIcon className='material-icons'>
-        { props.iconName }
-      </S.ActivityIcon>
-      <S.ActivityTitle>{props.title}</S.ActivityTitle>
-    </S.ActivityContainer>
-  )
-}
-
-ActivityOffering.propTypes = {
-  iconName: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  callback: PropTypes.func.isRequired,
-  isChosen: PropTypes.bool.isRequired
-};
 
 export default class Section extends React.Component {
 
@@ -43,7 +24,6 @@ export default class Section extends React.Component {
       <S.Collapsed onClick={this.onClicked} chosen={isChosen}>
         { this.renderTitleBox() }
         { this.renderContent() }
-        { this.renderActivityOfferings() }
       </S.Collapsed>
     );
   }
@@ -65,27 +45,6 @@ export default class Section extends React.Component {
 
   renderDetail(){
     return null;
-  }
-
-  renderActivityOfferings(){
-    const {chosenActivity, isChosen, deployment} = this.props;
-    const { onActivityClicked } = this.props;
-    if(!(isChosen && deployment)) return null;
-    const bundles = this.config().activities;
-    const activityKeys = Object.keys(bundles || {});
-    if(activityKeys.length <= 1) return null;
-
-    const ActivityOfferings = () => activityKeys.map(key =>
-      <ActivityOffering
-        key={key}
-        isChosen={key === chosenActivity}
-        callback={() => onActivityClicked(key)}
-        {...bundles[key]}
-      />
-    );
-    return <S.ActivitiesContainer>
-      <ActivityOfferings/>
-    </S.ActivitiesContainer>
   }
 
   onClicked(){

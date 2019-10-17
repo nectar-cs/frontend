@@ -71,7 +71,7 @@ export default class ImageOpsModal extends React.Component {
         { this.renderHeader() }
         { this.renderLoader() }
         { this.renderConfigForm() }
-        { this.renderCodeView() }
+        { this.renderGamePlan() }
         { this.renderChecklist() }
         { this.renderConclusion() }
         { this.renderPodList() }
@@ -144,7 +144,7 @@ export default class ImageOpsModal extends React.Component {
     )
   }
 
-  renderCodeView(){
+  renderGamePlan(){
     const Lines = () => Helper.previewCommands(this).map(cmd => (
       <Text.Code key={cmd} chill>{cmd}</Text.Code>
     ));
@@ -275,6 +275,6 @@ export default class ImageOpsModal extends React.Component {
   };
 
   static defaultProps = {
-    operationType: "reload"
+    operationType: "git"
   }
 }

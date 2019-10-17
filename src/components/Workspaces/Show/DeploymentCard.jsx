@@ -10,6 +10,7 @@ import { S } from "./DeploymentCardStyles"
 import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
 import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
 import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
+import {Link} from "react-router-dom";
 
 export default class DeploymentCard extends React.Component {
 
@@ -43,7 +44,7 @@ export default class DeploymentCard extends React.Component {
     let frameworkImg = MiscUtils.msImage(deployment, matching);
     let git = this.hasGit() ? MiscUtils.gitSummary(matching) : null;
     const subtitle = git || "Not connected to Git";
-    const Ref = (p) => <a href={this.detailPath()}>{p.children}</a>;
+    const Ref = (p) => <Link to={this.detailPath()}>{p.children}</Link>;
 
     return(
       <S.Header>

@@ -15,43 +15,6 @@ const Section = styled(Layout.ContentContainer)`
   }
 `;
 
-const ActivitiesContainer = styled.div`
-  margin-left: -20px;
-  width: 100%;
-  display: inline-flex;
-  flex-wrap: wrap;
-`;
-
-function activityColor(p){
-  const colors = p.theme.colors;
-  return p.isChosen ? colors.primaryColor : "transparent";
-}
-
-const ActivityContainer = styled.div`
-  width: 120px;
-  border-color: ${p => activityColor(p)};
-  border-radius: 4px;
-  border-style: solid;
-  border-width: 1.5px;
-  margin-left: 20px;
-  margin-top: 12px;
-  padding: 6px 0 10px 0;
-  &:hover{
-    border-color: ${p => p.theme.colors.primaryColor};  
-  }
-`;
-
-const ActivityIcon = styled.i`
-  width: 100%;
-  text-align: center;
-  font-size: 24px;
-`;
-
-const ActivityTitle = styled.p`
-  text-align: center;
-  margin-top: 3px;
-`;
-
 const Collapsed = styled(Section)`
   position: relative;
   &:hover{
@@ -89,12 +52,8 @@ const S = {
   Section,
   Collapsed,
   CollapsedIcon,
-  ActivitiesContainer,
-  ActivityContainer,
   LeftBox,
   CollapsedTitle,
   ToggleArrow,
-  ActivityTitle,
-  ActivityIcon
 };
 export default S;
