@@ -1,23 +1,43 @@
-export default class StateGulp {
-
-  gulper(key){
-    const capped = key.charAt(0).toUpperCase() + key.slice(1);
-    const gulperName = `set${capped}`;
-    Reflect.get(this, gulperName);
+export default class Setter {
+  constructor(downstreamSetters){
+    this.downstreamOutput = {};
+    this.downstreamSetters = downstreamSetters;
   }
 
-  propagate(key, value, bundle = {}){
-    if(this.gulper(key)){
-
-    } else {
-
-    }
-
+  update(key, value, bundle){
+    this._bundle = bundle;
+    this._value = value;
+    this._myAssign = { [key]: value };
+    return this;
   }
 
-  setTest(value){
-    return this.propagate('somOther', 2)
+  downstreamReceiver(key){
+    const explicit = this.downstreamSetters[key];
+    return explicit || Setter.defaultReceiver;
   }
 
+  assignOther(receiver, key, value){
+    const isFunction = receiver instanceof Function;
+    if(isFunction) return receiver(key, value);
 
+    const downBundle = { ...this._myAssign, ...this._bundle };
+    receiver.update(key, value, downBundle);
+    return receiver.produce();
+  }
+
+  setOther(key, value){
+    const receiver = this.downstreamReceiver(key);
+    this.downstreamOutput = {
+      ...this.downstreamOutput,
+      ...this.assignOther(receiver, key, value)
+    };
+  }
+
+  produce(){
+    this.sideEffects(this._bundle);
+    return {...this._myAssign, ...this.downstreamOutput}
+  }
+
+  sideEffects(){}
+  static defaultReceiver = (key, value) => ({ [key]: value });
 }

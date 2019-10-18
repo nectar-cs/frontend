@@ -32,6 +32,7 @@ export default class OverviewSide extends React.Component {
     return(
       <NetworkDebugOptions
         deployment={this.props.deployment}
+        notifyFormValueChanged={this.props.formCallback}
       />
     )
   }
@@ -63,6 +64,7 @@ export default class OverviewSide extends React.Component {
   static propTypes = {
     deployment: Types.Deployment,
     matching: Types.Matching,
-    semanticTree: PropTypes.object.isRequired
+    semanticTree: PropTypes.object.isRequired,
+    formCallback: PropTypes.func.isRequired
   }
 }

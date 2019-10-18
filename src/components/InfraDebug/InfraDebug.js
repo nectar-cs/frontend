@@ -6,6 +6,7 @@ import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Helper from './Helper'
 import Node from "./Navigator";
 import DebugStep from "./DebugStep";
+import Gulpers from "./Gulpers";
 
 class InfraDebugClass extends React.Component {
 
@@ -19,6 +20,9 @@ class InfraDebugClass extends React.Component {
       semanticTree: null,
       crtNodePointer: null,
     };
+
+    this.onFormAssignment = this.onFormAssignment.bind(this);
+    this.optionsGulper = Gulpers[this.type()];
   }
 
   componentDidMount(){
@@ -55,6 +59,7 @@ class InfraDebugClass extends React.Component {
           matching={matching}
           semanticTree={semanticTree}
           crtNodePointer={crtNodePointer}
+          formCallback={this.onFormAssignment}
         />
       </Layout.LeftPanel>
     )
@@ -80,6 +85,11 @@ class InfraDebugClass extends React.Component {
   isReady(){
     const { deployment, semanticTree } = this.state;
     return !!deployment && !!semanticTree;
+  }
+
+  onFormAssignment(key, value){
+    const options = this.optionsGulper.assign(key, value, this);
+    this.setState(s => ({...s, options: {...s.options, ...options}}));
   }
 
   type() { return this.props.match.params['type']; }

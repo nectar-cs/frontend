@@ -2,6 +2,11 @@ import PropTypes from "prop-types";
 
 const POD_STATES = ['Running', 'Failed', 'Pending', 'Unknown'];
 
+const ServicePort = PropTypes.shape({
+  fromPort: PropTypes.number.isRequired,
+  toPort: PropTypes.number.isRequired
+});
+
 const Service = PropTypes.shape({
   name: PropTypes.string.isRequired,
   fromPort: PropTypes.number.isRequired,
@@ -11,12 +16,7 @@ const Service = PropTypes.shape({
   shortDns: PropTypes.string.isRequired,
   longDns: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['ClusterIP', 'NodePort', 'LoadBalancer']),
-  ports: PropTypes.arrayOf(
-    PropTypes.shape({
-      fromPort: PropTypes.number.isRequired,
-      toPort: PropTypes.number.isRequired
-    })
-  )
+  ports: PropTypes.arrayOf(ServicePort)
 });
 
 const LightPod = PropTypes.shape({
