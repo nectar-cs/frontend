@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import Layout from './../../assets/layouts'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
@@ -9,34 +9,30 @@ import Helper from "./Helper";
 import CopyWizard from "./CopyWizard";
 import {Types} from "../../types/Deployment";
 import FlexibleModal from "../../hocs/FlexibleModal";
+import FormGulper from "./FormGulper";
 
 export default class PortForwardModal extends React.Component{
 
   constructor(props){
     super(props);
-    this.state = {
-      choices: {
-        resType: defaults.sectionOne.resTypes[0],
-        resName: props.deployment.name,
-        fromPort: '80',
-        toPort: ''
-      }
-    };
+    this.formGulper = new FormGulper();
+    this.state = Helper.defState(this, emptyState);
     this.formCallback = this.formCallback.bind(this);
+    this.formGulper = new FormGulper();
+    console.log("AT THIS POINT STATE");
+    console.log(this.state.choices);
   }
 
   componentDidMount(){
     const defaultType = defaults.sectionOne.resTypes[0];
-    Helper.applyChoice(this, "resType",  defaultType);
+    this.formCallback("resType", defaultType);
   }
 
   render(){
     return(
       <FlexibleModal mode={this.props.mode}>
         { this.renderHeader() }
-        <TextOverLineSubtitle text={defaults.sectionOne.title}/>
         { this.renderForm() }
-        <TextOverLineSubtitle text={defaults.sectionTwo.title}/>
         { this.renderPasta() }
       </FlexibleModal>
     )
@@ -57,31 +53,35 @@ export default class PortForwardModal extends React.Component{
   renderForm(){
     const choices = this.state.choices;
     return(
-      <PortForwardForm
-        resType={choices.resType}
-        resName={choices.resName}
-        fromPort={choices.fromPort}
-        resTypeOptions={defaults.sectionOne.resTypes}
-        resNameOptions={Helper.resNames(this, choices.resType)}
-        notifyFormValueChanged={this.formCallback}
-      />
+      <Fragment>
+        <TextOverLineSubtitle text={defaults.sectionOne.title}/>
+        <PortForwardForm
+          {...choices}
+          resTypeOptions={defaults.sectionOne.resTypes}
+          resNameOptions={Helper.resNames(this, choices.resType)}
+          notifyFormValueChanged={this.formCallback}
+        />
+      </Fragment>
     )
   }
 
   renderPasta(){
     const choices = this.state.choices;
     return(
-      <CopyWizard
-        command={Helper.pastaCommand(this)}
-        fromPort={choices.fromPort}
-        toPort={choices.toPort}
-      />
+      <Fragment>
+        <TextOverLineSubtitle text={defaults.sectionTwo.title}/>
+        <CopyWizard
+          command={Helper.pastaCommand(this)}
+          fromPort={choices.fromPort}
+          toPort={choices.toPort}
+        />
+      </Fragment>
     )
   }
 
   formCallback(key, value){
-    this.gul
-    Helper.applyChoice(this, key, value);
+    const changes = this.formGulper.assign(key, value, this);
+    this.setState(s => ({...s, choices: {...s.choices, ...changes}}))
   }
 
   static propTypes = {
@@ -89,3 +89,12 @@ export default class PortForwardModal extends React.Component{
     matching: Types.Matching
   }
 }
+
+const emptyState = {
+  choices: {
+    resType: '',
+    resName: '',
+    fromPort: '80',
+    toPort: ''
+  }
+};

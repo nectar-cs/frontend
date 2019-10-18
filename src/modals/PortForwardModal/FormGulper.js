@@ -1,13 +1,14 @@
 import Setter from "../../utils/StateGulp";
+import Helper from './Helper'
 
 class ResourceTypeSetter extends Setter {
-  sideEffects(bundle) {
-    const resName = this._bundle.resNames(this._value)[0];
+  sideEffects() {
+    const resName = this._bundle.getResNames(this._value)[0];
     this.setOther("resName", resName)
   }
 }
 
-class FormGulper{
+export default class FormGulper{
   constructor() {
     this.masterSetter = new Setter({
       resType: new ResourceTypeSetter()
@@ -15,9 +16,8 @@ class FormGulper{
   }
 
   assign(key, value, inst){
-    const resNames = (type) => Helper.resNames(inst, type);
-    const bundle = { resNames };
-    this.masterSetter.update(key, value, bundle);
+    const getResNames = (type) => Helper.resNames(inst, type);
+    this.masterSetter.update(key, value, { getResNames });
     return this.masterSetter.produce();
   }
 }

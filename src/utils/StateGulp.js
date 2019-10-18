@@ -7,7 +7,7 @@ export default class Setter {
   update(key, value, bundle){
     this._bundle = bundle;
     this._value = value;
-    this._myAssign = { [key]: value };
+    this._myAssign = this.setOther(key, value);
     return this;
   }
 
