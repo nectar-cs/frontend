@@ -23,39 +23,20 @@ export default class Helper{
       return { x: offset, y: -offset };
   }
 
-  static decideExpanded(node){
-    if(node.parent.isRoot()){
+  static decideExpanded(node, crt){
+    if(node.isRoot())
       return true;
-    }
-    else return false;
+
+    if(node.wasProcessed() || node.parent.wasProcessed())
+      return true;
+
+    if(node.isCurrent(crt))
+      return true;
+
+    return false;
   }
 
-  static structToState2(tree, bun, side="top"){
-    const common = {
-      key: tree.id,
-      name: tree.friendly,
-      textLayout: this.textLayout(side, tree.friendly),
-    };
-
-    if(!tree.positive && !tree.negative){
-      return {
-        ...common,
-        nodeSvgShape: S.leafShape,
-      }
-    } else {
-      return {
-        ...common,
-        _collapsed: true,
-        nodeSvgShape: S.nodeShape,
-        children: [
-          this.structToState(tree.negative, bun, "left"),
-          this.structToState(tree.positive, bun, "right")
-        ]
-      }
-    }
-  }
-
-  static structToState(tree, side="top"){
+  static structToState2(tree, crt, side="top"){
     const common = {
       key: tree.id,
       name: tree.title,
@@ -70,11 +51,11 @@ export default class Helper{
     } else {
       return {
         ...common,
-        _collapsed: true,
+        _collapsed: !this.decideExpanded(tree, crt),
         nodeSvgShape: S.nodeShape,
         children: [
-          this.structToState(tree.negative, "left"),
-          this.structToState(tree.positive, "right")
+          this.structToState2(tree.negative, crt, "left"),
+          this.structToState2(tree.positive, crt, "right")
         ]
       }
     }

@@ -27,8 +27,13 @@ export default class OverviewSide extends React.Component {
   }
 
   renderTree(){
-    const {semanticTree} = this.props;
-    return <DecisionTree semanticTree={semanticTree}/>;
+    const {semanticTree, crtNodePointer} = this.props;
+    return(
+      <DecisionTree
+        semanticTree={semanticTree}
+        crtNodePointer={crtNodePointer}
+      />
+    );
   }
 
   renderHeader(){

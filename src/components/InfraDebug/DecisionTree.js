@@ -33,8 +33,8 @@ export default class DecisionTree extends React.Component{
   }
 
   renderTree(){
-    const { semanticTree } = this.props;
-    const formatted = Helper.structToState(semanticTree);
+    const { semanticTree, crtNodePointer } = this.props;
+    const formatted = Helper.structToState2(semanticTree, crtNodePointer, 'top');
     return(
       <S.TreeContainer ref={r => this.treeRef = r}>
         <Tree

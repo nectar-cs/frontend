@@ -25,11 +25,7 @@ class InfraDebugClass extends React.Component {
     Helper.fetchTreeStruct(this.type(), treeStruct => {
       const semanticTree = Node.gulp(treeStruct);
       const crtNodePointer = semanticTree;
-      this.setState(s => ({
-        ...s,
-        semanticTree,
-        crtNodePointer
-      }));
+      this.setState(s => ({...s, semanticTree, crtNodePointer}));
     });
   }
 
@@ -46,7 +42,8 @@ class InfraDebugClass extends React.Component {
   renderOverviewSide(){
     if(!this.isReady()) return null;
 
-    const { deployment, matching, semanticTree } = this.state;
+    const { deployment, matching, semanticTree, crtNodePointer } = this.state;
+
     return(
       <Layout.LeftPanel>
         <OverviewSide
@@ -54,6 +51,7 @@ class InfraDebugClass extends React.Component {
           deployment={deployment}
           matching={matching}
           semanticTree={semanticTree}
+          crtNodePointer={crtNodePointer}
         />
       </Layout.LeftPanel>
     )
