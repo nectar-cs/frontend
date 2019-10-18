@@ -40,6 +40,12 @@ export default class DataUtils {
     return array.reduce(trans, {});
   }
 
+  static aToH(array){
+    let hash = {};
+    array.forEach(el => {hash[Object.keys(el)[0]] = Object.values(el)[0];});
+    return hash;
+  }
+
   static objKeysToCamel(o) {
     let newO, origKey, newKey, value;
     if (o instanceof Array) {

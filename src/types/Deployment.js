@@ -10,6 +10,7 @@ const Service = PropTypes.shape({
   externalIp: PropTypes.string,
   shortDns: PropTypes.string.isRequired,
   longDns: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['ClusterIP', 'NodePort', 'LoadBalancer']),
   ports: PropTypes.arrayOf(
     PropTypes.shape({
       fromPort: PropTypes.number.isRequired,

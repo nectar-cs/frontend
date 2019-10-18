@@ -4,9 +4,10 @@ const defaults = {
       header: {
         title: (name) => `${name} / network debug`,
         subtitle: "Root cause analysis for connection WTFs"
-      }
+      },
     }
   },
+
   decisionTree: {
     title: "Diagnosis Tree"
   },
@@ -14,6 +15,10 @@ const defaults = {
   step: {
     title: (i, name) => `Step ${i}: ${name}`,
     subtitle: "An attempt to determine if this is the problem..."
+  },
+
+  options: {
+    title: "Options"
   }
 };
 

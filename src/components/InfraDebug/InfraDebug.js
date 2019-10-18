@@ -13,6 +13,7 @@ class InfraDebugClass extends React.Component {
     super(props);
     const source = ((props.location || {}).state) || {};
     this.state = {
+      options: {},
       deployment: source.deployment,
       matching: source.matching,
       semanticTree: null,

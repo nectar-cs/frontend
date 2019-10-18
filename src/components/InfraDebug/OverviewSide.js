@@ -5,6 +5,7 @@ import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
 import {Types} from "../../types/Deployment";
 import DecisionTree from "./DecisionTree";
+import NetworkDebugOptions from "./DebugOptions";
 
 export default class OverviewSide extends React.Component {
 
@@ -21,8 +22,17 @@ export default class OverviewSide extends React.Component {
     return(
       <Fragment>
         { this.renderHeader() }
+        { this.renderOptions() }
         { this.renderTree() }
       </Fragment>
+    )
+  }
+
+  renderOptions(){
+    return(
+      <NetworkDebugOptions
+        deployment={this.props.deployment}
+      />
     )
   }
 
