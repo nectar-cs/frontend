@@ -9,7 +9,9 @@ export default function Micon(props){
       className='material-icons'
       size={props.size}
       extras={props.e}
-      rotate={props.rotate}>
+      rotate={props.rotate}
+      emotion={props.emotion}
+    >
       { props.n }
     </S.Micon>
   )
@@ -20,7 +22,8 @@ Micon.propTypes = {
   e: PropTypes.object,
   size: PropTypes.string,
   rotate: PropTypes.number,
-  callback: PropTypes.func
+  callback: PropTypes.func,
+  emotion: PropTypes.string
 };
 
 Micon.defaultProps = {

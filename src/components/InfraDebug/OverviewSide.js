@@ -6,6 +6,7 @@ import {Types} from "../../types/Deployment";
 import DecisionTree from "./DecisionTree";
 import Helper from './Helper'
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import Navigator from "./Navigator";
 
 export default class OverviewSide extends React.Component {
 
@@ -21,7 +22,8 @@ export default class OverviewSide extends React.Component {
 
   componentDidMount(){
     Helper.fetchTreeStruct(this, treeStruct => {
-      const current = treeStruct.ask;
+      const current = treeStruct.id;
+      new Navigator(treeStruct);
       this.setState(s => ({...s, treeStruct, current}));
     });
   }

@@ -23,6 +23,10 @@ const LegendContainer = styled.div`
 const nodeSide = 27;
 const boxDiag = Math.sqrt((nodeSide ** 2) * 2);
 
+function makeNode(){
+
+}
+
 const nodeShape = {
   shape: 'rect',
   shapeProps: {

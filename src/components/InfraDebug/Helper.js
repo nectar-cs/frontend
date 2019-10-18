@@ -23,23 +23,26 @@ export default class Helper{
       return { x: offset, y: -offset };
   }
 
-  static structToState(tree, side="top"){
-    if(tree === 'done'){
+  static structToState(tree, bun, side="top"){
+    const common = {
+      key: tree.id,
+      name: tree.friendly,
+      textLayout: this.textLayout(side, tree.friendly),
+    };
+
+    if(!tree.positive && !tree.negative){
       return {
-        name: "Terminal",
+        ...common,
         nodeSvgShape: S.leafShape,
-        textLayout: this.textLayout(side, "Terminal"),
       }
     } else {
       return {
-        key: tree.ask,
+        ...common,
         _collapsed: true,
-        name: tree.friendly,
         nodeSvgShape: S.nodeShape,
-        textLayout: this.textLayout(side, tree.friendly),
         children: [
-          this.structToState(tree.negative, "left"),
-          this.structToState(tree.positive, "right")
+          this.structToState(tree.negative, bun, "left"),
+          this.structToState(tree.positive, bun, "right")
         ]
       }
     }
