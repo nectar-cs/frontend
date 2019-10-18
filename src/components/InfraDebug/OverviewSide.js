@@ -33,6 +33,8 @@ export default class OverviewSide extends React.Component {
       <NetworkDebugOptions
         deployment={this.props.deployment}
         notifyFormValueChanged={this.props.formCallback}
+        choices={this.props.formChoices}
+        retriever={(bundle, key) => bundle.choices[key]}
       />
     )
   }
@@ -65,6 +67,7 @@ export default class OverviewSide extends React.Component {
     deployment: Types.Deployment,
     matching: Types.Matching,
     semanticTree: PropTypes.object.isRequired,
-    formCallback: PropTypes.func.isRequired
+    formCallback: PropTypes.func.isRequired,
+    formChoices: PropTypes.object.isRequired
   }
 }

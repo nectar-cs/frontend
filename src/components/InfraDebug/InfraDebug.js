@@ -48,7 +48,7 @@ class InfraDebugClass extends React.Component {
   renderOverviewSide(){
     if(!this.isReady()) return null;
 
-    const { deployment, matching } = this.state;
+    const { deployment, matching, options } = this.state;
     const { semanticTree, crtNodePointer } = this.state;
 
     return(
@@ -59,6 +59,7 @@ class InfraDebugClass extends React.Component {
           matching={matching}
           semanticTree={semanticTree}
           crtNodePointer={crtNodePointer}
+          formChoices={options}
           formCallback={this.onFormAssignment}
         />
       </Layout.LeftPanel>

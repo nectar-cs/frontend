@@ -18,7 +18,7 @@ export default class FormComponent {
             <In.LineLabel size='large'>{title}</In.LineLabel>
             <In.LineInput
               as='select'
-              value={this.props[field]}
+              value={this.getValue(field)}
               onChange={(e) => callback(e)}>
               { choices }
             </In.LineInput>
@@ -33,7 +33,7 @@ export default class FormComponent {
             <In.LineLabel size='large'>{title}</In.LineLabel>
             <In.LineInput
               as='input'
-              value={this.props[field]}
+              value={this.getValue(field)}
               onChange={(e) => callback(e)}
               placeholder={placeholder}
             />
@@ -51,8 +51,15 @@ export default class FormComponent {
         )
       }
 
+      getValue(field){
+        if(this.props.retriever){
+          return this.props.retriever(this.props, field);
+        } else return this.props[field];
+      }
+
       static propTypes = {
-        notifyFormValueChanged: PropTypes.func.isRequired
+        notifyFormValueChanged: PropTypes.func.isRequired,
+        retriever: PropTypes.func
       };
 
       parentCallback(field, value) {

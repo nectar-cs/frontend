@@ -2,11 +2,6 @@ import defaults from "./defaults";
 
 export default class Helper{
 
-  static assignmentMap = {
-    resType: this.setResType,
-    resName: this.setResName,
-  };
-
   static optionsCache(inst){
     const { deployment } = inst.props;
     const { pods, services } = deployment;
@@ -32,26 +27,5 @@ export default class Helper{
       fromPort,
       inst.props.deployment.namespace
     );
-  }
-
-  static applyChoice(inst, key, value){
-    const output = Helper.setChoice(inst, key, value);
-    inst.setState(s => ({...s, choices: {...s.choices, ...output}}));
-  }
-
-  static setChoice(inst, key, value){
-    let defSet = () => ({ [key]: value });
-    let setter = Helper.assignmentMap[key] || defSet;
-    return setter(inst, value);
-  }
-
-  static setResType(inst, resType){
-    const resName = Helper.resNames(inst, resType)[0];
-    const down = Helper.setResName(inst, resName);
-    return {resType, ...down};
-  }
-
-  static setResName(inst, resName){
-    return {resName};
   }
 }

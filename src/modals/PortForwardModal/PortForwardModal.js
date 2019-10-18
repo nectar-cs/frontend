@@ -80,6 +80,7 @@ export default class PortForwardModal extends React.Component{
   }
 
   formCallback(key, value){
+    this.gul
     Helper.applyChoice(this, key, value);
   }
 

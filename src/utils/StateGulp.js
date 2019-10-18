@@ -1,5 +1,5 @@
 export default class Setter {
-  constructor(downstreamSetters){
+  constructor(downstreamSetters = {}){
     this.downstreamOutput = {};
     this.downstreamSetters = downstreamSetters;
   }
