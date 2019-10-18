@@ -23,8 +23,12 @@ const LegendContainer = styled.div`
 const nodeSide = 27;
 const boxDiag = Math.sqrt((nodeSide ** 2) * 2);
 
-function makeNode(){
-
+function makeNodeShape(color=theme.colors.contrastColor){
+  return({...nodeShape,
+    shapeProps: { ...nodeShape.shapeProps,
+      fill: color
+    }
+  })
 }
 
 const nodeShape = {
@@ -78,7 +82,8 @@ const S = {
   leafShape,
   treeStyles,
   LegendContainer,
-  Container
+  Container,
+  makeNodeShape
 };
 
 export default S;

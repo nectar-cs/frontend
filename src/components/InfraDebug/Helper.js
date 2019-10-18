@@ -2,6 +2,7 @@ import Kapi from "../../utils/Kapi";
 import DataUtils from "../../utils/DataUtils";
 import Backend from "../../utils/Backend";
 import S from './DecisionTreeStyles'
+import {theme} from "../../assets/constants";
 
 const mult = 120 / 17;
 const offset = (S.boxDiag / 2) + 2;
@@ -26,24 +27,26 @@ export default class Helper{
   static decideExpanded(node, crt){
     if(node.isRoot())
       return true;
-
-    if(node.wasProcessed() || node.parent.wasProcessed())
+    if(node.wasProcessed())
       return true;
-
-    if(node.isCurrent(crt))
-      return true;
-
-    return false;
+    return !!node.isCurrent(crt);
   }
 
-  static structToState2(tree, crt, side="top"){
+  static decideFill(node, crt){
+    if(node.isCurrent(crt))  {
+      return theme.colors.secondaryColor;
+    }
+  }
+
+  static structToState2(node, crt, side="top"){
+    const color = this.decideFill(node, crt);
     const common = {
-      key: tree.id,
-      name: tree.title,
-      textLayout: this.textLayout(side, tree.title),
+      key: node.id,
+      name: node.title,
+      textLayout: this.textLayout(side, node.title),
     };
 
-    if(!tree.positive && !tree.negative){
+    if(node.isLeaf()){
       return {
         ...common,
         nodeSvgShape: S.leafShape,
@@ -51,11 +54,11 @@ export default class Helper{
     } else {
       return {
         ...common,
-        _collapsed: !this.decideExpanded(tree, crt),
-        nodeSvgShape: S.nodeShape,
+        _collapsed: !this.decideExpanded(node, crt),
+        nodeSvgShape: S.makeNodeShape(color),
         children: [
-          this.structToState2(tree.negative, crt, "left"),
-          this.structToState2(tree.positive, crt, "right")
+          this.structToState2(node.negative, crt, "left"),
+          this.structToState2(node.positive, crt, "right")
         ]
       }
     }

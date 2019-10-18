@@ -6,13 +6,10 @@ export default class Node{
     this.outcome = null;
   }
 
+  isLeaf(){ return !this.positive && !this.negative; }
   isRoot(){ return !this.parent; }
   wasProcessed(){ return !!this.outcome; }
-
-  isCurrent(current){
-    // noinspection EqualityComparisonWithCoercionJS
-    return this == current;
-  }
+  isCurrent(current){ return this == current; }
 
   static gulp(rawNode, parent=null){
     const node = new Node(rawNode, parent);
