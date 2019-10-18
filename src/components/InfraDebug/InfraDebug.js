@@ -5,6 +5,7 @@ import OverviewSide from "./OverviewSide";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Helper from './Helper'
 import Node from "./Navigator";
+import DebugStep from "./DebugStep";
 
 class InfraDebugClass extends React.Component {
 
@@ -42,7 +43,8 @@ class InfraDebugClass extends React.Component {
   renderOverviewSide(){
     if(!this.isReady()) return null;
 
-    const { deployment, matching, semanticTree, crtNodePointer } = this.state;
+    const { deployment, matching } = this.state;
+    const { semanticTree, crtNodePointer } = this.state;
 
     return(
       <Layout.LeftPanel>
@@ -61,7 +63,10 @@ class InfraDebugClass extends React.Component {
     if(!this.isReady()) return null;
     return(
       <Layout.RightPanel>
-        <p>Right</p>
+        <DebugStep
+          type={this.type()}
+          node={this.state.crtNodePointer}
+        />
       </Layout.RightPanel>
     )
   }

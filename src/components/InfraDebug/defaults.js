@@ -8,7 +8,12 @@ const defaults = {
     }
   },
   decisionTree: {
-    title: "Decision Tree"
+    title: "Diagnosis Tree"
+  },
+
+  step: {
+    title: (i, name) => `Step ${i}: ${name}`,
+    subtitle: "An attempt to determine if this is the problem..."
   }
 };
 

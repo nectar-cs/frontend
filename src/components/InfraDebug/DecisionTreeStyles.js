@@ -53,7 +53,7 @@ const leafShape = {...nodeShape,
 };
 
 const textBase = {
-  font: "normal 16px lato",
+  font: "normal 15px lato",
   strokeWidth: 0,
   fill: theme.colors.primaryFont,
   x: 100

@@ -4,7 +4,7 @@ import Backend from "../../utils/Backend";
 import S from './DecisionTreeStyles'
 import {theme} from "../../assets/constants";
 
-const mult = 120 / 17;
+const mult = 120 / 17.8;
 const offset = (S.boxDiag / 2) + 2;
 
 export default class Helper{
@@ -34,7 +34,7 @@ export default class Helper{
 
   static decideFill(node, crt){
     if(node.isCurrent(crt))  {
-      return theme.colors.secondaryColor;
+      return theme.colors.primaryColor;
     }
   }
 
@@ -42,8 +42,8 @@ export default class Helper{
     const color = this.decideFill(node, crt);
     const common = {
       key: node.id,
-      name: node.title,
-      textLayout: this.textLayout(side, node.title),
+      name: node.title(),
+      textLayout: this.textLayout(side, node.title()),
     };
 
     if(node.isLeaf()){
