@@ -4,6 +4,7 @@ import Layout from "../../assets/layouts";
 import OverviewSide from "./OverviewSide";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Helper from './Helper'
+import Node from "./Navigator";
 
 class InfraDebugClass extends React.Component {
 
@@ -12,13 +13,24 @@ class InfraDebugClass extends React.Component {
     const source = ((props.location || {}).state) || {};
     this.state = {
       deployment: source.deployment,
-      matching: source.matching
+      matching: source.matching,
+      semanticTree: null,
+      crtNodePointer: null,
     };
   }
 
   componentDidMount(){
     Helper.fetchDeployment(this);
     Helper.fetchMatching(this);
+    Helper.fetchTreeStruct(this.type(), treeStruct => {
+      const semanticTree = Node.gulp(treeStruct);
+      const crtNodePointer = semanticTree;
+      this.setState(s => ({
+        ...s,
+        semanticTree,
+        crtNodePointer
+      }));
+    });
   }
 
   render(){
@@ -32,23 +44,23 @@ class InfraDebugClass extends React.Component {
   }
 
   renderOverviewSide(){
-    if(!this.ready()) return null;
+    if(!this.isReady()) return null;
 
-    const { deployment, matching } = this.state;
+    const { deployment, matching, semanticTree } = this.state;
     return(
       <Layout.LeftPanel>
         <OverviewSide
           type={this.type()}
           deployment={deployment}
           matching={matching}
+          semanticTree={semanticTree}
         />
       </Layout.LeftPanel>
     )
   }
 
   renderActionSide(){
-    if(!this.ready()) return null;
-
+    if(!this.isReady()) return null;
     return(
       <Layout.RightPanel>
         <p>Right</p>
@@ -57,11 +69,15 @@ class InfraDebugClass extends React.Component {
   }
 
   renderLoader(){
-    if(this.ready()) return null;
+    if(this.isReady()) return null;
     return <CenterLoader/>;
   }
 
-  ready(){ return !!this.state.deployment; }
+  isReady(){
+    const { deployment, semanticTree } = this.state;
+    return !!deployment && !!semanticTree;
+  }
+
   type() { return this.props.match.params['type']; }
 }
 

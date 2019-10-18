@@ -23,7 +23,14 @@ export default class Helper{
       return { x: offset, y: -offset };
   }
 
-  static structToState(tree, bun, side="top"){
+  static decideExpanded(node){
+    if(node.parent.isRoot()){
+      return true;
+    }
+    else return false;
+  }
+
+  static structToState2(tree, bun, side="top"){
     const common = {
       key: tree.id,
       name: tree.friendly,
@@ -48,6 +55,31 @@ export default class Helper{
     }
   }
 
+  static structToState(tree, side="top"){
+    const common = {
+      key: tree.id,
+      name: tree.title,
+      textLayout: this.textLayout(side, tree.title),
+    };
+
+    if(!tree.positive && !tree.negative){
+      return {
+        ...common,
+        nodeSvgShape: S.leafShape,
+      }
+    } else {
+      return {
+        ...common,
+        _collapsed: true,
+        nodeSvgShape: S.nodeShape,
+        children: [
+          this.structToState(tree.negative, "left"),
+          this.structToState(tree.positive, "right")
+        ]
+      }
+    }
+  }
+
   static fetchDeployment(inst){
     const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;
     Kapi.fetch(ep, resp => {
@@ -64,8 +96,8 @@ export default class Helper{
     }, () => inst.setState(s => ({...s, matching: null})));
   }
 
-  static fetchTreeStruct(inst, callback){
-    const ep = `/api/debug/${inst.type()}/decision_tree`;
+  static fetchTreeStruct(type, callback){
+    const ep = `/api/debug/${type}/decision_tree`;
     Kapi.fetch(ep, resp => {
       callback(DataUtils.objKeysToCamel(resp['data']));
     });

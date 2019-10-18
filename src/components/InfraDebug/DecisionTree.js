@@ -14,7 +14,7 @@ export default class DecisionTree extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      translate: () => {}
+      translate: {x: 0, y: 0}
     }
   }
 
@@ -33,8 +33,8 @@ export default class DecisionTree extends React.Component{
   }
 
   renderTree(){
-    const { treeStruct } = this.props;
-    const formatted = Helper.structToState(treeStruct);
+    const { semanticTree } = this.props;
+    const formatted = Helper.structToState(semanticTree);
     return(
       <S.TreeContainer ref={r => this.treeRef = r}>
         <Tree
@@ -63,7 +63,7 @@ export default class DecisionTree extends React.Component{
   }
 
   static propTypes = {
-    treeStruct: PropTypes.shape({
+    semanticTree: PropTypes.shape({
       id: PropTypes.string,
       positive: PropTypes.any,
       negative: PropTypes.any,
@@ -80,7 +80,7 @@ function Legend(){
         <Text.P raw pushed> = True</Text.P>
       </Layout.TextLine>
       <Layout.TextLine center>
-        <Micon n='arrow_right_alt' size="m+" rotate='180'/>
+        <Micon n='arrow_right_alt' size="m+" rotate={180}/>
         <Text.P raw pushed> = False</Text.P>
       </Layout.TextLine>
     </S.LegendContainer>

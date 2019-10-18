@@ -1,31 +1,27 @@
 
-class Node{
-  constructor(data){
-
-  }
-}
-
-export default class Navigator{
-
-  constructor(tree) {
-    console.log("OLD TREE");
-    console.log(tree);
-    // this.tree = this.giveParents(tree);
-    console.log("NEW TREE");
-    console.log(this.tree);
+export default class Node{
+  constructor(data, parent){
+    this.title = data.friendly;
+    this.parent = parent;
   }
 
-  giveParents(node, parent=null){
-    node.parent = parent;
-    if(node.positive)
-      this.giveParents(node.positive, node);
-    if(node.negative)
-      this.giveParents(node.negative, node);
+  isCurrent(pointer){
+    // noinspection EqualityComparisonWithCoercionJS
+    return this == pointer;
   }
 
-  isOnPathToCurrent(key){
+  isRoot(){
+    return !this.parent;
   }
 
+  static gulp(rawNode, parent=null){
+    const node = new Node(rawNode, parent);
 
+    if(rawNode.positive)
+      node.positive = this.gulp(rawNode.positive, node);
+    if(rawNode.negative)
+      node.negative = this.gulp(rawNode.negative, node);
 
+    return node;
+  }
 }

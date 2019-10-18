@@ -1,31 +1,20 @@
 import React, {Fragment} from 'react'
+import PropTypes from 'prop-types'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
 import {Types} from "../../types/Deployment";
 import DecisionTree from "./DecisionTree";
-import Helper from './Helper'
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import Navigator from "./Navigator";
 
 export default class OverviewSide extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      treeStruct: null,
       current: null,
       execution: null,
       history: {}
     };
-  }
-
-  componentDidMount(){
-    Helper.fetchTreeStruct(this, treeStruct => {
-      const current = treeStruct.id;
-      new Navigator(treeStruct);
-      this.setState(s => ({...s, treeStruct, current}));
-    });
   }
 
   render(){
@@ -38,9 +27,8 @@ export default class OverviewSide extends React.Component {
   }
 
   renderTree(){
-    const {treeStruct} = this.state;
-    if(!treeStruct) return null;
-    return <DecisionTree treeStruct={treeStruct}/>;
+    const {semanticTree} = this.props;
+    return <DecisionTree semanticTree={semanticTree}/>;
   }
 
   renderHeader(){
@@ -60,5 +48,6 @@ export default class OverviewSide extends React.Component {
   static propTypes = {
     deployment: Types.Deployment,
     matching: Types.Matching,
+    semanticTree: PropTypes.object.isRequired
   }
 }
