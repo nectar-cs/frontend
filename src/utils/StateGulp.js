@@ -3,14 +3,12 @@ export default class Setter {
     this.downstreamOutput = {};
     this.downstreamSetters = downstreamSetters;
     this._pool = pool;
-    console.log("POOL " + Object.keys(this._pool));
   }
 
   update(key, value, bundle){
     this._key = key;
     this._bundle = bundle;
     this._value = value;
-    console.log("update " + key + " " + value);
     return this;
   }
 
@@ -18,7 +16,14 @@ export default class Setter {
     return this.downstreamReceiver(key) || Setter.defaultReceiver;
   }
 
-  downstreamReceiver(key){
+  invokeReceiver(receiver, key, value, downBundle){
+    const isSimple = receiver instanceof Function;
+    if(isSimple) return receiver(key, value);
+    receiver.update(key, value, downBundle);
+    return receiver.produce();
+  }
+
+  downstreamReceiver(key = this._key){
     const explicit = this.downstreamSetters[key];
     const pooled = this._pool[key];
     return explicit || pooled;
@@ -29,30 +34,29 @@ export default class Setter {
     const downBundle = { ...this._bundle, ...this.assignLocal() };
     console.log(`[Setter:assignDown:${this._key}] bun for ${key}`);
     console.log(downBundle);
-    receiver.update(key, value, downBundle);
-    return receiver.produce();
+    return this.invokeReceiver(receiver, key, value, downBundle);
   }
 
   setOther(key, value){
-    console.log("setOther " + key + " " + value);
-    this.downstreamOutput = {
-      ...this.downstreamOutput,
-      ...this.assignDown(key, value)
-    };
+    console.log(`[Setter:setOther:${key}]`);
+    console.log(value);
+    const downOutput = this.assignDown(key, value);
+    console.log(downOutput);
+    this.downstreamOutput = {...this.downstreamOutput, ...downOutput};
   }
 
   assignLocal(){
     return Setter.defaultReceiver(this._key, this._value);
   }
 
-  shouldDelegateAssignment(){
-    return !!this.downstreamReceiver(this._key)
-  }
-
   produce(){
-    this.sideEffects(this._bundle);
-    const delegate = this.shouldDelegateAssignment();
+    const delegate = !!this.downstreamReceiver();
     const asg = delegate ? this.assignDown() : this.assignLocal();
+    this.sideEffects({...this._bundle, ...asg});
+    console.log(`[Setter:produce:${this._key}] my assg`);
+    console.log(asg);
+    console.log(`[Setter:produce:${this._key}] side effect asg`);
+    console.log(this.downstreamOutput);
     return {...asg, ...this.downstreamOutput}
   }
 

@@ -3,27 +3,24 @@ import DataUtils from "../../utils/DataUtils";
 
 class DeploymentSetter extends Setter {
   sideEffects(bundle) {
-    console.log("[DepSet:sideEffects] bun: ");
-    console.log(bundle);
-    console.log("[DepSet:sideEffects] val: ");
-    console.log(this._value);
+    // console.log("[DepSet:sideEffects] bun: ");
+    // console.log(bundle);
+    // console.log("[DepSet:sideEffects] val: ");
+    // console.log(this._value);
     const firstService = this._value.services[0];
-    console.log("[DepSet:sideEffects] svc: ");
-    console.log(firstService);
+    // console.log("[DepSet:sideEffects] svc: ");
+    // console.log(firstService);
     super.setOther('service', firstService.name);
-    console.log("Successful exit ");
+    // console.log("Successful exit ");
   }
 }
 
 class ServiceSetter extends Setter {
   sideEffects(bundle) {
-    console.log("sidef");
-    console.log(bundle);
     const { services } = bundle.deployment;
     const service = services.find(s => s.name === this._value);
     const firstPort = service.ports[0].fromPort;
     super.setOther('port', firstPort);
-    console.log("Successful brexit ");
   }
 }
 
@@ -37,11 +34,12 @@ class NetworkGulper{
   assign(key, value, inst){
     const { deployment } = inst.state;
     const bundle = { deployment };
-    console.log("PASSING BUN " + key);
-    console.log(bundle);
-    console.log(value);
     this.masterSetter.update(key, value, bundle);
-    return this.masterSetter.produce();
+    const result = this.masterSetter.produce();
+    console.log(`FROM ${key}`);
+    console.log(value);
+    console.log("COMES");
+    console.log(result);
   }
 
   genChoices(inst){
