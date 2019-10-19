@@ -29,16 +29,21 @@ export default class OverviewSide extends React.Component {
   }
 
   renderOptions(){
+    if(this.props.isConfigDone) return null;
+
     return(
       <NetworkDebugForm
         deployment={this.props.deployment}
         notifyFormValueChanged={this.props.formCallback}
+        submitCallback={this.props.submitCallback}
         {...this.props.formChoices}
       />
     )
   }
 
   renderTree(){
+    if(!this.props.isConfigDone) return null;
+
     const {semanticTree, crtNodePointer} = this.props;
     return(
       <DecisionTree

@@ -18,9 +18,11 @@ class InfraDebugClass extends React.Component {
       matching: source.matching,
       semanticTree: null,
       crtNodePointer: null,
+      isConfigDone: false
     };
 
     this.update = this.update.bind(this);
+    this.beginDebug = this.beginDebug.bind(this);
     this.gulper = new Gulpers[this.type()]();
   }
 
@@ -45,10 +47,11 @@ class InfraDebugClass extends React.Component {
   }
 
   renderOverviewSide(){
-    if(!this.isReady()) return null;
+    if(!this.isDataReady()) return null;
 
     const { deployment, matching, options } = this.state;
     const { semanticTree, crtNodePointer } = this.state;
+    const { isConfigDone } = this.state;
     const formChoices = this.gulper.genChoices(this, options);
 
     return(
@@ -61,30 +64,34 @@ class InfraDebugClass extends React.Component {
           crtNodePointer={crtNodePointer}
           formChoices={formChoices}
           formCallback={this.update}
+          submitCallback={this.beginDebug}
+          isConfigDone={isConfigDone}
         />
       </Layout.LeftPanel>
     )
   }
 
   renderActionSide(){
-    if(!this.isReady()) return null;
+    if(!this.isDataReady()) return null;
+
+    const { isConfigDone } = this.state;
     return(
       <Layout.RightPanel>
         <DebugStep
           type={this.type()}
           node={this.state.crtNodePointer}
+          isConfigDone={isConfigDone}
         />
       </Layout.RightPanel>
     )
   }
 
   renderLoader(){
-    if(this.isReady()) return null;
-    // return <CenterLoader/>;
-    return <p>loading</p>;
+    if(this.isDataReady()) return null;
+    return <CenterLoader/>;
   }
 
-  isReady(){
+  isDataReady(){
     const { deployment, semanticTree } = this.state;
     return !!deployment && !!semanticTree;
   }
@@ -92,6 +99,10 @@ class InfraDebugClass extends React.Component {
   update(key, value){
     const changes = this.gulper.assign(key, value, this);
     this.setState(s => ({...s, ...changes}));
+  }
+
+  beginDebug(){
+    this.update('isConfigDone', true);
   }
 
   type() { return this.props.match.params['type']; }

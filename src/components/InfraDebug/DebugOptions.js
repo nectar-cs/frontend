@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import FormComponent from "../../hocs/FormComponent";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import defaults from "./defaults";
-import {Types} from "../../types/Deployment";
 import MiscUtils from "../../utils/MiscUtils";
-import DataUtils from "../../utils/DataUtils";
+import ModalButton from "../../widgets/Buttons/ModalButton";
 
 class DebugOptionsForm extends React.Component {
 
@@ -14,6 +13,7 @@ class DebugOptionsForm extends React.Component {
       <Fragment>
         <TextOverLineSubtitle text={defaults.options.title} />
         { this.renderForm() }
+        { this.renderButton() }
       </Fragment>
     )
   }
@@ -22,9 +22,14 @@ class DebugOptionsForm extends React.Component {
     return this.props.makeSelect(title, field, choices);
   }
 
-  static propTypes = {
-    deployment: Types.Deployment.isRequired
-  };
+  renderButton(){
+    return(
+      <ModalButton
+        callback={this.props.submitCallback}
+        title={defaults.options.submit}
+      />
+    )
+  }
 }
 
 class NetworkDebugOptionsClass extends DebugOptionsForm {
@@ -34,7 +39,17 @@ class NetworkDebugOptionsClass extends DebugOptionsForm {
       <Fragment>
         { this.renderServiceSelect() }
         { this.renderPortsSelect() }
+        { this.renderStrategySelect() }
       </Fragment>
+    )
+  }
+
+  renderStrategySelect(){
+    const choices = defaults.options.strategies.network;
+    return super.makeSelect(
+      'Strategy (stub - coming soon)',
+      'strategy',
+      MiscUtils.hashOptions(choices)
     )
   }
 
@@ -48,7 +63,7 @@ class NetworkDebugOptionsClass extends DebugOptionsForm {
 
   renderPortsSelect(){
     return super.makeSelect(
-      'On Port Mapping',
+      'For Port Mapping',
       'port',
       MiscUtils.hashOptions(this.props.portChoices)
     )
@@ -58,7 +73,8 @@ class NetworkDebugOptionsClass extends DebugOptionsForm {
     service: PropTypes.string,
     port: PropTypes.string,
     serviceChoices: PropTypes.object.isRequired,
-    portChoices: PropTypes.object.isRequired
+    portChoices: PropTypes.object.isRequired,
+    submitCallback: PropTypes.func.isRequired
   };
 
   static defaultProps = { service: '', port: '' };

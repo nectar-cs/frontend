@@ -37,9 +37,9 @@ export default class Setter {
 
   produce(){
     const delegate = !!this.downstreamReceiver();
-    const asg = delegate ? this.assignDown() : this.assignLocal();
-    const sideEffsOutput = this.sideEffects({...this._bundle, ...asg});
-    return {...asg, ...sideEffsOutput}
+    const thisOut = delegate ? this.assignDown() : this.assignLocal();
+    const sideEffectsOut = this.sideEffects({...this._bundle, ...thisOut});
+    return {...thisOut, ...sideEffectsOut}
   }
 
   sideEffects(){}

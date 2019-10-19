@@ -4,15 +4,14 @@ import Helper from './Helper'
 class ResourceTypeSetter extends Setter {
   sideEffects() {
     const resName = this._bundle.getResNames(this._value)[0];
-    this.setOther("resName", resName)
+    return this.assignDown("resName", resName)
   }
 }
 
 export default class FormGulper{
   constructor() {
-    this.masterSetter = new Setter({
-      resType: new ResourceTypeSetter()
-    });
+    const resType = new ResourceTypeSetter();
+    this.masterSetter = new Setter({resType});
   }
 
   assign(key, value, inst){

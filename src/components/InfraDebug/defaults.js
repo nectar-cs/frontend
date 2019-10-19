@@ -1,5 +1,8 @@
 const defaults = {
   debuggers: {
+
+    notReady: "Finish the setting up on the left panel.",
+
     network: {
       header: {
         title: (name) => `${name} / network debug`,
@@ -18,7 +21,15 @@ const defaults = {
   },
 
   options: {
-    title: "Options"
+    title: "Options",
+    submit: "Debug with these options",
+    strategies: {
+      network: {
+        optimistic: "Head First - Start at Service Level",
+        pessimistic: "Tail First - Start at Container Level"
+      }
+    }
+
   }
 };
 
