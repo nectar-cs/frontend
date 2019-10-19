@@ -1,13 +1,13 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import defaults from './defaults'
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import S from './CheckStepStyles'
+import S from './StepExecutionStyles'
 import Layout from "../../assets/layouts";
 import Text from './../../assets/text-combos'
 import Helper from "./Helper";
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
-export default class CheckStep extends React.Component {
+export default class StepExecution extends React.Component {
 
   constructor(props) {
     super(props);
@@ -19,49 +19,40 @@ export default class CheckStep extends React.Component {
   render(){
     return(
       <Fragment>
-        { this.renderTitle() }
         { this.renderExplanation() }
         { this.renderConsole() }
         { this.renderVerdict() }
-        { this.renderAnalysis() }
         { this.renderNextStepText() }
         { this.renderStartButton() }
       </Fragment>
     )
   }
 
-  renderTitle(){
-    return <TextOverLineSubtitle text={this.config().title}/>;
-  }
-
   renderConsole(){
-    if(!this.props.isActive) return null;
-
-    const {hasStarted} = this.state;
-
-    const strings = hasStarted ? this.terminalOutput() :
-      [this.genConfig().consolePrompt];
-
-    const Content = () => strings.map(s => (
+    const copy = defaults.step.progress;
+    const Content = () => this.terminalOutput().map(s => (
       <Text.Code key={s}>{s}</Text.Code>
     ));
 
     return(
-      <Layout.BigCodeViewer>
-        <Content/>
-      </Layout.BigCodeViewer>
+      <Fragment>
+        <TextOverLineSubtitle text={copy.title}/>
+        <Layout.BigCodeViewer>
+          <Content/>
+        </Layout.BigCodeViewer>
+      </Fragment>
     )
   }
 
   renderExplanation(){
-    if(!this.props.isActive) return null;
-
-    const Points = () => this.config().explanation.map(exp => (
+    const copy = defaults.step.explanation;
+    const Points = () => ["Have fun!"].map(exp => (
       <li key={exp}><p>{exp}</p></li>
     ));
     return(
       <Fragment>
-        <Text.P>Game Plan:</Text.P>
+        <TextOverLineSubtitle text={copy.title} />
+        <Text.P><b>{copy.subtitle}</b></Text.P>
         <S.Explanation>
           <Points/>
         </S.Explanation>
@@ -71,21 +62,24 @@ export default class CheckStep extends React.Component {
 
   renderVerdict(){
     const verdict = false;
+    const copy = defaults.step.verdict;
 
     return(
-      <S.VerdictLine>
-        <Text.BoldStatus>VERDICT:</Text.BoldStatus>
-        <Text.BoldStatus
-          pushed={true}
-          emotion={Helper.verdictEmotion(verdict)}>
-          { Helper.verdictString(verdict) }
-        </Text.BoldStatus>
-      </S.VerdictLine>
+      <Fragment>
+        <TextOverLineSubtitle text={copy.title} />
+        <S.VerdictLine>
+          <Text.BoldStatus>VERDICT:</Text.BoldStatus>
+          <Text.BoldStatus
+            pushed={true}
+            emotion={Helper.verdictEmotion(verdict)}>
+            { Helper.verdictString(verdict) }
+          </Text.BoldStatus>
+        </S.VerdictLine>
+      </Fragment>
     )
   }
 
   renderAnalysis() {
-
     const Points = () => this.analysis().map(exp => (
       <li key={exp}><p>{exp}</p></li>
     ));
@@ -116,7 +110,7 @@ export default class CheckStep extends React.Component {
   }
 
   terminalOutput(){
-    return "console.log('nada');"
+    return ["console.log('nada');"];
   }
 
   key(){
@@ -125,11 +119,9 @@ export default class CheckStep extends React.Component {
   }
 
   analysis(){ return ["This is broken", "So is that"]; }
-  config() { return defaults.steps[this.key()] }
-  genConfig() { return defaults.general }
+  genConfig() { return defaults.step }
 
   static propTypes = {
-    isActive: PropTypes.bool.isRequired,
     nextStepCallback: PropTypes.func.isRequired,
   }
 }

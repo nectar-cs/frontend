@@ -4,14 +4,20 @@ import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import defaults from './defaults'
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import Text from "../../assets/text-combos";
+import StepExecution from "./StepExecution";
 
 export default class DebugStep extends React.Component {
+
+  componentDidMount(){
+
+  }
 
   render(){
     return(
       <Fragment>
         { this.renderHeader() }
         { this.renderNotReady() }
+        { this.renderExecution() }
       </Fragment>
     )
   }
@@ -30,6 +36,18 @@ export default class DebugStep extends React.Component {
     )
   }
 
+  renderExecution(){
+    const { node, isConfigDone } = this.props;
+    if(!isConfigDone) return null;
+
+    return(
+      <StepExecution
+        nextStepCallback={null}
+        node={node}
+      />
+    )
+  }
+
   renderNotReady(){
     if(this.props.isConfigDone) return null;
 
@@ -37,7 +55,7 @@ export default class DebugStep extends React.Component {
       <CenterAnnouncement
         iconName='pause_circle_outline'
         contentType='children'>
-        <Text.P>{defaults.debuggers.notReady}</Text.P>
+        <Text.P>{defaults.step.notReady}</Text.P>
       </CenterAnnouncement>
     )
   }

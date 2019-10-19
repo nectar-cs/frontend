@@ -18,7 +18,7 @@ class InfraDebugClass extends React.Component {
       matching: source.matching,
       semanticTree: null,
       crtNodePointer: null,
-      isConfigDone: false
+      isConfigDone: true
     };
 
     this.update = this.update.bind(this);
@@ -74,6 +74,9 @@ class InfraDebugClass extends React.Component {
   renderActionSide(){
     if(!this.isDataReady()) return null;
 
+    const { options } = this.state;
+    const formChoices = this.gulper.genChoices(this, options);
+
     const { isConfigDone } = this.state;
     return(
       <Layout.RightPanel>
@@ -81,6 +84,7 @@ class InfraDebugClass extends React.Component {
           type={this.type()}
           node={this.state.crtNodePointer}
           isConfigDone={isConfigDone}
+          options={formChoices}
         />
       </Layout.RightPanel>
     )

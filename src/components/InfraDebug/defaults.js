@@ -1,8 +1,6 @@
 const defaults = {
   debuggers: {
 
-    notReady: "Finish the setting up on the left panel.",
-
     network: {
       header: {
         title: (name) => `${name} / network debug`,
@@ -17,7 +15,20 @@ const defaults = {
 
   step: {
     title: (i, name) => `Step ${i}: ${name}`,
-    subtitle: "An attempt to determine if this is the problem..."
+    subtitle: "An attempt to determine if this is the problem...",
+    notReady: "Finish the setting up on the left panel.",
+    consolePrompt: "Click below to start",
+    runCheck: "Start this Step",
+    explanation: {
+      title: "Game Plan",
+      subtitle: "Work to be carried out:"
+    },
+    progress: {
+      title: `Execution`
+    },
+    verdict: {
+      title: "Conclusion"
+    }
   },
 
   options: {
@@ -25,8 +36,8 @@ const defaults = {
     submit: "Debug with these options",
     strategies: {
       network: {
-        optimistic: "Head First - Start at Service Level",
-        pessimistic: "Tail First - Start at Container Level"
+        optimistic: "Optimistic - Assume the best",
+        pessimistic: "Pessimistic - Assume the worst"
       }
     }
 
