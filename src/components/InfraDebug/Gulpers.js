@@ -3,15 +3,8 @@ import DataUtils from "../../utils/DataUtils";
 
 class DeploymentSetter extends Setter {
   sideEffects(bundle) {
-    // console.log("[DepSet:sideEffects] bun: ");
-    // console.log(bundle);
-    // console.log("[DepSet:sideEffects] val: ");
-    // console.log(this._value);
     const firstService = this._value.services[0];
-    // console.log("[DepSet:sideEffects] svc: ");
-    // console.log(firstService);
-    super.setOther('service', firstService.name);
-    // console.log("Successful exit ");
+    return super.assignDown('service', firstService.name);
   }
 }
 
@@ -20,7 +13,7 @@ class ServiceSetter extends Setter {
     const { services } = bundle.deployment;
     const service = services.find(s => s.name === this._value);
     const firstPort = service.ports[0].fromPort;
-    super.setOther('port', firstPort);
+    return super.assignDown('port', firstPort);
   }
 }
 
@@ -35,22 +28,14 @@ class NetworkGulper{
     const { deployment } = inst.state;
     const bundle = { deployment };
     this.masterSetter.update(key, value, bundle);
-    const result = this.masterSetter.produce();
-    console.log(`FROM ${key}`);
-    console.log(value);
-    console.log("COMES");
-    console.log(result);
+    return this.masterSetter.produce();
   }
 
   genChoices(inst){
-    const fields = ['service', 'port'];
-    const choices = DataUtils.pluck(inst.state, fields);
-
-    return {
-      ...choices,
-      serviceChoices: this.serviceChoices(inst),
-      portChoices: this.portChoices(inst)
-    }
+    const choices = DataUtils.pluck(inst.state, ['service', 'port']);
+    const serviceChoices = this.serviceChoices(inst);
+    const portChoices = this.portChoices(inst);
+    return {...choices, serviceChoices, portChoices };
   }
 
   serviceChoices(inst){

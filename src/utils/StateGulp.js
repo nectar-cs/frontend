@@ -1,8 +1,6 @@
 export default class Setter {
-  constructor(downstreamSetters = {}, pool = {}){
-    this.downstreamOutput = {};
+  constructor(downstreamSetters = {}){
     this.downstreamSetters = downstreamSetters;
-    this._pool = pool;
   }
 
   update(key, value, bundle){
@@ -24,25 +22,13 @@ export default class Setter {
   }
 
   downstreamReceiver(key = this._key){
-    const explicit = this.downstreamSetters[key];
-    const pooled = this._pool[key];
-    return explicit || pooled;
+    return this.downstreamSetters[key];
   }
 
   assignDown(key = this._key, value = this._value){
     const receiver = this.receiver(key);
     const downBundle = { ...this._bundle, ...this.assignLocal() };
-    console.log(`[Setter:assignDown:${this._key}] bun for ${key}`);
-    console.log(downBundle);
     return this.invokeReceiver(receiver, key, value, downBundle);
-  }
-
-  setOther(key, value){
-    console.log(`[Setter:setOther:${key}]`);
-    console.log(value);
-    const downOutput = this.assignDown(key, value);
-    console.log(downOutput);
-    this.downstreamOutput = {...this.downstreamOutput, ...downOutput};
   }
 
   assignLocal(){
@@ -52,12 +38,8 @@ export default class Setter {
   produce(){
     const delegate = !!this.downstreamReceiver();
     const asg = delegate ? this.assignDown() : this.assignLocal();
-    this.sideEffects({...this._bundle, ...asg});
-    console.log(`[Setter:produce:${this._key}] my assg`);
-    console.log(asg);
-    console.log(`[Setter:produce:${this._key}] side effect asg`);
-    console.log(this.downstreamOutput);
-    return {...asg, ...this.downstreamOutput}
+    const sideEffsOutput = this.sideEffects({...this._bundle, ...asg});
+    return {...asg, ...sideEffsOutput}
   }
 
   sideEffects(){}

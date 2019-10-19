@@ -5,7 +5,7 @@ import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
 import {Types} from "../../types/Deployment";
 import DecisionTree from "./DecisionTree";
-import NetworkDebugOptions from "./DebugOptions";
+import NetworkDebugForm from "./DebugOptions";
 
 export default class OverviewSide extends React.Component {
 
@@ -30,10 +30,10 @@ export default class OverviewSide extends React.Component {
 
   renderOptions(){
     return(
-      <NetworkDebugOptions
+      <NetworkDebugForm
         deployment={this.props.deployment}
         notifyFormValueChanged={this.props.formCallback}
-        choices={this.props.formChoices}
+        {...this.props.formChoices}
       />
     )
   }

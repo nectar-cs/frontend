@@ -7,7 +7,7 @@ import {Types} from "../../types/Deployment";
 import MiscUtils from "../../utils/MiscUtils";
 import DataUtils from "../../utils/DataUtils";
 
-class DebugOptions extends React.Component {
+class DebugOptionsForm extends React.Component {
 
   render(){
     return(
@@ -27,12 +27,13 @@ class DebugOptions extends React.Component {
   };
 }
 
-class NetworkDebugOptionsClass extends DebugOptions {
+class NetworkDebugOptionsClass extends DebugOptionsForm {
 
   renderForm(){
     return(
       <Fragment>
         { this.renderServiceSelect() }
+        { this.renderPortsSelect() }
       </Fragment>
     )
   }
@@ -55,16 +56,16 @@ class NetworkDebugOptionsClass extends DebugOptions {
 
   static propTypes = {
     service: PropTypes.string,
-    serviceChoices: PropTypes.array,
     port: PropTypes.string,
-    portChoices: PropTypes.array
+    serviceChoices: PropTypes.object.isRequired,
+    portChoices: PropTypes.object.isRequired
   };
 
   static defaultProps = { service: '', port: '' };
 }
 
-const NetworkDebugOptions = FormComponent.compose(
+const NetworkDebugForm = FormComponent.compose(
   NetworkDebugOptionsClass
 );
 
-export default NetworkDebugOptions;
+export default NetworkDebugForm;
