@@ -34,7 +34,6 @@ export default class OverviewSide extends React.Component {
         deployment={this.props.deployment}
         notifyFormValueChanged={this.props.formCallback}
         choices={this.props.formChoices}
-        retriever={(bundle, key) => bundle.choices[key]}
       />
     )
   }

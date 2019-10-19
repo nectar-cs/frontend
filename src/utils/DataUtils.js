@@ -24,12 +24,12 @@ export default class DataUtils {
 
   static blackSplice(hash, ...blackKeys){
     let whiteKeys = Object.keys(hash).filter((k) => !blackKeys.includes(k));
-    return this.whiteSplice(hash, whiteKeys);
+    return this.pluck(hash, whiteKeys);
   }
 
-  static whiteSplice(hash, ...keys){
+  static pluck(hash, keys){
     let newHash = {};
-    keys.forEach((key) => {newHash[key] = hash[key];});
+    keys.forEach(key => {newHash[key] = hash[key]});
     return newHash;
   }
 

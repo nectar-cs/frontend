@@ -38,31 +38,29 @@ class NetworkDebugOptionsClass extends DebugOptions {
   }
 
   renderServiceSelect(){
-    const { services } = this.props.deployment;
-    const fmt = DataUtils.aToH(services.map(s => {
-      let summary = `${s.type}: ${s.name} - ${s.internalIp} `;
-      return {[s.name]: summary};
-
-    }));
-
     return super.makeSelect(
       'Service to Debug',
       'service',
-      MiscUtils.hashOptions(fmt)
+      MiscUtils.hashOptions(this.props.serviceChoices)
     )
   }
 
   renderPortsSelect(){
-
-  }
-
-  renderStrategySelect(){
-    return this.makeSelect(
-      "Strategy",
-      'strategy',
-      MiscUtils.arrayOptions(['Optimistic V1', 'Pessimistic V1'])
+    return super.makeSelect(
+      'On Port Mapping',
+      'port',
+      MiscUtils.hashOptions(this.props.portChoices)
     )
   }
+
+  static propTypes = {
+    service: PropTypes.string,
+    serviceChoices: PropTypes.array,
+    port: PropTypes.string,
+    portChoices: PropTypes.array
+  };
+
+  static defaultProps = { service: '', port: '' };
 }
 
 const NetworkDebugOptions = FormComponent.compose(

@@ -19,13 +19,6 @@ export default class PortForwardModal extends React.Component{
     this.state = Helper.defState(this, emptyState);
     this.formCallback = this.formCallback.bind(this);
     this.formGulper = new FormGulper();
-    console.log("AT THIS POINT STATE");
-    console.log(this.state.choices);
-  }
-
-  componentDidMount(){
-    const defaultType = defaults.sectionOne.resTypes[0];
-    this.formCallback("resType", defaultType);
   }
 
   render(){

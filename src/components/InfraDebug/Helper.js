@@ -68,7 +68,7 @@ export default class Helper{
     const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;
     Kapi.fetch(ep, resp => {
       const deployment = DataUtils.objKeysToCamel(resp);
-      inst.setState(s => ({...s, deployment}));
+      inst.update('deployment', deployment);
     });
   }
 

@@ -14,15 +14,14 @@ class InfraDebugClass extends React.Component {
     super(props);
     const source = ((props.location || {}).state) || {};
     this.state = {
-      options: {},
       deployment: source.deployment,
       matching: source.matching,
       semanticTree: null,
       crtNodePointer: null,
     };
 
-    this.onFormAssignment = this.onFormAssignment.bind(this);
-    this.optionsGulper = Gulpers[this.type()];
+    this.update = this.update.bind(this);
+    this.gulper = new Gulpers[this.type()]();
   }
 
   componentDidMount(){
@@ -50,6 +49,7 @@ class InfraDebugClass extends React.Component {
 
     const { deployment, matching, options } = this.state;
     const { semanticTree, crtNodePointer } = this.state;
+    const formChoices = this.gulper.genChoices(this, options);
 
     return(
       <Layout.LeftPanel>
@@ -59,8 +59,8 @@ class InfraDebugClass extends React.Component {
           matching={matching}
           semanticTree={semanticTree}
           crtNodePointer={crtNodePointer}
-          formChoices={options}
-          formCallback={this.onFormAssignment}
+          formChoices={formChoices}
+          formCallback={this.update}
         />
       </Layout.LeftPanel>
     )
@@ -80,7 +80,8 @@ class InfraDebugClass extends React.Component {
 
   renderLoader(){
     if(this.isReady()) return null;
-    return <CenterLoader/>;
+    // return <CenterLoader/>;
+    return <p>loading</p>;
   }
 
   isReady(){
@@ -88,9 +89,9 @@ class InfraDebugClass extends React.Component {
     return !!deployment && !!semanticTree;
   }
 
-  onFormAssignment(key, value){
-    const options = this.optionsGulper.assign(key, value, this);
-    this.setState(s => ({...s, options: {...s.options, ...options}}));
+  update(key, value){
+    const changes = this.gulper.assign(key, value, this);
+    this.setState(s => ({...s, ...changes}));
   }
 
   type() { return this.props.match.params['type']; }
