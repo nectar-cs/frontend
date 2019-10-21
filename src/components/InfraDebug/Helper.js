@@ -56,9 +56,12 @@ export default class Helper{
   }
 
   static decideFill(node, crt){
-    if(node.isCurrent(crt))  {
+    if(node.isCurrent(crt))
       return theme.colors.primaryColor;
-    }
+    else if(node.wasPositive())
+      return theme.colors.success;
+    else if(node.wasNegative())
+      return theme.colors.warn;
   }
 
   static structToState2(node, crt, side="top"){

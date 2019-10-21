@@ -17,12 +17,18 @@ export default class Node{
     return this == current;
   }
 
+  wasPositive(){
+    return this.outcome === 'positive';
+  }
+
+  wasNegative(){
+    return this.outcome === 'negative';
+  }
+
   childForOutcome(){
     const outcome = this.outcome;
     if(outcome === 'positive') return this.positive;
     if(outcome === 'negative') return this.negative;
-    console.log("DONT UNDERSTAND OUTCOME ");
-    console.log(outcome);
   }
 
   static gulp(rawNode, i=0, parent=null){

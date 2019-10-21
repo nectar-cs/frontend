@@ -144,7 +144,7 @@ class InfraDebugClass extends React.Component {
     const crtStep = this.state.steps[pointer.id()];
     pointer.outcome = crtStep.result;
     const newPointer = pointer.childForOutcome();
-    this.setState(s => ({...s, crtNodePointer: newPointer}));
+    this.update('crtNodePointer', newPointer);
   }
 
   fetchTree(){
