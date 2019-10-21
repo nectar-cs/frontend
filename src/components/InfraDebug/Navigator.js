@@ -14,7 +14,13 @@ export default class Node{
   isRoot() { return !this.parent; }
   wasProcessed(){ return !!this.outcome; }
   isCurrent(current){ // noinspection EqualityComparisonWithCoercionJS
-    return this == current; }
+    return this == current;
+  }
+
+  childForOutcome(outcome){
+    if(outcome === 'positive') return this.positive;
+    if(outcome === 'negative') return this.negative;
+  }
 
   static gulp(rawNode, parent=null, i=0){
     if(!rawNode) return null;

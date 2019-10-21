@@ -127,14 +127,19 @@ export default class DebugStep extends React.Component {
   }
 
   renderStartButton(){
-    const { isActive, hasStarted } = this.props;
-    if(!isActive) return null;
+    const { isActive, hasStarted, step } = this.props;
+    if(!isActive || !step) return null;
+
+    const { runStepCallback, nextStepCallback } = this.props;
+    const hasFinished = !!step.result;
+    const callback = hasFinished ? nextStepCallback : runStepCallback;
+    const text = this.generalConfig()[hasFinished ? 'nextCheck' : 'runCheck'];
 
     return(
       <ModalButton
-        callback={this.props.runStepCallback}
-        title={this.generalConfig().runCheck}
-        isEnabled={hasStarted}
+        callback={callback}
+        title={text}
+        isEnabled={!hasStarted}
       />
     )
   }
@@ -158,11 +163,14 @@ export default class DebugStep extends React.Component {
     type: PropTypes.string.isRequired,
     node: PropTypes.object.isRequired,
     isActive: PropTypes.bool.isRequired,
+    hasStarted: PropTypes.bool.isRequired,
+    runStepCallback: PropTypes.func.isRequired,
+    nextStepCallback: PropTypes.func.isRequired,
     step: PropTypes.shape({
+      result: PropTypes.oneOf(['positive', 'negative']),
       summary: PropTypes.string.isRequired,
       subSteps: PropTypes.arrayOf(PropTypes.string).isRequired,
       commands: PropTypes.arrayOf(PropTypes.string).isRequired
-    }),
-    runStepCallback: PropTypes.func.isRequired
+    })
   }
 }

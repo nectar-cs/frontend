@@ -19,6 +19,7 @@ const defaults = {
     notReady: "Finish the setting up on the left panel.",
     consolePrompt: "Click below to start",
     runCheck: "Run",
+    nextCheck: "Next Step",
     explanation: {
       title: "Game Plan",
       subtitle: "Work to be carried out:"

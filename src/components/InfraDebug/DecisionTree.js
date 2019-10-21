@@ -45,8 +45,8 @@ export default class DecisionTree extends React.Component{
           translate={this.state.translate}
           pathFunc='elbow'
           separation={{siblings: 0.8, nonSiblings: 0.9}}
-          textLayout={{x: 30, y: 30}}
           depthFactor={80}
+          transitionDuration={0}
         />
       </S.TreeContainer>
     );

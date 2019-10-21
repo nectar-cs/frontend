@@ -27,6 +27,7 @@ class InfraDebugClass extends React.Component {
     this.update = this.update.bind(this);
     this.beginDebug = this.beginDebug.bind(this);
     this.runStep = this.runStep.bind(this);
+    this.nextStep = this.nextStep.bind(this);
     this.currentStep = this.currentStep.bind(this);
     this.gulper = new Gulpers[this.type()]();
   }
@@ -52,7 +53,7 @@ class InfraDebugClass extends React.Component {
 
     const { deployment, matching, options } = this.state;
     const { semanticTree, crtNodePointer } = this.state;
-    const { isConfigDone } = this.state;
+    const { isConfigDone, isStepExecuting } = this.state;
     const formChoices = this.gulper.genChoices(this, options);
 
     return(
@@ -91,9 +92,11 @@ class InfraDebugClass extends React.Component {
           node={this.state.crtNodePointer}
           step={this.currentStep()}
           isActive={true}
+          hasStarted={isStepExecuting}
           isConfigDone={isConfigDone}
           options={formChoices}
           runStepCallback={this.runStep}
+          nextStepCallback={this.nextStep}
           isStepExecuting={isStepExecuting}
         />
       </Layout.RightPanel>
@@ -131,14 +134,16 @@ class InfraDebugClass extends React.Component {
     Helper.postRunStep(this, stepId, outcome => {
       this.setState(s => ({...s, isStepExecuting: false}));
       const step = {...this.state.steps[stepId], ...outcome};
-      console.log("WE GOT ");
-      console.log(outcome);
       const steps = {...this.state.steps, [stepId]: step};
-      console.log("MAKING ");
-      console.log({...this.state.steps[stepId], ...outcome});
-
       this.update('steps', steps);
     });
+  }
+
+  nextStep(result){
+    const pointer = this.state.crtNodePointer;
+    pointer.outcome = result;
+    const newPointer = pointer.childForOutcome(result);
+    this.setState(s => ({...s, crtNodePointer: newPointer}));
   }
 
   fetchTree(){
