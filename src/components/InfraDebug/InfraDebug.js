@@ -18,7 +18,8 @@ class InfraDebugClass extends React.Component {
       matching: source.matching,
       semanticTree: null,
       crtNodePointer: null,
-      isConfigDone: true
+      isConfigDone: true,
+      steps: {}
     };
 
     this.update = this.update.bind(this);
@@ -29,11 +30,6 @@ class InfraDebugClass extends React.Component {
   componentDidMount(){
     Helper.fetchDeployment(this);
     Helper.fetchMatching(this);
-    Helper.fetchTreeStruct(this.type(), treeStruct => {
-      const semanticTree = Node.gulp(treeStruct);
-      const crtNodePointer = semanticTree;
-      this.setState(s => ({...s, semanticTree, crtNodePointer}));
-    });
   }
 
   render(){
@@ -83,6 +79,7 @@ class InfraDebugClass extends React.Component {
         <DebugStep
           type={this.type()}
           node={this.state.crtNodePointer}
+          step={this.currentStep()}
           isConfigDone={isConfigDone}
           options={formChoices}
         />
@@ -105,8 +102,32 @@ class InfraDebugClass extends React.Component {
     this.setState(s => ({...s, ...changes}));
   }
 
+  fetchStepMeta(stepId, force = false){
+    const exists = this.state.steps[stepId];
+    if(!(!exists || force)) return null;
+
+    Helper.fetchStepMeta(this, stepId, meta => {
+      const steps = {...this.state.steps, [stepId]: meta};
+      this.update('steps', steps);
+    });
+  }
+
+  fetchTree(){
+    Helper.fetchTreeStruct(this.type(), treeStruct => {
+      const semanticTree = Node.gulp(treeStruct);
+      this.update('crtNodePointer', semanticTree);
+      this.update('semanticTree', semanticTree);
+    });
+  }
+
   beginDebug(){
     this.update('isConfigDone', true);
+  }
+
+  currentStep(){
+    const { steps, crtNodePointer } = this.state;
+    if(!crtNodePointer) return null;
+    return steps[crtNodePointer.id()];
   }
 
   type() { return this.props.match.params['type']; }

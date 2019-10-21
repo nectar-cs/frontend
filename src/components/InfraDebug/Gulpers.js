@@ -3,6 +3,7 @@ import DataUtils from "../../utils/DataUtils";
 
 class DeploymentSetter extends Setter {
   sideEffects(bundle) {
+    bundle.inst.fetchTree();
     const firstService = this._value.services[0];
     return super.assignDown('service', firstService.name);
   }
@@ -17,16 +18,30 @@ class ServiceSetter extends Setter {
   }
 }
 
+class NodePointerSetter extends Setter{
+  sideEffects(bundle) {
+    console.log("HEY NODE PT SET");
+    const newNode = this._value;
+    bundle.inst.fetchStepMeta(newNode.id());
+    return {};
+  }
+}
+
 class NetworkGulper{
   constructor() {
     const service = new ServiceSetter();
     const deployment = new DeploymentSetter({service});
-    this.masterSetter = new Setter({ service, deployment });
+    const crtNodePointer = new NodePointerSetter();
+    this.masterSetter = new Setter({
+      service,
+      deployment,
+      crtNodePointer
+    });
   }
 
   assign(key, value, inst){
     const { deployment } = inst.state;
-    const bundle = { deployment };
+    const bundle = { deployment, inst };
     this.masterSetter.update(key, value, bundle);
     return this.masterSetter.produce();
   }

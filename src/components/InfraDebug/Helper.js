@@ -9,10 +9,24 @@ const offset = (S.boxDiag / 2) + 2;
 
 export default class Helper{
 
-  static depName(inst){ return inst.props.match.params['id'] }
-  static depNs(inst){ return inst.props.match.params['ns'] }
+  static fetchStepMeta(inst, stepId, callback){
+    const ep = `/api/analysis/${inst.type()}/step/${stepId}/info`;
+    const { deployment, service, port } = inst.state;
+
+    const outPayload = DataUtils.objKeysToSnake({
+      depName: deployment.name,
+      depNs: deployment.namespace,
+      svcName: service,
+      fromPort: port
+    });
+
+    Kapi.post(ep, outPayload, resp => {
+      callback(DataUtils.objKeysToCamel(resp['data']));
+    });
+  }
 
   static textLayout(side, text){
+    text = text || "";
     const boxWidth = text.length * mult;
     const boxHeight = 30;
 
@@ -81,7 +95,7 @@ export default class Helper{
   }
 
   static fetchTreeStruct(type, callback){
-    const ep = `/api/debug/${type}/decision_tree`;
+    const ep = `/api/analysis/${type}/decision_tree`;
     Kapi.fetch(ep, resp => {
       callback(DataUtils.objKeysToCamel(resp['data']));
     });
@@ -98,4 +112,7 @@ export default class Helper{
     if(value === false) return 'failure';
     if(value === null) return 'warn2';
   }
+
+  static depName(inst){ return inst.props.match.params['id'] }
+  static depNs(inst){ return inst.props.match.params['ns'] }
 }
