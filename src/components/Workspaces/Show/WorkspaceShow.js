@@ -33,7 +33,6 @@ class WorkspaceShowClass extends React.Component{
 
   componentDidMount(){
     this.fetchMatchings();
-
   }
 
   componentWillUnmount(){
@@ -91,7 +90,7 @@ class WorkspaceShowClass extends React.Component{
     const { openModal, replaceModal} = this.props;
     if(isFetching || !deployments) return null;
 
-    const cards = deployments.map((deployment) => (
+    const Cards = () => deployments.map((deployment) => (
       <DeploymentCard
         selectableKey={deployment.name}
         key={deployment.name}
@@ -104,11 +103,9 @@ class WorkspaceShowClass extends React.Component{
     ));
 
     return(
-      <div>
-        <S.CardGrid>
-          { cards }
-        </S.CardGrid>
-      </div>
+      <S.CardGrid>
+        <Cards/>
+      </S.CardGrid>
     )
   }
 

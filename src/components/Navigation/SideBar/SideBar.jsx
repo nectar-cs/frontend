@@ -11,10 +11,11 @@ import {Link} from "react-router-dom";
 import ModestLink from "../../../widgets/ModestLink/ModestLink";
 
 function SideBarSubItem({name, url}){
+  const here = url === window.location.pathname;
   return(
     <S.SubItem>
       <ModestLink to={url}>
-        <S.SubItemText>{name}</S.SubItemText>
+        <S.SubItemText here={here}>{name}</S.SubItemText>
       </ModestLink>
     </S.SubItem>
   )
@@ -32,9 +33,11 @@ class SideBarItemClass extends React.Component {
 
   renderHref(){
     const { path, title } = this.props;
+    const here = path === window.location.pathname;
+
     return(
       <ModestLink to={path}>
-        <S.ItemText>{title}</S.ItemText>
+        <S.ItemText here={here}>{title}</S.ItemText>
       </ModestLink>
     )
   }

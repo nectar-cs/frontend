@@ -86,6 +86,7 @@ const ItemRow = styled.div`
 const ItemText = styled(Text.PA)`
   margin-left: ${itemMargin};
   font-size: 13.5px;
+  font-weight: ${p => p.here ? 'bold' : 'normal'};
   color: ${p => p.theme.colors.contrastColor};
   &:hover{
     cursor: pointer
@@ -104,6 +105,7 @@ const SubItem = styled.li`
 
 const SubItemText = styled(Text.PA)`
   color: ${p => p.theme.colors.contrastFont};
+  font-weight: ${p => p.here ? 'bold' : 'normal'};
 `;
 
 const S = {

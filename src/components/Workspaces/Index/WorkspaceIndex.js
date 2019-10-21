@@ -12,6 +12,8 @@ import ColoredLabelList from "../../../widgets/ColoredLabelList/ColoredLabelList
 import Button from "../../../assets/buttons";
 import Text from './../../../assets/text-combos'
 import Layout from './../../../assets/layouts'
+import ModestLink from "../../../widgets/ModestLink/ModestLink";
+import {Link} from "react-router-dom";
 
 class WorkspaceIndexClass extends React.Component{
 
@@ -123,9 +125,9 @@ function WorkspaceRow(props) {
 
   return(
     <tr>
-      <td><p>
-        <a href={showPath}>{props.name}</a>
-      </p></td>
+      <td>
+        <Link to={showPath}><p>{props.name}</p></Link>
+      </td>
       <td>
         <ColoredLabelList
           labelType={props.ns_filter_type}
@@ -140,7 +142,7 @@ function WorkspaceRow(props) {
       </td>
       <td>
         <Layout.TextLine>
-          <a href={editPath}><p>Edit</p></a>
+          <Link to={editPath}><p>Edit</p></Link>
           <p>&nbsp;&nbsp;</p>
           <a><p onClick={onDelete}>Delete</p></a>
         </Layout.TextLine>
