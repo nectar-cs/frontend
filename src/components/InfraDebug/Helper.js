@@ -111,15 +111,13 @@ export default class Helper{
   }
 
   static verdictString(value){
-    if(value === true) return "not the cause";
-    if(value === false) return "problem lies here";
-    if(value === null) return "inconclusive";
+    if(value === 'positive') return "true - this part works";
+    if(value === 'negative') return "false - this is broken";
   }
 
   static verdictEmotion(value){
-    if(value === true) return 'good';
-    if(value === false) return 'failure';
-    if(value === null) return 'warn2';
+    if(value === 'positive') return 'good';
+    if(value === 'negative') return 'failure';
   }
 
   static depName(inst){ return inst.props.match.params['id'] }

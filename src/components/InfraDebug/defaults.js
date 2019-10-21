@@ -27,7 +27,7 @@ const defaults = {
     progress: {
       title: `Kubectl`
     },
-    verdict: {
+    analysis: {
       title: "Conclusion"
     }
   },

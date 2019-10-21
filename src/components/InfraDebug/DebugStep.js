@@ -20,12 +20,12 @@ export default class DebugStep extends React.Component {
   render(){
     return(
       <Fragment>
-        { this.renderTopLoader() }
         { this.renderHeader() }
         { this.renderNotReady() }
         { this.renderExplanation() }
         { this.renderConsole() }
-        { this.renderStartButton() }
+        { this.renderAnalysis() }
+        { this.renderMainButton() }
       </Fragment>
     )
   }
@@ -100,40 +100,38 @@ export default class DebugStep extends React.Component {
     )
   }
 
-  renderVerdict(){
-    const verdict = false;
-    const copy = defaults.step.verdict;
-
-    return(
-      <Fragment>
-        <TextOverLineSubtitle text={copy.title} />
-        <S.VerdictLine>
-          <Text.BoldStatus>VERDICT:</Text.BoldStatus>
-          <Text.BoldStatus
-            pushed={true}
-            emotion={Helper.verdictEmotion(verdict)}>
-            { Helper.verdictString(verdict) }
-          </Text.BoldStatus>
-        </S.VerdictLine>
-      </Fragment>
-    )
-  }
-
   renderAnalysis() {
+    if(!this.hasFinished()) return null;
+    const verdict = this.props.step.result;
+
     const Points = () => this.analysis().map(exp => (
       <li key={exp}><p>{exp}</p></li>
     ));
-    return <S.Explanation><Points/></S.Explanation>;
+
+    return(
+      <Fragment>
+        <TextOverLineSubtitle text={defaults.step.analysis.title} />
+        <S.VerdictLine>
+          <Text.BoldStatus>VERDICT:</Text.BoldStatus>
+          <Text.BoldStatus pushed emotion={Helper.verdictEmotion(verdict)}>
+            { Helper.verdictString(verdict) }
+          </Text.BoldStatus>
+        </S.VerdictLine>
+        <S.Conclusion>
+          <Points/>
+        </S.Conclusion>
+      </Fragment>
+    );
   }
 
-  renderStartButton(){
+  renderMainButton(){
     const { isActive, hasStarted, step } = this.props;
     if(!isActive || !step) return null;
 
     const { runStepCallback, nextStepCallback } = this.props;
-    const hasFinished = !!step.result;
-    const callback = hasFinished ? nextStepCallback : runStepCallback;
-    const text = this.generalConfig()[hasFinished ? 'nextCheck' : 'runCheck'];
+    const done = this.hasFinished();
+    const callback = done ? nextStepCallback : runStepCallback;
+    const text = this.generalConfig()[done ? 'nextCheck' : 'runCheck'];
 
     return(
       <ModalButton
@@ -144,6 +142,11 @@ export default class DebugStep extends React.Component {
     )
   }
 
+  hasFinished(){
+    const { step } = this.props;
+    return step && !!step.result;
+  }
+
   terminalOutput(){
     const { commands, outputs } = this.props.step;
     if(!commands) return [];
@@ -151,17 +154,21 @@ export default class DebugStep extends React.Component {
     return [...commands, "\n---\n", ...outputs];
   }
 
+  analysis(){
+    const { step } = this.props;
+    return step ? step.outcomes : [];
+  }
+
   key(){
     const key = this.constructor.name;
     return key.charAt(0).toLowerCase() + key.slice(1);
   }
 
-  analysis(){ return ["This is broken", "So is that"]; }
   generalConfig() { return defaults.step }
 
   static propTypes = {
     type: PropTypes.string.isRequired,
-    node: PropTypes.object.isRequired,
+    node: PropTypes.object,
     isActive: PropTypes.bool.isRequired,
     hasStarted: PropTypes.bool.isRequired,
     runStepCallback: PropTypes.func.isRequired,
@@ -170,7 +177,8 @@ export default class DebugStep extends React.Component {
       result: PropTypes.oneOf(['positive', 'negative']),
       summary: PropTypes.string.isRequired,
       subSteps: PropTypes.arrayOf(PropTypes.string).isRequired,
-      commands: PropTypes.arrayOf(PropTypes.string).isRequired
+      commands: PropTypes.arrayOf(PropTypes.string).isRequired,
+      outcomes: PropTypes.arrayOf(PropTypes.string)
     })
   }
 }

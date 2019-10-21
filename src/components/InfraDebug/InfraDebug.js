@@ -4,7 +4,7 @@ import Layout from "../../assets/layouts";
 import OverviewSide from "./OverviewSide";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Helper from './Helper'
-import Node from "./Navigator";
+import Node from "./Node";
 import DebugStep from "./DebugStep";
 import Gulpers from "./Gulpers";
 import Loader from "../../assets/loading-spinner";
@@ -139,10 +139,11 @@ class InfraDebugClass extends React.Component {
     });
   }
 
-  nextStep(result){
+  nextStep(){
     const pointer = this.state.crtNodePointer;
-    pointer.outcome = result;
-    const newPointer = pointer.childForOutcome(result);
+    const crtStep = this.state.steps[pointer.id()];
+    pointer.outcome = crtStep.result;
+    const newPointer = pointer.childForOutcome();
     this.setState(s => ({...s, crtNodePointer: newPointer}));
   }
 
