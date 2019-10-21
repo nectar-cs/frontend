@@ -61,7 +61,7 @@ export default class Helper{
     else if(node.wasPositive())
       return theme.colors.success;
     else if(node.wasNegative())
-      return theme.colors.warn;
+      return theme.colors.fail;
   }
 
   static structToState2(node, crt, side="top"){
