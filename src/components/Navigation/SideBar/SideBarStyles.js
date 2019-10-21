@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Text from './../../../assets/text-combos'
 
 const logoSide = "21px";
 const arrowSide = "20px";
@@ -82,7 +83,7 @@ const ItemRow = styled.div`
   margin-top: 5px;
 `;
 
-const ItemText = styled.p`
+const ItemText = styled(Text.PA)`
   margin-left: ${itemMargin};
   font-size: 13.5px;
   color: ${p => p.theme.colors.contrastColor};
@@ -101,7 +102,7 @@ const SubItem = styled.li`
   margin-left: 2px;
 `;
 
-const SubItemText = styled.p`
+const SubItemText = styled(Text.PA)`
   color: ${p => p.theme.colors.contrastFont};
 `;
 

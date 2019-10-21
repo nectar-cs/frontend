@@ -7,13 +7,15 @@ import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Micon from "../../../widgets/Micon/Micon";
 import {theme} from "../../../assets/constants";
 import Text from "../../../assets/text-combos";
+import {Link} from "react-router-dom";
+import ModestLink from "../../../widgets/ModestLink/ModestLink";
 
 function SideBarSubItem({name, url}){
   return(
     <S.SubItem>
-      <Text.A href={url}>
+      <ModestLink to={url}>
         <S.SubItemText>{name}</S.SubItemText>
-      </Text.A>
+      </ModestLink>
     </S.SubItem>
   )
 }
@@ -31,9 +33,9 @@ class SideBarItemClass extends React.Component {
   renderHref(){
     const { path, title } = this.props;
     return(
-      <Text.A href={path}>
+      <ModestLink to={path}>
         <S.ItemText>{title}</S.ItemText>
-      </Text.A>
+      </ModestLink>
     )
   }
 

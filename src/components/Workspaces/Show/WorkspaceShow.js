@@ -8,7 +8,6 @@ import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnoun
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import Helper from "./Helper";
-import Breadcrumbs from "../../../widgets/Breadcrumbs/Breadcrumbs";
 import {connect} from "react-redux";
 
 class WorkspaceShowClass extends React.Component{
@@ -18,24 +17,30 @@ class WorkspaceShowClass extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      deployments: [],
-      microservices: [],
+      deployments: null,
+      matchings: [],
       selectedIndex: 0,
       isEntered: false,
       isFetching: false
     };
+
+    this._willUnmount = false;
+
     this.fetchDeployments = this.fetchDeployments.bind(this);
     this.repeater = this.repeater.bind(this);
   }
 
   componentDidMount() {
-    this.setState((s) => ({...s, isFetching: true}));
     this.fetchMatchings();
-    this.repeater(false);
+    // this.repeater(false);
+  }
+
+  componentWillUnmount() {
+    this._willUnmount = true;
   }
 
   componentWillReceiveProps(nextProps){
-    if(!this.props.workspace){
+    if(this.state.deployments === null){
       if(nextProps.workspace){
         Helper.fetchDeployments(this, nextProps);
       }
@@ -48,21 +53,8 @@ class WorkspaceShowClass extends React.Component{
         { this.renderLoading() }
         { this.renderCards() }
         { this.renderEmpty() }
-        { this.renderBreadcrumbs() }
       </Fragment>
     );
-  }
-
-  renderBreadcrumbs(){
-    const workspace = this.props.workspace;
-    const name = workspace ? workspace.name : this.workspaceId();
-
-    const parts = [
-      { name: "Workspaces", url: "/workspaces" },
-      { name: name, url: `/workspaces/${this.workspaceId()}/edit` }
-    ];
-
-    return <Breadcrumbs parts={parts}/>
   }
 
   renderLoading(){
@@ -71,8 +63,10 @@ class WorkspaceShowClass extends React.Component{
   }
 
   renderEmpty(){
-    if(this.state.isFetching) return null;
-    if(this.state.deployments.length > 0) return null;
+    const { deployments, isFetching } = this.state;
+    if(isFetching || !deployments) return null;
+    if(deployments.length > 0) return null;
+
     const pathBase = ROUTES.workspaces.edit.path;
     const editPath = makeRoute(pathBase, { id: this.workspaceId() });
 
@@ -87,10 +81,11 @@ class WorkspaceShowClass extends React.Component{
   }
 
   renderCards(){
-    if(this.state.isFetching) return null;
+    const { deployments, isFetching } = this.state;
     const { openModal, replaceModal} = this.props;
+    if(isFetching || !deployments) return null;
 
-    const cards = this.state.deployments.map((deployment) => (
+    const cards = deployments.map((deployment) => (
       <DeploymentCard
         selectableKey={deployment.name}
         key={deployment.name}
@@ -112,7 +107,7 @@ class WorkspaceShowClass extends React.Component{
   }
 
   matchingForDep(deployment){
-    return this.state.microservices.find((matching) => (
+    return this.state.matchings.find((matching) => (
       matching.deploymentName === deployment.name
     ));
   }
@@ -125,8 +120,10 @@ class WorkspaceShowClass extends React.Component{
   fetchMatchings(){ Helper.fetchMatchings(this); }
 
   repeater(immediate=true){
-    if(immediate) this.fetchDeployments();
-    setTimeout(this.repeater, WorkspaceShowClass.REFRESH_RATE);
+    if(!this._willUnmount){
+      if(immediate) this.fetchDeployments();
+      setTimeout(this.repeater, WorkspaceShowClass.REFRESH_RATE);
+    }
   }
 }
 

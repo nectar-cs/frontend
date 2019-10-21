@@ -53,8 +53,6 @@ export class ImageActionsModalHelper {
     const ep = `/remotes/${gitRemoteId}/${gitRepoName}/branches`;
 
     Backend.raisingFetch(ep, resp => {
-      console.log("GIT GIT");
-      console.log(resp);
       const gitBranches = DataUtils.aToO(
         DataUtils.objKeysToCamel(resp)['data']
       );
