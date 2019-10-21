@@ -12,7 +12,7 @@ import {connect} from "react-redux";
 
 class WorkspaceShowClass extends React.Component{
 
-  static REFRESH_RATE = 6000;
+  static REFRESH_RATE = 10000;
 
   constructor(props){
     super(props);
@@ -28,22 +28,28 @@ class WorkspaceShowClass extends React.Component{
 
     this.fetchDeployments = this.fetchDeployments.bind(this);
     this.repeater = this.repeater.bind(this);
+    this.repeater(false);
   }
 
-  componentDidMount() {
+  componentDidMount(){
     this.fetchMatchings();
-    // this.repeater(false);
+
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(){
     this._willUnmount = true;
   }
 
   componentWillReceiveProps(nextProps){
     if(this.state.deployments === null){
       if(nextProps.workspace){
-        Helper.fetchDeployments(this, nextProps);
+        Helper.fetchDeployments(this, true, nextProps);
       }
+    }
+
+    if(this.workspaceId() !== this.workspaceId(nextProps)){
+      this.fetchMatchings();
+      Helper.fetchDeployments(this, true, nextProps);
     }
   }
 
@@ -112,11 +118,11 @@ class WorkspaceShowClass extends React.Component{
     ));
   }
 
-  workspaceId(){
-    return this.props.match.params['id'];
+  workspaceId(source = this.props){
+    return source.match.params['id'];
   }
 
-  fetchDeployments(){ Helper.fetchDeployments(this); }
+  fetchDeployments(){ Helper.fetchDeployments(this, false); }
   fetchMatchings(){ Helper.fetchMatchings(this); }
 
   repeater(immediate=true){

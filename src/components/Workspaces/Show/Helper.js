@@ -4,9 +4,9 @@ import Kapi from "../../../utils/Kapi";
 
 export default class Helper{
 
-  static fetchDeployments(inst, source){
+  static fetchDeployments(inst, show, source){
     const { workspace } = source || inst.props;
-    inst.setState((s) => ({...s, isFetching: true}));
+    show && inst.setState((s) => ({...s, isFetching: true}));
 
     const onSuccess = (deployments) =>  {
       inst.setState((s) => ({...s, deployments}));
