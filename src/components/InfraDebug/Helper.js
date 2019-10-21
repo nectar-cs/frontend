@@ -9,18 +9,27 @@ const offset = (S.boxDiag / 2) + 2;
 
 export default class Helper{
 
-  static fetchStepMeta(inst, stepId, callback){
-    const ep = `/api/analysis/${inst.type()}/step/${stepId}/info`;
+  static stepPayload(inst){
     const { deployment, service, port } = inst.state;
 
-    const outPayload = DataUtils.objKeysToSnake({
+    return DataUtils.objKeysToSnake({
       depName: deployment.name,
       depNs: deployment.namespace,
       svcName: service,
       fromPort: port
     });
+  }
 
-    Kapi.post(ep, outPayload, resp => {
+  static fetchStepMeta(inst, stepId, callback){
+    const ep = `/api/analysis/${inst.type()}/step/${stepId}/info`;
+    Kapi.post(ep, this.stepPayload(inst), resp => {
+      callback(DataUtils.objKeysToCamel(resp['data']));
+    });
+  }
+
+  static postRunStep(inst, stepId, callback){
+    const ep = `/api/analysis/${inst.type()}/step/${stepId}/run`;
+    Kapi.post(ep, this.stepPayload(inst), resp => {
       callback(DataUtils.objKeysToCamel(resp['data']));
     });
   }

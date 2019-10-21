@@ -64,7 +64,6 @@ export default class DecisionTree extends React.Component{
 
   static propTypes = {
     semanticTree: PropTypes.shape({
-      id: PropTypes.string,
       positive: PropTypes.any,
       negative: PropTypes.any,
       friendly: PropTypes.string

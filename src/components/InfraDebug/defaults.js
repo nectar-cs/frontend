@@ -18,13 +18,13 @@ const defaults = {
     subtitle: "An attempt to determine if this is the problem...",
     notReady: "Finish the setting up on the left panel.",
     consolePrompt: "Click below to start",
-    runCheck: "Start this Step",
+    runCheck: "Run",
     explanation: {
       title: "Game Plan",
       subtitle: "Work to be carried out:"
     },
     progress: {
-      title: `Execution`
+      title: `Kubectl`
     },
     verdict: {
       title: "Conclusion"

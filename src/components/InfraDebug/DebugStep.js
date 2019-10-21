@@ -9,16 +9,13 @@ import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLin
 import Layout from "../../assets/layouts";
 import S from "./StepExecutionStyles";
 import Helper from "./Helper";
+import ModalButton from "../../widgets/Buttons/ModalButton";
 
 export default class DebugStep extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      hasStarted: false
-    }
   }
-
 
   render(){
     return(
@@ -27,6 +24,8 @@ export default class DebugStep extends React.Component {
         { this.renderHeader() }
         { this.renderNotReady() }
         { this.renderExplanation() }
+        { this.renderConsole() }
+        { this.renderStartButton() }
       </Fragment>
     )
   }
@@ -46,7 +45,8 @@ export default class DebugStep extends React.Component {
   }
 
   renderTopLoader(){
-    if(!!this.props.step) return;
+    const { step, isStepExecuting } = this.props;
+    if(!(!step || isStepExecuting)) return null;
     return <Loader.TopRightSpinner/>;
   }
 
@@ -126,31 +126,24 @@ export default class DebugStep extends React.Component {
     return <S.Explanation><Points/></S.Explanation>;
   }
 
-  renderNextStepText() {
-    if(!this.state.hasStarted) return null;
-
-    const verdict = true;
-    if (!verdict) return null;
-    return(
-      <Fragment>
-        <S.NextButton>Run Next Check</S.NextButton>
-      </Fragment>
-    )
-  }
-
   renderStartButton(){
-    if(!this.props.isActive) return null;
-    if(this.state.hasStarted) return null;
+    const { isActive, hasStarted } = this.props;
+    if(!isActive) return null;
 
     return(
-      <S.StartButton onClick={this.props.nextStepCallback}>
-        { this.genConfig().runCheck }
-      </S.StartButton>
+      <ModalButton
+        callback={this.props.runStepCallback}
+        title={this.generalConfig().runCheck}
+        isEnabled={hasStarted}
+      />
     )
   }
 
   terminalOutput(){
-    return ["console.log('nada');"];
+    const { commands, outputs } = this.props.step;
+    if(!commands) return [];
+    if(!outputs) return commands;
+    return [...commands, "\n---\n", ...outputs];
   }
 
   key(){
@@ -159,16 +152,17 @@ export default class DebugStep extends React.Component {
   }
 
   analysis(){ return ["This is broken", "So is that"]; }
-  genConfig() { return defaults.step }
+  generalConfig() { return defaults.step }
 
   static propTypes = {
     type: PropTypes.string.isRequired,
     node: PropTypes.object.isRequired,
+    isActive: PropTypes.bool.isRequired,
     step: PropTypes.shape({
       summary: PropTypes.string.isRequired,
       subSteps: PropTypes.arrayOf(PropTypes.string).isRequired,
       commands: PropTypes.arrayOf(PropTypes.string).isRequired
     }),
-    nextStepCallback: PropTypes.func.isRequired
+    runStepCallback: PropTypes.func.isRequired
   }
 }

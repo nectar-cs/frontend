@@ -7,6 +7,7 @@ import Helper from './Helper'
 import Node from "./Navigator";
 import DebugStep from "./DebugStep";
 import Gulpers from "./Gulpers";
+import Loader from "../../assets/loading-spinner";
 
 class InfraDebugClass extends React.Component {
 
@@ -19,11 +20,14 @@ class InfraDebugClass extends React.Component {
       semanticTree: null,
       crtNodePointer: null,
       isConfigDone: true,
-      steps: {}
+      steps: {},
+      isStepExecuting: false
     };
 
     this.update = this.update.bind(this);
     this.beginDebug = this.beginDebug.bind(this);
+    this.runStep = this.runStep.bind(this);
+    this.currentStep = this.currentStep.bind(this);
     this.gulper = new Gulpers[this.type()]();
   }
 
@@ -35,6 +39,7 @@ class InfraDebugClass extends React.Component {
   render(){
     return(
       <Fragment>
+        { this.renderTopLoader() }
         { this.renderLoader() }
         { this.renderOverviewSide() }
         { this.renderActionSide() }
@@ -67,10 +72,15 @@ class InfraDebugClass extends React.Component {
     )
   }
 
+  renderTopLoader(){
+    if(!this.state.isStepExecuting) return null;
+    return <Loader.TopRightSpinner/>;
+  }
+
   renderActionSide(){
     if(!this.isDataReady()) return null;
 
-    const { options } = this.state;
+    const { options, isStepExecuting } = this.state;
     const formChoices = this.gulper.genChoices(this, options);
 
     const { isConfigDone } = this.state;
@@ -80,8 +90,11 @@ class InfraDebugClass extends React.Component {
           type={this.type()}
           node={this.state.crtNodePointer}
           step={this.currentStep()}
+          isActive={true}
           isConfigDone={isConfigDone}
           options={formChoices}
+          runStepCallback={this.runStep}
+          isStepExecuting={isStepExecuting}
         />
       </Layout.RightPanel>
     )
@@ -108,6 +121,22 @@ class InfraDebugClass extends React.Component {
 
     Helper.fetchStepMeta(this, stepId, meta => {
       const steps = {...this.state.steps, [stepId]: meta};
+      this.update('steps', steps);
+    });
+  }
+
+  runStep(){
+    const stepId = this.state.crtNodePointer.id();
+    this.setState(s => ({...s, isStepExecuting: true}));
+    Helper.postRunStep(this, stepId, outcome => {
+      this.setState(s => ({...s, isStepExecuting: false}));
+      const step = {...this.state.steps[stepId], ...outcome};
+      console.log("WE GOT ");
+      console.log(outcome);
+      const steps = {...this.state.steps, [stepId]: step};
+      console.log("MAKING ");
+      console.log({...this.state.steps[stepId], ...outcome});
+
       this.update('steps', steps);
     });
   }
