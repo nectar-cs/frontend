@@ -90,7 +90,9 @@ const PodCircle = styled.div`
   background: ${p => colored(p.emotion)}; 
 `;
 
-const ContentRows = styled.table`
+const
+
+  ContentRows = styled.table`
   margin-top: 18px;
 `;
 

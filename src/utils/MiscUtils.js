@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react'
 import textCombos from './../assets/text-combos.sass'
 import Text from './../assets/text-combos'
+import moment from "moment";
 
 const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
@@ -26,6 +27,34 @@ export default class MiscUtils {
     return this.frameworkImage(name);
   }
 
+  static sourceString(commit){
+    const { branch, message } = (commit || {});
+    if(branch && message){
+      const commitPart = `"${message.substring(0, 10)}..."`;
+      return `${commitPart} on ${branch}`;
+    } else return "Not annotated :(";
+  }
+
+  static portMappingsStr(bundles){
+    const array = bundles.map(p => `${p.toPort} <-- ${p.fromPort}`);
+    return array.join(', ')
+  }
+
+  static commitDetailPath(deployment, matching){
+    const {gitRemoteId, gitRepoName} = matching;
+    const { commit } = deployment;
+    return `/remotes/${gitRemoteId}/${gitRepoName}/commit/${commit.sha}`;
+  }
+
+  static latestPodTs(pods){
+    pods = (pods || []).filter(p => !!p.updatedAt);
+    if(!pods) return null;
+
+    const stamps = pods.map(p => moment(p.updatedAt));
+    const greatest = moment.max(stamps);
+    return moment(greatest).calendar();
+  }
+
   static modalImage(inst, icon){
     const { deployment, matching, mode } = inst.props;
     if(!mode || mode === 'modal'){
@@ -41,7 +70,7 @@ export default class MiscUtils {
   static gitSummary(ms){
     const first = (
       <Text.A href={`https://www.github.com/${ms.gitRemoteName}`} target="_blank">
-        {ms.gitRemoteName}
+        {ms.gitRemoteName}@github
       </Text.A>
     );
 
@@ -53,16 +82,6 @@ export default class MiscUtils {
     );
 
     return <Fragment>{first} / {second}</Fragment>;
-  }
-
-  static emptyOption(text){
-    return(
-      <option
-        value={'null'}
-        key={'null'}>
-        {text}
-      </option>
-    );
   }
 
   static isJson(str){

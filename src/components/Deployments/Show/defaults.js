@@ -1,5 +1,11 @@
 const defaults = {
   sections: {
+
+    overview: {
+      title: "Debugging & Troubleshooting",
+      iconName: "bug_report",
+    },
+
     infraDebug: {
       title: "Debugging & Troubleshooting",
       iconName: "bug_report",
@@ -11,7 +17,7 @@ const defaults = {
     },
 
     integrations: {
-      title: "Git & Docker",
+      title: "Git & Docker Matching",
       iconName: "attachment"
     },
 

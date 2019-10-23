@@ -14,6 +14,7 @@ class DeploymentShowClass extends React.Component{
     this.state = {
       deployment: null,
       matching: null,
+      commit: null,
       focusedSection,
       focusedActivity
     };

@@ -46,6 +46,7 @@ const FullWidthPanel = styled(ContentContainer)`
 `;
 
 const TextLine = styled.div`
+  margin-top: ${p => `${(p.low) * 12}px`};
   display: flex;
   justify-content: start;
   width: 100%;

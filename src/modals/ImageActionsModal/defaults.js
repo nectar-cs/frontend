@@ -8,10 +8,8 @@ export const defaults ={
       `kubectl scale deploy ${dep} --replicas=0 --namespace=${ns}`,
       `kubectl scale deploy ${dep} --replicas=${orig} --namespace=${ns}`
     ],
-    change: ({dep, ns, img}) => [
-      `container=$(kubectl get deployment/${dep} -o json --namespace=${ns} | 
-      jq .spec.template.spec.containers[0].name | tr -d \\")`,
-      `kubectl set image deploy ${dep} $container=${img} --namespace=${ns}`
+    change: ({dep, ns}) => [
+      `kubectl set image ${dep} --namespace=${ns}`
     ],
     scale:  ({dep, ns, scaleTo}) => [
       `kubectl scale deploy ${dep} --replicas=${scaleTo} --namespace=${ns}`,

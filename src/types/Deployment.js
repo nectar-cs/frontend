@@ -9,6 +9,7 @@ const ServicePort = PropTypes.shape({
 
 const Service = PropTypes.shape({
   name: PropTypes.string.isRequired,
+  namespace: PropTypes.string.isRequired,
   fromPort: PropTypes.number.isRequired,
   toPort: PropTypes.number.isRequired,
   internalIp: PropTypes.string,
@@ -21,7 +22,8 @@ const Service = PropTypes.shape({
 
 const LightPod = PropTypes.shape({
   name: PropTypes.string.isRequired,
-  state: PropTypes.oneOf(POD_STATES)
+  state: PropTypes.oneOf(POD_STATES),
+  updatedAt: PropTypes.string
 });
 
 const Commit = PropTypes.shape({

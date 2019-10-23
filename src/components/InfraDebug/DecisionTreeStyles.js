@@ -48,7 +48,7 @@ const nodeShape = {
 const leafShape = {...nodeShape,
   shape: "circle",
   shapeProps: {...nodeShape.shapeProps,
-    r: boxDiag / 2 - 1,
+    r: boxDiag / 2.1 - 1,
   }
 };
 

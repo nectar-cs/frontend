@@ -65,13 +65,13 @@ export default class DeploymentCard extends React.Component {
 
   renderContentRows(){
     const dep = this.props.deployment;
-
+    const sourceText = MiscUtils.sourceString(dep.commit);
     const portText = `Ok CPU, low RAM`;
 
     return <S.ContentRows>
       <tbody>
         { this.buildRow('Image', dep.imageName, this.openImageModal) }
-        { this.buildRow('Source', this.sourceString(), this.openSourceModal) }
+        { this.buildRow('Source', sourceText, this.openSourceModal) }
         { this.renderDnsRow() }
         { this.buildRow('Status', portText, () => alert("Bang!")) }
       </tbody>
@@ -120,15 +120,6 @@ export default class DeploymentCard extends React.Component {
         />
       </S.AdditionalControlsBox>
     )
-  }
-
-  sourceString(){
-    const commit = this.props.deployment.commit;
-    const { branch, message } = (commit || {});
-    if(branch && message){
-      const commitPart = `"${message.substring(0, 10)}..."`;
-      return `${commitPart} on ${branch}`;
-    } else return "Not annotated :(";
   }
 
   openHttpModal(text){

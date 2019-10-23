@@ -30,10 +30,10 @@ const PA = styled.p`
   text-decoration-color: transparent;
   &:hover{
     text-decoration: underline;
-    text-decoration-color: ${p => p.theme.colors.contrastFont};  
+    text-decoration-color: ${p => p.theme.colors.contrastFont};
+    cursor: pointer;  
   }
 `;
-
 
 const CleanStatus = styled.p`
   letter-spacing: 0.5px;

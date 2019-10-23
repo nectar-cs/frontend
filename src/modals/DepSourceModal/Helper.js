@@ -1,6 +1,7 @@
 import ImageOpsModal from "../ImageActionsModal/ImageOpsModal";
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
+import MiscUtils from "../../utils/MiscUtils";
 
 export default class Helper{
   static goToImageOps(inst){
@@ -17,10 +18,9 @@ export default class Helper{
   }
   
   static fetchCommit(inst){
+    const { deployment, matching } = inst.props;
     inst.setState(s => ({...s, isFetching: true}));
-    const {gitRemoteId, gitRepoName} = inst.props.matching;
-    const { commit } = inst.props.deployment;
-    const ep = `/remotes/${gitRemoteId}/${gitRepoName}/commit/${commit.sha}`;
+    const ep = MiscUtils.commitDetailPath(deployment, matching);
     Backend.raisingFetch(ep, resp => {
       const commit = DataUtils.objKeysToCamel(resp['data']);
       inst.setState(s => ({...s, commit, isFetching: false}));

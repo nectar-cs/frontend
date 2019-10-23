@@ -15,16 +15,16 @@ export default class Helper {
 
   static sectionClasses = [
     OverviewSection,
-    LoggingSection,
-    PortForwardSection,
     InfraDebugSection,
-    IntegrationsSection,
     ImageOpsSection,
     HttpOpsSection,
     CommandsSection,
+    PortForwardSection,
+    IntegrationsSection,
+    LoggingSection,
   ];
 
-  static defaultSection = PortForwardSection;
+  static defaultSection = OverviewSection;
 
   static classNameToKey(className){
     const key = className.replace("Section", "");
