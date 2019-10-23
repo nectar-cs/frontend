@@ -7,8 +7,14 @@ import SS from './OverviewSectionStyles'
 import OverviewModal from "../../../modals/OverviewModal/OverviewModal";
 import Layout from "../../../assets/layouts";
 import Text from "../../../assets/text-combos";
+import {connect} from "react-redux";
+import {Types} from "../../../types/Deployment";
 
-export default class OverviewSection extends Section {
+function T(props){
+  return <Text.P raw pushed>{props.children}</Text.P>
+}
+
+class OverviewSectionClass extends Section {
 
   render(){
     return(
@@ -28,6 +34,7 @@ export default class OverviewSection extends Section {
       <SS.ContentRow>
         { this.renderDockerLine() }
         { this.renderAnnotatedLine() }
+        { this.renderNotAnnotatedLine() }
         { this.renderServiceLines() }
       </SS.ContentRow>
     )
@@ -44,14 +51,14 @@ export default class OverviewSection extends Section {
     const portsStr = MiscUtils.portMappingsStr(service.ports);
     return(
       <Layout.TextLine low={1.4} key={service.name}>
-        <p>Exposed </p>
-        <Text.P raw pushed><b>{locality}</b></Text.P>
-        <Text.P raw pushed>via</Text.P>
-        <Text.P raw pushed><b>{service.type}</b></Text.P>
-        <Text.P raw pushed>on ports</Text.P>
-        <Text.P raw pushed>{portsStr}</Text.P>
-        <Text.P raw pushed>at</Text.P>
-        <Text.P raw pushed><u>{service.shortDns}</u></Text.P>
+        <p>Exposed</p>
+        <T><b>{locality}</b></T>
+        <T>via</T>
+        <T><b>{service.type}</b></T>
+        <T>on ports</T>
+        <T>{portsStr}</T>
+        <T>at</T>
+        <T><u>{service.shortDns}</u></T>
       </Layout.TextLine>
     )
   }
@@ -62,27 +69,27 @@ export default class OverviewSection extends Section {
     return(
       <Layout.TextLine low={1.4}>
         <p>Running</p>
-        <Text.P raw pushed><b>{deployment.imageName}</b></Text.P>
-        <Text.P raw pushed>since</Text.P>
-        <Text.P raw pushed>{timestamp || '?'}</Text.P>
+        <T><b>{deployment.imageName}</b></T>
+        <T>since</T>
+        <T>{timestamp || '?'}</T>
       </Layout.TextLine>
     )
   }
 
   renderAnnotatedLine(){
-    const { commit } = this.props;
+    const { remotes, commit } = this.props;
     if(!commit) return null;
 
     return(
       <Layout.TextLine low={1.4}>
         <p>Last deployed </p>
-        <Text.P raw pushed><b>Yesterday at 8pm</b></Text.P>
-        <Text.P raw pushed>by</Text.P>
-        <Text.P raw pushed><u>xavier@codenectar.com</u></Text.P>
-        <Text.P raw pushed>on branch</Text.P>
-        <Text.P raw pushed><b>master</b></Text.P>
-        <Text.P raw pushed>-</Text.P>
-        <Text.P raw pushed>"it was the best".</Text.P>
+        <T><b>Yesterday at 8pm</b></T>
+        <T>by</T>
+        <T><u>xavier@codenectar.com</u></T>
+        <T>on branch</T>
+        <T><b>master</b></T>
+        <T>-</T>
+        <T>"it was the best".</T>
       </Layout.TextLine>
     )
   }
@@ -92,28 +99,32 @@ export default class OverviewSection extends Section {
 
     return(
       <Layout.TextLine low={1.4}>
-        <p>Last deployed </p>
-        <Text.P raw pushed>"it was the best".</Text.P>
+        <p>Annotations about the latest commit not found.</p>
+        <T><u>Learn more.</u></T>
       </Layout.TextLine>
     )
   }
 
   renderNotMatchedLine(){
     const { matching } = this.props;
+    if(!matching) return null;
 
     return(
       <Layout.TextLine low={1.4}>
         <p>Deployment not matched to a Git repo.</p>
-        <Text.P raw pushed>Do it here.</Text.P>
+        <T>Do it here.</T>
       </Layout.TextLine>
     )
   }
 
   renderNotConnectedLine(){
+    const { remotes } = this.props;
+    if(remotes.git.length > 0) return null;
+
     return(
       <Layout.TextLine low={1.4}>
         <p>No Git remotes setup</p>
-        <Text.P raw pushed>Do it here.</Text.P>
+        <T>Do it here.</T>
       </Layout.TextLine>
     )
   }
@@ -145,4 +156,15 @@ export default class OverviewSection extends Section {
     )
   }
 
+  static propTypes = {
+    remotes: Types.GlobalRemotes.isRequired,
+    deployment: Types.Deployment,
+    matching: Types.Matching
+  }
+}
+
+function s2P(state){ return { remotes: state.mainReducer.remotes } }
+const Hack = connect(s2P)(OverviewSectionClass);
+export default class OverviewSection extends React.Component{
+  render(){ return <Hack {...this.props}/> }
 }

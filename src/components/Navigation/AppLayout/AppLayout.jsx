@@ -5,7 +5,7 @@ import {theme} from "../../../assets/constants";
 import {ThemeProvider} from "styled-components";
 import {AppContent} from "./AppLayoutStyles";
 import Backend from "../../../utils/Backend";
-import {setWorkspaces} from "../../../actions/action";
+import {setRemotes, setWorkspaces} from "../../../actions/action";
 import {connect} from "react-redux";
 import DataUtils from "../../../utils/DataUtils";
 
@@ -25,16 +25,22 @@ class AppLayoutClass extends React.Component {
   }
 
   componentDidMount(){
+    const { setWorkspaces, setRemotes } = this.props;
+
     Backend.raisingFetch(`/workspaces`, resp => {
-      const workspaces = DataUtils.objKeysToCamel(resp['data']);
-      this.props.setWorkspaces(workspaces);
+      setWorkspaces(DataUtils.objKeysToCamel(resp['data']));
+    });
+
+    Backend.raisingFetch(`/remotes/connected`, resp => {
+      setRemotes(DataUtils.objKeysToCamel(resp['data']));
     });
   }
 }
 
 function d2P(dispatch){
   return {
-    setWorkspaces: (a) => dispatch(setWorkspaces(a))
+    setWorkspaces: (a) => dispatch(setWorkspaces(a)),
+    setRemotes: (a) => dispatch(setRemotes(a))
   }
 }
 

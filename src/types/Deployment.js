@@ -2,6 +2,18 @@ import PropTypes from "prop-types";
 
 const POD_STATES = ['Running', 'Failed', 'Pending', 'Unknown'];
 
+const Remote = PropTypes.shape({
+  id: PropTypes.number.isRequired,
+  entity: PropTypes.oneOf(['git', 'docker']),
+  type: PropTypes.string.isRequired,
+  identifier: PropTypes.string.isRequired
+});
+
+const GlobalRemotes = PropTypes.shape({
+  git: PropTypes.arrayOf(Remote),
+  docker: PropTypes.arrayOf(Remote)
+});
+
 const ServicePort = PropTypes.shape({
   fromPort: PropTypes.number.isRequired,
   toPort: PropTypes.number.isRequired
@@ -81,5 +93,7 @@ export const Types = {
   Matching,
   Commit,
   DetailedCommit,
-  CommitChange
+  CommitChange,
+  Remote,
+  GlobalRemotes
 };
