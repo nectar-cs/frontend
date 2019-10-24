@@ -11,6 +11,15 @@ import {defaults} from "./defaults";
 
 export class ImageActionsModalHelper {
 
+  static defOpType(props){
+    const { matching } = props;
+    if(matching && matching.imgRemoteId){
+      return props.operationType || "git";
+    } else {
+      return props.operationType || "change";
+    }
+  }
+
   static fetchPods(inst, field, runAfter){
     const { name, namespace } = inst.props.deployment;
     const endpoint = `/api/deployments/${namespace}/${name}/pods`;
@@ -23,9 +32,9 @@ export class ImageActionsModalHelper {
   }
 
   static fetchImgTags(inst){
-    let {imgRemoteId, imgRepoName} = inst.props.matching;
+    let {imgRemoteId, imgRepoName} = inst.props.matching || {};
 
-    if(!imgRemoteId || !imgRepoName) {
+    if(!(imgRemoteId && imgRepoName)) {
       const imageTags = null;
       inst.setState(s => ({...s, remotes: { ...s.remotes, imageTags }}));
       return;
@@ -43,7 +52,7 @@ export class ImageActionsModalHelper {
   }
 
   static fetchGitBranches(inst){
-    let {gitRemoteId, gitRepoName} = inst.props.matching;
+    let {gitRemoteId, gitRepoName} = inst.props.matching || {};
     if(!gitRemoteId || !gitRepoName) {
       const gitBranches = null;
       inst.setState(s => ({...s, remotes: { ...s.remotes, gitBranches }}));
@@ -155,11 +164,13 @@ export class ImageActionsModalHelper {
     }
   }
 
-  static defOutImageName(inst){
-    const { matching } = inst.props;
+  static defOutImageName(props){
+    const { matching, deployment } = props;
     if(matching)
       return `${matching.imgRemoteName}/${matching.imgRepoName}:latest`;
-    else return inst.props.deployment.imageName;
+    else if(deployment)
+      return deployment.imageName;
+    else return "";
   }
 
   static makeOpHelperBundle(inst){

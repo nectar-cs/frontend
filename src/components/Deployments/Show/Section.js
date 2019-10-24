@@ -63,11 +63,11 @@ export default class Section extends React.Component {
     );
   }
 
-  renderActivityModal(key, source){
-    return this._renderActivityModal(key, source);
+  renderActivityModal(source){
+    return this._renderActivityModal(source);
   }
 
-  _renderActivityModal(key, source){
+  _renderActivityModal(source){
     return <p>Unimplemented ({this._className()})</p>;
   }
 

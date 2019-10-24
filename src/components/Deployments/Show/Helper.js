@@ -24,7 +24,7 @@ export default class Helper {
     LoggingSection,
   ];
 
-  static defaultSection = OverviewSection;
+  static defaultSection = ImageOpsSection;
 
   static classNameToKey(className){
     const key = className.replace("Section", "");

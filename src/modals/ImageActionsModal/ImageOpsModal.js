@@ -27,9 +27,9 @@ export default class ImageOpsModal extends React.Component {
     super(props);
     this.state = {
       choices: {
-        operationType: props.operationType,
+        operationType: Helper.defOpType(props),
         imageName: '',
-        outImageName: Helper.defOutImageName(this),
+        outImageName: Helper.defOutImageName(props),
         scaleTo: (props.deployment.replicas + 1).toString(),
         imgSource: '',
         gitBranch: '',
@@ -272,9 +272,6 @@ export default class ImageOpsModal extends React.Component {
     deployment: Types.Deployment,
     refreshCallback: PropTypes.func,
     matching: Types.Matching,
+    operationType: PropTypes.string
   };
-
-  static defaultProps = {
-    operationType: "git"
-  }
 }

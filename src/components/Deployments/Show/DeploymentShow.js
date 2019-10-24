@@ -60,14 +60,14 @@ class DeploymentShowClass extends React.Component{
 
   renderRightSideModal(){
     const { deployment, matching } = this.state;
-    const { focusedSection, focusedActivity } = this.state;
+    const { focusedSection } = this.state;
     const detailFunc = this.defDetailFns[focusedSection];
     const bundle = { deployment, matching };
     if(!(deployment && detailFunc)) return null;
 
     return(
       <S.RightPanel>
-        { detailFunc(focusedActivity, bundle) }
+        { detailFunc(bundle) }
       </S.RightPanel>
     )
   }
