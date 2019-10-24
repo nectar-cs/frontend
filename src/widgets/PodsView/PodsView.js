@@ -3,7 +3,7 @@ import S from './PodsViewStyles'
 
 export default function PodsView({pods}){
   const PodViews = () => pods.map(pod => (
-    <S.PodCircle emotion={pod.state} />
+    <S.PodCircle key={pod.name} emotion={pod.state} />
   ));
 
   return(

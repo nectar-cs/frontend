@@ -36,6 +36,7 @@ export default class MatchPreview extends React.Component {
       matching: null
     };
 
+    this.dfPathsTree = {  };
     this.deploymentName = MiscUtils.tor(() => props.deployment.name);
     this.onFormDataChanged = this.onFormDataChanged.bind(this);
     this.acceptMatch = this.acceptMatch.bind(this);
@@ -184,14 +185,21 @@ export default class MatchPreview extends React.Component {
     const { gitRemoteList, gitRemoteName } = this.state.bundle;
     if(!gitRemoteName) return;
     const gitRemote = H.selectedRemote(gitRemoteList, gitRemoteName);
-    const ep = `/remotes/${gitRemote.id}/${repoName}/dockerfile_paths`;
 
+    const cachedList = this.dfPathsTree[`${gitRemoteName}${repoName}`];
+    if(cachedList){
+      const dfPath = cachedList[0];
+      const bundle = {...this.state.bundle, dfPathList: cachedList, dfPath };
+      this.setState(s => ({...s, bundle}));
+      return;
+    }
+
+    const ep = `/remotes/${gitRemote.id}/${repoName}/dockerfile_paths`;
     this.onFormDataChanged('dfPath', '');
     this.setState(s => ({...s, isPathsFetching: true}));
     Backend.raisingFetch(ep, resp => {
       const dfPathList = DataUtils.objKeysToSnake(resp['data']);
-      console.log("RE FETCHED ");
-      console.log(dfPathList);
+      this.dfPathsTree[`${gitRemoteName}${repoName}`] = dfPathList;
       const dfPath = dfPathList[0];
       const bundle = {...this.state.bundle, dfPathList, dfPath };
       this.setState(s => ({...s, bundle, isPathsFetching: false}));
