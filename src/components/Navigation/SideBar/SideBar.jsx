@@ -7,6 +7,7 @@ import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Micon from "../../../widgets/Micon/Micon";
 import {theme} from "../../../assets/constants";
 import ModestLink from "../../../widgets/ModestLink/ModestLink";
+import {Link} from "react-router-dom";
 
 function SideBarSubItemF({name, url, crtAppPath}){
   const here = url === crtAppPath;
@@ -146,8 +147,10 @@ function SideBarClass(props) {
   return(
     <S.Sidebar>
       <S.LogoBox>
-        <S.TitleLogo src={image} alt={"Nectar Mosaic"}/>
-        <S.TitleText>Mosaic</S.TitleText>
+        <Link to='/'>
+          <S.TitleLogo src={image} alt={"Nectar Mosaic"}/>
+          <S.TitleText>Mosaic</S.TitleText>
+        </Link>
       </S.LogoBox>
       <S.Content>
         <Sections {...props}/>

@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Provider } from 'react-redux';
 import { Route, BrowserRouter } from 'react-router-dom'
-import { ROUTES as R} from './RoutesConsts';
-import {Switch} from "react-router";
+import {makeRoute, ROUTES as R} from './RoutesConsts';
+import {Redirect, Switch} from "react-router";
 import NotFound from "../components/NotFound/NotFound";
+import Backend from "../utils/Backend";
 
 export default class Root extends Component {
 
   render() {
-    const home = R.deployments.detect;
     return (
       <Provider store={this.props.store}>
         <BrowserRouter history={this.props.history}>
@@ -25,12 +25,17 @@ export default class Root extends Component {
             { Root.renderRoute(R.workspaces.edit) }
             { Root.renderRoute(R.workspaces.show) }
             { Root.renderRoute(R.experiments.networkTest) }
-            <Route path={'/'} exact component={home.comp}/>
+            <Route path={'/'} exact {...this.homePageRoute()}/>
             <Route component={NotFound}/>
           </Switch>
         </BrowserRouter>
       </Provider>
     );
+  }
+
+  homePageRoute(){
+    const path = makeRoute(R.workspaces.index.path, {});
+    return { render: () => <Redirect to={path}/> }
   }
 
   static renderRoute(hash){

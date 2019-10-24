@@ -26,6 +26,7 @@ class WorkspaceEditClass extends React.Component{
       submit: null,
       filtersChanged: true,
       workspaceName: '',
+      isDefault: 'false',
       namespaces: {
         filters: ['default'],
         filterType: 'whitelist',
@@ -33,7 +34,7 @@ class WorkspaceEditClass extends React.Component{
       },
       labels: {
         filters: [],
-        filterType: 'blacklist',
+        filterType: 'whitelist',
         possibilities: []
       }
     };
@@ -100,7 +101,7 @@ class WorkspaceEditClass extends React.Component{
 
   renderLeftSide(){
     const { isFetching } = this.state;
-    const { workspaceName, namespaces, labels } = this.state;
+    const { workspaceName, namespaces, labels, isDefault } = this.state;
     const Load = () => isFetching && <Loader.TopRightSpinner/>;
 
     return(
@@ -116,6 +117,7 @@ class WorkspaceEditClass extends React.Component{
         <WorkspaceForm
           onFieldsChanged={this.onFieldsChanged}
           workspaceName={workspaceName}
+          isDefault={isDefault}
           namespaces={namespaces}
           labels={labels}
         />
@@ -171,6 +173,7 @@ class WorkspaceEditClass extends React.Component{
     this.setState(s => ({...s,
       isFetching: false,
       workspaceName: wipResp['name'],
+      isDefault: (wipResp['is_default'] || false).toString(),
       namespaces: {
         filters: wipResp['ns_filters'] || s.namespaces.filters,
         filterType: wipResp['ns_filter_type'] || s.namespaces.filterType,
@@ -185,7 +188,7 @@ class WorkspaceEditClass extends React.Component{
   }
 
   onSubmitFailed(error){
-
+    alert("Some bad happened. Soz");
   }
 
   submitWorkspace(){
@@ -195,6 +198,7 @@ class WorkspaceEditClass extends React.Component{
 
     const payload = {
       name: this.state.workspaceName,
+      is_default: this.state.isDefault,
       ns_filter_type: this.state.namespaces.filterType,
       ns_filters: this.state.namespaces.filters,
       lb_filter_type: this.state.labels.filterType,

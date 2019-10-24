@@ -20,7 +20,7 @@ export const ROUTES = {
   },
 
   workspaces: {
-    index: { path: '/workspaces', comp: WorkspaceIndex },
+    index: { path: '/workspaces', comp: WorkspaceIndex},
     new: { path: '/workspaces/new', comp: WorkspaceEdit },
     edit: { path: '/workspaces/:id/edit', comp: WorkspaceEdit },
     show: { path: '/workspaces/:id', comp: WorkspaceShow }

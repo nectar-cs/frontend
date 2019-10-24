@@ -13,7 +13,7 @@ import Button from "../../../assets/buttons";
 import Text from './../../../assets/text-combos'
 import Layout from './../../../assets/layouts'
 import ModestLink from "../../../widgets/ModestLink/ModestLink";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
 class WorkspaceIndexClass extends React.Component{
 
@@ -21,7 +21,8 @@ class WorkspaceIndexClass extends React.Component{
     super(props);
     this.state = {
       workspaces: [],
-      isLoading: false
+      isLoading: false,
+      redirectTo: null
     }
   }
 
@@ -29,6 +30,7 @@ class WorkspaceIndexClass extends React.Component{
     this.setState(s => ({...s, isLoading: true}));
     Backend.raisingFetch('/workspaces', (payload) => {
       const workspaces = payload['data'];
+      // TODO have logic for begin tutorial here!
       this.setState((s) => ({...s, isLoading: false, workspaces }));
     }, this.props.apiErrorCallback);
   }
@@ -36,6 +38,7 @@ class WorkspaceIndexClass extends React.Component{
   render(){
     return(
       <Fragment>
+        { this.renderRedirect() }
         { this.renderLoading() }
         { this.renderMainContent() }
         { this.renderEmpty() }
@@ -44,9 +47,14 @@ class WorkspaceIndexClass extends React.Component{
     )
   }
 
+  renderRedirect(){
+    if(!this.state.redirectTo) return null;
+    return <Redirect to={this.state.redirectTo}/>;
+  }
+
   renderAddButton(){
-    const goto = ROUTES.workspaces.new.path;
-    const callback = () => { window.location = goto };
+    const redirectTo = ROUTES.workspaces.new.path;
+    const callback = () => this.setState(s => ({...s, redirectTo}));
     const Btn = Button.FloatingPlus;
     return<Btn onClick={callback}>+</Btn>;
   }
@@ -102,6 +110,7 @@ function WorkspaceHeader() {
   return(
     <tr>
       <th><p>Workspace</p></th>
+      <th><p>Default?</p></th>
       <th><p>Namespace Filters</p></th>
       <th><p>Label Filters</p></th>
       <th><p>Actions</p></th>
@@ -127,6 +136,9 @@ function WorkspaceRow(props) {
     <tr>
       <td>
         <Link to={showPath}><p>{props.name}</p></Link>
+      </td>
+      <td>
+        <p><Text.BoldStatus>{props.is_default.toString()}</Text.BoldStatus></p>
       </td>
       <td>
         <ColoredLabelList

@@ -44,9 +44,9 @@ export default class Helper{
   }
 
   static submitSingle(inst){
-    const {name, namespace} = inst.props.deployment;
+    const { name } = inst.props.deployment;
     inst.setState((s) => ({...s, isSubmitting: true}));
-    const deployment = { ...inst.state.bundle, name, namespace };
+    const deployment = { ...inst.state.bundle, name };
     const payload = { data: [this.makePayload(deployment)] };
     Backend.raisingPost(`/microservices`, payload, () => this.reload(inst));
   }
@@ -69,8 +69,8 @@ export default class Helper{
   }
 
   static fetchMatching(inst){
-    const { name, namespace } = inst.props.deployment;
-    const ep = `/microservices/${namespace}/${name}`;
+    const { name } = inst.props.deployment;
+    const ep = `/microservices/${name}`;
     Backend.raisingFetch(ep, resp => {
       const matching = DataUtils.objKeysToCamel(resp)['data'];
       const merger = this.matching2Bundle(matching);

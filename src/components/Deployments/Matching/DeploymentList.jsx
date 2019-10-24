@@ -16,7 +16,7 @@ function ListHeader() {
 }
 
 function DeploymentItem(props) {
-  const {isSelected} = props;
+  const { isSelected } = props;
 
   const namespaces = props.namespaces.map(ns => (
     <p key={ns} className={s.nsTag}>{ns}</p>

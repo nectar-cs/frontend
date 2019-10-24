@@ -99,7 +99,7 @@ export default class Helper{
   }
 
   static fetchMatching(inst){
-    const ep = `/microservices/${this.depNs(inst)}/${this.depName(inst)}`;
+    const ep = `/microservices/${this.depName(inst)}`;
     Backend.raisingFetch(ep, resp => {
       const matching = DataUtils.objKeysToCamel(resp)['data'];
       inst.setState(s => ({...s, matching}));

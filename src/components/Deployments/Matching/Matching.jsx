@@ -27,7 +27,8 @@ class MatchingClass extends React.Component {
       isSubmitting: false,
       areAllSubmitted: false,
       query: DEFAULT_QUERY,
-      integrations: null
+      integrations: null,
+      isOverriding: false
     };
 
     this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);

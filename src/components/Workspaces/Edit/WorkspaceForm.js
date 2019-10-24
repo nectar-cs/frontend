@@ -19,6 +19,7 @@ export default class WorkspaceForm extends React.Component {
     this.onFilterAdded = this.onFilterAdded.bind(this);
     this.onFilterRemoved = this.onFilterRemoved.bind(this);
     this.onFilterTypeChanged = this.onFilterTypeChanged.bind(this);
+    this.onIsDefaultChanged = this.onIsDefaultChanged.bind(this);
   }
 
   render() {
@@ -27,6 +28,11 @@ export default class WorkspaceForm extends React.Component {
         <div className={s.inputLine}>
           <p className={s.label}>Workspace Name</p>
           { this.renderNameInput() }
+        </div>
+
+        <div className={s.inputLine}>
+          <p className={s.label}>Make Default</p>
+          { this.renderDefaultCheckbox() }
         </div>
 
         <div className={s.inputLine}>
@@ -49,6 +55,18 @@ export default class WorkspaceForm extends React.Component {
           { this.renderFilterTypeSelect('labels') }
         </div>
       </div>
+    )
+  }
+
+  renderDefaultCheckbox(){
+    return(
+      <select
+        className={s.selectInput}
+        value={this.props.isDefault}
+        onChange={(e) => this.onIsDefaultChanged(e.target.value)}>
+        <option value='true'>Yes</option>
+        <option value='false'>No</option>
+      </select>
     )
   }
 
@@ -134,6 +152,10 @@ export default class WorkspaceForm extends React.Component {
     this.props.onFieldsChanged({[which]: newBundle});
   }
 
+  onIsDefaultChanged(value){
+    this.props.onFieldsChanged({isDefault: value});
+  }
+
   static itemPropTypes = PropTypes.shape({
     filters: PropTypes.arrayOf(PropTypes.string).isRequired,
     filterType: PropTypes.string.isRequired,
@@ -142,6 +164,7 @@ export default class WorkspaceForm extends React.Component {
 
   static propTypes = {
     onFieldsChanged: PropTypes.func.isRequired,
+    isDefault: PropTypes.string.isRequired,
     workspaceName: PropTypes.string,
     namespaces: WorkspaceForm.itemPropTypes,
     labels:  WorkspaceForm.itemPropTypes

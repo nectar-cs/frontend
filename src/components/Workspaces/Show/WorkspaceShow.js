@@ -9,6 +9,8 @@ import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import Helper from "./Helper";
 import {connect} from "react-redux";
+import Backend from "../../../utils/Backend";
+import Setter from "../../../utils/StateGulp";
 
 class WorkspaceShowClass extends React.Component{
 
@@ -25,7 +27,6 @@ class WorkspaceShowClass extends React.Component{
     };
 
     this._willUnmount = false;
-
     this.fetchDeployments = this.fetchDeployments.bind(this);
     this.repeater = this.repeater.bind(this);
     this.repeater(false);
