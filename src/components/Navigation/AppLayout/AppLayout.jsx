@@ -5,7 +5,7 @@ import {theme} from "../../../assets/constants";
 import {ThemeProvider} from "styled-components";
 import {AppContent} from "./AppLayoutStyles";
 import Backend from "../../../utils/Backend";
-import {setRemotes, setWorkspaces} from "../../../actions/action";
+import {setPath, setRemotes, setWorkspaces} from "../../../actions/action";
 import {connect} from "react-redux";
 import DataUtils from "../../../utils/DataUtils";
 
@@ -24,6 +24,10 @@ class AppLayoutClass extends React.Component {
     )
   }
 
+  componentDidUpdate(nextProps){
+    nextProps.setPath(window.location.pathname);
+  }
+
   componentDidMount(){
     const { setWorkspaces, setRemotes } = this.props;
 
@@ -40,7 +44,8 @@ class AppLayoutClass extends React.Component {
 function d2P(dispatch){
   return {
     setWorkspaces: (a) => dispatch(setWorkspaces(a)),
-    setRemotes: (a) => dispatch(setRemotes(a))
+    setRemotes: (a) => dispatch(setRemotes(a)),
+    setPath: (a) => dispatch(setPath(a))
   }
 }
 

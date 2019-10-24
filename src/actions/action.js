@@ -25,3 +25,7 @@ export function setModalOps(openModal, replaceModal){
 export function setRemotes(remotes){
   return { type: actionKeys.SetRemotes, remotes }
 }
+
+export function setPath(crtAppPath){
+  return { type: actionKeys.SimpleSet, data: { crtAppPath  } };
+}

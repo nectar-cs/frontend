@@ -10,8 +10,8 @@ import Text from "../../../assets/text-combos";
 import {Link} from "react-router-dom";
 import ModestLink from "../../../widgets/ModestLink/ModestLink";
 
-function SideBarSubItem({name, url}){
-  const here = url === window.location.pathname;
+function SideBarSubItemF({name, url, crtAppPath}){
+  const here = url === crtAppPath;
   return(
     <S.SubItem>
       <ModestLink to={url}>
@@ -20,6 +20,12 @@ function SideBarSubItem({name, url}){
     </S.SubItem>
   )
 }
+
+function ff(state){
+  return { crtAppPath: state.mainReducer.crtAppPath };
+}
+
+const SideBarSubItem = connect(ff)(SideBarSubItemF);
 
 class SideBarItemClass extends React.Component {
 
@@ -32,8 +38,8 @@ class SideBarItemClass extends React.Component {
   }
 
   renderHref(){
-    const { path, title } = this.props;
-    const here = path === window.location.pathname;
+    const { path, title, crtAppPath } = this.props;
+    const here = path === crtAppPath;
 
     return(
       <ModestLink to={path}>
@@ -95,8 +101,9 @@ function s2P(state){
     name: w.name,
     url: `/workspaces/${w.id}`
   })).slice(0, 3);
+  const crtAppPath = state.mainReducer.crtAppPath;
 
-  return { workspaces };
+  return { workspaces, crtAppPath };
 }
 
 const SideBarItem = connect(s2P)(SideBarItemClass);
