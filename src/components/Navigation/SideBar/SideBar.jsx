@@ -6,8 +6,6 @@ import sections from './sections'
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Micon from "../../../widgets/Micon/Micon";
 import {theme} from "../../../assets/constants";
-import Text from "../../../assets/text-combos";
-import {Link} from "react-router-dom";
 import ModestLink from "../../../widgets/ModestLink/ModestLink";
 
 function SideBarSubItemF({name, url, crtAppPath}){

@@ -10,8 +10,8 @@ const workbench = {
       path: '/workspaces',
       eager: true
     },
-    { title: "Playground", path: '/1' },
-    { title: "Observatory", path: '/2' }
+    { title: "Playground", path: '/playground' },
+    { title: "Observatory", path: '/observatory' }
   ]
 };
 
@@ -19,9 +19,9 @@ const laboratory = {
   title: 'Laboratory',
   icon: 'highlight',
   items: [
-    { title: "Experiments", path: '/1' },
-    { title: "Regression Tests", path: '/2' },
-    { title: "Compliance", path: '/3' }
+    { title: "Experiments", path: '/experiments' },
+    { title: "Regression Tests", path: '/regression-testing' },
+    { title: "Compliance", path: '/compliance' }
   ]
 };
 
@@ -29,9 +29,9 @@ const canteen = {
   title: 'Cost Control',
   icon: 'money_off',
   items: [
-    { title: "Policies", path: '/1' },
-    { title: "Trend & Analysis", path: '/2' },
-    { title: "Predictions", path: '/3' }
+    { title: "Policies", path: '/policies' },
+    { title: "Trend & Analysis", path: '/cost-trends' },
+    { title: "Predictions", path: '/cost-predictions' }
   ]
 };
 

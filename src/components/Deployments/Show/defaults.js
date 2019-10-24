@@ -6,6 +6,11 @@ const defaults = {
       iconName: "bug_report",
     },
 
+    hotReload: {
+      title: "Hot Reloading",
+      iconName: "import_export"
+    },
+
     infraDebug: {
       title: "Debugging & Troubleshooting",
       iconName: "bug_report",

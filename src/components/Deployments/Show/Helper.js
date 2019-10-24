@@ -10,21 +10,23 @@ import CommandsSection from "./CommandsSection";
 import PortForwardSection from "./PortForwardSection";
 import HttpOpsSection from "./HttpOpsSection";
 import defaults from "./defaults";
+import HotReloadSection from "./HotReloadSection";
 
 export default class Helper {
 
   static sectionClasses = [
     OverviewSection,
-    InfraDebugSection,
     ImageOpsSection,
+    InfraDebugSection,
     HttpOpsSection,
     CommandsSection,
     PortForwardSection,
-    IntegrationsSection,
+    HotReloadSection,
     LoggingSection,
+    IntegrationsSection
   ];
 
-  static defaultSection = ImageOpsSection;
+  static defaultSection = InfraDebugSection;
 
   static classNameToKey(className){
     const key = className.replace("Section", "");

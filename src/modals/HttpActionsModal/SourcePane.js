@@ -4,6 +4,7 @@ import s from './SourcePane.sass'
 import MiscUtils from "../../utils/MiscUtils";
 import ReactTags from "react-tag-autocomplete";
 import ss from "../../assets/react-tags.sass";
+import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
 
 const AUTO_COMPLETE_STYLES = {
   root: s.labelTags,
@@ -44,7 +45,11 @@ export default class SourcePane extends React.Component {
           { this.renderLabelsInput() }
         </Fragment>
       )
-    } else return <p className={s.comingSoon}>Coming soon :)</p>
+    } else {
+      return(
+        <ComingSoonSection size='medium'/>
+      )
+    }
   }
 
   renderNamespaceSelector(){

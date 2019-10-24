@@ -11,6 +11,7 @@ import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
 import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
 import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
 import {Link} from "react-router-dom";
+import HotReloadModal from "../../../modals/HotReloadingModal/HotReloadModal";
 
 export default class DeploymentCard extends React.Component {
 
@@ -20,6 +21,7 @@ export default class DeploymentCard extends React.Component {
     this.openSourceModal = this.openSourceModal.bind(this);
     this.openPortForwardModal = this.openPortForwardModal.bind(this);
     this.openCommandsModal = this.openCommandsModal.bind(this);
+    this.openHotModal = this.openHotModal.bind(this);
   }
 
   render(){
@@ -117,9 +119,17 @@ export default class DeploymentCard extends React.Component {
         <ControlIcon
           icon='import_export'
           title="Bind Local..."
+          action={this.openHotModal}
         />
       </S.AdditionalControlsBox>
     )
+  }
+
+  openHotModal(){
+    const { deployment, matching } = this.props;
+    this.props.openModal(HotReloadModal, ({
+      deployment, matching, mode: 'modal'
+    }));
   }
 
   openHttpModal(text){

@@ -16,21 +16,20 @@ const defaults = {
         makeRoute(base, {ns, id: dep, type: 'network'})
       )
     },
-    certsDebug: {
-      title: "Certificate BS",
-      iconName: 'lock_open'
-    },
     podDebug: {
       title: "Pods not Running",
-      iconName: "pause_circle_outline"
+      iconName: "pause_circle_outline",
+      demo: "Pod y u always say pending?"
     },
     accessDebug: {
       title: "Access Woes",
-      iconName: 'gavel'
+      iconName: 'gavel',
+      demo: "Y u so insecure?"
     },
     ingressDebug: {
       title: "Routing/Ingress",
-      iconName: 'settings_ethernet'
+      iconName: 'settings_ethernet',
+      demo: "Y u no route /foo to /bar?"
     }
   },
   healthChecks: {

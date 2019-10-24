@@ -12,32 +12,12 @@ import {Types} from "../../types/Deployment";
 import {ROUTES} from "../../containers/RoutesConsts";
 import {Redirect} from "react-router";
 
-function ActivityOffering(props){
-  return(
-    <S.ActivityContainer
-      onClick={props.callback}
-      isChosen={props.isChosen}>
-      <S.ActivityIcon className='material-icons'>
-        { props.iconName }
-      </S.ActivityIcon>
-      <S.ActivityTitle>{props.title}</S.ActivityTitle>
-    </S.ActivityContainer>
-  )
-}
-
-ActivityOffering.propTypes = {
-  iconName: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  callback: PropTypes.func.isRequired,
-  isChosen: PropTypes.bool.isRequired
-};
-
 export default class ChooseDebugTypeModal extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
-      selectedActivity: '',
+      selectedActivity: 'networkingDebug',
       isRedirecting: false,
     };
   }
@@ -47,8 +27,8 @@ export default class ChooseDebugTypeModal extends React.Component {
       <FlexibleModal mode={this.props.mode}>
         { this.renderRedirect() }
         { this.renderHeader() }
-        { this.renderDiagnosis() }
         { this.renderActivities() }
+        { this.renderComingSoon() }
         { this.renderButton() }
       </FlexibleModal>
     )
@@ -69,12 +49,16 @@ export default class ChooseDebugTypeModal extends React.Component {
     )
   }
 
-  renderDiagnosis(){
+  renderComingSoon(){
+    const {selectedActivity} = this.state;
+    if(!selectedActivity) return null;
+    if(this.isActivityImplemented()) return null;
+    const bundle = defaults.activities[selectedActivity];
+
     return(
-      <Fragment>
-        <TextOverLineSubtitle text={defaults.healthChecks.title}/>
-        <ComingSoonSection text={defaults.healthChecks.comingSoon}/>
-      </Fragment>
+      <ComingSoonSection
+        text={bundle.demo}
+      />
     )
   }
 
@@ -107,17 +91,21 @@ export default class ChooseDebugTypeModal extends React.Component {
   }
 
   renderButton(){
-    const activity  = this.state.selectedActivity;
-    const goToFunc = activity && defaults.activities[activity].path;
     const callback = () => this.setState(s => ({...s, isRedirecting: true}));
 
     return(
       <ModalButton
-        isEnabled={!!(activity && goToFunc)}
+        isEnabled={this.isActivityImplemented()}
         callback={callback}
         title={defaults.submit}
       />
     )
+  }
+
+  isActivityImplemented(){
+    const activity  = this.state.selectedActivity;
+    const goToFunc = activity && defaults.activities[activity].path;
+    return !!(activity && goToFunc);
   }
 
   renderHeader(){
@@ -137,3 +125,24 @@ export default class ChooseDebugTypeModal extends React.Component {
     matching: Types.Matching
   }
 }
+
+
+function ActivityOffering(props){
+  return(
+    <S.ActivityContainer
+      onClick={props.callback}
+      isChosen={props.isChosen}>
+      <S.ActivityIcon className='material-icons'>
+        { props.iconName }
+      </S.ActivityIcon>
+      <S.ActivityTitle>{props.title}</S.ActivityTitle>
+    </S.ActivityContainer>
+  )
+}
+
+ActivityOffering.propTypes = {
+  iconName: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  callback: PropTypes.func.isRequired,
+  isChosen: PropTypes.bool.isRequired
+};

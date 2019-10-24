@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { Route, BrowserRouter } from 'react-router-dom'
 import { ROUTES as R} from './RoutesConsts';
 import {Switch} from "react-router";
+import NotFound from "../components/NotFound/NotFound";
 
 export default class Root extends Component {
 
@@ -25,6 +26,7 @@ export default class Root extends Component {
             { Root.renderRoute(R.workspaces.show) }
             { Root.renderRoute(R.experiments.networkTest) }
             <Route path={'/'} exact component={home.comp}/>
+            <Route component={NotFound}/>
           </Switch>
         </BrowserRouter>
       </Provider>
