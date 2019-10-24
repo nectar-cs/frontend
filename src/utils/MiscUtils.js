@@ -67,7 +67,7 @@ export default class MiscUtils {
     return !mode || mode === 'modal' ? 'image' : 'icon';
   }
 
-  static gitSummary(ms){
+  static gitSummary(ms, extended){
     const first = (
       <Text.A href={`https://www.github.com/${ms.gitRemoteName}`} target="_blank">
         {ms.gitRemoteName}@github
@@ -81,7 +81,10 @@ export default class MiscUtils {
       </Text.A>
     );
 
-    return <Fragment>{first} / {second}</Fragment>;
+    const third = extended && ms.dockerfilePath &&
+      <Text.A pushed>/ {ms.dockerfilePath.replace("/Dockerfile", "SSD")}</Text.A>;
+
+    return <Fragment>{first} / {second}{third}</Fragment>;
   }
 
   static isJson(str){

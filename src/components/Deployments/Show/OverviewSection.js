@@ -2,7 +2,6 @@ import React from 'react'
 import Section from "./Section";
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../../utils/MiscUtils";
-import S from "./SectionStyles";
 import SS from './OverviewSectionStyles'
 import OverviewModal from "../../../modals/OverviewModal/OverviewModal";
 import Layout from "../../../assets/layouts";
@@ -177,7 +176,7 @@ class OverviewSectionClass extends Section {
       <LeftHeader
         graphicName={MiscUtils.msImage(deployment, matching)}
         title={`${deployment.namespace} / ${deployment.name}`}
-        subtitle={matching && MiscUtils.gitSummary(matching)}
+        subtitle={matching && MiscUtils.gitSummary(matching, true)}
       />
     )
   }
