@@ -13,7 +13,7 @@ export default class Section extends React.Component {
     this.onClicked = this.onClicked.bind(this);
     this.renderActivityModal = this.renderActivityModal.bind(this);
     this.props.defaultDetailSetter(
-      this.constructor.name,
+      this._className(),
       this.renderActivityModal
     );
   }
@@ -48,7 +48,7 @@ export default class Section extends React.Component {
   }
 
   onClicked(){
-    this.props.onClicked(this.constructor.name);
+    this.props.onClicked(this._className());
   }
 
   renderTitle(){
@@ -68,15 +68,15 @@ export default class Section extends React.Component {
   }
 
   _renderActivityModal(key, source){
-    return this.renderDefaultModal(source);
+    return <p>Unimplemented ({this._className()})</p>;
   }
 
-  renderDefaultModal(source){
-    return <p>Unimplemented ({this.constructor.name})</p>;
+  _className(){
+    return this.constructor.name.replace("Class", "");
   }
 
   key(){
-    return Helper.classNameToKey(this.constructor.name);
+    return Helper.classNameToKey(this._className());
   }
 
   config() { return defaults.sections[this.key()] }

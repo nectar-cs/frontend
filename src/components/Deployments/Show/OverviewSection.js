@@ -9,20 +9,33 @@ import Layout from "../../../assets/layouts";
 import Text from "../../../assets/text-combos";
 import {connect} from "react-redux";
 import {Types} from "../../../types/Deployment";
+import ImageOpsSection from "./ImageOpsSection";
+import PodsView from "../../../widgets/PodsView/PodsView";
+import HttpOpsSection from "./HttpOpsSection";
 
 function T(props){
-  return <Text.P raw pushed>{props.children}</Text.P>
+  return <Text.P raw pushed {...props}>{props.children}</Text.P>
+}
+
+function TA(props){
+  return <Text.PA raw pushed {...props}>{props.children}</Text.PA>
 }
 
 class OverviewSectionClass extends Section {
 
+  constructor(props) {
+    super(props);
+    this.goToDocker = this.goToDocker.bind(this);
+    this.goToHttp = this.goToHttp.bind(this);
+  }
+
   render(){
     return(
-      <S.Section onClick={this.onClicked}>
+      <SS.Section onClick={this.onClicked}>
         { this.renderHeader() }
         { this.renderLines() }
         { this.renderPods() }
-      </S.Section>
+      </SS.Section>
     )
   }
 
@@ -58,7 +71,7 @@ class OverviewSectionClass extends Section {
         <T>on ports</T>
         <T>{portsStr}</T>
         <T>at</T>
-        <T><u>{service.shortDns}</u></T>
+        <TA onClick={this.goToHttp} ><u>{service.shortDns}</u></TA>
       </Layout.TextLine>
     )
   }
@@ -69,11 +82,19 @@ class OverviewSectionClass extends Section {
     return(
       <Layout.TextLine low={1.4}>
         <p>Running</p>
-        <T><b>{deployment.imageName}</b></T>
+        <TA onClick={this.goToDocker}><b>{deployment.imageName}</b></TA>
         <T>since</T>
         <T>{timestamp || '?'}</T>
       </Layout.TextLine>
     )
+  }
+
+  goToDocker(){
+    this.props.onClicked(ImageOpsSection.name);
+  }
+
+  goToHttp(){
+    this.props.onClicked(HttpOpsSection.name);
   }
 
   renderAnnotatedLine(){
@@ -130,7 +151,12 @@ class OverviewSectionClass extends Section {
   }
 
   renderPods(){
-    return null;
+    const { deployment } = this.props;
+    if(!deployment) return null;
+
+    return(
+      <PodsView pods={deployment.pods}/>
+    );
   }
 
   _renderActivityModal(key, source) {
@@ -163,8 +189,15 @@ class OverviewSectionClass extends Section {
   }
 }
 
-function s2P(state){ return { remotes: state.mainReducer.remotes } }
+function s2P(state){
+  return {
+    remotes: state.mainReducer.remotes,
+    openModal: state.mainReducer.openModal
+  }
+}
+
 const Hack = connect(s2P)(OverviewSectionClass);
-export default class OverviewSection extends React.Component{
-  render(){ return <Hack {...this.props}/> }
+
+export default function OverviewSection(props){
+  return <Hack {...props}/>;
 }

@@ -95,5 +95,6 @@ export const Types = {
   DetailedCommit,
   CommitChange,
   Remote,
-  GlobalRemotes
+  GlobalRemotes,
+  LightPod
 };

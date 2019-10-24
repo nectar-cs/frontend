@@ -1,13 +1,20 @@
 import React, {Fragment} from "react";
-import PropTypes from 'prop-types';
 import ModalHelper from "../utils/ModalHelper";
 import Modal from "react-modal";
+import {setModalOps} from "../actions/action";
+import {connect} from "react-redux";
 Modal.defaultStyles.overlay.backgroundColor = "rgba(49, 54, 72, 0.8)";
+
+function d2P(dispatch){
+  return {
+    setModalOps: a => dispatch(setModalOps(a))
+  }
+}
 
 export default class ModalHostComposer{
 
   static compose(WrappedComponent){
-    return class extends React.Component {
+    class Aug extends React.Component {
 
       constructor(props){
         super(props);
@@ -20,6 +27,15 @@ export default class ModalHostComposer{
         this.closeModal = this.closeModal.bind(this);
         this.timedClose = this.timedClose.bind(this);
         this.replaceModal = this.replaceModal.bind(this);
+      }
+
+      componentDidMount(){
+        this.props.setModalOps(this.openModal, this.closeModal);
+        document.addEventListener("keydown", this.escFunction, false);
+      }
+
+      componentWillUnmount(){
+        document.removeEventListener("keydown", this.escFunction, false);
       }
 
       render(){
@@ -81,14 +97,8 @@ export default class ModalHostComposer{
       escFunction(event){
         if(event.keyCode === 27) this.closeModal();
       }
-
-      componentDidMount(){
-        document.addEventListener("keydown", this.escFunction, false);
-      }
-
-      componentWillUnmount(){
-        document.removeEventListener("keydown", this.escFunction, false);
-      }
     }
+
+    return connect(null, d2P)(Aug);
   }
 }

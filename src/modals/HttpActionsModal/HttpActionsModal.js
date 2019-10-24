@@ -59,11 +59,11 @@ export default class HttpActionsModal extends React.Component {
 
   static defaultHost(props){
     if(props.targetHost){
-      return DestinationPane.makeHost(props.targetHost, props.port);
+      return DestinationPane.makeSvcHost(props.targetHost, props.port);
     } else {
       if(props.deployment.services[0]){
-        const {shortDns, fromPort} = props.deployment.services[0];
-        return DestinationPane.makeHost(shortDns, fromPort);
+        const {name, shortDns, fromPort} = props.deployment.services[0];
+        return DestinationPane.makeSvcHost(name, shortDns, fromPort).value;
       } else return null;
     }
   }
@@ -92,7 +92,7 @@ export default class HttpActionsModal extends React.Component {
   }
 
   renderHeader(){
-    const { deployment, matching } = this.props;
+    const { deployment } = this.props;
     return(
       <LeftHeader
         graphicName={MiscUtils.modalImage(this, "http")}
@@ -197,6 +197,7 @@ export default class HttpActionsModal extends React.Component {
         <DestinationPane
           onFieldChanged={destCallback}
           services={this.props.deployment.services}
+          pods={this.props.deployment.pods}
           {...this.state.destination}
         />
         <SourcePane

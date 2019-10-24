@@ -33,6 +33,8 @@ const PA = styled.p`
     text-decoration-color: ${p => p.theme.colors.contrastFont};
     cursor: pointer;  
   }
+  margin-right: ${p => p.push ? "3px" : '0'}
+  margin-left: ${p => p.pushed ? "3px" : '0'}
 `;
 
 const CleanStatus = styled.p`

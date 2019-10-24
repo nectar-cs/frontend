@@ -39,20 +39,37 @@ export default class DestinationPane extends React.Component {
   }
 
   hostOptions(){
-    const rawArray = this.props.services.map(svc => [
-      DestinationPane.makeHost(svc.shortDns, svc.fromPort),
-      DestinationPane.makeHost(svc.longDns, svc.fromPort),
-      DestinationPane.makeHost(svc.internalIp, svc.fromPort),
-      DestinationPane.makeHost(svc.externalIp, svc.fromPort),
-    ]);
+    const { services, pods } = this.props;
 
-    const cleanedArray = rawArray.flat().filter(e => e);
-    return MiscUtils.arrayOptions(cleanedArray);
+    const serviceOptions = services.map(svc => [
+      DestinationPane.makeSvcHost(svc.name, svc.shortDns, svc.fromPort),
+      DestinationPane.makeSvcHost(svc.name, svc.longDns, svc.fromPort),
+      DestinationPane.makeSvcHost(svc.name, svc.internalIp, svc.fromPort),
+      DestinationPane.makeSvcHost(svc.name, svc.externalIp, svc.fromPort),
+    ]).flat();
+
+    const podOptions = pods.map(pod =>
+      DestinationPane.makePodHost(pod.name, pod.ip)
+    );
+
+    const combined = [...serviceOptions, ...podOptions];
+    const cleaned = combined.filter(e => e);
+    return MiscUtils.arrayOfHashesOptions(cleaned);
   }
 
-  static makeHost(domain, port){
-    if(domain && port)
-      return `http://${domain}:${port}`;
+  static makeSvcHost(name, domain, port){
+    if(domain && port){
+      const key = `http://${domain}:${port}`;
+      return { value: key,  show: `${key} (Service ${name})`}
+    }
+    else return null;
+  }
+
+  static makePodHost(name, domain){
+    if(domain){
+      const key = `http://${domain}`;
+      return { value: key, show: `${key} (Pod ${name})`}
+    }
     else return null;
   }
 
@@ -66,6 +83,7 @@ export default class DestinationPane extends React.Component {
     host: PropTypes.string,
     path: PropTypes.string,
     verb: PropTypes.oneOf(HTTP_VERBS),
-    services: PropTypes.arrayOf(Types.Service)
+    services: PropTypes.arrayOf(Types.Service),
+    pods: PropTypes.arrayOf(Types.LightPod)
   }
 }

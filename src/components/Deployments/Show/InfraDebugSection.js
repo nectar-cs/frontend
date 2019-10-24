@@ -4,7 +4,7 @@ import ChooseDebugTypeModal from "../../../modals/ChoseDebugTypeModal/ChooseDebu
 
 export default class InfraDebugSection extends Section {
 
-  renderDefaultModal(source){
+  _renderActivityModal(source){
     const { deployment, matching } = source || this.props;
     return(
       <ChooseDebugTypeModal
