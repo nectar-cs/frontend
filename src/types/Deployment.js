@@ -84,7 +84,8 @@ const Matching = PropTypes.shape({
   gitRemoteName: PropTypes.string,
   gitRepoName: PropTypes.string,
   gitRemoteId: PropTypes.number,
-  imgRemoteId: PropTypes.number
+  imgRemoteId: PropTypes.number,
+  dockerfilePath: PropTypes.string
 });
 
 export const Types = {

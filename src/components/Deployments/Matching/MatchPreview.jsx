@@ -19,14 +19,20 @@ export default class MatchPreview extends React.Component {
     super(props);
     this.state = {
       bundle: {
-        gitRemoteName: '', imgRemoteName: '',
-        gitRepoName: '', imgRepoName: '',
-        gitRemoteList: [], imgRemoteList: [],
+        gitRemoteName: '',
+        imgRemoteName: '',
+        gitRepoName: '',
+        imgRepoName: '',
+        dfPath: '',
+        gitRemoteList: [],
+        imgRemoteList: [],
+        dfPathList: [],
         framework: ''
       },
       isGitFetching: false,
       isDockerFetching: false,
       isSubmitting: false,
+      isPathsFetching: false,
       matching: null
     };
 
@@ -39,6 +45,9 @@ export default class MatchPreview extends React.Component {
   componentDidMount() {
     if (this.props.hasGitRemote)
       this.fetchGitRepos();
+
+    if (this.props.hasGitRemote)
+      this.fetchDockerfilePaths();
 
     if (this.props.hasImageRegistry)
       this.fetchImageRepos();
@@ -168,6 +177,24 @@ export default class MatchPreview extends React.Component {
       this.updateBundle(H.setRemotesList('git', this, data));
       this.setState(s => ({...s, isGitFetching: false}));
       Helper.fetchMatching(this);
+    });
+  }
+
+  fetchDockerfilePaths(repoName){
+    const { gitRemoteList, gitRemoteName } = this.state.bundle;
+    if(!gitRemoteName) return;
+    const gitRemote = H.selectedRemote(gitRemoteList, gitRemoteName);
+    const ep = `/remotes/${gitRemote.id}/${repoName}/dockerfile_paths`;
+
+    this.onFormDataChanged('dfPath', '');
+    this.setState(s => ({...s, isPathsFetching: true}));
+    Backend.raisingFetch(ep, resp => {
+      const dfPathList = DataUtils.objKeysToSnake(resp['data']);
+      console.log("RE FETCHED ");
+      console.log(dfPathList);
+      const dfPath = dfPathList[0];
+      const bundle = {...this.state.bundle, dfPathList, dfPath };
+      this.setState(s => ({...s, bundle, isPathsFetching: false}));
     });
   }
 

@@ -203,22 +203,20 @@ class MatchingClass extends React.Component {
     if(this.state.isSubmitting || this.props.hasKubeError) return;
     const deps = this.state.deployments.filter(d => d.ms);
 
-
     let formatted = deps.map((deployment) => {
       const {gitRemoteName, gitRepoName} = deployment.ms;
       const {imgRemoteName, imgRepoName} = deployment.ms;
-      const {framework} = deployment.ms;
+      const {framework, dfPath} = deployment.ms;
 
       return {
         deployment: deployment.name,
         namespaces: deployment.namespaces,
         gitRemoteName, gitRepoName,
         imgRemoteName, imgRepoName,
-        framework
+        framework, dockerfilePath: dfPath
       }
     });
 
-    console.table(formatted);
     const payload = { data: DataUtils.objKeysToSnake(formatted) };
 
     this.setState((s) => ({...s, isSubmitting: true}));

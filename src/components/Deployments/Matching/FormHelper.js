@@ -60,6 +60,7 @@ export class FormHelper {
   }
 
   static setRepoName(type, inst, repoName, upChanges){
+    inst.fetchDockerfilePaths(repoName);
     const upstream = upChanges || inst.state.bundle;
     const remoteList = upstream[`${type}RemoteList`];
     const remoteName = upstream[`${type}RemoteName`];

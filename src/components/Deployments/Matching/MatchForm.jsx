@@ -2,6 +2,7 @@ import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {FormHelper as H} from "./FormHelper";
 import In from "../../../assets/input-combos";
+import MiscUtils from "../../../utils/MiscUtils";
 
 export default class MatchForm extends React.Component {
 
@@ -10,6 +11,7 @@ export default class MatchForm extends React.Component {
       <Fragment>
         { this.renderGitRemoteInput() }
         { this.renderGitRepoSelect() }
+        { this.renderDfPathSelect() }
         { this.renderImgRemoteSelect() }
         { this.renderImgRepoSelect() }
         { this.renderFrameworkSelect() }
@@ -33,6 +35,16 @@ export default class MatchForm extends React.Component {
       'Git Repository',
       'gitRepoName',
       H.repoOptions(gitRemoteList, gitRemoteName)
+    );
+  }
+
+  renderDfPathSelect(){
+    if(!this.props.hasGitRemote) return null;
+    const { dfPathList } = this.props;
+    return this.makeSelect(
+      'Dockerfile Path',
+      'dfPath',
+      MiscUtils.arrayOptions(dfPathList)
     );
   }
 
@@ -89,9 +101,12 @@ export default class MatchForm extends React.Component {
 
     gitRemoteList: PropTypes.array,
     imgRemoteList: PropTypes.array,
+    dfPathList: PropTypes.array,
 
     gitRemoteName: PropTypes.string,
     imgRemoteName: PropTypes.string,
+
+    dfPath: PropTypes.string,
 
     gitRepoName: PropTypes.string,
     imgRepoName: PropTypes.string,

@@ -10,37 +10,24 @@ export default class Helper{
       gitRepoName: matching.gitRepoName,
       imgRemoteName: matching.imgRemoteName,
       imgRepoName: matching.imgRepoName,
-      framework: matching.framework
+      framework: matching.framework,
+      dfPath: matching.dockerfilePath
     };
   }
 
   static makePayload(deployment){
     const {gitRemoteName, gitRepoName} = deployment;
     const {imgRemoteName, imgRepoName} = deployment;
-    const {name, namespace, framework} = deployment;
-    const namespaces = deployment.namespaces || [namespace];
+    const {name, dfPath, framework} = deployment;
 
     const payload = {
-      deployment: name, namespaces,
+      deployment: name, dockerfilePath: dfPath,
       gitRemoteName, gitRepoName,
       imgRemoteName, imgRepoName,
       framework
     };
 
     return DataUtils.objKeysToSnake(payload);
-  }
-
-  static submitMulti(inst, deps){
-    inst.setState((s) => ({...s, isSubmitting: true}));
-    let payload = deps.map((dep) => this.makePayload(dep));
-    payload = { data: payload };
-
-    Backend.raisingPost(`/microservices`, payload, () => {
-      inst.setState((s) => ({...s,
-        isSubmitting: false,
-        areAllSubmitted: true
-      }));
-    });
   }
 
   static submitSingle(inst){
@@ -92,7 +79,8 @@ export default class Helper{
   }
 
   static isLoading(inst){
-    const { isGitFetching, isDockerFetching, isSubmitting } = inst.state;
-    return isGitFetching || isDockerFetching || isSubmitting;
+    const { isGitFetching, isDockerFetching } = inst.state;
+    const { isSubmitting, isPathsFetching } = inst.state;
+    return isGitFetching || isDockerFetching || isSubmitting || isPathsFetching;
   }
 }
