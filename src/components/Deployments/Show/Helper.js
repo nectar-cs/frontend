@@ -26,7 +26,7 @@ export default class Helper {
     IntegrationsSection
   ];
 
-  static defaultSection = IntegrationsSection;
+  static defaultSection = ImageOpsSection;
 
   static classNameToKey(className){
     const key = className.replace("Section", "");

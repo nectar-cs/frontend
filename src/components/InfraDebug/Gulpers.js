@@ -20,9 +20,8 @@ class ServiceSetter extends Setter {
 
 class NodePointerSetter extends Setter{
   sideEffects(bundle) {
-    console.log("HEY NODE PT SET");
     const newNode = this._value;
-    bundle.inst.fetchStepMeta(newNode.id());
+    bundle.inst.fetchStepMeta(newNode.id(), newNode);
     return {};
   }
 }

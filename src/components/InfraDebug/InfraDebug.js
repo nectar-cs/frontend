@@ -8,6 +8,7 @@ import Node from "./Node";
 import DebugStep from "./DebugStep";
 import Gulpers from "./Gulpers";
 import Loader from "../../assets/loading-spinner";
+import TerminalStep from "./TerminalStep";
 
 class InfraDebugClass extends React.Component {
 
@@ -43,7 +44,8 @@ class InfraDebugClass extends React.Component {
         { this.renderTopLoader() }
         { this.renderLoader() }
         { this.renderOverviewSide() }
-        { this.renderActionSide() }
+        { this.renderDebugStep() }
+        { this.renderTerminalStep() }
       </Fragment>
     )
   }
@@ -53,7 +55,7 @@ class InfraDebugClass extends React.Component {
 
     const { deployment, matching, options } = this.state;
     const { semanticTree, crtNodePointer } = this.state;
-    const { isConfigDone, isStepExecuting } = this.state;
+    const { isConfigDone } = this.state;
     const formChoices = this.gulper.genChoices(this, options);
 
     return(
@@ -78,10 +80,11 @@ class InfraDebugClass extends React.Component {
     return <Loader.TopRightSpinner/>;
   }
 
-  renderActionSide(){
+  renderDebugStep(){
+    const { options, isStepExecuting, crtNodePointer } = this.state;
+    if(!crtNodePointer || crtNodePointer.isLeaf()) return null;
     if(!this.isDataReady()) return null;
 
-    const { options, isStepExecuting } = this.state;
     const formChoices = this.gulper.genChoices(this, options);
 
     const { isConfigDone } = this.state;
@@ -89,7 +92,7 @@ class InfraDebugClass extends React.Component {
       <Layout.RightPanel>
         <DebugStep
           type={this.type()}
-          node={this.state.crtNodePointer}
+          node={crtNodePointer}
           step={this.currentStep()}
           isActive={true}
           hasStarted={isStepExecuting}
@@ -98,6 +101,21 @@ class InfraDebugClass extends React.Component {
           runStepCallback={this.runStep}
           nextStepCallback={this.nextStep}
           isStepExecuting={isStepExecuting}
+        />
+      </Layout.RightPanel>
+    )
+  }
+
+  renderTerminalStep(){
+    const { crtNodePointer } = this.state;
+    if(!crtNodePointer || !crtNodePointer.isLeaf()) return null;
+    const crtStep = this.currentStep();
+
+    return(
+      <Layout.RightPanel>
+        <TerminalStep
+          node={crtNodePointer}
+          terminal={crtStep}
         />
       </Layout.RightPanel>
     )
@@ -118,14 +136,20 @@ class InfraDebugClass extends React.Component {
     this.setState(s => ({...s, ...changes}));
   }
 
-  fetchStepMeta(stepId, force = false){
+  fetchStepMeta(stepId, node, force = false){
     const exists = this.state.steps[stepId];
     if(!(!exists || force)) return null;
-
-    Helper.fetchStepMeta(this, stepId, meta => {
-      const steps = {...this.state.steps, [stepId]: meta};
-      this.update('steps', steps);
-    });
+    if(node.isLeaf()){
+      Helper.fetchTerminal(this, stepId, meta => {
+        const steps = {...this.state.steps, [stepId]: meta};
+        this.update('steps', steps);
+      });
+    } else {
+      Helper.fetchStepMeta(this, stepId, meta => {
+        const steps = {...this.state.steps, [stepId]: meta};
+        this.update('steps', steps);
+      });
+    }
   }
 
   runStep(){

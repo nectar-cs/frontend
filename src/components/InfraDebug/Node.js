@@ -17,6 +17,14 @@ export default class Node{
     return this == current;
   }
 
+  find(id){
+    if(this.id() === id) return this;
+    const negResult = this.negative && this.negative.find(id);
+    const posResult = this.positive && this.positive.find(id);
+    if(negResult || posResult) return negResult || posResult;
+    else return null;
+  }
+
   wasPositive(){
     return this.outcome === 'positive';
   }

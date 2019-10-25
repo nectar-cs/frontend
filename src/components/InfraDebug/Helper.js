@@ -27,6 +27,13 @@ export default class Helper{
     });
   }
 
+  static fetchTerminal(inst, stepId, callback){
+    const ep = `/api/analysis/${inst.type()}/terminal/${stepId}/info`;
+    Kapi.post(ep, this.stepPayload(inst), resp => {
+      callback(DataUtils.objKeysToCamel(resp['data']));
+    });
+  }
+
   static postRunStep(inst, stepId, callback){
     const ep = `/api/analysis/${inst.type()}/step/${stepId}/run`;
     Kapi.post(ep, this.stepPayload(inst), resp => {
