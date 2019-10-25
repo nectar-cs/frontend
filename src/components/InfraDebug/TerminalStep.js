@@ -83,15 +83,16 @@ export default class TerminalStep extends React.Component{
   renderResources(){
     const { terminal } = this.props;
     if(!terminal) return null;
-
     const Refs = () => terminal.resources.map(r => (
-      <li>
-        <a key={r.name} href={r.url}><p>{r.name}</p></a>
+      <li key={r.name} >
+        <a href={r.url} target='_blank' ><p>{r.name}</p></a>
       </li>
     ));
-
     return(
-      <ul><Refs/></ul>
+      <Fragment>
+        <TextOverLineSubtitle text='Recommended Reading'/>
+        <ul><Refs/></ul>
+      </Fragment>
     )
   }
 

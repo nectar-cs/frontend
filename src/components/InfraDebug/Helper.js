@@ -62,7 +62,7 @@ export default class Helper{
     return !!node.isCurrent(crt);
   }
 
-  static decideFill(node, crt){
+  static decideNodeFill(node, crt){
     if(node.isCurrent(crt))
       return theme.colors.primaryColor;
     else if(node.wasPositive())
@@ -71,8 +71,17 @@ export default class Helper{
       return theme.colors.fail;
   }
 
+  static decideLeafFill(node, crt){
+    if(node.isCurrent(crt))
+      return theme.colors.primaryColor;
+    else if(node.wasNegative())
+      return theme.colors.contrastColor;
+  }
+
   static structToState2(node, crt, side="top"){
-    const color = this.decideFill(node, crt);
+    const nodeColor = this.decideNodeFill(node, crt);
+    const leafColor = this.decideLeafFill(node, crt);
+
     const common = {
       key: node.id,
       name: node.title(),
@@ -82,13 +91,13 @@ export default class Helper{
     if(node.isLeaf()){
       return {
         ...common,
-        nodeSvgShape: S.leafShape,
+        nodeSvgShape: S.makeLeafShape(leafColor),
       }
     } else {
       return {
         ...common,
         _collapsed: !this.decideExpanded(node, crt),
-        nodeSvgShape: S.makeNodeShape(color),
+        nodeSvgShape: S.makeNodeShape(nodeColor),
         children: [
           this.structToState2(node.negative, crt, "left"),
           this.structToState2(node.positive, crt, "right")

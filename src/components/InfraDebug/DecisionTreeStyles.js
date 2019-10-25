@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import {theme} from "../../assets/constants";
+import {leaf} from "react-syntax-highlighter/dist/cjs/languages/hljs";
 
 const Container = styled.div`
   position: relative;
@@ -26,6 +27,14 @@ const boxDiag = Math.sqrt((nodeSide ** 2) * 2);
 function makeNodeShape(color=theme.colors.contrastColor){
   return({...nodeShape,
     shapeProps: { ...nodeShape.shapeProps,
+      fill: color
+    }
+  })
+}
+
+function makeLeafShape(color=theme.colors.contrastColor){
+  return({...leafShape,
+    shapeProps: {...leafShape.shapeProps,
       fill: color
     }
   })
@@ -83,7 +92,8 @@ const S = {
   treeStyles,
   LegendContainer,
   Container,
-  makeNodeShape
+  makeNodeShape,
+  makeLeafShape
 };
 
 export default S;

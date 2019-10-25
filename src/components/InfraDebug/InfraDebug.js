@@ -20,7 +20,7 @@ class InfraDebugClass extends React.Component {
       matching: source.matching,
       semanticTree: null,
       crtNodePointer: null,
-      isConfigDone: true,
+      isConfigDone: false,
       steps: {},
       isStepExecuting: false
     };
@@ -94,7 +94,6 @@ class InfraDebugClass extends React.Component {
           type={this.type()}
           node={crtNodePointer}
           step={this.currentStep()}
-          isActive={true}
           hasStarted={isStepExecuting}
           isConfigDone={isConfigDone}
           options={formChoices}

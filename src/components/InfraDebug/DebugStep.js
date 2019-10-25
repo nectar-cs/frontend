@@ -63,7 +63,8 @@ export default class DebugStep extends React.Component {
   }
 
   renderConsole(){
-    if(!this.props.step) return null;
+    const { step, isConfigDone } = this.props;
+    if(!isConfigDone || !step) return null;
 
     const copy = defaults.step.progress;
     const Content = () => this.terminalOutput().map(s => (
@@ -81,7 +82,8 @@ export default class DebugStep extends React.Component {
   }
 
   renderExplanation(){
-    if(!this.props.step) return null;
+    const { step, isConfigDone } = this.props;
+    if(!isConfigDone || !step) return null;
 
     const copy = defaults.step.explanation;
     const { summary, subSteps } = this.props.step;
@@ -125,8 +127,8 @@ export default class DebugStep extends React.Component {
   }
 
   renderMainButton(){
-    const { isActive, hasStarted, step } = this.props;
-    if(!isActive || !step) return null;
+    const { isConfigDone, hasStarted, step } = this.props;
+    if(!isConfigDone || !step) return null;
 
     const { runStepCallback, nextStepCallback } = this.props;
     const done = this.hasFinished();
@@ -169,7 +171,6 @@ export default class DebugStep extends React.Component {
   static propTypes = {
     type: PropTypes.string.isRequired,
     node: PropTypes.object,
-    isActive: PropTypes.bool.isRequired,
     hasStarted: PropTypes.bool.isRequired,
     runStepCallback: PropTypes.func.isRequired,
     nextStepCallback: PropTypes.func.isRequired,
