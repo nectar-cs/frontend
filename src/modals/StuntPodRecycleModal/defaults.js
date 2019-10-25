@@ -29,7 +29,8 @@ const defaults = {
 
   list: {
     title: "List",
-    button: "Delete All"
+    button: "Delete All",
+    done: "Close"
   }
 };
 

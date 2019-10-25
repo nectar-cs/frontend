@@ -9,6 +9,8 @@ import FlexibleModal from "../../hocs/FlexibleModal";
 import moment from "moment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import Kapi from "../../utils/Kapi";
+import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
+import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 
 export default class StuntPodRecycleModal extends React.Component {
 
@@ -22,11 +24,12 @@ export default class StuntPodRecycleModal extends React.Component {
     this.submit = this.submit.bind(this);
   }
 
-
   render(){
     return(
       <FlexibleModal mode='modal'>
         { this.renderHeader() }
+        { this.renderLoading() }
+        { this.renderDone() }
         { this.renderExplanation() }
         { this.renderTable() }
         { this.renderButton() }
@@ -45,7 +48,21 @@ export default class StuntPodRecycleModal extends React.Component {
     )
   }
 
+  renderLoading(){
+    if(this.state.isSubmitting){
+      return <CenterLoader/>
+    } else return null;
+  }
+
+  renderDone(){
+    if(!this.state.isDone) return null;
+    return <CenterAnnouncement iconName='check'/>;
+  }
+
   renderExplanation(){
+    const { isSubmitting, isDone } = this.state;
+    if(isSubmitting || isDone) return null;
+
     const Lines = () => defaults.explanation.lines.map(line => (
       <Text.P low={1.5}>{line}</Text.P>
     ));
@@ -59,6 +76,9 @@ export default class StuntPodRecycleModal extends React.Component {
   }
 
   renderTable(){
+    const { isSubmitting, isDone } = this.state;
+    if(isSubmitting || isDone) return null;
+
     const {stuntPods} = this.props;
     const PodRows = () => stuntPods.map(pod => (
       <PodRow key={pod.ip} {...pod}/>
@@ -77,17 +97,23 @@ export default class StuntPodRecycleModal extends React.Component {
   }
 
   renderButton(){
+    const { isSubmitting, isDone } = this.state;
+    const { closeModal } = this.props;
+    const callback = isDone ? closeModal : this.submit;
+    const copy = defaults.list;
+
     return(
       <ModalButton
-        title={defaults.list.title}
-        callback={this.submit}
+        title={isDone ? copy.done : copy.button}
+        callback={callback}
+        isEnabled={!isSubmitting}
       />
     )
   }
 
   submit(){
     this.setState(s => ({...s, isSubmitting: true}));
-    Kapi.post(`/api/cluster/kill_stunt_pods`, () => {
+    Kapi.post(`/api/cluster/kill_stunt_pods`, {}, () => {
       this.setState(s => ({...s, isSubmitting: false, isDone: true}));
     });
   }

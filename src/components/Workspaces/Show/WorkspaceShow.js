@@ -147,17 +147,16 @@ class WorkspaceShowClass extends React.Component{
   }
 
   fetchDeployments(){
-    // Helper.fetchDeployments(this, false);
+    Helper.fetchDeployments(this, false);
   }
 
   fetchMatchings(){
-    // Helper.fetchMatchings(this);
+    Helper.fetchMatchings(this);
   }
 
   fetchStuntTrash(){
     Helper.checkStuntTrash(stuntPods => {
       this.setState(s =>  ({...s, stuntPods}));
-      setTimeout(() =>  this.openRecycleModal(), 500);
     })
   }
 
