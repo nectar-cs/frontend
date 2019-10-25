@@ -22,6 +22,7 @@ export default class DeploymentCard extends React.Component {
     this.openPortForwardModal = this.openPortForwardModal.bind(this);
     this.openCommandsModal = this.openCommandsModal.bind(this);
     this.openHotModal = this.openHotModal.bind(this);
+    this.openHttpModal = this.openHttpModal.bind(this);
   }
 
   render(){
@@ -33,12 +34,6 @@ export default class DeploymentCard extends React.Component {
         { this.renderAdditionalControls() }
       </S.Card>
     )
-  }
-
-  componentDidMount(){
-    // if(this.props.deployment.name === 'news-crawl'){
-    //   this.openCommandsModal();
-    // }
   }
 
   renderHeader(){
@@ -84,8 +79,12 @@ export default class DeploymentCard extends React.Component {
     const svc = this.props.deployment.services[0];
     if(svc){
       const dnsMaterial = svc.externalIp ? 'language' : null;
-      const dnsAction = () => this.openHttpModal(svc.shortDns);
-      return this.buildRow('Quick DNS', svc.shortDns, dnsAction, dnsMaterial)
+      return this.buildRow(
+        'Quick DNS',
+        svc.shortDns,
+        this.openHttpModal,
+        dnsMaterial
+      )
     } else {
       return this.buildRow('Quick DNS', "No Services", null)
     }
@@ -132,13 +131,10 @@ export default class DeploymentCard extends React.Component {
     }));
   }
 
-  openHttpModal(text){
-    const svc = this.props.deployment.services[0];
+  openHttpModal(){
     const bundle = {
       deployment: this.props.deployment,
       matching: this.props.matching,
-      targetHost: text,
-      port: svc.fromPort,
       mode: 'modal'
     };
 

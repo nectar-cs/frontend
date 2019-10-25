@@ -25,6 +25,12 @@ export default class Helper{
     }, inst.props.apiErrorCallback);
   }
 
+  static checkStuntTrash(callback){
+    Kapi.fetch(`/api/cluster/stunt_pods`, resp => {
+      callback(DataUtils.objKeysToCamel(resp['data']));
+    });
+  }
+
   static workspace(inst){
     return inst.props.workspace;
   }

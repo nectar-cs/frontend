@@ -7,11 +7,8 @@ export default function Micon(props){
     <S.Micon
       onClick={props.callback}
       className='material-icons'
-      size={props.size}
       extras={props.e}
-      rotate={props.rotate}
-      emotion={props.emotion}
-    >
+      {...props}>
       { props.n }
     </S.Micon>
   )

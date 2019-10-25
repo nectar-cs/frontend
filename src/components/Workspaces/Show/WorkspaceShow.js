@@ -9,8 +9,9 @@ import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import Helper from "./Helper";
 import {connect} from "react-redux";
-import Backend from "../../../utils/Backend";
-import Setter from "../../../utils/StateGulp";
+import Button from "../../../assets/buttons";
+import Micon from "../../../widgets/Micon/Micon";
+import StuntPodRecycleModal from "../../../modals/StuntPodRecycleModal/StuntPodRecycleModal";
 
 class WorkspaceShowClass extends React.Component{
 
@@ -23,11 +24,13 @@ class WorkspaceShowClass extends React.Component{
       matchings: [],
       selectedIndex: 0,
       isEntered: false,
-      isFetching: false
+      isFetching: false,
+      stuntPods: []
     };
 
     this._willUnmount = false;
     this.fetchDeployments = this.fetchDeployments.bind(this);
+    this.openRecycleModal = this.openRecycleModal.bind(this);
     this.repeater = this.repeater.bind(this);
     this.repeater(false);
   }
@@ -44,12 +47,14 @@ class WorkspaceShowClass extends React.Component{
     if(this.state.deployments === null){
       if(nextProps.workspace){
         Helper.fetchDeployments(this, true, nextProps);
+        this.fetchStuntTrash();
       }
     }
 
     if(this.workspaceId() !== this.workspaceId(nextProps)){
-      this.fetchMatchings();
       Helper.fetchDeployments(this, true, nextProps);
+      this.fetchMatchings();
+      this.fetchStuntTrash();
     }
   }
 
@@ -59,6 +64,7 @@ class WorkspaceShowClass extends React.Component{
         { this.renderLoading() }
         { this.renderCards() }
         { this.renderEmpty() }
+        { this.renderRecycleButton() }
       </Fragment>
     );
   }
@@ -66,6 +72,26 @@ class WorkspaceShowClass extends React.Component{
   renderLoading(){
     if(!this.state.isFetching) return null;
     return <CenterLoader/>;
+  }
+
+  renderRecycleButton(){
+    const { stuntPods } = this.state;
+    if(stuntPods.length < 1) return null;
+
+    return(
+      <Button.FloatingPlus onClick={this.openRecycleModal}>
+        <Micon n='repeat' emotion='contrastColor'/>
+      </Button.FloatingPlus>
+    )
+  }
+
+  openRecycleModal(){
+    const stuntPods = this.state.stuntPods;
+
+    this.props.openModal(
+      StuntPodRecycleModal,
+      { stuntPods }
+    )
   }
 
   renderEmpty(){
@@ -120,8 +146,20 @@ class WorkspaceShowClass extends React.Component{
     return source.match.params['id'];
   }
 
-  fetchDeployments(){ Helper.fetchDeployments(this, false); }
-  fetchMatchings(){ Helper.fetchMatchings(this); }
+  fetchDeployments(){
+    // Helper.fetchDeployments(this, false);
+  }
+
+  fetchMatchings(){
+    // Helper.fetchMatchings(this);
+  }
+
+  fetchStuntTrash(){
+    Helper.checkStuntTrash(stuntPods => {
+      this.setState(s =>  ({...s, stuntPods}));
+      setTimeout(() =>  this.openRecycleModal(), 500);
+    })
+  }
 
   repeater(immediate=true){
     if(!this._willUnmount){
