@@ -5,6 +5,12 @@ const BACKEND_URL = process.env['BACKEND_URL'] || DEFAULT_URL;
 
 export default class Backend {
 
+  static baseUrl(){
+    if(process.env.NODE_ENV){
+
+    }
+  }
+
   static raisingFetch(endpoint, callback, errorCallback=null){
     this.raisingRequest('GET', endpoint, null, callback, errorCallback);
   }

@@ -63,6 +63,9 @@ module.exports = {
     extensions: ['*', '.js', '.jsx']
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'BACKEND_URL': JSON.stringify(process.env.REACT_APP_BACKEND_URL)
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: SRC_DIR + '/index.html',
