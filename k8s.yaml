@@ -19,8 +19,8 @@ spec:
           image: xnectar/frontend:latest
           imagePullPolicy: 'Always'
           env:
-            - name: RUN_ENV
-              value: production
+            - name: BACKEND_URL
+              value: <%= backend_url %>
 
 ---
 

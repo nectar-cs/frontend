@@ -1,13 +1,12 @@
 import Cookies from "js-cookie";
 
-const DEFAULT_URL = "http://localhost:3000";
-const BACKEND_URL = process.env['BACKEND_URL'] || DEFAULT_URL;
-
 export default class Backend {
 
   static baseUrl(){
-    if(process.env.NODE_ENV){
-
+    if(process.env.NODE_ENV === 'development'){
+      return 'http://localhost:3000';
+    } else {
+      return BACKEND_URL;
     }
   }
 
@@ -24,7 +23,7 @@ export default class Backend {
   }
 
   static raisingRequest(method, endpoint, body, callback, errorCallback){
-    let url = `${BACKEND_URL}${endpoint}`;
+    let url = `${this.baseUrl()}${endpoint}`;
     const headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -65,12 +64,8 @@ export default class Backend {
     )
   }
 
-  static postJson(endPoint, hash, callback, method='POST'){
-    this.postJsonWithErr(endPoint, hash, callback, null, method);
-  }
-
   static postJsonWithErr(endPoint, hash, callback, errorCallback, method='POST'){
-    let url = `${BACKEND_URL}${endPoint}`;
+    let url = `${this.baseUrl()}${endPoint}`;
     fetch(url, {
       method: method,
       headers: {
@@ -98,10 +93,6 @@ export default class Backend {
   }
 
   static kvSet(key, value){
-    return Cookies.set(key, value);
-  }
-
-  static kvUnset(key){
     return Cookies.set(key, value);
   }
 
