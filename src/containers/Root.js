@@ -6,6 +6,7 @@ import {makeRoute, ROUTES as R} from './RoutesConsts';
 import {Redirect, Switch} from "react-router";
 import NotFound from "../components/NotFound/NotFound";
 import Backend from "../utils/Backend";
+import Debug from "../components/NotFound/Debug";
 
 export default class Root extends Component {
 
@@ -25,6 +26,7 @@ export default class Root extends Component {
             { Root.renderRoute(R.workspaces.edit) }
             { Root.renderRoute(R.workspaces.show) }
             { Root.renderRoute(R.experiments.networkTest) }
+            <Route path='/debugz' exact component={Debug} />
             <Route path={'/'} exact {...this.homePageRoute()}/>
             <Route component={NotFound}/>
           </Switch>

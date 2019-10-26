@@ -1,6 +1,7 @@
 FROM node:8 as react-build
 WORKDIR /app
 COPY . ./
+ENV REACT_APP_BACKEND_URL https://mosaic-backend-stage.herokuapp.com
 RUN yarn
 RUN yarn build
 
