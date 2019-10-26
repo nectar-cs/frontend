@@ -32,11 +32,6 @@ const defaults = {
       demo: "Y u no route /foo to /bar?"
     }
   },
-  healthChecks: {
-    title: "Auto Diagnosis",
-    comingSoon: "The idea here is to guess what's not working."
-  },
-
   submit: "Start Wizard"
 };
 

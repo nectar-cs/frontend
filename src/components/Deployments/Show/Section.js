@@ -85,7 +85,6 @@ export default class Section extends React.Component {
 
   static propTypes = {
     isChosen: PropTypes.bool.isRequired,
-    chosenActivity: PropTypes.string,
     defaultDetailSetter: PropTypes.func.isRequired,
     deployment: Types.Deployment,
     matching: Types.Matching,

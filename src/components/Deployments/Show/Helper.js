@@ -33,13 +33,6 @@ export default class Helper {
     return key.charAt(0).toLowerCase() + key.slice(1);
   }
 
-  static defaultActivity(sectionClassName){
-    const key = this.classNameToKey(sectionClassName);
-    const activities = defaults.sections[key].activities;
-    const activityKeys = Object.keys(activities || {});
-    return activityKeys[0];
-  }
-
   static fetchDeployment(inst){
     const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;
     Kapi.fetch(ep, resp => {

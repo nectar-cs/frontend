@@ -9,19 +9,16 @@ class DeploymentShowClass extends React.Component{
   constructor(props){
     super(props);
     const focusedSection = Helper.defaultSection.name;
-    const focusedActivity = Helper.defaultActivity(focusedSection);
 
     this.state = {
       deployment: null,
       matching: null,
       commit: null,
-      focusedSection,
-      focusedActivity
+      focusedSection
     };
 
     this.setDefaultDetailFn = this.setDefaultDetailFn.bind(this);
     this.onSectionToggled = this.onSectionToggled.bind(this);
-    this.onActivityToggled = this.onActivityToggled.bind(this);
     this.reload = this.reload.bind(this);
     this.defDetailFns = {};
   }
@@ -41,17 +38,15 @@ class DeploymentShowClass extends React.Component{
 
   renderSections(){
     const { deployment, matching  } = this.state;
-    const { focusedSection, focusedActivity } = this.state;
+    const { focusedSection } = this.state;
     const Sections = () => Helper.sectionClasses.map(Section => (
       <Section
         key={Section.name}
         deployment={deployment}
         matching={matching}
         isChosen={Section.name === focusedSection}
-        chosenActivity={focusedActivity}
         defaultDetailSetter={this.setDefaultDetailFn}
         onClicked={this.onSectionToggled}
-        onActivityClicked={this.onActivityToggled}
         refreshCallback={this.reload}
       />
     ));
@@ -79,10 +74,6 @@ class DeploymentShowClass extends React.Component{
   onSectionToggled(focusedSection){
     if(focusedSection === this.state.focusedSection) return;
     this.setState(s => ({ ...s, focusedSection }));
-  }
-
-  onActivityToggled(focusedActivity){
-    this.setState(s => ({...s, focusedActivity}));
   }
 
   reload(){
