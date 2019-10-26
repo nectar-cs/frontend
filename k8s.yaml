@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: nectar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      namespace: nectar
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-container
+          image: xnectar/frontend:latest
+          imagePullPolicy: 'Always'
+          env:
+            - name: RUN_ENV
+              value: production
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend
+  namespace: nectar
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
