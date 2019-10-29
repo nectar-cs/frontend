@@ -6,6 +6,7 @@ export default class PodOpHelper {
   constructor(){
     this.initial = [];
     this.updated = [];
+    this.job = {};
   }
 
   refresh(bundle){
@@ -81,10 +82,10 @@ export default class PodOpHelper {
     })
   }
 
+  hasTermOutput(){ return false; }
   buildPodList() { throw `Method buildPodList not implemented!`; }
   isStableState(){ throw `Method isStableState not implemented!`; }
   isCrashedState(){ throw `Method isCrashedState not implemented!`; }
-  isTimedOut(){ throw `Method isTimedOut not implemented!`; }
   successMessage(){ throw `Method successMessage not implemented!`; }
   progressItems(failed){ throw `Method progressItems not implemented!`; }
 }

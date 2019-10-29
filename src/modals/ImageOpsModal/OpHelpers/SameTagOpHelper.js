@@ -2,12 +2,6 @@ import PodOpHelper from "./PodOpHelper";
 
 export default class SameTagOpHelper extends PodOpHelper {
 
-  isTimedOut() {
-    const now = new Date().getTime();
-    const limitSeconds = this.initial.length * 20;
-    return ((now - this.startedAt) / 1000) > limitSeconds;
-  }
-
   isStableState() {
     return this.checkGroupInState(
       this.strictlyNewPods(),

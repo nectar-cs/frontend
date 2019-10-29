@@ -23,17 +23,21 @@ export default class Kapi {
     this.raisingRequest('POST', endpoint, body, callback, errorCallback);
   }
 
-  static raisingRequest(method, endpoint, body, callback, errorCallback=null){
-    let url = `${BACKEND_URL}${endpoint}`;
-
+  static prepRequest(method, body){
     body = body ? JSON.stringify(body) : null;
-
     const headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
+    return  {method, headers, body};
+  }
 
-    fetch(url, {method, headers, body})
+  static url(endpoint){
+    return `${BACKEND_URL}${endpoint}`;
+  }
+
+  static raisingRequest(method, endpoint, body, callback, errorCallback=null){
+    fetch(this.url(endpoint), this.prepRequest(method, body))
     .then(
       (response) => (
         response.json().then(

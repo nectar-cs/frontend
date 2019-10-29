@@ -17,6 +17,7 @@ import Layout from "../../assets/layouts";
 import Text from "./../../assets/text-combos"
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
+import TermSection from "../../widgets/TermSection/TermSection";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
@@ -46,7 +47,13 @@ export default class ImageOpsModal extends React.Component {
       updatedPods: null,
       conclusion: null,
       conclusionReason: null,
-      buildJobId: null
+      buildJobId: null,
+      termOutput: [],
+      job: {
+        id: null,
+        state: null,
+        output: null
+      }
     };
 
     this._isMounted = true;
@@ -76,6 +83,7 @@ export default class ImageOpsModal extends React.Component {
         { this.renderConfigForm() }
         { this.renderGamePlan() }
         { this.renderChecklist() }
+        { this.renderTermOutput() }
         { this.renderConclusion() }
         { this.renderPodList() }
         { this.renderButton() }
@@ -148,18 +156,20 @@ export default class ImageOpsModal extends React.Component {
   }
 
   renderGamePlan(){
-    const Lines = () => Helper.previewCommands(this).map(cmd => (
-      <Text.Code key={cmd} chill>{cmd}</Text.Code>
-    ));
-
+    if(!this.isConfiguring()) return null;
     return(
-      <Fragment>
-        <TextOverLineSubtitle text='Game Plan'/>
-        <Layout.BigCodeViewer>
-          <Lines/>
-        </Layout.BigCodeViewer>
-      </Fragment>
+      <TermSection
+        title='Game Plan'
+        lines={Helper.previewCommands(this)}
+      />
     )
+  }
+
+  renderTermOutput(){
+    if(!this.isSubmitted()) return null;
+    if(!Helper.opHelper(this).hasTermOutput()) return null;
+    const { output } = this.state.job;
+    return <TermSection title={'Execution'} lines={output}/>;
   }
 
   renderPodList(){
@@ -190,63 +200,50 @@ export default class ImageOpsModal extends React.Component {
   }
 
   submit() {
-    const payload = {
-      dep_namespace: this.props.deployment.namespace,
-      dep_name: this.props.deployment.name,
-      scale_to: this.state.choices.scaleTo,
-      target_name: this.state.choices.imageName
-    };
-
-    const endpoint = `/api/run/${Helper.urlAction(this)}`;
-    this.setState(s => ({...s, phase: PHASE_SUBMITTING}));
-    Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
-  }
-
-  submitBuildFromGit(){
-    const { deployment, matching } = this.props;
-    const { outImageName, commit } = this.state.choices;
-    const ep = `/remotes/${matching.gitRemoteId}/src_zip`;
-    const payload = { repo: matching.gitRepoName, sha: commit };
-    Backend.raisingPost(ep, payload, resp => {
-      let pack = {...resp['data'], outImageName };
-      Kapi.post(`/api/run/build_push_docker`, pack, resp => {
-        console.log("God help us now.");
-      });
-    });
+    if(this.state.choices.operationType === 'git'){
+      this.setState(s => ({...s, phase: PHASE_SUBMITTED}));
+      Helper.submitBuildFromGit(this);
+    } else {
+      this.setState(s => ({...s, phase: PHASE_SUBMITTING}));
+      Helper.performImageOp(this);
+    }
   }
 
   repeater(updatedPods){
-    if(!this.tryHaltingReloadLoop(updatedPods))
+    const result = this.tryHaltingReloadLoop(updatedPods);
+
+    if(result){
+      this.setState(s => ({...s, ...result}));
+      this.notifySubscribers();
+    } else {
       setTimeout(this.reloadPods, 1000);
+    }
   }
 
   tryHaltingReloadLoop(){
     const opHelper = Helper.opHelper(this);
-    let conclusion = null, conclusionReason = null;
+    let conclusion = null, reason = null;
 
     if(opHelper.isStableState()) {
-      conclusion = true;
-      conclusionReason = opHelper.successMessage();
-    }
-    else if(opHelper.isTimedOut()) {
       conclusion = false;
-      conclusionReason = "Failed to reach the desired state in time";
-    }
-    else{
-      const crash = opHelper.isCrashedState();
-      if(crash.isCrashed) {
-        conclusion = false;
-        conclusionReason = crash.reason;
-      }
+      reason = 'Implement me';
     }
 
-    if(conclusion !== null) {
-      let bundle = {phase: PHASE_CONCLUDED, conclusion, conclusionReason};
-      this.notifySubscribers();
-      this.setState(s => ({...s, ...bundle}));
-      return true;
+    else if(opHelper.isStableState()) {
+      conclusion = true;
+      reason = opHelper.successMessage();
     }
-    else return false;
+    return { conclusion, reason};
+  }
+
+  pullProgressData(force){
+    if(force || this.isSubmitted()){
+      if(2) {
+        Helper.fetchPods(this, 'updatedPods', this.repeater)
+      } else {
+        Helper.submitBuildFromGit()
+      }
+    }
   }
 
   reloadPods(force){
@@ -255,14 +252,10 @@ export default class ImageOpsModal extends React.Component {
     }
   }
 
-  reloadGitJob(){
-
+  reloadBuildJob(){
   }
 
-  config(){
-    this.setState(s => ({...s, phase: PHASE_CONFIG}));
-  }
-
+  config(){ this.setState(s => ({...s, phase: PHASE_CONFIG})); }
   isSubmitting(){ return this.state.phase === PHASE_SUBMITTING }
   isConfiguring(){ return this.state.phase === PHASE_CONFIG }
   isConcluded(){ return this.state.phase === PHASE_CONCLUDED }

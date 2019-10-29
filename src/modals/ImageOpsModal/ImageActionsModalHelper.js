@@ -31,6 +31,11 @@ export class ImageActionsModalHelper {
     })
   }
 
+
+
+  static fetchJobState(){
+  }
+
   static fetchImgTags(inst){
     let {imgRemoteId, imgRepoName} = inst.props.matching || {};
 
@@ -49,6 +54,36 @@ export class ImageActionsModalHelper {
       inst.setState(s => ({...s, remotes: { ...s.remotes, imageTags }}));
       inst.setState(s => ({...s, choices: { ...s.choices, imageTag }}));
     })
+  }
+
+  static async submitBuildFromGit(inst){
+    const { matching } = inst.props;
+    const { outImageName, commit } = inst.state.choices;
+
+    const tarResp = await fetch(
+      Backend.url(`/microservices/${matching.id}/src_tarball`),
+      Backend.prepRequest('POST', { sha: commit })
+    );
+
+    console.log("GOT THE RESP");
+    const tarBun = await tarResp.json();
+    console.log("GOT THE JSON");
+    console.log(tarBun);
+  }
+
+  static performImageOp(inst){
+    const { deployment } = inst.props;
+    const { choices } = inst.state;
+
+    const payload = DataUtils.objKeysToSnake({
+      depNamespace: deployment.namespace,
+      depName: deployment.name,
+      scaleTo: choices.scaleTo,
+      targetName: choices.imageName
+    });
+
+    const endpoint = `/api/run/${Helper.urlAction(this)}`;
+    Kapi.post(endpoint, payload, inst.onSuccess, inst.onFailure);
   }
 
   static fetchGitBranches(inst){
@@ -129,6 +164,7 @@ export class ImageActionsModalHelper {
 
     if(!(inst.opHelper instanceof oughtToBeClass)){
       inst.opHelper = new oughtToBeClass();
+      console.log(`Cached ${oughtToBeClass.name}`)
     }
 
     inst.opHelper.refresh(this.makeOpHelperBundle(inst));

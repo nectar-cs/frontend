@@ -22,8 +22,11 @@ export default class Backend {
     this.raisingRequest('DELETE', endpoint, null, callback, errorCallback);
   }
 
-  static raisingRequest(method, endpoint, body, callback, errorCallback){
-    let url = `${this.baseUrl()}${endpoint}`;
+  static url(endpoint){
+    return `${this.baseUrl()}${endpoint}`;
+  }
+
+  static prepRequest(method, body){
     const headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -32,8 +35,11 @@ export default class Backend {
     };
 
     body = body ? JSON.stringify(body) : null;
+    return { method, headers, body };
+  }
 
-    fetch(url, {method, headers, body})
+  static raisingRequest(method, endpoint, body, callback, errorCallback){
+    fetch(this.url(endpoint), this.prepRequest(method, body))
     .then(
       (response) => (
         response.json().then(
@@ -54,11 +60,7 @@ export default class Backend {
         )
       ),
       (error) => {
-        const bundle = {
-          kind: "hard",
-          error,
-          status: error.status
-        };
+        const bundle = { kind: "hard", error, status: error.status };
         errorCallback && errorCallback(bundle);
       }
     )

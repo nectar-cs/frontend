@@ -6,12 +6,6 @@ export default class ScalePodsHelper extends PodOpHelper {
     return "Pods scaled to required amount and are running.";
   }
 
-  isTimedOut() {
-    const now = new Date().getTime();
-    const limitSeconds = Math.abs(this.delta()) * 20;
-    return ((now - this.startedAt) / 1000) > limitSeconds;
-  }
-
   isCrashedState(){
     return { isCrashed: false, reason: "lolz" };
   }

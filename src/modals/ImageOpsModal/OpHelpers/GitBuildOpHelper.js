@@ -2,14 +2,12 @@ import PodOpHelper from "./PodOpHelper";
 
 export default class GitBuildOpHelper extends PodOpHelper {
 
-  successMessage() {
-    return "All pods running the new image.";
+  hasTermOutput() {
+    return true;
   }
 
-  isTimedOut() {
-    const now = new Date().getTime();
-    const limitSeconds = this.initial.length * 12;
-    return ((now - this.startedAt) / 1000) > limitSeconds;
+  successMessage() {
+    return "All pods running the new image.";
   }
 
   isCrashedState(){
@@ -39,6 +37,16 @@ export default class GitBuildOpHelper extends PodOpHelper {
   progressItems(){
     const patched = this.readyPods();
     return [
+      super.buildProgressItem(
+        "Git repo cloned",
+        `0/1`,
+        false
+      ),
+      super.buildProgressItem(
+        "New image",
+        `building`,
+        false,
+      ),
       super.buildProgressItem(
         "Pods running new image",
         `${patched.length}/${this.initial.length}`,
