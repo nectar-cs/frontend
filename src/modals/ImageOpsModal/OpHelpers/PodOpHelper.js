@@ -1,10 +1,13 @@
 import isEqual from 'lodash/isEqual';
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export default class PodOpHelper {
 
-  constructor(){
-    this.initial = [];
+  constructor(initial){
+    this.initial = initial;
     this.updated = [];
     this.job = {};
   }
@@ -82,10 +85,22 @@ export default class PodOpHelper {
     })
   }
 
+  async refreshProgress(){
+
+  }
+
+  async perform(bun){
+    const submit = await fetch('submit');
+
+    while(!this.isStableState()){
+      this.refreshProgress();
+      await sleep(3);
+    }
+  }
+
   hasTermOutput(){ return false; }
   buildPodList() { throw `Method buildPodList not implemented!`; }
   isStableState(){ throw `Method isStableState not implemented!`; }
-  isCrashedState(){ throw `Method isCrashedState not implemented!`; }
   successMessage(){ throw `Method successMessage not implemented!`; }
   progressItems(failed){ throw `Method progressItems not implemented!`; }
 }

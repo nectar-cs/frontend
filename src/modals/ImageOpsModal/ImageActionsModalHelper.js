@@ -31,11 +31,6 @@ export class ImageActionsModalHelper {
     })
   }
 
-
-
-  static fetchJobState(){
-  }
-
   static fetchImgTags(inst){
     let {imgRemoteId, imgRepoName} = inst.props.matching || {};
 
@@ -142,33 +137,19 @@ export class ImageActionsModalHelper {
     return `${imgRemoteName}/${imgRepoName}:${imageTag}`;
   }
 
-  static opHelper(inst){
-    const opType = inst.state.choices.operationType;
-
-    let oughtToBeClass;
-    switch (opType) {
+  static opHelper(operationType){
+    switch (operationType) {
       case "reload":
-        oughtToBeClass = SameTagOpHelper;
-        break;
+        return SameTagOpHelper;
       case "change":
       case "choose":
       case "docker":
-        oughtToBeClass = DiffTagOpHelper;
-        break;
+        return DiffTagOpHelper;
       case "scale":
-        oughtToBeClass = ScalePodsHelper;
-        break;
+        return ScalePodsHelper;
       default:
         throw `No helper for op type ${opType}`;
     }
-
-    if(!(inst.opHelper instanceof oughtToBeClass)){
-      inst.opHelper = new oughtToBeClass();
-      console.log(`Cached ${oughtToBeClass.name}`)
-    }
-
-    inst.opHelper.refresh(this.makeOpHelperBundle(inst));
-    return inst.opHelper;
   }
 
   static podsRenderer(inst){
@@ -207,19 +188,6 @@ export class ImageActionsModalHelper {
     else if(deployment)
       return deployment.imageName;
     else return "";
-  }
-
-  static makeOpHelperBundle(inst){
-    const { initialPods, updatedPods, conclusion } = inst.state;
-    const { imageName, scaleTo } = inst.state.choices;
-    return {
-      initialPods,
-      updatedPods,
-      scaleTo,
-      imageName,
-      conclusion,
-      startTime: inst.startTime
-    };
   }
 
   static commitToS(commit){

@@ -1,22 +1,16 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import {Types} from "../../types/Deployment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import ImageForm from "./ImageForm";
-import Kapi from "../../utils/Kapi";
 import Checklist from "./Checklist";
 import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Conclusion from "./Conclusion";
 import {defaults} from "./defaults";
 import FlexibleModal from "../../hocs/FlexibleModal";
-import Layout from "../../assets/layouts";
-import Text from "./../../assets/text-combos"
-import Backend from "../../utils/Backend";
-import DataUtils from "../../utils/DataUtils";
 import TermSection from "../../widgets/TermSection/TermSection";
 
 const PHASE_CONFIG = 'configuring';
@@ -26,43 +20,27 @@ const PHASE_CONCLUDED = 'concluded';
 
 export default class ImageOpsModal extends React.Component {
 
+  static initialChoices(props){
+    return({
+      operationType: Helper.defOpType(props),
+      imageName: '',
+      outImageName: Helper.defOutImageName(props),
+      scaleTo: (props.deployment.replicas + 1).toString(),
+      imgSource: '',
+      gitBranch: '',
+      gitCommit: ''
+    })
+  }
+
   constructor(props){
     super(props);
     this.state = {
-      choices: {
-        operationType: Helper.defOpType(props),
-        imageName: '',
-        outImageName: Helper.defOutImageName(props),
-        scaleTo: (props.deployment.replicas + 1).toString(),
-        imgSource: '',
-        gitBranch: '',
-        gitCommit: ''
-      },
-      remotes: {
-        imageTags: [],
-        gitBranches: []
-      },
+      choices: ImageOpsModal.initialChoices(props),
+      remotes: { imageTags: [], gitBranches: [] },
       phase: PHASE_CONFIG,
-      initialPods: [],
-      updatedPods: null,
-      conclusion: null,
-      conclusionReason: null,
-      buildJobId: null,
-      termOutput: [],
-      job: {
-        id: null,
-        state: null,
-        output: null
-      }
     };
 
-    this._isMounted = true;
-    this.repeater = this.repeater.bind(this);
-    this.reloadPods = this.reloadPods.bind(this);
-    this.onSuccess = this.onSuccess.bind(this);
-    this.onFailure = this.onFailure.bind(this);
     this.submit = this.submit.bind(this);
-    this.config = this.config.bind(this);
   }
 
   componentDidMount(){
@@ -83,9 +61,9 @@ export default class ImageOpsModal extends React.Component {
         { this.renderConfigForm() }
         { this.renderGamePlan() }
         { this.renderChecklist() }
-        { this.renderTermOutput() }
-        { this.renderConclusion() }
-        { this.renderPodList() }
+        {/*{ this.renderTermOutput() }*/}
+        {/*{ this.renderConclusion() }*/}
+        {/*{ this.renderPodList() }*/}
         { this.renderButton() }
       </FlexibleModal>
     )
@@ -112,16 +90,13 @@ export default class ImageOpsModal extends React.Component {
   renderChecklist(){
     if(!(this.isSubmitted() || this.isConcluded())) return null;
     const { initialPods, updatedPods } = this.state;
-    const opHelper = Helper.opHelper(this);
-    const items = opHelper.progressItems(initialPods, updatedPods);
+    const items = this.opHelper.progressItems(initialPods, updatedPods);
     return <Checklist items={items}/>
   }
 
   renderConclusion(){
     if(!this.isConcluded()) return null;
-
-    const opHelper = Helper.opHelper(this);
-    const reason = opHelper.successMessage();
+    const reason = this.opHelper.successMessage();
 
     return(
       <Conclusion
@@ -167,7 +142,7 @@ export default class ImageOpsModal extends React.Component {
 
   renderTermOutput(){
     if(!this.isSubmitted()) return null;
-    if(!Helper.opHelper(this).hasTermOutput()) return null;
+    if(!this.opHelper(this).hasTermOutput()) return null;
     const { output } = this.state.job;
     return <TermSection title={'Execution'} lines={output}/>;
   }
@@ -193,69 +168,10 @@ export default class ImageOpsModal extends React.Component {
     this.setState(s => ({...s,  phase: PHASE_SUBMITTED}));
   }
 
-  onSuccess(){
-    this.setState(s => ({...s, phase: PHASE_SUBMITTED}));
-    this.reloadPods(true);
-    this.notifySubscribers();
-  }
-
   submit() {
-    if(this.state.choices.operationType === 'git'){
-      this.setState(s => ({...s, phase: PHASE_SUBMITTED}));
-      Helper.submitBuildFromGit(this);
-    } else {
-      this.setState(s => ({...s, phase: PHASE_SUBMITTING}));
-      Helper.performImageOp(this);
-    }
+    this.opHelper = this.
   }
 
-  repeater(updatedPods){
-    const result = this.tryHaltingReloadLoop(updatedPods);
-
-    if(result){
-      this.setState(s => ({...s, ...result}));
-      this.notifySubscribers();
-    } else {
-      setTimeout(this.reloadPods, 1000);
-    }
-  }
-
-  tryHaltingReloadLoop(){
-    const opHelper = Helper.opHelper(this);
-    let conclusion = null, reason = null;
-
-    if(opHelper.isStableState()) {
-      conclusion = false;
-      reason = 'Implement me';
-    }
-
-    else if(opHelper.isStableState()) {
-      conclusion = true;
-      reason = opHelper.successMessage();
-    }
-    return { conclusion, reason};
-  }
-
-  pullProgressData(force){
-    if(force || this.isSubmitted()){
-      if(2) {
-        Helper.fetchPods(this, 'updatedPods', this.repeater)
-      } else {
-        Helper.submitBuildFromGit()
-      }
-    }
-  }
-
-  reloadPods(force){
-    if(force || this.isSubmitted()){
-      Helper.fetchPods(this, 'updatedPods', this.repeater)
-    }
-  }
-
-  reloadBuildJob(){
-  }
-
-  config(){ this.setState(s => ({...s, phase: PHASE_CONFIG})); }
   isSubmitting(){ return this.state.phase === PHASE_SUBMITTING }
   isConfiguring(){ return this.state.phase === PHASE_CONFIG }
   isConcluded(){ return this.state.phase === PHASE_CONCLUDED }
