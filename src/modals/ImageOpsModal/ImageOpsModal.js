@@ -15,6 +15,8 @@ import {defaults} from "./defaults";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import Layout from "../../assets/layouts";
 import Text from "./../../assets/text-combos"
+import Backend from "../../utils/Backend";
+import DataUtils from "../../utils/DataUtils";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
@@ -43,7 +45,8 @@ export default class ImageOpsModal extends React.Component {
       initialPods: [],
       updatedPods: null,
       conclusion: null,
-      conclusionReason: null
+      conclusionReason: null,
+      buildJobId: null
     };
 
     this._isMounted = true;
@@ -199,6 +202,19 @@ export default class ImageOpsModal extends React.Component {
     Kapi.post(endpoint, payload, this.onSuccess, this.onFailure);
   }
 
+  submitBuildFromGit(){
+    const { deployment, matching } = this.props;
+    const { outImageName, commit } = this.state.choices;
+    const ep = `/remotes/${matching.gitRemoteId}/src_zip`;
+    const payload = { repo: matching.gitRepoName, sha: commit };
+    Backend.raisingPost(ep, payload, resp => {
+      let pack = {...resp['data'], outImageName };
+      Kapi.post(`/api/run/build_push_docker`, pack, resp => {
+        console.log("God help us now.");
+      });
+    });
+  }
+
   repeater(updatedPods){
     if(!this.tryHaltingReloadLoop(updatedPods))
       setTimeout(this.reloadPods, 1000);
@@ -237,6 +253,10 @@ export default class ImageOpsModal extends React.Component {
     if(force || this.isSubmitted()){
       Helper.fetchPods(this, 'updatedPods', this.repeater)
     }
+  }
+
+  reloadGitJob(){
+
   }
 
   config(){
