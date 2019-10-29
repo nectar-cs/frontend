@@ -22,7 +22,7 @@ export default class ImageOpsModal extends React.Component {
 
   static initialChoices(props){
     return({
-      operationType: Helper.defOpType(props),
+      operationType: Helper.defaultOpType(props),
       imageName: '',
       outImageName: Helper.defOutImageName(props),
       scaleTo: (props.deployment.replicas + 1).toString(),
@@ -64,7 +64,8 @@ export default class ImageOpsModal extends React.Component {
         {/*{ this.renderTermOutput() }*/}
         {/*{ this.renderConclusion() }*/}
         {/*{ this.renderPodList() }*/}
-        { this.renderButton() }
+        { this.renderSubmitButton() }
+        { this.renderEditButton() }
       </FlexibleModal>
     )
   }
@@ -111,6 +112,8 @@ export default class ImageOpsModal extends React.Component {
     const { choices, remotes } = this.state;
     const deployment = this.props.deployment;
     const branchNames = Object.keys(remotes.gitBranches || {});
+    const selBranchName = choices.gitBranch;
+    const selBranch = Helper.selectedBranchBundle(remotes, selBranchName);
 
     return(
       <ImageForm
@@ -123,7 +126,7 @@ export default class ImageOpsModal extends React.Component {
         availableTags={remotes.imageTags}
         outImageName={choices.outImageName}
         availableBranches={remotes.gitBranches ? branchNames : null}
-        availableCommits={this.selBranchObj()}
+        availableCommits={selBranch}
         initialReplicas={deployment.replicas}
         replaceModal={this.props.replaceModal}
       />
@@ -140,36 +143,27 @@ export default class ImageOpsModal extends React.Component {
     )
   }
 
-  renderTermOutput(){
-    if(!this.isSubmitted()) return null;
-    if(!this.opHelper(this).hasTermOutput()) return null;
-    const { output } = this.state.job;
-    return <TermSection title={'Execution'} lines={output}/>;
+  renderSubmitButton(){
+    if(!this.isConfiguring()) return null;
+
+    return(
+      <ModalButton
+        isEnabled={Helper.isInputValid(this)}
+        callback={this.submit}
+        title={'Apply'}
+      />
+    )
   }
 
-  renderPodList(){
-    if(this.isConfiguring()) return null;
-    if(this.isSubmitting()) return null;
-    const podsFilter = Helper.opHelper(this);
-    const pods = podsFilter.buildPodList();
-    const PodTableRenderer = Helper.podsRenderer(this);
-    return <PodTableRenderer pods={pods}/>;
-  }
-
-  renderButton(){
-    const valid = Helper.isInputValid(this);
-    const enabled = (this.isConfiguring() && valid) || this.isConcluded();
-    const callback = this.isConfiguring() ? this.submit : this.config;
-    const text = this.isConfiguring() ? "Apply" : "New Operation";
-    return <ModalButton isEnabled={enabled} callback={callback} title={text}/>
-  }
-
-  onFailure(){
-    this.setState(s => ({...s,  phase: PHASE_SUBMITTED}));
+  renderEditButton(){
+    if(!this.isConcluded()) return null;
+    return <ModalButton callback={this.submit} title={'New Operation'}/>;
   }
 
   submit() {
-    this.opHelper = this.
+    const { operationType } = this.state.choices;
+    this.opHelper = Helper.opHelper(operationType);
+    this.opHelper.perform();
   }
 
   isSubmitting(){ return this.state.phase === PHASE_SUBMITTING }
@@ -184,12 +178,6 @@ export default class ImageOpsModal extends React.Component {
 
     if(!Helper.sideEffect(this, key, value))
       this.setState(s => ({...s, choices: merged}));
-  }
-
-  selBranchObj(){
-    const { gitBranches } = this.state.remotes;
-    if(!gitBranches) return null;
-    return gitBranches[this.state.choices.gitBranch];
   }
 
   notifySubscribers(){

@@ -11,7 +11,13 @@ import {defaults} from "./defaults";
 
 export class ImageActionsModalHelper {
 
-  static defOpType(props){
+  static selectedBranchBundle(remotes, branchName){
+    const { gitBranches } = remotes;
+    if(!gitBranches) return null;
+    return gitBranches[branchName];
+  }
+
+  static defaultOpType(props){
     const { matching } = props;
     if(matching && matching.imgRemoteId){
       return props.operationType || "git";
