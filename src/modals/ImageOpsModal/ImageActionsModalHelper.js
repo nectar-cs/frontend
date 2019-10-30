@@ -1,4 +1,3 @@
-import Kapi from "../../utils/Kapi";
 import DataUtils from "../../utils/DataUtils";
 import React from "react";
 import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./PodTableRenderers";
@@ -26,17 +25,6 @@ export class ImageActionsModalHelper {
     }
   }
 
-  static fetchPods(inst, field, runAfter){
-    const { name, namespace } = inst.props.deployment;
-    const endpoint = `/api/deployments/${namespace}/${name}/pods`;
-    Kapi.fetch(endpoint, (resp) => {
-      if(!inst._isMounted) return;
-      const data = DataUtils.objKeysToCamel(resp)['data'];
-      inst.setState(s => ({...s, [field]: data}));
-      runAfter && runAfter();
-    })
-  }
-
   static fetchImgTags(inst){
     let {imgRemoteId, imgRepoName} = inst.props.matching || {};
 
@@ -55,36 +43,6 @@ export class ImageActionsModalHelper {
       inst.setState(s => ({...s, remotes: { ...s.remotes, imageTags }}));
       inst.setState(s => ({...s, choices: { ...s.choices, imageTag }}));
     })
-  }
-
-  static async submitBuildFromGit(inst){
-    const { matching } = inst.props;
-    const { outImageName, commit } = inst.state.choices;
-
-    const tarResp = await fetch(
-      Backend.url(`/microservices/${matching.id}/src_tarball`),
-      Backend.prepRequest('POST', { sha: commit })
-    );
-
-    console.log("GOT THE RESP");
-    const tarBun = await tarResp.json();
-    console.log("GOT THE JSON");
-    console.log(tarBun);
-  }
-
-  static performImageOp(inst){
-    const { deployment } = inst.props;
-    const { choices } = inst.state;
-
-    const payload = DataUtils.obj2Snake({
-      depNamespace: deployment.namespace,
-      depName: deployment.name,
-      scaleTo: choices.scaleTo,
-      targetName: choices.imageName
-    });
-
-    const endpoint = `/api/run/${Helper.urlAction(this)}`;
-    Kapi.post(endpoint, payload, inst.onSuccess, inst.onFailure);
   }
 
   static fetchGitBranches(inst){
@@ -172,18 +130,6 @@ export class ImageActionsModalHelper {
       case 'docker':
       case 'change': return DesiredTagPodTable;
       default: throw `No renderer for op type ${opType}`;
-    }
-  }
-
-  static urlAction(inst){
-    const opType = inst.state.choices.operationType;
-
-    switch (opType) {
-      case "reload": return "image_reload";
-      case "scale": return "scale_replicas";
-      case "docker":
-      case "change": return "new_image";
-      default: throw `No helper for op type ${opType}`;
     }
   }
 

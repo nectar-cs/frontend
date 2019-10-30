@@ -10,6 +10,7 @@ import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import {defaults} from "./defaults";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import TermSection from "../../widgets/TermSection/TermSection";
+import Checklist from "./Checklist";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
@@ -24,8 +25,10 @@ export default class ImageOpsModal extends React.Component {
       choices: ImageOpsModal.initialChoices(props),
       remotes: ImageOpsModal.initialRemotes(),
       phase: PHASE_CONFIG,
+      progressItems: []
     };
     this.submit = this.submit.bind(this);
+    this.updateProgress = this.updateProgress.bind(this);
   }
 
   componentDidMount(){
@@ -70,11 +73,9 @@ export default class ImageOpsModal extends React.Component {
   }
 
   renderChecklist(){
-    if(!(this.isSubmitted() || this.isConcluded())) return null;
-    // const { initialPods, updatedPods } = this.state;
-    // const items = this.opHelper.progressItems(initialPods, updatedPods);
-    // return <Checklist items={items}/>
-    return <p>Checklist lol</p>;
+    const { progressItems } = this.state;
+    if(progressItems.length < 1) return null;
+    return <Checklist items={progressItems}/>
   }
 
   renderConfigForm(){
@@ -130,17 +131,22 @@ export default class ImageOpsModal extends React.Component {
   }
 
   submit() {
-    console.log("HEHHELLOOOOO");
     const { operationType } = this.state.choices;
     const Operator = Helper.opHelper(operationType);
 
     const  { deployment, matching } = this.props;
-    const bundle = { deployment, matching, ...this.state.choices };
-    this.opHelper = new Operator(bundle);
+    const { choices } = this.state;
 
-    console.log(this.opHelper);
+    this.opHelper = new Operator({
+      deployment, matching, ...choices,
+      progressCallback: this.updateProgress
+    });
+
     this.opHelper.perform();
-    console.log("Hey i'm free from perform!")
+  }
+
+  updateProgress(progressItems){
+    this.setState(s => ({...s, progressItems}));
   }
 
   isSubmitting(){ return this.state.phase === PHASE_SUBMITTING }

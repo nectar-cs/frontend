@@ -32,8 +32,6 @@ export default class ScalePodsOperator extends ImageOperator {
   }
 
   isStableState(){
-    console.log("COMPARISON TIME");
-    console.table(this.updated);
     return super.checkGroupInState(
       this.updated,
       this.scaleTo,

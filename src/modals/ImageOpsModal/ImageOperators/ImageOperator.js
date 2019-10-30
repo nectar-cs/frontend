@@ -1,5 +1,4 @@
 import isEqual from 'lodash/isEqual';
-import Backend from "../../../utils/Backend";
 import Kapi from "../../../utils/Kapi";
 import DataUtils from "../../../utils/DataUtils";
 
@@ -12,18 +11,25 @@ export default class ImageOperator {
   constructor(bundle){
     this.deployment = bundle.deployment;
     this.matching = bundle.matching;
+    this.progressCallback = bundle.progressCallback;
+    this.conclusion = null;
   }
 
   async perform(){
     this.initial = this.updated = await this.fetchPods();
     await this.submitImageOperation();
 
-    while(!this.isStableState()){
-      await sleep(2000);
+    while(!this.conclusion){
       this.updated = await this.fetchPods();
+      this.conclusion = this.recomputeState();
+      this.broadcastProgress();
+      await sleep(2000);
     }
+  }
 
-    console.log("DONE");
+  recomputeState(){
+    if(this.isStableState()) return "done";
+    return null;
   }
 
   submitImageOperation(){
@@ -47,10 +53,6 @@ export default class ImageOperator {
     const {name, namespace} = this.deployment;
     const ep = `/api/deployments/${namespace}/${name}/pods`;
     return DataUtils.obj2Snake((await Kapi.blockingFetch(ep)))['data'];
-  }
-
-  refreshProgress(){
-
   }
 
   removeTerminating(pods){
@@ -99,14 +101,18 @@ export default class ImageOperator {
     return isEqual(actualStates, targetStates);
   }
 
+  broadcastProgress(){
+    console.log("Wtf is it");
+    console.log(this.progressCallback);
+    this.progressCallback(
+      this.progressItems()
+    )
+  }
+
   progressItemStatus(bool){
     if(bool) return 'done';
-    if(this.conclusion === null || this.conclusion === undefined)
-      return bool ? 'done' : 'working';
-    else if(this.conclusion === true)
-      return 'done';
-    else if(this.conclusion === false)
-      return 'failed';
+    if(this.conclusion) return this.conclusion;
+    return bool ? 'done' : 'working';
   }
 
   buildProgressItem(title, detail, bool){
