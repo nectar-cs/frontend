@@ -22,7 +22,7 @@ export default class GitBuildOpHelper extends ImageOperator {
 
     if(this.didBuildSucceed()){
       this.broadcastProgress();
-      this.conclude(true)
+      this.conclude(true);
     } else {
       this.failureReason = 'Build Failed';
       this.conclude(false);
@@ -84,9 +84,7 @@ export default class GitBuildOpHelper extends ImageOperator {
     return this.buildStatusStr() === 'completed';
   }
 
-  hasTermOutput() {
-    return true;
-  }
+  hasTermOutput() { return true; }
 
   successMessage() {
     return "Image built, pushed, and set in pods";
@@ -111,6 +109,12 @@ export default class GitBuildOpHelper extends ImageOperator {
         this.buildStatus(),
       ),
     ]
+  }
+
+  terminalOutput(){
+    if(this.buildJob && this.buildJob.logs){
+      return this.buildJob.logs;
+    } else return [];
   }
 
   cloneStatus(){

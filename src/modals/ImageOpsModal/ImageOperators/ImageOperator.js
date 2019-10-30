@@ -109,8 +109,10 @@ export default class ImageOperator {
   }
 
   progressItemStatus(status){
-    if(this.conclusion) return this.conclusion;
-    return status;
+    if(status === 'done') return status;
+    if(this.conclusion !== null)
+      return this.conclusion ? 'done' : 'failed';
+    else return status;
   }
 
   buildProgressItem(title, detail, status){
@@ -136,6 +138,7 @@ export default class ImageOperator {
     return this.conclusion !== null;
   }
 
+  terminalOutput(){ return []; }
   hasTermOutput(){ return false; }
   isStableState(){ return false }
   successMessage(){ throw `Method successMessage not implemented!`; }

@@ -48,6 +48,7 @@ export default class ImageOpsModal extends React.Component {
         { this.renderGamePlan() }
         { this.renderChecklist() }
         { this.renderConclusion() }
+        { this.renderTerminalOutput() }
         { this.renderSubmitButton() }
         { this.renderEditButton() }
       </FlexibleModal>
@@ -77,6 +78,19 @@ export default class ImageOpsModal extends React.Component {
       const { progressItems } = this.state;
       return <Checklist items={progressItems}/>
     } else return null;
+  }
+
+  renderTerminalOutput(){
+    if(this.isWorking() || this.isConcluded()) {
+      if(this.opHelper.hasTermOutput()){
+        return(
+          <TermSection
+            title='Logs'
+            lines={this.opHelper.terminalOutput()}
+          />
+        )
+      }
+    }
   }
 
   renderConclusion(){
@@ -116,6 +130,11 @@ export default class ImageOpsModal extends React.Component {
   }
 
   renderGamePlan(){
+    const runner = this.opHelper;
+    const isRunningOrConcluded = !this.isConfiguring();
+    const supportsOut = runner && runner.hasTermOutput();
+    if(isRunningOrConcluded && supportsOut) return null;
+
     return(
       <TermSection
         title='Game Plan'
