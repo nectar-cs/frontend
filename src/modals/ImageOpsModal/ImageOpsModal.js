@@ -27,7 +27,7 @@ export default class ImageOpsModal extends React.Component {
       remotes: ImageOpsModal.initialRemotes(),
       phase: PHASE_CONFIG,
       progressItems: [],
-      conclusion: ''
+      conclusion: null
     };
     this.submit = this.submit.bind(this);
     this.updateProgress = this.updateProgress.bind(this);
@@ -84,11 +84,12 @@ export default class ImageOpsModal extends React.Component {
 
     return(
       <Conclusion
-        isSuccess={true}
-        reason={this.opHelper.successMessage()}
+        isSuccess={this.state.conclusion}
+        reason={this.opHelper.conclusionMessage()}
       />
     )
   }
+
   renderConfigForm(){
     if(!this.isConfiguring()) return null;
     const { choices, remotes } = this.state;
@@ -115,7 +116,6 @@ export default class ImageOpsModal extends React.Component {
   }
 
   renderGamePlan(){
-    if(!this.isConfiguring()) return null;
     return(
       <TermSection
         title='Game Plan'
@@ -164,6 +164,7 @@ export default class ImageOpsModal extends React.Component {
   }
 
   notifyFinished(conclusion){
+    console.log("FINISHED " + conclusion);
     this.setState(s => ({...s, conclusion, phase: PHASE_CONCLUDED }));
     this.broadcastUpstream();
   }

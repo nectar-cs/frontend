@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import DataUtils from "./DataUtils";
 
 export default class Backend {
 
@@ -26,7 +27,7 @@ export default class Backend {
     return `${this.baseUrl()}${endpoint}`;
   }
 
-  static prepRequest(method, body){
+  static prepReq(method, body){
     const headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -38,8 +39,21 @@ export default class Backend {
     return { method, headers, body };
   }
 
+  static blockingFetch(endpoint){
+    return this.blockingRequest('GET', endpoint, null);
+  }
+
+  static blockingPost(endpoint, payload){
+    return this.blockingRequest('POST', endpoint, payload);
+  }
+
+  static async blockingRequest(method, endpoint, body){
+    const response = await fetch(this.url(endpoint), this.prepReq(method, body));
+    return DataUtils.objKeysToCamel(await response.json());
+  }
+
   static raisingRequest(method, endpoint, body, callback, errorCallback){
-    fetch(this.url(endpoint), this.prepRequest(method, body))
+    fetch(this.url(endpoint), this.prepReq(method, body))
     .then(
       (response) => (
         response.json().then(

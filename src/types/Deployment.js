@@ -2,6 +2,11 @@ import PropTypes from "prop-types";
 
 const POD_STATES = ['Running', 'Failed', 'Pending', 'Unknown'];
 
+const GitTarBundle = PropTypes.shape({
+  dockerfilePath: PropTypes.string.isRequired,
+  tarballUrl: PropTypes.string.isRequired
+});
+
 const Remote = PropTypes.shape({
   id: PropTypes.number.isRequired,
   entity: PropTypes.oneOf(['git', 'docker']),
@@ -97,5 +102,6 @@ export const Types = {
   CommitChange,
   Remote,
   GlobalRemotes,
-  LightPod
+  LightPod,
+  GitTarBundle
 };

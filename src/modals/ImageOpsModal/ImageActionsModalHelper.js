@@ -7,6 +7,7 @@ import ScalePodsOperator from "./ImageOperators/ScalePodsOperator";
 import Backend from "../../utils/Backend";
 import moment from "moment";
 import {defaults} from "./defaults";
+import GitBuildOpHelper from "./ImageOperators/GitBuildOpHelper";
 
 export class ImageActionsModalHelper {
 
@@ -19,7 +20,7 @@ export class ImageActionsModalHelper {
   static defaultOpType(props){
     const { matching } = props;
     if(matching && matching.imgRemoteId){
-      return props.operationType || "scale";
+      return props.operationType || "git";
     } else {
       return props.operationType || "change";
     }
@@ -111,25 +112,10 @@ export class ImageActionsModalHelper {
         return DiffTagOpHelper;
       case "scale":
         return ScalePodsOperator;
+      case "git":
+        return GitBuildOpHelper;
       default:
         throw `No helper for op type ${operationType}`;
-    }
-  }
-
-  static podsRenderer(inst){
-    if(inst.isConfiguring()) return StdPodTable;
-    else if(inst.isSubmitted() || inst.isConcluded()){
-      return this.podRendererAfterSubmit(inst.state.choices.operationType)
-    }
-  }
-
-  static podRendererAfterSubmit(opType){
-    switch(opType){
-      case 'reload':
-      case 'scale': return DesiredStatePodTable;
-      case 'docker':
-      case 'change': return DesiredTagPodTable;
-      default: throw `No renderer for op type ${opType}`;
     }
   }
 

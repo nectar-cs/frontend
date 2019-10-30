@@ -8,10 +8,6 @@ export default class ScalePodsOperator extends ImageOperator {
     this.scaleTo = parseInt(bundle.scaleTo);
   }
 
-  imageOperationVerb(){
-    return "scale_replicas";
-  }
-
   imageOperationPayload(){
     return DataUtils.obj2Snake({
       ...super.imageOperationPayload(),
@@ -21,10 +17,6 @@ export default class ScalePodsOperator extends ImageOperator {
 
   successMessage() {
     return "Pods scaled to required amount and are running.";
-  }
-
-  isCrashedState(){
-    return { isCrashed: false, reason: "lolz" };
   }
 
   enrichPod(pod){
@@ -61,12 +53,12 @@ export default class ScalePodsOperator extends ImageOperator {
         super.buildProgressItem(
           "New pods created",
           `${newPods.length}/${this.delta()}`,
-          newPods.length === this.delta()
+          newPods.length === this.delta() ? 'done' : 'working'
         ),
         super.buildProgressItem(
           "New pods running",
           `${running.length}/${this.delta()}`,
-          running.length === this.delta()
+          running.length === this.delta() ? 'done' : 'working'
         )
       ]
     } else {
@@ -79,4 +71,6 @@ export default class ScalePodsOperator extends ImageOperator {
       ]
     }
   }
+
+  imageOperationVerb(){ return "scale_replicas"; }
 }

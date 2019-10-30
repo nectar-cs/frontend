@@ -2,7 +2,7 @@ import isEqual from 'lodash/isEqual';
 import Kapi from "../../../utils/Kapi";
 import DataUtils from "../../../utils/DataUtils";
 
-function sleep(ms) {
+export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -27,7 +27,7 @@ export default class ImageOperator {
       if(!this.conclusion) await sleep(2000);
     }
 
-    this.finishedCallback(this.conclusion)
+    this.conclude(this.conclusion);
   }
 
   recomputeState(){
@@ -108,23 +108,37 @@ export default class ImageOperator {
     this.progressCallback(this.progressItems())
   }
 
-  progressItemStatus(bool){
-    if(bool) return 'done';
+  progressItemStatus(status){
     if(this.conclusion) return this.conclusion;
-    return bool ? 'done' : 'working';
+    return status;
   }
 
-  buildProgressItem(title, detail, bool){
+  buildProgressItem(title, detail, status){
     return({
       name: title,
       detail: detail,
-      status: this.progressItemStatus(bool)
+      status: this.progressItemStatus(status)
     })
   }
 
+  conclusionMessage(){
+    if(this.conclusion)
+      return this.successMessage();
+    else return this.failureMessage();
+  }
+
+  conclude(success){
+    this.conclusion = success;
+    this.finishedCallback(success);
+  }
+
+  didConclude(){
+    return this.conclusion !== null;
+  }
+
   hasTermOutput(){ return false; }
-  buildPodList() { throw `Method buildPodList not implemented!`; }
   isStableState(){ return false }
   successMessage(){ throw `Method successMessage not implemented!`; }
+  failureMessage(){ throw `Method failureMessage not implemented!`; }
   progressItems(failed){ throw `Method progressItems not implemented!`; }
 }
