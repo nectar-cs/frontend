@@ -76,7 +76,7 @@ export class ImageActionsModalHelper {
     const { deployment } = inst.props;
     const { choices } = inst.state;
 
-    const payload = DataUtils.objKeysToSnake({
+    const payload = DataUtils.obj2Snake({
       depNamespace: deployment.namespace,
       depName: deployment.name,
       scaleTo: choices.scaleTo,

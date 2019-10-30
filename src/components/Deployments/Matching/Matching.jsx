@@ -217,7 +217,7 @@ class MatchingClass extends React.Component {
       }
     });
 
-    const payload = { data: DataUtils.objKeysToSnake(formatted) };
+    const payload = { data: DataUtils.obj2Snake(formatted) };
 
     this.setState((s) => ({...s, isSubmitting: true}));
 

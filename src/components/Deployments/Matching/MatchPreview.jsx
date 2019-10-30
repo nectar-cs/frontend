@@ -198,7 +198,7 @@ export default class MatchPreview extends React.Component {
     this.onFormDataChanged('dfPath', '');
     this.setState(s => ({...s, isPathsFetching: true}));
     Backend.raisingFetch(ep, resp => {
-      const dfPathList = DataUtils.objKeysToSnake(resp['data']);
+      const dfPathList = DataUtils.obj2Snake(resp['data']);
       this.dfPathsTree[`${gitRemoteName}${repoName}`] = dfPathList;
       const dfPath = dfPathList[0];
       const bundle = {...this.state.bundle, dfPathList, dfPath };

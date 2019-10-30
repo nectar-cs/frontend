@@ -70,12 +70,12 @@ export default class DataUtils {
     return newO
   }
 
-  static objKeysToSnake(o) {
+  static obj2Snake(o) {
     let newO, origKey, newKey, value;
     if (o instanceof Array) {
       return o.map((value) => {
         if (typeof value === "object") {
-          value = this.objKeysToSnake(value)
+          value = this.obj2Snake(value)
         }
         return value
       })
@@ -85,7 +85,7 @@ export default class DataUtils {
         if (o.hasOwnProperty(origKey)) {
           value = o[origKey];
           if (value instanceof Array || (value && value.constructor === Object)) {
-            value = this.objKeysToSnake(value)
+            value = this.obj2Snake(value)
           }
           newO[this.camelStringToSnake(origKey)] = value
         }

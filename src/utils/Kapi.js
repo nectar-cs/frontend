@@ -1,3 +1,5 @@
+import DataUtils from "./DataUtils";
+
 const DEFAULT_URL = "http://localhost:5000";
 const BACKEND_URL = process.env['KUBE_HANDLER_URL'] || DEFAULT_URL;
 
@@ -37,7 +39,11 @@ export default class Kapi {
   }
 
   static blockingFetch(endpoint){
-    return this.blockingRequest('GET', endpoint, null);
+    return this.blockingRequest('GET', endpoint, null)
+  }
+
+  static blockingPost(endpoint, payload){
+    return this.blockingRequest('POST', endpoint, payload)
   }
 
   static async blockingRequest(method, endpoint, body){

@@ -12,7 +12,7 @@ export default class Helper{
   static stepPayload(inst){
     const { deployment, service, port } = inst.state;
 
-    return DataUtils.objKeysToSnake({
+    return DataUtils.obj2Snake({
       depName: deployment.name,
       depNs: deployment.namespace,
       svcName: service,

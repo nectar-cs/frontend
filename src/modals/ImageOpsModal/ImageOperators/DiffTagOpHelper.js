@@ -1,4 +1,5 @@
 import ImageOperator from "./ImageOperator";
+import DataUtils from "../../../utils/DataUtils";
 
 export default class DiffTagOpHelper extends ImageOperator {
 
@@ -6,14 +7,11 @@ export default class DiffTagOpHelper extends ImageOperator {
     return "All pods running the new image.";
   }
 
-  isTimedOut() {
-    const now = new Date().getTime();
-    const limitSeconds = this.initial.length * 12;
-    return ((now - this.startedAt) / 1000) > limitSeconds;
-  }
-
-  isCrashedState(){
-    return { isCrashed: false, reason: "lolz" };
+  imageOperationPayload(){
+    return DataUtils.obj2Snake({
+      ...super.imageOperationPayload(),
+      targetName: this.imageName
+    })
   }
 
   enrichPod(pod){

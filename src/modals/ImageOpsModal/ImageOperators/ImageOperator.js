@@ -14,44 +14,43 @@ export default class ImageOperator {
     this.matching = bundle.matching;
   }
 
-  refresh(bundle){
-    this.initial = this.removeTerminating(bundle.initialPods);
-    this.updated = this.removeTerminating(bundle.updatedPods);
-    this.startedAt = bundle.startedAt;
-    this.scaleTo = parseInt(bundle.scaleTo);
-    this.targetImage = bundle.imageName;
-    this.conclusion = bundle.conclusion;
-  }
-
   async perform(){
-    console.log("GOING FOR IT");
-    const { name, namespace } = this.deployment;
-    const ep = `/api/deployments/${namespace}/${name}/pods`;
-    const submission = await fetch(Kapi.url(ep), Kapi.prepReq());
-    console.log("INITIAL");
-    const j = await submission.json();
-    console.log("ACTUAL");
-    console.log(j);
-    let i = 0;
+    this.initial = this.updated = await this.fetchPods();
+    await this.submitImageOperation();
 
-    while(i < 4){
-      console.log("START LOOP");
-      const pods = await this.getInitialState();
-      console.log("PODS FROM " + i);
-      console.log(pods);
-      i = i + 1;
+    while(!this.isStableState()){
       await sleep(2000);
+      this.updated = await this.fetchPods();
     }
+
+    console.log("DONE");
   }
 
-  getInitialState(){
-    const { name, namespace } = this.deployment;
+  submitImageOperation(){
+    const ep = `/api/run/${this.imageOperationVerb()}`;
+    const payload = this.imageOperationPayload();
+    return Kapi.blockingPost(ep, payload);
+  }
+
+  imageOperationPayload(){
+    return DataUtils.obj2Snake({
+      depNamespace: this.deployment.namespace,
+      depName: this.deployment.name,
+    });
+  }
+
+  imageOperationVerb(){
+    return "";
+  }
+
+  async fetchPods() {
+    const {name, namespace} = this.deployment;
     const ep = `/api/deployments/${namespace}/${name}/pods`;
-    return Kapi.blockingFetch(ep);
+    return DataUtils.obj2Snake((await Kapi.blockingFetch(ep)))['data'];
   }
 
   refreshProgress(){
-    console.log("REFRESHING")
+
   }
 
   removeTerminating(pods){

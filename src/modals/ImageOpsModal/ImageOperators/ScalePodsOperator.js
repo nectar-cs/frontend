@@ -1,12 +1,23 @@
 import ImageOperator from "./ImageOperator";
+import DataUtils from "../../../utils/DataUtils";
 
 export default class ScalePodsOperator extends ImageOperator {
 
   constructor(bundle) {
     super(bundle);
-    this.scaleTo = bundle.scaleTo;
+    this.scaleTo = parseInt(bundle.scaleTo);
   }
 
+  imageOperationVerb(){
+    return "scale_replicas";
+  }
+
+  imageOperationPayload(){
+    return DataUtils.obj2Snake({
+      ...super.imageOperationPayload(),
+      scaleTo: this.scaleTo
+    });
+  }
 
   successMessage() {
     return "Pods scaled to required amount and are running.";
@@ -21,6 +32,8 @@ export default class ScalePodsOperator extends ImageOperator {
   }
 
   isStableState(){
+    console.log("COMPARISON TIME");
+    console.table(this.updated);
     return super.checkGroupInState(
       this.updated,
       this.scaleTo,

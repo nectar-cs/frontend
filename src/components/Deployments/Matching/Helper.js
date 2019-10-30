@@ -27,7 +27,7 @@ export default class Helper{
       framework
     };
 
-    return DataUtils.objKeysToSnake(payload);
+    return DataUtils.obj2Snake(payload);
   }
 
   static submitSingle(inst){

@@ -33,7 +33,7 @@ export default class Helper {
     const podNamespace = inst.props.deployment.namespace;
     const { podName, command } = inst.state.choices;
     let payload = {podNamespace, podName, command};
-    payload = DataUtils.objKeysToSnake(payload);
+    payload = DataUtils.obj2Snake(payload);
     Kapi.post("/api/run/cmd", payload, whenDone, whenFailed)
   }
 
