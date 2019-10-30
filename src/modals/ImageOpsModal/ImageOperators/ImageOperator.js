@@ -1,6 +1,7 @@
 import isEqual from 'lodash/isEqual';
 import Backend from "../../../utils/Backend";
 import Kapi from "../../../utils/Kapi";
+import DataUtils from "../../../utils/DataUtils";
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -30,13 +31,23 @@ export default class ImageOperator {
     console.log("INITIAL");
     const j = await submission.json();
     console.log("ACTUAL");
+    console.log(j);
     let i = 0;
 
-    while(!this.isStableState() && i < 4){
-      this.refreshProgress();
+    while(i < 4){
+      console.log("START LOOP");
+      const pods = await this.getInitialState();
+      console.log("PODS FROM " + i);
+      console.log(pods);
       i = i + 1;
-      await sleep(3);
+      await sleep(2000);
     }
+  }
+
+  getInitialState(){
+    const { name, namespace } = this.deployment;
+    const ep = `/api/deployments/${namespace}/${name}/pods`;
+    return Kapi.blockingFetch(ep);
   }
 
   refreshProgress(){

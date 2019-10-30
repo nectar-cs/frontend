@@ -36,6 +36,15 @@ export default class Kapi {
     return `${BACKEND_URL}${endpoint}`;
   }
 
+  static blockingFetch(endpoint){
+    return this.blockingRequest('GET', endpoint, null);
+  }
+
+  static async blockingRequest(method, endpoint, body){
+    const response = await fetch(this.url(endpoint), this.prepReq(method, body));
+    return await response.json();
+  }
+
   static raisingRequest(method, endpoint, body, callback, errorCallback=null){
     fetch(this.url(endpoint), this.prepReq(method, body))
     .then(
