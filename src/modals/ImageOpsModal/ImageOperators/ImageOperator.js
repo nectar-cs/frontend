@@ -12,6 +12,7 @@ export default class ImageOperator {
     this.deployment = bundle.deployment;
     this.matching = bundle.matching;
     this.progressCallback = bundle.progressCallback;
+    this.finishedCallback = bundle.finishedCallback;
     this.conclusion = null;
   }
 
@@ -23,8 +24,10 @@ export default class ImageOperator {
       this.updated = await this.fetchPods();
       this.conclusion = this.recomputeState();
       this.broadcastProgress();
-      await sleep(2000);
+      if(!this.conclusion) await sleep(2000);
     }
+
+    this.finishedCallback(this.conclusion)
   }
 
   recomputeState(){
@@ -102,11 +105,7 @@ export default class ImageOperator {
   }
 
   broadcastProgress(){
-    console.log("Wtf is it");
-    console.log(this.progressCallback);
-    this.progressCallback(
-      this.progressItems()
-    )
+    this.progressCallback(this.progressItems())
   }
 
   progressItemStatus(bool){

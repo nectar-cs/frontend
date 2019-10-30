@@ -11,10 +11,11 @@ import {defaults} from "./defaults";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import TermSection from "../../widgets/TermSection/TermSection";
 import Checklist from "./Checklist";
+import Conclusion from "./Conclusion";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
-const PHASE_SUBMITTED = 'submitted';
+const PHASE_PERFORMING = 'performing';
 const PHASE_CONCLUDED = 'concluded';
 
 export default class ImageOpsModal extends React.Component {
@@ -25,19 +26,17 @@ export default class ImageOpsModal extends React.Component {
       choices: ImageOpsModal.initialChoices(props),
       remotes: ImageOpsModal.initialRemotes(),
       phase: PHASE_CONFIG,
-      progressItems: []
+      progressItems: [],
+      conclusion: ''
     };
     this.submit = this.submit.bind(this);
     this.updateProgress = this.updateProgress.bind(this);
+    this.notifyFinished = this.notifyFinished.bind(this);
   }
 
   componentDidMount(){
     Helper.fetchImgTags(this);
     Helper.fetchGitBranches(this);
-  }
-
-  componentWillUnmount(){
-    this._isMounted = false;
   }
 
   render(){
@@ -48,6 +47,7 @@ export default class ImageOpsModal extends React.Component {
         { this.renderConfigForm() }
         { this.renderGamePlan() }
         { this.renderChecklist() }
+        { this.renderConclusion() }
         { this.renderSubmitButton() }
         { this.renderEditButton() }
       </FlexibleModal>
@@ -73,11 +73,22 @@ export default class ImageOpsModal extends React.Component {
   }
 
   renderChecklist(){
-    const { progressItems } = this.state;
-    if(progressItems.length < 1) return null;
-    return <Checklist items={progressItems}/>
+    if(this.isWorking() || this.isConcluded()) {
+      const { progressItems } = this.state;
+      return <Checklist items={progressItems}/>
+    } else return null;
   }
 
+  renderConclusion(){
+    if(!this.isConcluded()) return null;
+
+    return(
+      <Conclusion
+        isSuccess={true}
+        reason={this.opHelper.successMessage()}
+      />
+    )
+  }
   renderConfigForm(){
     if(!this.isConfiguring()) return null;
     const { choices, remotes } = this.state;
@@ -139,20 +150,33 @@ export default class ImageOpsModal extends React.Component {
 
     this.opHelper = new Operator({
       deployment, matching, ...choices,
-      progressCallback: this.updateProgress
+      progressCallback: this.updateProgress,
+      finishedCallback: this.notifyFinished
     });
 
-    this.opHelper.perform();
+    this.setState(s => ({...s, phase: PHASE_PERFORMING}));
+    this.opHelper.perform().then(() => {});
   }
 
   updateProgress(progressItems){
     this.setState(s => ({...s, progressItems}));
+    this.broadcastUpstream();
+  }
+
+  notifyFinished(conclusion){
+    this.setState(s => ({...s, conclusion, phase: PHASE_CONCLUDED }));
+    this.broadcastUpstream();
+  }
+
+  broadcastUpstream(){
+    const broadcast = this.props.refreshCallback;
+    if(broadcast) broadcast();
   }
 
   isSubmitting(){ return this.state.phase === PHASE_SUBMITTING }
   isConfiguring(){ return this.state.phase === PHASE_CONFIG }
   isConcluded(){ return this.state.phase === PHASE_CONCLUDED }
-  isSubmitted(){ return this.state.phase === PHASE_SUBMITTED }
+  isWorking(){ return this.state.phase === PHASE_PERFORMING }
 
   onAssignment(assignment){
     const merged = {...this.state.choices, ...assignment};
@@ -162,11 +186,6 @@ export default class ImageOpsModal extends React.Component {
     if(!Helper.sideEffect(this, key, value))
       this.setState(s => ({...s, choices: merged}));
   }
-
-  // notifySubscribers(){
-  //   const broadcast = this.props.refreshCallback;
-  //   if(broadcast) broadcast();
-  // }
 
   static propTypes = {
     deployment: Types.Deployment,

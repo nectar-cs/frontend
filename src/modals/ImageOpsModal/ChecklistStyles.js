@@ -3,7 +3,7 @@ import {ModSpinner} from "../../assets/loading-spinner";
 import {colored} from "../../assets/constants";
 
 export const List = styled.ul`
-  margin-top: 30px;
+  margin-top: 15px;
   margin-left: 30px;
 `;
 
