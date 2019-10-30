@@ -5,10 +5,8 @@ import MiscUtils from "../../utils/MiscUtils";
 import {Types} from "../../types/Deployment";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import ImageForm from "./ImageForm";
-import Checklist from "./Checklist";
 import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
-import Conclusion from "./Conclusion";
 import {defaults} from "./defaults";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import TermSection from "../../widgets/TermSection/TermSection";
@@ -20,31 +18,17 @@ const PHASE_CONCLUDED = 'concluded';
 
 export default class ImageOpsModal extends React.Component {
 
-  static initialChoices(props){
-    return({
-      operationType: Helper.defaultOpType(props),
-      imageName: '',
-      outImageName: Helper.defOutImageName(props),
-      scaleTo: (props.deployment.replicas + 1).toString(),
-      imgSource: '',
-      gitBranch: '',
-      gitCommit: ''
-    })
-  }
-
   constructor(props){
     super(props);
     this.state = {
       choices: ImageOpsModal.initialChoices(props),
-      remotes: { imageTags: [], gitBranches: [] },
+      remotes: ImageOpsModal.initialRemotes(),
       phase: PHASE_CONFIG,
     };
-
     this.submit = this.submit.bind(this);
   }
 
   componentDidMount(){
-    Helper.fetchPods(this, 'initialPods');
     Helper.fetchImgTags(this);
     Helper.fetchGitBranches(this);
   }
@@ -61,9 +45,6 @@ export default class ImageOpsModal extends React.Component {
         { this.renderConfigForm() }
         { this.renderGamePlan() }
         { this.renderChecklist() }
-        {/*{ this.renderTermOutput() }*/}
-        {/*{ this.renderConclusion() }*/}
-        {/*{ this.renderPodList() }*/}
         { this.renderSubmitButton() }
         { this.renderEditButton() }
       </FlexibleModal>
@@ -90,21 +71,10 @@ export default class ImageOpsModal extends React.Component {
 
   renderChecklist(){
     if(!(this.isSubmitted() || this.isConcluded())) return null;
-    const { initialPods, updatedPods } = this.state;
-    const items = this.opHelper.progressItems(initialPods, updatedPods);
-    return <Checklist items={items}/>
-  }
-
-  renderConclusion(){
-    if(!this.isConcluded()) return null;
-    const reason = this.opHelper.successMessage();
-
-    return(
-      <Conclusion
-        isSuccess={true}
-        reason={reason}
-      />
-    )
+    // const { initialPods, updatedPods } = this.state;
+    // const items = this.opHelper.progressItems(initialPods, updatedPods);
+    // return <Checklist items={items}/>
+    return <p>Checklist lol</p>;
   }
 
   renderConfigForm(){
@@ -127,8 +97,7 @@ export default class ImageOpsModal extends React.Component {
         outImageName={choices.outImageName}
         availableBranches={remotes.gitBranches ? branchNames : null}
         availableCommits={selBranch}
-        initialReplicas={deployment.replicas}
-        replaceModal={this.props.replaceModal}
+        initialReplicas={deployment.pods.length}
       />
     )
   }
@@ -161,9 +130,17 @@ export default class ImageOpsModal extends React.Component {
   }
 
   submit() {
+    console.log("HEHHELLOOOOO");
     const { operationType } = this.state.choices;
-    this.opHelper = Helper.opHelper(operationType);
+    const Operator = Helper.opHelper(operationType);
+
+    const  { deployment, matching } = this.props;
+    const bundle = { deployment, matching, ...this.state.choices };
+    this.opHelper = new Operator(bundle);
+
+    console.log(this.opHelper);
     this.opHelper.perform();
+    console.log("Hey i'm free from perform!")
   }
 
   isSubmitting(){ return this.state.phase === PHASE_SUBMITTING }
@@ -180,10 +157,10 @@ export default class ImageOpsModal extends React.Component {
       this.setState(s => ({...s, choices: merged}));
   }
 
-  notifySubscribers(){
-    const broadcast = this.props.refreshCallback;
-    if(broadcast) broadcast();
-  }
+  // notifySubscribers(){
+  //   const broadcast = this.props.refreshCallback;
+  //   if(broadcast) broadcast();
+  // }
 
   static propTypes = {
     deployment: Types.Deployment,
@@ -191,4 +168,20 @@ export default class ImageOpsModal extends React.Component {
     matching: Types.Matching,
     operationType: PropTypes.string
   };
+
+  static initialChoices(props){
+    return({
+      operationType: Helper.defaultOpType(props),
+      imageName: '',
+      outImageName: Helper.defOutImageName(props),
+      scaleTo: (props.deployment.replicas + 1).toString(),
+      imgSource: '',
+      gitBranch: '',
+      gitCommit: ''
+    })
+  }
+
+  static initialRemotes(){
+    return { imageTags: [], gitBranches: [] };
+  }
 }

@@ -2,9 +2,9 @@ import Kapi from "../../utils/Kapi";
 import DataUtils from "../../utils/DataUtils";
 import React from "react";
 import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./PodTableRenderers";
-import SameTagOpHelper from "./OpHelpers/SameTagOpHelper";
-import DiffTagOpHelper from "./OpHelpers/DiffTagOpHelper";
-import ScalePodsHelper from "./OpHelpers/ScalePodsHelper";
+import SameTagOpHelper from "./ImageOperators/SameTagOpHelper";
+import DiffTagOpHelper from "./ImageOperators/DiffTagOpHelper";
+import ScalePodsOperator from "./ImageOperators/ScalePodsOperator";
 import Backend from "../../utils/Backend";
 import moment from "moment";
 import {defaults} from "./defaults";
@@ -20,7 +20,7 @@ export class ImageActionsModalHelper {
   static defaultOpType(props){
     const { matching } = props;
     if(matching && matching.imgRemoteId){
-      return props.operationType || "git";
+      return props.operationType || "scale";
     } else {
       return props.operationType || "change";
     }
@@ -152,9 +152,9 @@ export class ImageActionsModalHelper {
       case "docker":
         return DiffTagOpHelper;
       case "scale":
-        return ScalePodsHelper;
+        return ScalePodsOperator;
       default:
-        throw `No helper for op type ${opType}`;
+        throw `No helper for op type ${operationType}`;
     }
   }
 

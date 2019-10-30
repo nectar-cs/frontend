@@ -1,15 +1,13 @@
-import PodOpHelper from "./PodOpHelper";
+import ImageOperator from "./ImageOperator";
 
-export default class DiffTagOpHelper extends PodOpHelper {
+export default class GitBuildOpHelper extends ImageOperator {
+
+  hasTermOutput() {
+    return true;
+  }
 
   successMessage() {
     return "All pods running the new image.";
-  }
-
-  isTimedOut() {
-    const now = new Date().getTime();
-    const limitSeconds = this.initial.length * 12;
-    return ((now - this.startedAt) / 1000) > limitSeconds;
   }
 
   isCrashedState(){
@@ -39,6 +37,16 @@ export default class DiffTagOpHelper extends PodOpHelper {
   progressItems(){
     const patched = this.readyPods();
     return [
+      super.buildProgressItem(
+        "Git repo cloned",
+        `0/1`,
+        false
+      ),
+      super.buildProgressItem(
+        "New image",
+        `building`,
+        false,
+      ),
       super.buildProgressItem(
         "Pods running new image",
         `${patched.length}/${this.initial.length}`,

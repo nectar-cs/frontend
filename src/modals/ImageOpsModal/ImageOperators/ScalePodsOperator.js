@@ -1,6 +1,12 @@
-import PodOpHelper from "./PodOpHelper";
+import ImageOperator from "./ImageOperator";
 
-export default class ScalePodsHelper extends PodOpHelper {
+export default class ScalePodsOperator extends ImageOperator {
+
+  constructor(bundle) {
+    super(bundle);
+    this.scaleTo = bundle.scaleTo;
+  }
+
 
   successMessage() {
     return "Pods scaled to required amount and are running.";

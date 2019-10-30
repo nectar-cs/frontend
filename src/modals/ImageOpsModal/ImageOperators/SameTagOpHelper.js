@@ -1,6 +1,6 @@
-import PodOpHelper from "./PodOpHelper";
+import ImageOperator from "./ImageOperator";
 
-export default class SameTagOpHelper extends PodOpHelper {
+export default class SameTagOpHelper extends ImageOperator {
 
   isStableState() {
     return this.checkGroupInState(

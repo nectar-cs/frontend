@@ -1,15 +1,16 @@
 import isEqual from 'lodash/isEqual';
+import Backend from "../../../utils/Backend";
+import Kapi from "../../../utils/Kapi";
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export default class PodOpHelper {
+export default class ImageOperator {
 
-  constructor(initial){
-    this.initial = initial;
-    this.updated = [];
-    this.job = {};
+  constructor(bundle){
+    this.deployment = bundle.deployment;
+    this.matching = bundle.matching;
   }
 
   refresh(bundle){
@@ -19,6 +20,27 @@ export default class PodOpHelper {
     this.scaleTo = parseInt(bundle.scaleTo);
     this.targetImage = bundle.imageName;
     this.conclusion = bundle.conclusion;
+  }
+
+  async perform(){
+    console.log("GOING FOR IT");
+    const { name, namespace } = this.deployment;
+    const ep = `/api/deployments/${namespace}/${name}/pods`;
+    const submission = await fetch(Kapi.url(ep), Kapi.prepReq());
+    console.log("INITIAL");
+    const j = await submission.json();
+    console.log("ACTUAL");
+    let i = 0;
+
+    while(!this.isStableState() && i < 4){
+      this.refreshProgress();
+      i = i + 1;
+      await sleep(3);
+    }
+  }
+
+  refreshProgress(){
+    console.log("REFRESHING")
   }
 
   removeTerminating(pods){
@@ -85,22 +107,9 @@ export default class PodOpHelper {
     })
   }
 
-  async refreshProgress(){
-
-  }
-
-  async perform(bun){
-    const submit = await fetch('submit');
-
-    while(!this.isStableState()){
-      this.refreshProgress();
-      await sleep(3);
-    }
-  }
-
   hasTermOutput(){ return false; }
   buildPodList() { throw `Method buildPodList not implemented!`; }
-  isStableState(){ throw `Method isStableState not implemented!`; }
+  isStableState(){ return false }
   successMessage(){ throw `Method successMessage not implemented!`; }
   progressItems(failed){ throw `Method progressItems not implemented!`; }
 }

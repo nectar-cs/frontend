@@ -10,6 +10,7 @@ import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
 import {Types} from "../../types/Deployment";
 import {ImageActionsModalHelper} from "./ImageActionsModalHelper";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import ModalClientComposer from "../../hocs/ModalClientComposer";
 
 export default class ImageForm extends React.Component {
   render(){
@@ -143,14 +144,14 @@ export default class ImageForm extends React.Component {
     if(this.props.operationType !== 'docker') return null;
     if(this.props.availableTags) return null;
     const args = { remoteType:'Docker', remoteEntity: 'registry' };
-    return <BlockPrompt {...args} replaceModal={this.props.replaceModal} />;
+    return <BlockPrompt {...args}/>;
   }
 
   renderGitBlock(){
     if(this.props.operationType !== 'git') return null;
     if(this.props.availableBranches) return null;
     const args = { remoteType: 'Git', remoteEntity: 'repo' };
-    return <BlockPrompt {...args} replaceModal={this.props.replaceModal} />;
+    return <BlockPrompt {...args}/>;
   }
 
   onAssignment(name, event){
@@ -195,12 +196,11 @@ export default class ImageForm extends React.Component {
     gitCommit: PropTypes.string,
     availableTags: PropTypes.arrayOf(PropTypes.string),
     availableBranches: PropTypes.arrayOf(PropTypes.string),
-    replaceModal: PropTypes.func.isRequired,
     availableCommits: PropTypes.arrayOf(Types.Commit),
   }
 }
 
-function BlockPrompt(props){
+function BlockPromptFunc(props){
   const replaceModal = props.replaceModal;
   const bindPath = ROUTES.deployments.detect.path;
   const connAction = () => replaceModal(IntegrationsModal);
@@ -217,7 +217,9 @@ function BlockPrompt(props){
   )
 }
 
-BlockPrompt.propTypes = {
+const BlockPrompt = ModalClientComposer.compose(BlockPromptFunc);
+
+BlockPromptFunc.propTypes = {
   replaceModal: PropTypes.func.isRequired,
   remoteType: PropTypes.string.isRequired,
   remoteEntity: PropTypes.string.isRequired
