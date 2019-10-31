@@ -3,6 +3,9 @@ import Backend from "../../../utils/Backend";
 import Kapi from "../../../utils/Kapi";
 import DataUtils from "../../../utils/DataUtils";
 
+const BUILD_FAIL = "failed";
+const BUILD_PASS = "succeeded";
+
 export default class GitBuildOpHelper extends ImageOperator {
 
   constructor(bundle) {
@@ -54,9 +57,9 @@ export default class GitBuildOpHelper extends ImageOperator {
     const ep = `/api/docker/build_image`;
 
     const payload = DataUtils.obj2Snake({
-      zipUrl: this.tarBundle.tarballUrl,
-      dfPath: this.tarBundle.dockerfilePath,
-      outName: this.outImageName
+      repoTarUrl: this.tarBundle.tarballUrl,
+      dockerfilePath: this.matching.dockerfilePath,
+      outputImg: this.outImageName
     });
 
     this.buildJob = DataUtils.objKeysToCamel(
@@ -77,12 +80,11 @@ export default class GitBuildOpHelper extends ImageOperator {
 
   didBuildFinish(){
     console.log("NOW BUILD STR IS " + this.buildStatusStr());
-    return ['completed', 'failed'].includes(this.buildStatusStr());
+    return [BUILD_PASS, BUILD_FAIL].includes(this.buildStatusStr());
   }
 
-  didBuildSucceed(){
-    return this.buildStatusStr() === 'completed';
-  }
+  didBuildSucceed(){ return this.buildStatusStr() === BUILD_PASS; }
+  didBuildFail(){ return this.buildStatusStr() === BUILD_FAIL; }
 
   hasTermOutput() { return true; }
 
@@ -105,7 +107,7 @@ export default class GitBuildOpHelper extends ImageOperator {
       ),
       super.buildProgressItem(
         "Image",
-        `N/A`,
+        this.buildStatusFriendly(),
         this.buildStatus(),
       ),
     ]
@@ -123,9 +125,21 @@ export default class GitBuildOpHelper extends ImageOperator {
   }
 
   buildStatus(){
-    if(this.buildJob){
-      return 'working';
+    const job = this.buildJob;
+    if(job && job.jobId && job.status){
+      if(this.didBuildSucceed()) return 'done';
+      else if(this.didBuildFail()) return 'failed';
+      else return "working";
     } else return null;
+  }
+
+  buildStatusFriendly(){
+    const job = this.buildJob;
+    if(job && job.jobId && job.status){
+      if(this.didBuildSucceed()) return 'built';
+      else if(this.didBuildFail()) return 'not built';
+      else return "building";
+    } else return 'N/A';
   }
 
   failureMessage() {

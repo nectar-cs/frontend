@@ -15,18 +15,14 @@ export const defaults ={
       `kubectl scale deploy ${dep} --replicas=${scaleTo} --namespace=${ns}`,
     ],
     docker: ({dep, ns, dImg}) => [
-      `container=$(kubectl get deployment/${dep} -o json --namespace=${ns} | 
-      jq .spec.template.spec.containers[0].name | tr -d \\")`,
-      `kubectl set image deploy ${dep} $container=${dImg} --namespace=${ns}`
+      `kubectl set image deployment/${dep} ${dImg} --namespace=${ns}`
     ],
-    git: ({gRem, gRep, sha, dep, ns, dImg}) => gRem && [
+    git: ({gRem, gRep, sha, dep, ns, dImg, dPath}) => gRem && [
       `git clone git@github.com:${gRem}/${gRep}.git`,
       `git fetch origin ${sha}`,
-      `docker build . -t ${dImg}`,
+      `docker build .${dPath} -t ${dImg}`,
       `docker push ${dImg}`,
-      `container=$(kubectl get deployment/${dep} -o json --namespace=${ns} | 
-      jq .spec.template.spec.containers[0].name | tr -d \\")`,
-      `kubectl set image deploy ${dep} $container=${dImg} --namespace=${ns}`
+      `kubectl set image deployment/${dep} ${dImg} --namespace=${ns}`
     ],
   },
 

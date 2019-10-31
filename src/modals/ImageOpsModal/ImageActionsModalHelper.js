@@ -138,7 +138,8 @@ export class ImageActionsModalHelper {
     const { name, namespace, replicas} = inst.props.deployment;
     const { scaleTo, imageName, outImageName } = inst.state.choices;
     const { gitCommit } = inst.state.choices;
-    const {gitRemoteName, gitRepoName} = inst.props.matching || {};
+    const { gitRemoteName, gitRepoName} = inst.props.matching || {};
+    const { dockerfilePath } = inst.props.matching || {};
 
     const interp = {
       dep: name,
@@ -149,6 +150,7 @@ export class ImageActionsModalHelper {
       sha: gitCommit,
       gRem: gitRemoteName,
       gRep: gitRepoName,
+      dPath: (dockerfilePath || '').replace("/Dockerfile", ""),
       scaleTo
     };
     return defaults.previewCommands[type](interp) || [];

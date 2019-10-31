@@ -5,8 +5,8 @@ import Text from "../../assets/text-combos";
 
 export default function TermSection({title, lines}){
 
-  const Lines = () => lines.map(cmd => (
-    <Text.Code key={cmd} chill>{cmd}</Text.Code>
+  const Lines = () => lines.map((cmd, i) => (
+    <Text.Code key={i} chill>{cmd}</Text.Code>
   ));
 
   return(

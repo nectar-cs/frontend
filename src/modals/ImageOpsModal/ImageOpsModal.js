@@ -98,7 +98,7 @@ export default class ImageOpsModal extends React.Component {
 
     return(
       <Conclusion
-        isSuccess={this.state.conclusion}
+        success={this.state.conclusion}
         reason={this.opHelper.conclusionMessage()}
       />
     )
