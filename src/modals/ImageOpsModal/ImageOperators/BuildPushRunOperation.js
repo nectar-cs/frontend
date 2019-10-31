@@ -22,7 +22,9 @@ export default class BuildPushRunOperation extends BaseOperator {
     this.gitCommit = bundle.gitCommit;
   }
 
-  prepare(instance, klass) {
+  prepare(instance) {
+    console.log("OFFERING PREPARE " + instance.constructor.name);
+
     if (instance instanceof TarballJob)
       this.prepareTarballJob(instance);
 
@@ -40,7 +42,12 @@ export default class BuildPushRunOperation extends BaseOperator {
   }
 
   prepareBuildJob(instance){
+    console.log("PREPARING " + instance.constructor.name);
     const cloneJob = this.getJob(TarballJob);
+    console.log(cloneJob.getTarballUrl());
+    console.log(this.matching);
+    console.log(this.outImageName);
+
     instance.prepare({
       tarballUrl: cloneJob.getTarballUrl(),
       dockerfilePath: this.matching.dockerfilePath,

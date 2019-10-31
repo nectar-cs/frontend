@@ -133,7 +133,7 @@ export default class ImageOpsModal extends React.Component {
   renderGamePlan(){
     const runner = this.opHelper;
     const isRunningOrConcluded = !this.isConfiguring();
-    const supportsOut = runner && runner.hasTermOutput();
+    const supportsOut = runner && runner.supportsLogging();
     if(isRunningOrConcluded && supportsOut) return null;
 
     return(

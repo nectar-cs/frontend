@@ -21,7 +21,7 @@ export default class TarballJob extends Job {
 
   progressItems() {
     return [
-      this.progItemBuilder(
+      this.buildProgressItem(
         "Repo",
         this.tarBundle ? 'cloned' : 'cloning',
         this.tarBundle ? 'done' : "working"

@@ -4,9 +4,12 @@ import Job from "./Job";
 
 export default class DockerJob extends Job {
 
-  static BUILD_FAIL = "failed";
-  static BUILD_PASS = "succeeded";
-  static END_STATES = [DockerJob.BUILD_FAIL, DockerJob.BUILD_PASS];
+  static KAPI_STATUS_FAIL = "failed";
+  static KAPI_STATUS_PASS = "succeeded";
+  static END_STATES = [
+    DockerJob.KAPI_STATUS_FAIL,
+    DockerJob.KAPI_STATUS_PASS
+  ];
 
   constructor(args) {
     super(args);
@@ -24,13 +27,16 @@ export default class DockerJob extends Job {
     this.job = { id, type };
   }
 
-  hasConcluded(){
+  recomputeState(){
     const endStates = DockerJob.END_STATES;
-    return endStates.includes(this.jobStatusStr());
+    if(endStates.includes(this.jobStatusStr())){
+      console.log("END STATE REACHED " + this.jobStatusStr());
+      this.success = this.jobStatusStr() === DockerJob.KAPI_STATUS_PASS;
+    }
   }
 
-  async recomputeStatus(){
-    const { jobType: type, jobId: id } = this.job;
+  async reloadData(){
+    const { type, id } = this.job;
     const ep = `/api/docker/${type}/${id}/job_info`;
     const result = await Kapi.blockingFetch(ep);
     const { logs, status } = result;
@@ -38,13 +44,11 @@ export default class DockerJob extends Job {
   }
 
   jobStatusStr(){
-    const raw = this.job && this.job.status;
+    const raw = this.job.status;
     return raw && raw.toLowerCase();
   }
 
   logs(){ return this.job.logs }
-  supportsLogging() { return true; }
-
   initiatePayload(){}
   initiatePath(){}
 }

@@ -4,22 +4,30 @@ export default class Job {
     this.success = null;
     this.reason = null;
     this.started = false;
-    this.updateCallback = source.updateCallback;
-    this.progItemBuilder = source.progItemBuilder;
+    this.progressCallback = source.progressCallback;
+    this.buildProgressItem = source.buildProgressItem;
   }
 
   async perform(){
+    // this.broadcastProgress();
     this.commence();
     await this.initiateWork();
     while(!this.hasConcluded()){
-      this.broadcastProgress();
-      await this.recomputeStatus();
+      await this.reloadData();
+      this.recomputeState();
+      // this.broadcastProgress();
       await this.pollWait(this.hasConcluded())
     }
+    // this.broadcastProgress();
+  }
+
+  async pollWait(antiCondition) {
+    const ms = !antiCondition ?  Job.POLL_RATE : 0;
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   broadcastProgress(){
-    this.updateCallback();
+    this.progressCallback();
   }
 
   progressItems(){
@@ -35,21 +43,16 @@ export default class Job {
     this.reason = reason;
   }
 
-  supportsLogging() { return false; }
   logs() { return []; }
   hasStarted() { return this.started; }
   hasConcluded(){ return this.success != null }
   hasSucceeded(){ return this.hasConcluded() && this.success; }
   didFail(){ return this.hasConcluded() && !this.success; }
   getReason(){ return this.reason }
-
-  async pollWait(antiCondition) {
-    const ms = !antiCondition ?  Job.POLL_RATE : 0;
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+  recomputeState(){ }
 
   async initiateWork(){ throw "Unimplemented!" }
-  recomputeStatus(){ throw "Unimplemented!" }
+  reloadData(){ throw "Unimplemented!" }
 
   static POLL_RATE = 2000;
 }

@@ -16,21 +16,26 @@ export default class BaseOperator {
 
     this.deployment = bundle.deployment;
     this.matching = bundle.matching;
+
+    this.broadcastProgress = this.broadcastProgress.bind(this);
+    this.buildProgressItem = this.buildProgressItem.bind(this);
   }
 
   initializeJob(JobClass){
-    new JobClass({
-      updateCallback: this.broadcastProgress,
-      progItemBuilder: this.buildProgressItem
+    return new JobClass({
+      progressCallback: this.broadcastProgress,
+      buildProgressItem: this.buildProgressItem
     })
   }
 
   async perform(){
     for (const job of this.jobs){
+      this.prepare(job);
       await job.perform();
       if(job.hasSucceeded()){
         console.log("JOB SUCCEEDED, CONTINUE");
       } else {
+        console.log("JOB FAILED");
         this.conclude(false, job.getReason());
         return;
       }
@@ -46,7 +51,7 @@ export default class BaseOperator {
 
   runningOrFinishedJobs(){
     return this.jobs.filter(job =>
-      job.hasStarted() || job.isConcluded()
+      job.hasStarted() || job.hasConcluded()
     )
   }
 
@@ -58,12 +63,12 @@ export default class BaseOperator {
 
   progressItems() {
     return this.jobs.reduce((all, crt) => (
-      [...all, crt.progressItems()]
+      [...all, ...crt.progressItems()]
     ), []);
   }
 
   broadcastProgress(){
-    this.progressCallback(this.progressItems())
+    this.progressCallback([])
   }
 
   progressItemStatus(status){
@@ -98,7 +103,7 @@ export default class BaseOperator {
   }
 
   supportsLogging() { return false; }
-  prepare(instance, klass){}
+  prepare(instance){}
   successMessage(){ throw `Method successMessage not implemented!`; }
 
   static jobClasses() { return []; }
