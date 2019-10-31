@@ -30,8 +30,8 @@ export default class DockerJob extends Job {
   recomputeState(){
     const endStates = DockerJob.END_STATES;
     if(endStates.includes(this.jobStatusStr())){
-      console.log("END STATE REACHED " + this.jobStatusStr());
-      this.success = this.jobStatusStr() === DockerJob.KAPI_STATUS_PASS;
+      const win = this.jobStatusStr() === DockerJob.KAPI_STATUS_PASS;
+      this.conclude(win, "IDK");
     }
   }
 

@@ -8,14 +8,6 @@ import DockerPushJob from "../Jobs/DockerPushJob";
 
 export default class BuildPushRunOperation extends BaseOperator {
 
-  static jobClasses(){
-    return [
-      TarballJob,
-      DockerBuildJob,
-      DockerPushJob
-    ]
-  }
-
   constructor(bundle) {
     super(bundle);
     this.outImageName = bundle.outImageName;
@@ -23,8 +15,6 @@ export default class BuildPushRunOperation extends BaseOperator {
   }
 
   prepare(instance) {
-    console.log("OFFERING PREPARE " + instance.constructor.name);
-
     if (instance instanceof TarballJob)
       this.prepareTarballJob(instance);
 
@@ -42,32 +32,27 @@ export default class BuildPushRunOperation extends BaseOperator {
   }
 
   prepareBuildJob(instance){
-    console.log("PREPARING " + instance.constructor.name);
-    const cloneJob = this.getJob(TarballJob);
-    console.log(cloneJob.getTarballUrl());
-    console.log(this.matching);
-    console.log(this.outImageName);
+    const tarJob = this.getJob(TarballJob);
 
     instance.prepare({
-      tarballUrl: cloneJob.getTarballUrl(),
+      tarballUrl: tarJob.getTarballUrl(),
       dockerfilePath: this.matching.dockerfilePath,
       outImageName: this.outImageName
     })
   }
 
   preparePushJob(instance){
-    const cloneJob = this.getJob(TarballJob);
+    const tarJob = this.getJob(TarballJob);
     instance.prepare({
-      username: cloneJob.getTarballUrl(),
-      password: this.matching.dockerfilePath,
-      imageName: this.outImageName
+      imageName: this.outImageName,
+      ...tarJob.getCredentials()
     })
   }
 
   progressItems(){
-    const cloneJob = this.getJob(TarballJob);
+    const tarJob = this.getJob(TarballJob);
     return [
-      ...cloneJob.progressItems(),
+      ...tarJob.progressItems(),
       super.buildProgressItem(
         "Image Build & Push",
         this.imageStatusFriendly(),
@@ -87,16 +72,30 @@ export default class BuildPushRunOperation extends BaseOperator {
 
     if (build.hasStarted()) {
       if (push.hasStarted()) {
-        if (push.didSucceed()) return 'Pushed';
-        else if (push.didFail()) return 'Push Failed';
+        if (push.hasSucceeded()) return 'Pushed';
+        else if (push.hasFailed()) return 'Push Failed';
         else return "Pushing";
       } else {
-        if (build.didSucceed()) return 'Pushed';
-        else if (build.didFail()) return 'Push Failed';
+        if (build.hasSucceeded()) return 'Pushed';
+        else if (build.hasFailed()) return 'Push Failed';
         else return "Building";
       }
     } else return "N/A";
   }
 
-  supportsLogging() { return true; }
+  successMessage() {
+    return "Clone -> Build -> Push -> Scale -> Annotate";
+  }
+
+  supportsLogging() {
+    return true;
+  }
+
+  static jobClasses(){
+    return [
+      TarballJob,
+      DockerBuildJob,
+      DockerPushJob
+    ]
+  }
 }

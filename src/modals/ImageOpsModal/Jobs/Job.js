@@ -47,7 +47,7 @@ export default class Job {
   hasStarted() { return this.started; }
   hasConcluded(){ return this.success != null }
   hasSucceeded(){ return this.hasConcluded() && this.success; }
-  didFail(){ return this.hasConcluded() && !this.success; }
+  hasFailed(){ return this.hasConcluded() && !this.success; }
   getReason(){ return this.reason }
   recomputeState(){ }
 
