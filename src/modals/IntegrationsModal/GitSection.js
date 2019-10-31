@@ -8,7 +8,7 @@ import {S} from './IntegrationSectionStyles'
 export default class GitSection extends IntegrationSection {
   performFetch(whenDone){
     Backend.raisingFetch('/remotes?entity=git', (resp) => {
-      whenDone(DataUtils.objKeysToCamel(resp['data']));
+      whenDone(DataUtils.obj2Camel(resp['data']));
     });
   }
 

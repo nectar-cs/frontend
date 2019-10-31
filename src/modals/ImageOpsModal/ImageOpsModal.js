@@ -82,11 +82,12 @@ export default class ImageOpsModal extends React.Component {
 
   renderTerminalOutput(){
     if(this.isWorking() || this.isConcluded()) {
-      if(this.opHelper.hasTermOutput()){
+      if(this.opHelper.supportsLogging()){
         return(
           <TermSection
             title='Logs'
-            lines={this.opHelper.terminalOutput()}
+            lines={this.opHelper.jobLogs()}
+            extras={{maxHeight: "260px"}}
           />
         )
       }

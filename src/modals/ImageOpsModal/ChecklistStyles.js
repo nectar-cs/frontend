@@ -19,7 +19,7 @@ export const Name = styled.p`
 
 export const Detail = styled.p`
   width: 20px;
-  margin: 0;
+  margin: 0 12px 0 0;
 `;
 
 export const Icon = styled.div`

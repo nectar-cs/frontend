@@ -59,7 +59,7 @@ export default class Helper{
     const { name } = inst.props.deployment;
     const ep = `/microservices/${name}`;
     Backend.raisingFetch(ep, resp => {
-      const matching = DataUtils.objKeysToCamel(resp)['data'];
+      const matching = DataUtils.obj2Camel(resp)['data'];
       const merger = this.matching2Bundle(matching);
       const bundle = { ...inst.state.bundle, ...merger };
       const matchingId = matching.id;

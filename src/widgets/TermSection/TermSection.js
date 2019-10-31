@@ -3,7 +3,7 @@ import TextOverLineSubtitle from "../TextOverLineSubtitle/TextOverLineSubtitle";
 import Layout from "../../assets/layouts";
 import Text from "../../assets/text-combos";
 
-export default function TermSection({title, lines}){
+export default function TermSection({title, lines, extras = {}}){
 
   const Lines = () => lines.map((cmd, i) => (
     <Text.Code key={i} chill>{cmd}</Text.Code>
@@ -12,7 +12,7 @@ export default function TermSection({title, lines}){
   return(
     <Fragment>
       <TextOverLineSubtitle text={title}/>
-      <Layout.BigCodeViewer>
+      <Layout.BigCodeViewer {...extras}>
         <Lines/>
       </Layout.BigCodeViewer>
     </Fragment>

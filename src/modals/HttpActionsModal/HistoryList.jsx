@@ -70,7 +70,7 @@ export default class HistoryList extends React.Component {
       if(this._isMounted) {
         this.setState(s => ({
           ...s,
-          history: DataUtils.objKeysToCamel(resp['data'])
+          history: DataUtils.obj2Camel(resp['data'])
         }))
       }
     });

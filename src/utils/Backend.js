@@ -49,7 +49,7 @@ export default class Backend {
 
   static async blockingRequest(method, endpoint, body){
     const response = await fetch(this.url(endpoint), this.prepReq(method, body));
-    return DataUtils.objKeysToCamel(await response.json());
+    return DataUtils.obj2Camel(await response.json());
   }
 
   static raisingRequest(method, endpoint, body, callback, errorCallback){

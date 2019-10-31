@@ -22,7 +22,7 @@ export default class Helper{
     inst.setState(s => ({...s, isFetching: true}));
     const ep = MiscUtils.commitDetailPath(deployment, matching);
     Backend.raisingFetch(ep, resp => {
-      const commit = DataUtils.objKeysToCamel(resp['data']);
+      const commit = DataUtils.obj2Camel(resp['data']);
       inst.setState(s => ({...s, commit, isFetching: false}));
     });
   }

@@ -1,6 +1,6 @@
-import ImageOperator from "./ImageOperator";
+import BaseOperator from "./BaseOperator";
 
-export default class SameTagOpHelper extends ImageOperator {
+export default class SameTagOpHelper extends BaseOperator {
 
   isStableState() {
     return this.checkGroupInState(

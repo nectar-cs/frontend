@@ -14,20 +14,20 @@ export default class Helper{
     };
 
     Kapi.filterFetch('/api/deployments', workspace, r => {
-      onSuccess(DataUtils.objKeysToCamel(r['data']));
+      onSuccess(DataUtils.obj2Camel(r['data']));
     }, inst.props.kubeErrorCallback);
   }
 
   static fetchMatchings(inst){
     Backend.raisingFetch(`/microservices`, resp => {
-      const matchings = DataUtils.objKeysToCamel(resp).data;
+      const matchings = DataUtils.obj2Camel(resp).data;
       inst.setState(s => ({...s, matchings}));
     }, inst.props.apiErrorCallback);
   }
 
   static checkStuntTrash(callback){
     Kapi.fetch(`/api/cluster/stunt_pods`, resp => {
-      callback(DataUtils.objKeysToCamel(resp['data']));
+      callback(DataUtils.obj2Camel(resp['data']));
     });
   }
 

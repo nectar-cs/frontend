@@ -9,7 +9,7 @@ import {S} from './IntegrationSectionStyles'
 export default class DockerSection extends IntegrationSection {
   performFetch(whenDone){
     Backend.raisingFetch('/remotes?entity=docker', (resp) => {
-      whenDone(DataUtils.objKeysToCamel(resp['data']));
+      whenDone(DataUtils.obj2Camel(resp['data']));
     });
   }
 

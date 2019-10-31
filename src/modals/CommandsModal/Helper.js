@@ -11,7 +11,7 @@ export default class Helper {
 
   static reloadHistory(inst, whenDone) {
     Backend.raisingFetch(this.baseEp(inst), (resp) => {
-      whenDone(DataUtils.objKeysToCamel(resp['data']));
+      whenDone(DataUtils.obj2Camel(resp['data']));
     });
   }
 
@@ -19,7 +19,7 @@ export default class Helper {
     const { command } = inst.state.choices;
     const payload = {command, status: 1};
     Backend.raisingPost(this.baseEp(inst), { extras: payload }, resp => (
-      whenDone(DataUtils.objKeysToCamel(resp['data']))
+      whenDone(DataUtils.obj2Camel(resp['data']))
     ));
   }
 

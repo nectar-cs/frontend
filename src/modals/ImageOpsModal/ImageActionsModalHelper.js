@@ -1,13 +1,12 @@
 import DataUtils from "../../utils/DataUtils";
 import React from "react";
-import {DesiredStatePodTable, DesiredTagPodTable, StdPodTable} from "./PodTableRenderers";
 import SameTagOpHelper from "./ImageOperators/SameTagOpHelper";
 import DiffTagOpHelper from "./ImageOperators/DiffTagOpHelper";
 import ScalePodsOperator from "./ImageOperators/ScalePodsOperator";
 import Backend from "../../utils/Backend";
 import moment from "moment";
 import {defaults} from "./defaults";
-import GitBuildOpHelper from "./ImageOperators/GitBuildOpHelper";
+import BuildPushRunOperation from "./ImageOperators/BuildPushRunOperation";
 
 export class ImageActionsModalHelper {
 
@@ -38,7 +37,7 @@ export class ImageActionsModalHelper {
     const ep = `/remotes/${imgRemoteId}/${imgRepoName}/branches`;
 
     Backend.raisingFetch(ep, resp => {
-      let imageTags = DataUtils.objKeysToCamel(resp)['data'];
+      let imageTags = DataUtils.obj2Camel(resp)['data'];
       imageTags = imageTags.map(t => this.fullImgTag(inst, t));
       const imageTag = imageTags[0];
       inst.setState(s => ({...s, remotes: { ...s.remotes, imageTags }}));
@@ -58,7 +57,7 @@ export class ImageActionsModalHelper {
 
     Backend.raisingFetch(ep, resp => {
       const gitBranches = DataUtils.aToO(
-        DataUtils.objKeysToCamel(resp)['data']
+        DataUtils.obj2Camel(resp)['data']
       );
       inst.setState(s => ({...s, remotes: {...s.remotes, gitBranches}}));
       this.setBranch(inst, Object.keys(gitBranches)[0])
@@ -72,7 +71,7 @@ export class ImageActionsModalHelper {
 
     inst.setState(s => ({...s, isFetching: true}));
     Backend.raisingFetch(ep, resp => {
-      const commits = DataUtils.objKeysToCamel(resp)['data'];
+      const commits = DataUtils.obj2Camel(resp)['data'];
       inst.setState(s => {
         const branches = {...s.remotes.gitBranches, [gitBranch]: commits };
         const remotes = { ...s.remotes, gitBranches: branches };
@@ -113,7 +112,7 @@ export class ImageActionsModalHelper {
       case "scale":
         return ScalePodsOperator;
       case "git":
-        return GitBuildOpHelper;
+        return BuildPushRunOperation;
       default:
         throw `No helper for op type ${operationType}`;
     }

@@ -57,6 +57,8 @@ const BigCodeViewer = styled.div`
   margin-top: 18px;
   padding: 20px 12px;
   border-radius: 4px;
+  max-height: ${p => p.maxHeight};
+  overflow-y: scroll;
   background: ${p => p.theme.colors.primaryColor};
 `;
 

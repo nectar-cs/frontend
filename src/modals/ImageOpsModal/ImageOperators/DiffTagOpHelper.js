@@ -1,7 +1,7 @@
-import ImageOperator from "./ImageOperator";
+import BaseOperator from "./BaseOperator";
 import DataUtils from "../../../utils/DataUtils";
 
-export default class DiffTagOpHelper extends ImageOperator {
+export default class DiffTagOpHelper extends BaseOperator {
 
   successMessage() {
     return "All pods running the new image.";

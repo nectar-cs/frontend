@@ -36,7 +36,7 @@ export default class Helper {
   static fetchDeployment(inst){
     const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;
     Kapi.fetch(ep, resp => {
-      const deployment = DataUtils.objKeysToCamel(resp);
+      const deployment = DataUtils.obj2Camel(resp);
       inst.setState(s => ({...s, deployment}));
     });
   }
@@ -44,7 +44,7 @@ export default class Helper {
   static fetchMatching(inst){
     const ep = `/microservices/${this.depName(inst)}`;
     Backend.raisingFetch(ep, resp => {
-      const matching = DataUtils.objKeysToCamel(resp)['data'];
+      const matching = DataUtils.obj2Camel(resp)['data'];
       inst.setState(s => ({...s, matching}));
     }, () => inst.setState(s => ({...s, matching: null})));
   }

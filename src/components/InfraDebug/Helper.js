@@ -23,21 +23,21 @@ export default class Helper{
   static fetchStepMeta(inst, stepId, callback){
     const ep = `/api/analysis/${inst.type()}/step/${stepId}/info`;
     Kapi.post(ep, this.stepPayload(inst), resp => {
-      callback(DataUtils.objKeysToCamel(resp['data']));
+      callback(DataUtils.obj2Camel(resp['data']));
     });
   }
 
   static fetchTerminal(inst, stepId, callback){
     const ep = `/api/analysis/${inst.type()}/terminal/${stepId}/info`;
     Kapi.post(ep, this.stepPayload(inst), resp => {
-      callback(DataUtils.objKeysToCamel(resp['data']));
+      callback(DataUtils.obj2Camel(resp['data']));
     });
   }
 
   static postRunStep(inst, stepId, callback){
     const ep = `/api/analysis/${inst.type()}/step/${stepId}/run`;
     Kapi.post(ep, this.stepPayload(inst), resp => {
-      callback(DataUtils.objKeysToCamel(resp['data']));
+      callback(DataUtils.obj2Camel(resp['data']));
     });
   }
 
@@ -109,7 +109,7 @@ export default class Helper{
   static fetchDeployment(inst){
     const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;
     Kapi.fetch(ep, resp => {
-      const deployment = DataUtils.objKeysToCamel(resp);
+      const deployment = DataUtils.obj2Camel(resp);
       inst.update('deployment', deployment);
     });
   }
@@ -117,7 +117,7 @@ export default class Helper{
   static fetchMatching(inst){
     const ep = `/microservices/${this.depName(inst)}`;
     Backend.raisingFetch(ep, resp => {
-      const matching = DataUtils.objKeysToCamel(resp)['data'];
+      const matching = DataUtils.obj2Camel(resp)['data'];
       inst.setState(s => ({...s, matching}));
     }, () => inst.setState(s => ({...s, matching: null})));
   }
@@ -125,7 +125,7 @@ export default class Helper{
   static fetchTreeStruct(type, callback){
     const ep = `/api/analysis/${type}/decision_tree`;
     Kapi.fetch(ep, resp => {
-      callback(DataUtils.objKeysToCamel(resp['data']));
+      callback(DataUtils.obj2Camel(resp['data']));
     });
   }
 

@@ -32,11 +32,11 @@ class AppLayoutClass extends React.Component {
     const { setWorkspaces, setRemotes } = this.props;
 
     Backend.raisingFetch(`/workspaces`, resp => {
-      setWorkspaces(DataUtils.objKeysToCamel(resp['data']));
+      setWorkspaces(DataUtils.obj2Camel(resp['data']));
     });
 
     Backend.raisingFetch(`/remotes/connected`, resp => {
-      setRemotes(DataUtils.objKeysToCamel(resp['data']));
+      setRemotes(DataUtils.obj2Camel(resp['data']));
     });
   }
 }

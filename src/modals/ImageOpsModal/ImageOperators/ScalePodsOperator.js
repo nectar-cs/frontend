@@ -1,7 +1,7 @@
-import ImageOperator from "./ImageOperator";
+import BaseOperator from "./BaseOperator";
 import DataUtils from "../../../utils/DataUtils";
 
-export default class ScalePodsOperator extends ImageOperator {
+export default class ScalePodsOperator extends BaseOperator {
 
   constructor(bundle) {
     super(bundle);
