@@ -5,6 +5,7 @@ import DataUtils from "../../../utils/DataUtils";
 
 const BUILD_FAIL = "failed";
 const BUILD_PASS = "succeeded";
+const DOCKER_OP_PULL_RATE = 2000;
 
 export default class GitBuildOpHelper extends ImageOperator {
 
@@ -13,44 +14,65 @@ export default class GitBuildOpHelper extends ImageOperator {
     this.outImageName = bundle.outImageName;
     this.tarBundle = null;
     this.buildJob = null;
-    this.failureReason = '';
+    this.pushJob = null;
   }
 
-  async perform(){
+  async perform() {
     this.broadcastProgress();
-    await this.fetchTarBundle();
-
-    this.broadcastProgress();
-    await this.buildLoop();
-
-    if(this.didBuildSucceed()){
-      this.broadcastProgress();
-      this.conclude(true);
-    } else {
-      this.failureReason = 'Build Failed';
-      this.conclude(false);
+    if(await this.fetchTarBundle()){
+      if (await this.buildLoop()){
+        if (await this.pushLoop())
+          this.conclude(true);
+        else
+          this.conclude(false, 'Push Failed');
+      } else {
+        this.conclude(false, 'Build Failed');
+      }
     }
-
-    this.broadcastProgress();
   }
 
   async buildLoop(){
+    this.broadcastProgress();
     await this.initiateBuild();
     this.broadcastProgress();
 
-    while(!this.didBuildFinish()){
-      await sleep(2000);
-      await this.checkBuildStatus();
+    while(!this.didJobFinish(this.buildJob)){
+      await this.updateBuildStatus();
       this.broadcastProgress();
+      await sleep(DOCKER_OP_PULL_RATE);
     }
+
+    return this.didBuildSucceed();
   }
 
-  async checkBuildStatus(){
-    const { jobType: type, jobId: id } = this.buildJob;
+  async pushLoop(){
+    this.broadcastProgress();
+    await this.initiatePush();
+    this.broadcastProgress();
+
+    while(!this.didJobFinish(this.pushJob)){
+      await this.updatePushStatus();
+      this.broadcastProgress();
+      await sleep(DOCKER_OP_PULL_RATE);
+    }
+
+    return this.didPushSucceed();
+  }
+
+  async updateBuildStatus() {
+    this.buildJob = await this.fetchJobStatus(this.buildJob);
+  }
+
+  async updatePushStatus() {
+    this.pushJob = await this.fetchJobStatus(this.pushJob);
+  }
+
+  async fetchJobStatus(job){
+    const { jobType: type, jobId: id } = job;
     const ep = `/api/docker/${type}/${id}/job_info`;
     const result = await Kapi.blockingFetch(ep);
     const { logs, status } = result;
-    this.buildJob = { ...this.buildJob, logs, status };
+    return { ...job, logs, status };
   }
 
   async initiateBuild(){
@@ -67,24 +89,47 @@ export default class GitBuildOpHelper extends ImageOperator {
     );
   }
 
+  async initiatePush(){
+    const ep = `/api/docker/push_image`;
+
+    const payload = DataUtils.obj2Snake({
+      username: this.tarBundle.username,
+      password: this.tarBundle.password,
+      imageName: this.outImageName
+    });
+
+    console.log("PUSH BUN");
+    console.log(payload);
+
+    this.pushJob = DataUtils.objKeysToCamel(
+      await Kapi.blockingPost(ep, payload)
+    );
+
+    console.log("PUYSH JOB FIRST");
+    console.log(this.pushJob);
+  }
+
   async fetchTarBundle() {
+    this.broadcastProgress();
     const ep = `/microservices/${this.matching.id}/src_tarball`;
     const payload = {sha: this.gitCommit};
     this.tarBundle = await Backend.blockingPost(ep, payload);
+    return true;
   }
 
-  buildStatusStr(){
-    const raw = this.buildJob && this.buildJob.status;
+  jobStatusStr(job){
+    const raw = job && job.status;
     return raw && raw.toLowerCase();
   }
 
-  didBuildFinish(){
-    console.log("NOW BUILD STR IS " + this.buildStatusStr());
-    return [BUILD_PASS, BUILD_FAIL].includes(this.buildStatusStr());
+  didJobFinish(job){
+    return [BUILD_PASS, BUILD_FAIL].includes(this.jobStatusStr(job));
   }
 
-  didBuildSucceed(){ return this.buildStatusStr() === BUILD_PASS; }
-  didBuildFail(){ return this.buildStatusStr() === BUILD_FAIL; }
+  didBuildSucceed(){ return this.jobStatusStr(this.buildJob) === BUILD_PASS; }
+  didBuildFail(){ return this.jobStatusStr(this.buildJob) === BUILD_FAIL; }
+  didPushSucceed(){ return this.jobStatusStr(this.pushJob) === BUILD_PASS; }
+  didPushFail(){ return this.jobStatusStr(this.pushJob) === BUILD_FAIL; }
 
   hasTermOutput() { return true; }
 
@@ -108,15 +153,26 @@ export default class GitBuildOpHelper extends ImageOperator {
       super.buildProgressItem(
         "Image",
         this.buildStatusFriendly(),
-        this.buildStatus(),
+        this.jobChecklistStatus(this.buildJob),
+      ),
+      super.buildProgressItem(
+        "Push",
+        this.buildStatusFriendly(),
+        this.jobChecklistStatus(this.pushJob),
       ),
     ]
   }
 
   terminalOutput(){
+    let total  = [];
     if(this.buildJob && this.buildJob.logs){
-      return this.buildJob.logs;
-    } else return [];
+      total = ['-----BUILD-----', ...this.buildJob.logs];
+      if(this.pushJob && this.pushJob.logs){
+        total = [...total, '-----PUSH-----', ...this.pushJob.logs];
+      }
+    }
+
+    return total;
   }
 
   cloneStatus(){
@@ -124,8 +180,7 @@ export default class GitBuildOpHelper extends ImageOperator {
     return 'working';
   }
 
-  buildStatus(){
-    const job = this.buildJob;
+  jobChecklistStatus(job){
     if(job && job.jobId && job.status){
       if(this.didBuildSucceed()) return 'done';
       else if(this.didBuildFail()) return 'failed';
@@ -140,9 +195,5 @@ export default class GitBuildOpHelper extends ImageOperator {
       else if(this.didBuildFail()) return 'not built';
       else return "building";
     } else return 'N/A';
-  }
-
-  failureMessage() {
-    return this.failureReason;
   }
 }

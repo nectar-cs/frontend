@@ -129,8 +129,13 @@ export default class ImageOperator {
     else return this.failureMessage();
   }
 
-  conclude(success){
+  failureMessage() {
+    return this.failureReason;
+  }
+
+  conclude(success, reason = null){
     this.conclusion = success;
+    this.failureReason = reason;
     this.finishedCallback(success);
   }
 
@@ -142,6 +147,5 @@ export default class ImageOperator {
   hasTermOutput(){ return false; }
   isStableState(){ return false }
   successMessage(){ throw `Method successMessage not implemented!`; }
-  failureMessage(){ throw `Method failureMessage not implemented!`; }
   progressItems(failed){ throw `Method progressItems not implemented!`; }
 }
