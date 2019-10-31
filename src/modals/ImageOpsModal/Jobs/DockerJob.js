@@ -13,7 +13,7 @@ export default class DockerJob extends Job {
 
   constructor(args) {
     super(args);
-    this.job = {};
+    this.job = { id: null, type: null, logs: [], status: '' };
   }
 
   async initiateWork() {
@@ -24,13 +24,13 @@ export default class DockerJob extends Job {
       )
     );
 
-    this.job = { id, type };
+    this.job = { ...this.job, id, type };
   }
 
   recomputeState(){
     const endStates = DockerJob.END_STATES;
-    if(endStates.includes(this.jobStatusStr())){
-      const win = this.jobStatusStr() === DockerJob.KAPI_STATUS_PASS;
+    if(endStates.includes(this.status())){
+      const win = this.status() === DockerJob.KAPI_STATUS_PASS;
       this.conclude(win, "IDK");
     }
   }
@@ -43,12 +43,8 @@ export default class DockerJob extends Job {
     this.job = { ...this.job, logs, status };
   }
 
-  jobStatusStr(){
-    const raw = this.job.status;
-    return raw && raw.toLowerCase();
-  }
-
-  logs(){ return this.job.logs }
+  status() { return this.job.status.toLowerCase() }
+  logs(){ return this.job.logs || [] }
   initiatePayload(){}
   initiatePath(){}
 }

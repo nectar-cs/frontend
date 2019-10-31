@@ -1,9 +1,9 @@
 import React from 'react'
 import {ImageName, Container, Title, Table} from "./PodTableStyles";
 import PropTypes from 'prop-types'
-import {ModestHeader} from "../../assets/table-combos";
-import {Separator} from "../../widgets/Tabs/TabStyles";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import {ModestHeader} from "../../../assets/table-combos";
+import {Separator} from "../../../widgets/Tabs/TabStyles";
+import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 
 export default class PodTable extends React.Component {

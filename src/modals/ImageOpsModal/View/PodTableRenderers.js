@@ -1,6 +1,6 @@
 import PodTable from "./PodTable";
 import React from "react";
-import Text from "../../assets/text-combos";
+import Text from "../../../assets/text-combos";
 
 export function StdPodTable(props){
   return(

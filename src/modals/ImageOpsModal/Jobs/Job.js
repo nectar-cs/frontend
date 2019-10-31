@@ -9,16 +9,16 @@ export default class Job {
   }
 
   async perform(){
-    // this.broadcastProgress();
+    this.broadcastProgress();
     this.commence();
     await this.initiateWork();
     while(!this.hasConcluded()){
       await this.reloadData();
       this.recomputeState();
-      // this.broadcastProgress();
+      this.broadcastProgress();
       await this.pollWait(this.hasConcluded())
     }
-    // this.broadcastProgress();
+    this.broadcastProgress();
   }
 
   async pollWait(antiCondition) {
@@ -27,7 +27,7 @@ export default class Job {
   }
 
   broadcastProgress(){
-    this.progressCallback();
+    this.progressCallback(this.progressItems());
   }
 
   progressItems(){

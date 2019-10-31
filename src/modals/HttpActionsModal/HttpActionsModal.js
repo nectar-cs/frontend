@@ -19,7 +19,7 @@ import Layout from "../../assets/layouts";
 import Text from './../../assets/text-combos'
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import Helper from './Helper'
-import Checklist from "../ImageOpsModal/Checklist";
+import Checklist from "../ImageOpsModal/View/Checklist";
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 

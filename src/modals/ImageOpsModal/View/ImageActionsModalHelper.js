@@ -1,12 +1,12 @@
-import DataUtils from "../../utils/DataUtils";
+import DataUtils from "../../../utils/DataUtils";
 import React from "react";
-import SameTagOpHelper from "./ImageOperators/SameTagOpHelper";
-import DiffTagOpHelper from "./ImageOperators/DiffTagOpHelper";
-import ScalePodsOperator from "./ImageOperators/ScalePodsOperator";
-import Backend from "../../utils/Backend";
+import SameTagOpHelper from "../ImageOperators/SameTagOpHelper";
+import DiffTagOpHelper from "../ImageOperators/DiffTagOpHelper";
+import ScalePodsOperator from "../ImageOperators/ScalePodsOperator";
+import Backend from "../../../utils/Backend";
 import moment from "moment";
 import {defaults} from "./defaults";
-import BuildPushRunOperation from "./ImageOperators/BuildPushRunOperation";
+import BuildPushRunOperation from "../ImageOperators/BuildPushRunOperation";
 
 export class ImageActionsModalHelper {
 

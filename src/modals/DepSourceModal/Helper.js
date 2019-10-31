@@ -1,4 +1,4 @@
-import ImageOpsModal from "../ImageOpsModal/ImageOpsModal";
+import ImageOpsModal from "../ImageOpsModal/View/ImageOpsModal";
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
 import MiscUtils from "../../utils/MiscUtils";

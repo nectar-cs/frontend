@@ -5,7 +5,7 @@ import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
 import CardRow from "./CardRow";
 import {Types} from "../../../types/Deployment";
-import ImageOpsModal from "../../../modals/ImageOpsModal/ImageOpsModal";
+import ImageOpsModal from "../../../modals/ImageOpsModal/View/ImageOpsModal";
 import { S } from "./DeploymentCardStyles"
 import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
 import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";

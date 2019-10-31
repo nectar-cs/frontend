@@ -9,7 +9,6 @@ import IntegrationsSection from "./IntegrationsSection";
 import CommandsSection from "./CommandsSection";
 import PortForwardSection from "./PortForwardSection";
 import HttpOpsSection from "./HttpOpsSection";
-import defaults from "./defaults";
 import HotReloadSection from "./HotReloadSection";
 
 export default class Helper {

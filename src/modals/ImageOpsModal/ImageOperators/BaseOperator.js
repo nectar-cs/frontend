@@ -1,9 +1,3 @@
-export const DOCKER_OP_PULL_RATE = 2000;
-
-export function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export default class BaseOperator {
 
   constructor(bundle){
@@ -11,31 +5,18 @@ export default class BaseOperator {
     this.jobs = jobClasses.map(c => this.initializeJob(c));
 
     this.conclusion = null;
-    this.progressCallback = bundle.progressCallback;
-    this.finishedCallback = bundle.finishedCallback;
+    this.notifyUpdated = (x) => bundle.notifyUpdated(x);
+    this.notifyFinished = (x) => bundle.notifyFinished(x);
 
     this.deployment = bundle.deployment;
     this.matching = bundle.matching;
-
-    this.broadcastProgress = this.broadcastProgress.bind(this);
-    this.buildProgressItem = this.buildProgressItem.bind(this);
-  }
-
-  initializeJob(JobClass){
-    return new JobClass({
-      progressCallback: this.broadcastProgress,
-      buildProgressItem: this.buildProgressItem
-    })
   }
 
   async perform(){
     for (const job of this.jobs){
-      this.prepare(job);
+      this.prepareJob(job);
       await job.perform();
-      if(job.hasSucceeded()){
-        console.log("JOB SUCCEEDED, CONTINUE");
-      } else {
-        console.log("JOB FAILED");
+      if (!job.hasSucceeded()) {
         this.conclude(false, job.getReason());
         return;
       }
@@ -67,13 +48,15 @@ export default class BaseOperator {
     ), []);
   }
 
-  broadcastProgress(){
-    this.progressCallback([])
+  broadcastProgress(items){
+    console.log("CALLED WITH ITEMS!");
+    console.table(items);
+    this.notifyUpdated(items)
   }
 
   progressItemStatus(status){
     if(status === 'done') return status;
-    if(this.conclusion !== null)
+    if(this.conclusion != null)
       return this.conclusion ? 'done' : 'failed';
     else return status;
   }
@@ -99,11 +82,18 @@ export default class BaseOperator {
   conclude(success, reason = null){
     this.conclusion = success;
     this.failureReason = reason;
-    this.finishedCallback(success);
+    this.notifyFinished(success);
+  }
+
+  initializeJob(JobClass){
+    return new JobClass({
+      progressCallback: (...x) =>  this.broadcastProgress(...x),
+      buildProgressItem: (...x) => this.buildProgressItem(...x)
+    })
   }
 
   supportsLogging() { return false; }
-  prepare(instance){}
+  prepareJob(instance){}
   successMessage(){ throw `Method successMessage not implemented!`; }
 
   static jobClasses() { return []; }

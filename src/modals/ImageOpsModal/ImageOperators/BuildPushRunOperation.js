@@ -1,7 +1,4 @@
-import BaseOperator, {DOCKER_OP_PULL_RATE, sleep} from "./BaseOperator";
-import Backend from "../../../utils/Backend";
-import Kapi from "../../../utils/Kapi";
-import DataUtils from "../../../utils/DataUtils";
+import BaseOperator from "./BaseOperator";
 import TarballJob from "../Jobs/TarballJob";
 import DockerBuildJob from "../Jobs/DockerBuildJob";
 import DockerPushJob from "../Jobs/DockerPushJob";
@@ -14,7 +11,7 @@ export default class BuildPushRunOperation extends BaseOperator {
     this.gitCommit = bundle.gitCommit;
   }
 
-  prepare(instance) {
+  prepareJob(instance) {
     if (instance instanceof TarballJob)
       this.prepareTarballJob(instance);
 
@@ -53,12 +50,16 @@ export default class BuildPushRunOperation extends BaseOperator {
     const tarJob = this.getJob(TarballJob);
     return [
       ...tarJob.progressItems(),
-      super.buildProgressItem(
-        "Image Build & Push",
-        this.imageStatusFriendly(),
-        this.imageChecklistStatus(),
-      ),
-    ]
+      this.phaseTwoProgressItem()
+    ];
+  }
+
+  phaseTwoProgressItem(){
+    return this.buildProgressItem(
+      "Image Build & Push",
+      this.imageStatusFriendly(),
+      this.imageChecklistStatus(),
+    )
   }
 
   imageChecklistStatus() {
@@ -76,8 +77,8 @@ export default class BuildPushRunOperation extends BaseOperator {
         else if (push.hasFailed()) return 'Push Failed';
         else return "Pushing";
       } else {
-        if (build.hasSucceeded()) return 'Pushed';
-        else if (build.hasFailed()) return 'Push Failed';
+        if (build.hasSucceeded()) return 'Built';
+        else if (build.hasFailed()) return 'Build Failed';
         else return "Building";
       }
     } else return "N/A";

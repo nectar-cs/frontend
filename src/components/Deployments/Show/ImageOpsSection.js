@@ -1,6 +1,6 @@
 import React from 'react'
 import Section from "./Section";
-import ImageOpsModal from "../../../modals/ImageOpsModal/ImageOpsModal";
+import ImageOpsModal from "../../../modals/ImageOpsModal/View/ImageOpsModal";
 
 export default class ImageOpsSection extends Section {
 

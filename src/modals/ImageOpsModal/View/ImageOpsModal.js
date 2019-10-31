@@ -1,15 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
-import {Types} from "../../types/Deployment";
-import ModalButton from "../../widgets/Buttons/ModalButton";
+import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
+import MiscUtils from "../../../utils/MiscUtils";
+import {Types} from "../../../types/Deployment";
+import ModalButton from "../../../widgets/Buttons/ModalButton";
 import ImageForm from "./ImageForm";
 import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
-import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
+import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import {defaults} from "./defaults";
-import FlexibleModal from "../../hocs/FlexibleModal";
-import TermSection from "../../widgets/TermSection/TermSection";
+import FlexibleModal from "../../../hocs/FlexibleModal";
+import TermSection from "../../../widgets/TermSection/TermSection";
 import Checklist from "./Checklist";
 import Conclusion from "./Conclusion";
 
@@ -30,7 +30,7 @@ export default class ImageOpsModal extends React.Component {
       conclusion: null
     };
     this.submit = this.submit.bind(this);
-    this.updateProgress = this.updateProgress.bind(this);
+    this.notifyUpdated = this.notifyUpdated.bind(this);
     this.notifyFinished = this.notifyFinished.bind(this);
   }
 
@@ -169,22 +169,23 @@ export default class ImageOpsModal extends React.Component {
     const { choices } = this.state;
 
     this.opHelper = new Operator({
-      deployment, matching, ...choices,
-      progressCallback: this.updateProgress,
-      finishedCallback: this.notifyFinished
+      ...choices,
+      deployment,
+      matching,
+      notifyUpdated: this.notifyUpdated,
+      notifyFinished: this.notifyFinished
     });
 
     this.setState(s => ({...s, phase: PHASE_PERFORMING}));
     this.opHelper.perform().then(() => {});
   }
 
-  updateProgress(progressItems){
+  notifyUpdated(progressItems){
     this.setState(s => ({...s, progressItems}));
     this.broadcastUpstream();
   }
 
   notifyFinished(conclusion){
-    console.log("FINISHED " + conclusion);
     this.setState(s => ({...s, conclusion, phase: PHASE_CONCLUDED }));
     this.broadcastUpstream();
   }

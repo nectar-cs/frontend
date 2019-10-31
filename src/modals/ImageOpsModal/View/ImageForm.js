@@ -1,16 +1,16 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import In from "../../assets/input-combos";
+import In from "../../../assets/input-combos";
 import { S } from './ImageFormStyles'
-import MiscUtils from "../../utils/MiscUtils";
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
+import MiscUtils from "../../../utils/MiscUtils";
+import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 import {defaults} from "./defaults";
-import {ROUTES} from "../../containers/RoutesConsts";
-import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
-import {Types} from "../../types/Deployment";
+import {ROUTES} from "../../../containers/RoutesConsts";
+import IntegrationsModal from "../../IntegrationsModal/IntegrationsModal";
+import {Types} from "../../../types/Deployment";
 import {ImageActionsModalHelper} from "./ImageActionsModalHelper";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import ModalClientComposer from "../../hocs/ModalClientComposer";
+import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import ModalClientComposer from "../../../hocs/ModalClientComposer";
 
 export default class ImageForm extends React.Component {
   render(){

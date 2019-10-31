@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {ModSpinner} from "../../assets/loading-spinner";
-import {colored} from "../../assets/constants";
+import {ModSpinner} from "../../../assets/loading-spinner";
+import {colored} from "../../../assets/constants";
 
 export const List = styled.ul`
   margin-top: 15px;
