@@ -3,15 +3,8 @@ import PodJob from "./PodJob";
 export default class ForceImagePullJob extends PodJob {
 
   recomputeState() {
-    const isStable = this.arePodsInState(
-      this.newPods(),
-      this.initial.length,
-      p => p.state.toLowerCase(),
-      'running'
-    );
-
-    if(isStable)
-      this.conclude(isStable);
+    if(this.areNewPodsRunning() && this.areOldPodsGone())
+      this.conclude(true);
   }
 
   progressItems(){
@@ -19,17 +12,32 @@ export default class ForceImagePullJob extends PodJob {
     const running = this.runningPods(_new);
 
     return [
-      super.buildProgressItem(
+      this.buildProgressItem(
         "Old pods gone",
         `${dead.length}/${this.initial.length}`,
-        dead.length === this.initial.length
+        this.simpleStatus(this.areOldPodsGone())
       ),
-      super.buildProgressItem(
+      this.buildProgressItem(
         "New pods running",
         `${running.length}/${this.initial.length}`,
-        running.length === this.initial.length
+        this.simpleStatus(this.areNewPodsRunning())
       ),
     ];
+  }
+
+  areNewPodsRunning(){
+    const running = this.runningPods(this.newPods());
+    return running.length === this.initial.length;
+  }
+
+  areOldPodsGone(){
+    const dead = this.deadPods();
+    return dead.length === this.initial.length;
+  }
+
+  simpleStatus(predicate){
+    if(predicate) return "done";
+    else return "working";
   }
 
   kapiVerb() { return "image_reload"; }

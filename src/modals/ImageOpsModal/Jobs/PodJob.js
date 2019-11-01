@@ -1,6 +1,7 @@
 import Kapi from "../../../utils/Kapi";
 import Job from "./Job";
 import {isEqual} from "lodash";
+import {init} from "@sentry/browser";
 
 export default class PodJob extends Job {
 
@@ -8,6 +9,10 @@ export default class PodJob extends Job {
     super(...args);
     this.initial = [];
     this.updated = [];
+  }
+
+  prepare(bundle){
+    this.deployment = bundle.deployment;
   }
 
   async initiateWork() {
@@ -29,7 +34,8 @@ export default class PodJob extends Job {
   async fetchPods() {
     const {name, namespace} = this.deployment;
     const ep = `/api/deployments/${namespace}/${name}/pods`;
-    return (await Kapi.blockingFetch(ep))['data'];
+    const response = await Kapi.blockingFetch(ep);
+    return response['data'];
   }
 
   arePodsInState(pods, count, func, targetValue){

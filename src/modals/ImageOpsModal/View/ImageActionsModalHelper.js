@@ -1,6 +1,6 @@
 import DataUtils from "../../../utils/DataUtils";
 import React from "react";
-import SameTagOpHelper from "../ImageOperators/SameTagOpHelper";
+import ForceImagePullOperator from "../ImageOperators/ForceImagePullOperator";
 import ChangeImageTagOperator from "../ImageOperators/ChangeImageTagOperator";
 import ScalePodsOperator from "../ImageOperators/ScalePodsOperator";
 import Backend from "../../../utils/Backend";
@@ -19,7 +19,7 @@ export class ImageActionsModalHelper {
   static defaultOpType(props){
     const { matching } = props;
     if(matching && matching.imgRemoteId){
-      return props.operationType || "git";
+      return props.operationType || "reload";
     } else {
       return props.operationType || "change";
     }
@@ -104,7 +104,7 @@ export class ImageActionsModalHelper {
   static opHelper(operationType){
     switch (operationType) {
       case "reload":
-        return SameTagOpHelper;
+        return ForceImagePullOperator;
       case "change":
       case "choose":
       case "docker":

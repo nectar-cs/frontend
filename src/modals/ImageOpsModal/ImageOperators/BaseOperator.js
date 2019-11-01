@@ -74,10 +74,6 @@ export default class BaseOperator {
     else return this.failureMessage();
   }
 
-  failureMessage() {
-    return this.failureReason;
-  }
-
   conclude(success, reason = null){
     this.conclusion = success;
     this.failureReason = reason;
@@ -93,7 +89,7 @@ export default class BaseOperator {
 
   supportsLogging() { return false; }
   prepareJob(instance){}
+  failureMessage() { return this.failureReason; }
   successMessage(){ throw `Method successMessage not implemented!`; }
-
   jobClasses() { return []; }
 }

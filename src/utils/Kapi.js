@@ -45,11 +45,13 @@ export default class Kapi {
 
   static async blockingPost(endpoint, payload){
     payload = DataUtils.obj2Snake(payload);
-    return this.blockingRequest('POST', endpoint, payload)
+    return await this.blockingRequest('POST', endpoint, payload)
   }
 
   static async blockingRequest(method, endpoint, body){
-    const response = await fetch(this.url(endpoint), this.prepReq(method, body));
+    const finalUrl = this.url(endpoint);
+    const bodyAndHeaders = this.prepReq(method, body);
+    const response = await fetch(finalUrl, bodyAndHeaders);
     return await response.json();
   }
 

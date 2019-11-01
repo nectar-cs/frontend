@@ -12,12 +12,14 @@ export default class Job {
     this.commence();
     this.broadcastProgress();
     await this.initiateWork();
-    while(!this.hasConcluded()){
+    this.broadcastProgress();
+
+    do{
       await this.reloadData();
       this.recomputeState();
       this.broadcastProgress();
       await this.pollWait(this.hasConcluded())
-    }
+    } while(!this.hasConcluded());
   }
 
   async pollWait(antiCondition) {
@@ -47,5 +49,5 @@ export default class Job {
   reloadData(){ throw "Unimplemented!" }
   prepare() { throw "Unimplemented!" }
 
-  static POLL_RATE = 2000;
+  static POLL_RATE = 1200;
 }
