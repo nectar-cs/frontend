@@ -15,19 +15,19 @@ export default class ForceImagePullJob extends PodJob {
   }
 
   progressItems(){
-    const [_new, dead] = [this.newPods(), this.newPods()];
-    const [initial, running] = [this.initial, this.runningPods(_new)];
+    const [_new, dead] = [this.newPods(), this.deadPods()];
+    const running = this.runningPods(_new);
 
     return [
       super.buildProgressItem(
         "Old pods gone",
-        `${dead.length}/${initial.length}`,
-        dead.length === initial.length
+        `${dead.length}/${this.initial.length}`,
+        dead.length === this.initial.length
       ),
       super.buildProgressItem(
         "New pods running",
-        `${running.length}/${initial.length}`,
-        running.length === initial.length
+        `${running.length}/${this.initial.length}`,
+        running.length === this.initial.length
       ),
     ];
   }

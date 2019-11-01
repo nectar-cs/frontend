@@ -1,7 +1,7 @@
 import DataUtils from "../../../utils/DataUtils";
 import React from "react";
 import SameTagOpHelper from "../ImageOperators/SameTagOpHelper";
-import DiffTagOpHelper from "../ImageOperators/DiffTagOpHelper";
+import ChangeImageTagOperator from "../ImageOperators/ChangeImageTagOperator";
 import ScalePodsOperator from "../ImageOperators/ScalePodsOperator";
 import Backend from "../../../utils/Backend";
 import moment from "moment";
@@ -108,7 +108,7 @@ export class ImageActionsModalHelper {
       case "change":
       case "choose":
       case "docker":
-        return DiffTagOpHelper;
+        return ChangeImageTagOperator;
       case "scale":
         return ScalePodsOperator;
       case "git":

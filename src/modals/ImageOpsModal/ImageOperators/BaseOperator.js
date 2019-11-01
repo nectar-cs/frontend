@@ -1,15 +1,15 @@
 export default class BaseOperator {
 
   constructor(bundle){
-    const jobClasses = this.jobClasses(bundle);
-    this.jobs = jobClasses.map(c => this.initializeJob(c));
-
     this.conclusion = null;
     this.notifyUpdated = (x) => bundle.notifyUpdated(x);
     this.notifyFinished = (x) => bundle.notifyFinished(x);
 
     this.deployment = bundle.deployment;
     this.matching = bundle.matching;
+
+    const jobClasses = this.jobClasses();
+    this.jobs = jobClasses.map(c => this.initializeJob(c));
   }
 
   async perform(){

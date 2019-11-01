@@ -60,5 +60,9 @@ export default class PodJob extends Job {
     ));
   }
 
+  podsWithImage(pods, image){
+    return pods.filter(pod => pod.imageName === image);
+  }
+
   kapiVerb(){ return ""; }
 }

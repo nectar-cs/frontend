@@ -4,6 +4,7 @@ import DockerBuildJob from "../Jobs/DockerBuildJob";
 import DockerPushJob from "../Jobs/DockerPushJob";
 import ForceImagePullJob from "../Jobs/ForceImagePullJob";
 import ChangeImageTagJob from "../Jobs/ChangeImageTagJob";
+import AnnotateDeploymentJob from "../Jobs/AnnotateDeploymentJob";
 
 export default class BuildPushRunOperation extends BaseOperator {
 
@@ -59,9 +60,11 @@ export default class BuildPushRunOperation extends BaseOperator {
 
   progressItems(){
     const tarJob = this.getJob(TarballJob);
+    const podJob = this.jobs[-1];
     return [
       ...tarJob.progressItems(),
-      this.phaseTwoProgressItem()
+      this.phaseTwoProgressItem(),
+      ...podJob.progressItems()
     ];
   }
 
@@ -99,23 +102,29 @@ export default class BuildPushRunOperation extends BaseOperator {
   }
 
   successMessage() {
-    return "Clone -> Build -> Push -> Scale -> Annotate";
+    const verb = `${this.isSameImage() ? "Recreate" : "Retag"} Pods`;
+    return `Clone -> Build -> Push -> ${verb} -> Annotate`;
   }
 
   supportsLogging() {
     return true;
   }
 
-  jobClasses(bundle){
-    const { deployment, outImageName } = bundle;
-    const sameImage = outImageName === deployment.imageName;
-    const PodJob = sameImage ? ForceImagePullJob : ChangeImageTagJob;
+  isSameImage(){
+    const { deployment, outImageName } = this;
+    return outImageName === deployment.imageName;
+  }
+
+  jobClasses(){
+    const same = this.isSameImage();
+    const PodJob = same ? ForceImagePullJob : ChangeImageTagJob;
 
     return [
       TarballJob,
       DockerBuildJob,
       DockerPushJob,
-      PodJob
+      PodJob,
+      AnnotateDeploymentJob
     ]
   }
 }
