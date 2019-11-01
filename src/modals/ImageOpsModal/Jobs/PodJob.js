@@ -60,6 +60,10 @@ export default class PodJob extends Job {
     ));
   }
 
+  crashedPods(source = this.newPods()){
+    return source.filter(pod => pod.state === 'Error');
+  }
+
   podsWithImage(pods, image){
     return pods.filter(pod => pod.imageName === image);
   }

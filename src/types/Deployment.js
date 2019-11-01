@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const POD_STATES = ['Running', 'Failed', 'Pending', 'Unknown'];
+const POD_STATES = ['Running', 'Error', 'Pending', 'Unknown', 'Failed'];
 
 const GitTarBundle = PropTypes.shape({
   dockerfilePath: PropTypes.string.isRequired,
@@ -77,8 +77,10 @@ const DetailedCommit = PropTypes.shape({
 const Deployment = PropTypes.shape({
   name: PropTypes.string.isRequired,
   namespace: PropTypes.string.isRequired,
-  imageName: PropTypes.string.isRequired,
   replicas: PropTypes.number.isRequired,
+  imageName: PropTypes.string,
+  containerName: PropTypes.string,
+  imagePullPolicy: PropTypes.string.isRequired,
   pods: PropTypes.arrayOf(LightPod).isRequired,
   services: PropTypes.arrayOf(Service).isRequired,
   commit: AnnotatedCommit

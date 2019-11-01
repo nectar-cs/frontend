@@ -7,10 +7,14 @@ export default class ChangeImageTagJob extends PodJob {
   }
 
   recomputeState() {
-    const patched = this.readyPods();
-    if(patched.length === this.initial.length){
-      if(this.deadPods().length === this.initial.length){
-        this.conclude(true);
+    if(this.crashedPods().length > 0){
+      this.conclude(false, "Pod Failures in New Pods");
+    } else {
+      const patched = this.readyPods();
+      if(patched.length === this.initial.length){
+        if(this.deadPods().length === this.initial.length){
+          this.conclude(true);
+        }
       }
     }
   }

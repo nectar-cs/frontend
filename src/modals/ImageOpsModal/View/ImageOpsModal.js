@@ -158,7 +158,8 @@ export default class ImageOpsModal extends React.Component {
 
   renderEditButton(){
     if(!this.isConcluded()) return null;
-    return <ModalButton callback={this.submit} title={'New Operation'}/>;
+    const reset = () => this.setState(s => ({...s, phase: PHASE_CONFIG}));
+    return <ModalButton callback={reset} title={'New Operation'}/>;
   }
 
   submit() {

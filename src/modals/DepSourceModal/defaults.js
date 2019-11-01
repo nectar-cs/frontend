@@ -28,8 +28,8 @@ const defaults = {
     ],
     commands: (name, ns) => [
       `kubectl config set-context --current --namespace=${ns}`,
-      `kubectl annotate deployment ${name} branch=$COMMIT_BRANCH`,
-      `kubectl annotate deployment ${name} commit-msg=$COMMIT_MSG`,
+      `kubectl annotate deployment ${name} commit-branch=$COMMIT_BRANCH`,
+      `kubectl annotate deployment ${name} commit-message=$COMMIT_MSG`,
       `kubectl annotate deployment ${name} commit-sha=$COMMIT_SHA`
     ]
   },

@@ -18,8 +18,12 @@ export default class ScalePodsJob extends PodJob {
     const runCountGood = this.runningPods().length === this.scaleTo;
 
     if(this.isUpScale()){
-      if(runCountGood)
-        this.conclude(true);
+      if(this.crashedPods().length > 0) {
+        this.conclude(false, "Pod Failures in New Pods");
+      } else {
+        if(runCountGood)
+          this.conclude(true);
+      }
     } else {
       if(runCountGood){
         if(this.deadPods().length === -this.deltaCount())

@@ -24,7 +24,7 @@ export const theme = {
   },
 
   ali: (name) => {
-    name = name.toLowerCase();
+    name = (name || '').toLowerCase();
     if(name === 'success') return 'success';
     if(name === 'good') return 'success';
     if(name === 'connected') return "success";
@@ -32,11 +32,13 @@ export const theme = {
     if(name === 'true') return "success";
     if(name === 'fail') return 'fail';
     if(name === 'failure') return 'fail';
+    if(name === 'error') return 'fail';
     if(name === 'terminating') return 'fail';
     if(name === 'terminated') return 'fail';
     if(name === 'failed') return 'fail';
     if(name === 'unknown') return 'primaryFontMuted';
     if(name === 'idle') return 'primaryFontLess';
+    if(name === 'pending') return 'secondaryColor';
     return 'primaryColor';
   },
 };

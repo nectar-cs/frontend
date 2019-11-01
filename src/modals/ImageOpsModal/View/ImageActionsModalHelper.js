@@ -139,7 +139,7 @@ export class ImageActionsModalHelper {
 
   static previewCommands(inst){
     const type = inst.state.choices.operationType;
-    const { name, namespace, replicas} = inst.props.deployment;
+    const { name, namespace, replicas, containerName} = inst.props.deployment;
     const { scaleTo, imageName, outImageName } = inst.state.choices;
     const { gitCommit } = inst.state.choices;
     const { gitRemoteName, gitRepoName} = inst.props.matching || {};
@@ -154,10 +154,16 @@ export class ImageActionsModalHelper {
       sha: gitCommit,
       gRem: gitRemoteName,
       gRep: gitRepoName,
+      cont: containerName,
       dPath: (dockerfilePath || '').replace("/Dockerfile", ""),
       scaleTo
     };
     return defaults.previewCommands[type](interp) || [];
+  }
+
+  static imagePullPolicyWorks(inst){
+    const { imagePullPolicy } = inst.props.deployment;
+    if(imagePullPolicy !== 'Always') return false;
   }
 
   static isInputValid(inst){

@@ -1,5 +1,4 @@
 import React, {Fragment} from "react";
-import {S} from "./ImageFormStyles";
 
 export const defaults ={
 
@@ -8,22 +7,30 @@ export const defaults ={
       `kubectl scale deploy ${dep} --replicas=0 --namespace=${ns}`,
       `kubectl scale deploy ${dep} --replicas=${orig} --namespace=${ns}`
     ],
-    change: ({dep, ns}) => [
-      `kubectl set image ${dep} --namespace=${ns}`
+    change: ({dep, ns, cont, img}) => [
+      `kubectl set image deploy/${dep} ${cont}=${img} --namespace=${ns}`,
     ],
     scale:  ({dep, ns, scaleTo}) => [
       `kubectl scale deploy ${dep} --replicas=${scaleTo} --namespace=${ns}`,
     ],
-    docker: ({dep, ns, dImg}) => [
-      `kubectl set image deployment/${dep} ${dImg} --namespace=${ns}`
+    docker: ({dep, ns, dImg, cont}) => [
+      `kubectl set image deploy/${dep} ${cont}=${dImg} --namespace=${ns}`
     ],
-    git: ({gRem, gRep, sha, dep, ns, dImg, dPath}) => gRem && [
+    git: ({gRem, gRep, sha, dep, ns, dImg, dPath, cont}) => gRem && [
       `git clone git@github.com:${gRem}/${gRep}.git`,
       `git fetch origin ${sha}`,
       `docker build .${dPath} -t ${dImg}`,
       `docker push ${dImg}`,
-      `kubectl set image deployment/${dep} ${dImg} --namespace=${ns}`
+      `kubectl set image deploy/${dep} ${cont}=${dImg} --namespace=${ns}`
     ],
+  },
+
+  errors: {
+    imagePullPolicyWrong: ({dep, actual}) => (
+      `${dep}'s imagePullPolicy is '${actual}' when it should be 'Always'.
+      Apply the command above to update it. 
+      `
+    )
   },
 
   header: {
