@@ -19,6 +19,11 @@ export default class DockerJob extends Job {
     this.job = { ...this.job, id, type };
   }
 
+  conclude(...args) {
+    super.conclude(...args);
+    this.requestCleanup();
+  }
+
   recomputeState(){
     const endStates = DockerJob.END_STATES;
     if(endStates.includes(this.status())){
@@ -33,6 +38,12 @@ export default class DockerJob extends Job {
     const result = await Kapi.blockingFetch(ep);
     const { logs, status } = result;
     this.job = { ...this.job, logs, status };
+  }
+
+  requestCleanup(){
+    const { type, id } = this.job;
+    const ep = `/api/docker/${type}/${id}/clear_job`;
+    Kapi.post(ep, {}, null);
   }
 
   status() { return this.job.status.toLowerCase() }
