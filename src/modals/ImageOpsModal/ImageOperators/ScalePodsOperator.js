@@ -1,5 +1,5 @@
 import BaseOperator from "./BaseOperator";
-import PodScaleJob from "../Jobs/PodScaleJob";
+import ScalePodsJob from "../Jobs/ScalePodsJob";
 
 export default class ScalePodsOperator extends BaseOperator {
 
@@ -9,7 +9,10 @@ export default class ScalePodsOperator extends BaseOperator {
   }
 
   prepareJob(instance) {
-    instance.prepare({scaleTo: this.scaleTo})
+    instance.prepare({
+      scaleTo: this.scaleTo,
+      deployment: this.deployment
+    })
   }
 
   successMessage() {
@@ -17,6 +20,6 @@ export default class ScalePodsOperator extends BaseOperator {
   }
 
   jobClasses(){
-    return [ PodScaleJob ];
+    return [ ScalePodsJob ];
   }
 }

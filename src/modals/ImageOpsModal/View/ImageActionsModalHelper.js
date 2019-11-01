@@ -19,7 +19,7 @@ export class ImageActionsModalHelper {
   static defaultOpType(props){
     const { matching } = props;
     if(matching && matching.imgRemoteId){
-      return props.operationType || "reload";
+      return props.operationType || "scale";
     } else {
       return props.operationType || "change";
     }

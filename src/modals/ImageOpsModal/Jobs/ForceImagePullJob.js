@@ -35,10 +35,5 @@ export default class ForceImagePullJob extends PodJob {
     return dead.length === this.initial.length;
   }
 
-  simpleStatus(predicate){
-    if(predicate) return "done";
-    else return "working";
-  }
-
   kapiVerb() { return "image_reload"; }
 }

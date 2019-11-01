@@ -36,6 +36,12 @@ export default class Job {
     this.reason = reason;
   }
 
+  simpleStatus(predicate){
+    if(!this.hasStarted()) return null;
+    if(predicate) return "done";
+    else return "working";
+  }
+
   logs() { return []; }
   hasStarted() { return this.started; }
   hasConcluded(){ return this.success != null }
