@@ -32,6 +32,7 @@ export default class ImageOpsModal extends React.Component {
     this.submit = this.submit.bind(this);
     this.notifyUpdated = this.notifyUpdated.bind(this);
     this.notifyFinished = this.notifyFinished.bind(this);
+    this.termRef = React.createRef();
   }
 
   componentDidMount(){
@@ -83,11 +84,16 @@ export default class ImageOpsModal extends React.Component {
   renderTerminalOutput(){
     if(this.isWorking() || this.isConcluded()) {
       if(this.opHelper.supportsLogging()){
+
+        const extras = {
+          maxHeight: "260px",
+        };
+
         return(
           <TermSection
             title='Logs'
             lines={this.opHelper.jobLogs()}
-            extras={{maxHeight: "260px"}}
+            extras={extras}
           />
         )
       }
@@ -196,6 +202,8 @@ export default class ImageOpsModal extends React.Component {
   notifyUpdated(progressItems){
     this.setState(s => ({...s, progressItems}));
     this.broadcastUpstream();
+    if(this.termRef.current)
+      this.termRef.current.scrollIntoView({ behavior: 'smooth' });
   }
 
   notifyFinished(conclusion){
