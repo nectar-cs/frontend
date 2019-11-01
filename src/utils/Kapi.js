@@ -38,11 +38,12 @@ export default class Kapi {
     return `${BACKEND_URL}${endpoint}`;
   }
 
-  static blockingFetch(endpoint){
-    return this.blockingRequest('GET', endpoint, null)
+  static async blockingFetch(endpoint){
+    const result = await this.blockingRequest('GET', endpoint, null);
+    return DataUtils.obj2Camel(result);
   }
 
-  static blockingPost(endpoint, payload){
+  static async blockingPost(endpoint, payload){
     payload = DataUtils.obj2Snake(payload);
     return this.blockingRequest('POST', endpoint, payload)
   }

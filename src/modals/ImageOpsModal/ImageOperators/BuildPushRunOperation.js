@@ -2,6 +2,8 @@ import BaseOperator from "./BaseOperator";
 import TarballJob from "../Jobs/TarballJob";
 import DockerBuildJob from "../Jobs/DockerBuildJob";
 import DockerPushJob from "../Jobs/DockerPushJob";
+import ForceImagePullJob from "../Jobs/ForceImagePullJob";
+import ChangeImageTagJob from "../Jobs/ChangeImageTagJob";
 
 export default class BuildPushRunOperation extends BaseOperator {
 
@@ -20,6 +22,15 @@ export default class BuildPushRunOperation extends BaseOperator {
 
     if (instance instanceof DockerPushJob)
       this.preparePushJob(instance);
+
+    if(instance instanceof ChangeImageTagJob)
+      this.prepareTagChangeJob(instance);
+  }
+
+  prepareTagChangeJob(instance){
+    instance.prepare({
+      imageName: this.outImageName
+    })
   }
 
   prepareTarballJob(instance){
@@ -63,8 +74,11 @@ export default class BuildPushRunOperation extends BaseOperator {
   }
 
   imageChecklistStatus() {
-    const {buildJob: build} = this;
-    if (build) return "working";
+    const build = this.getJob(DockerBuildJob);
+    const push = this.getJob(DockerPushJob);
+    if(push.hasSucceeded()) return "done";
+    if(push.hasFailed() || build.hasFailed()) return "failed";
+    return build.hasStarted() ? "working" : null;
   }
 
   imageStatusFriendly() {
@@ -92,11 +106,16 @@ export default class BuildPushRunOperation extends BaseOperator {
     return true;
   }
 
-  static jobClasses(){
+  jobClasses(bundle){
+    const { deployment, outImageName } = bundle;
+    const sameImage = outImageName === deployment.imageName;
+    const PodJob = sameImage ? ForceImagePullJob : ChangeImageTagJob;
+
     return [
       TarballJob,
       DockerBuildJob,
-      DockerPushJob
+      DockerPushJob,
+      PodJob
     ]
   }
 }

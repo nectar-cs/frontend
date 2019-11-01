@@ -1,28 +1,56 @@
-import Kapi from "../../../utils/Kapi";
-import DataUtils from "../../../utils/DataUtils";
+import PodJob from "./PodJob";
 
-class Image {
-  initiateImageOperation(){
-    const ep = `/api/run/${this.imageOperationVerb()}`;
-    const payload = this.imageOperationPayload();
-    return Kapi.blockingPost(ep, payload);
+export default class PodScaleJob extends PodJob {
+
+  prepare({scaleTo}){
+    this.scaleTo = scaleTo;
   }
 
-  imageOperationPayload(){
-    return DataUtils.obj2Snake({
-      depNamespace: this.deployment.namespace,
-      depName: this.deployment.name,
-    });
+  toKapiPayload() {
+    return {
+      ...super.toKapiPayload(),
+      scaleTo: this.scaleTo
+    }
   }
 
-  imageOperationVerb(){
-    return "";
+  recomputeState() {
+    if(this.runningPods().length === this.scaleTo)
+      this.conclude(true);
   }
 
-  async fetchPods() {
-    const {name, namespace} = this.deployment;
-    const ep = `/api/deployments/${namespace}/${name}/pods`;
-    return DataUtils.obj2Snake((await Kapi.blockingFetch(ep)))['data'];
+  deltaCount(){
+    return this.scaleTo - this.initial.length;
   }
 
+  progressItems(){
+    const updatedCount = (this.updated || this.initial).length;
+    const dCount = this.initial.length - updatedCount;
+    const newPods = this.newPods();
+    const running = this.runningPods(newPods);
+
+    if(this.deltaCount() > 0){
+      return [
+        this.buildProgressItem(
+          "New pods created",
+          `${newPods.length}/${this.deltaCount()}`,
+          newPods.length === this.deltaCount() ? 'done' : 'working'
+        ),
+        this.buildProgressItem(
+          "New pods running",
+          `${running.length}/${this.deltaCount()}`,
+          running.length === this.deltaCount() ? 'done' : 'working'
+        )
+      ]
+    } else {
+      return [
+        this.buildProgressItem(
+          "Unwanted pods killed",
+          `${dCount}/${-this.deltaCount()}`,
+          dCount === -this.deltaCount()
+        )
+      ]
+    }
+  }
+
+  kapiVerb() { return "scale_replicas"; }
 }

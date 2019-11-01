@@ -9,8 +9,8 @@ export default class Job {
   }
 
   async perform(){
-    this.broadcastProgress();
     this.commence();
+    this.broadcastProgress();
     await this.initiateWork();
     while(!this.hasConcluded()){
       await this.reloadData();
@@ -18,7 +18,6 @@ export default class Job {
       this.broadcastProgress();
       await this.pollWait(this.hasConcluded())
     }
-    this.broadcastProgress();
   }
 
   async pollWait(antiCondition) {
@@ -27,15 +26,7 @@ export default class Job {
   }
 
   broadcastProgress(){
-    this.progressCallback(this.progressItems());
-  }
-
-  progressItems(){
-    return [];
-  }
-
-  commence(){
-    this.started = true;
+    this.progressCallback();
   }
 
   conclude(success, reason = null){
@@ -50,9 +41,11 @@ export default class Job {
   hasFailed(){ return this.hasConcluded() && !this.success; }
   getReason(){ return this.reason }
   recomputeState(){ }
-
+  commence(){ this.started = true; }
+  progressItems(){ return []; }
   async initiateWork(){ throw "Unimplemented!" }
   reloadData(){ throw "Unimplemented!" }
+  prepare() { throw "Unimplemented!" }
 
   static POLL_RATE = 2000;
 }

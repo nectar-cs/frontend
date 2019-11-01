@@ -1,7 +1,7 @@
 export default class BaseOperator {
 
   constructor(bundle){
-    const jobClasses = this.constructor.jobClasses();
+    const jobClasses = this.jobClasses(bundle);
     this.jobs = jobClasses.map(c => this.initializeJob(c));
 
     this.conclusion = null;
@@ -16,6 +16,7 @@ export default class BaseOperator {
     for (const job of this.jobs){
       this.prepareJob(job);
       await job.perform();
+      this.broadcastProgress();
       if (!job.hasSucceeded()) {
         this.conclude(false, job.getReason());
         return;
@@ -48,14 +49,12 @@ export default class BaseOperator {
     ), []);
   }
 
-  broadcastProgress(items){
-    console.log("CALLED WITH ITEMS!");
-    console.table(items);
-    this.notifyUpdated(items)
+  broadcastProgress(){
+    this.notifyUpdated(this.progressItems())
   }
 
   progressItemStatus(status){
-    if(status === 'done') return status;
+    if(status === 'failed') return 'failed';
     if(this.conclusion != null)
       return this.conclusion ? 'done' : 'failed';
     else return status;
@@ -96,5 +95,5 @@ export default class BaseOperator {
   prepareJob(instance){}
   successMessage(){ throw `Method successMessage not implemented!`; }
 
-  static jobClasses() { return []; }
+  jobClasses() { return []; }
 }
