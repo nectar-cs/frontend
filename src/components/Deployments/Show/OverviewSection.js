@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import Section from "./Section";
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../../utils/MiscUtils";
@@ -11,6 +11,8 @@ import {Types} from "../../../types/Deployment";
 import ImageOpsSection from "./ImageOpsSection";
 import PodsView from "../../../widgets/PodsView/PodsView";
 import HttpOpsSection from "./HttpOpsSection";
+import moment from "moment";
+import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
 
 function T(props){
   return <Text.P raw pushed {...props}>{props.children}</Text.P>
@@ -26,6 +28,7 @@ class OverviewSectionClass extends Section {
     super(props);
     this.goToDocker = this.goToDocker.bind(this);
     this.goToHttp = this.goToHttp.bind(this);
+    this.openCommitModal = this.openCommitModal.bind(this);
   }
 
   render(){
@@ -97,25 +100,36 @@ class OverviewSectionClass extends Section {
   }
 
   renderAnnotatedLine(){
-    const { remotes, commit } = this.props;
+    const { commit } = this.props.deployment;
     if(!commit) return null;
+    const { message, branch, timestamp, author } = commit;
+
+    const TimePart = () => timestamp ? (
+      <T><b>{moment(timestamp).calendar()}</b></T>
+    ) : null;
+
+    const AuthorPart = () => author ? (
+      <Fragment>
+        <T>by</T>
+        <T><u>{author || '?'}</u></T>
+      </Fragment>
+    ) : null;
 
     return(
       <Layout.TextLine low={1.4}>
-        <p>Last deployed </p>
-        <T><b>Yesterday at 8pm</b></T>
-        <T>by</T>
-        <T><u>xavier@codenectar.com</u></T>
-        <T>on branch</T>
-        <T><b>master</b></T>
+        <p>Deployed from git </p>
+        <TimePart/>
+        <AuthorPart/>
+        <T>from branch</T>
+        <T><b>{branch}</b></T>
         <T>-</T>
-        <T>"it was the best".</T>
+        <T onClick={this.openCommitModal}>"{message}".</T>
       </Layout.TextLine>
     )
   }
 
   renderNotAnnotatedLine(){
-    const { matching } = this.props;
+    if(this.props.deployment.commit) return null;
 
     return(
       <Layout.TextLine low={1.4}>
@@ -159,12 +173,21 @@ class OverviewSectionClass extends Section {
   }
 
   _renderActivityModal(key, source) {
+    source = source || this.props;
     return(
       <OverviewModal
         deployment={source.deployment}
         matching={source.matching}
         mode='fragment'
       />
+    )
+  }
+
+  openCommitModal(){
+    const { deployment, matching } = this.props;
+    this.props.openModal(
+      DepSourceModal,
+      { deployment, matching }
     )
   }
 
