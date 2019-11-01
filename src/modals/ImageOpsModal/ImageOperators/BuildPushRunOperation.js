@@ -4,7 +4,6 @@ import DockerBuildJob from "../Jobs/DockerBuildJob";
 import DockerPushJob from "../Jobs/DockerPushJob";
 import ForceImagePullJob from "../Jobs/ForceImagePullJob";
 import ChangeImageTagJob from "../Jobs/ChangeImageTagJob";
-import AnnotateDeploymentJob from "../Jobs/AnnotateDeploymentJob";
 
 export default class BuildPushRunOperation extends BaseOperator {
 
@@ -122,9 +121,7 @@ export default class BuildPushRunOperation extends BaseOperator {
 
   isSameImage(bundle = {}){
     const { deployment, outImageName } = { ...bundle, ...this };
-    const equality = outImageName === deployment.imageName;
-    console.log(`COMPARING ${deployment.imageName} VS ${outImageName} --> ${equality}`);
-    return equality;
+    return outImageName === deployment.imageName;
   }
 
   podJob(){

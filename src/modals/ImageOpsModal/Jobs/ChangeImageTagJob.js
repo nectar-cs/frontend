@@ -4,8 +4,6 @@ export default class ChangeImageTagJob extends PodJob {
   prepare(bundle){
     super.prepare(bundle);
     this.imageName = bundle.imageName;
-    console.log("STARTING CHANGE IMAGE JOB");
-    console.log(bundle);
   }
 
   recomputeState() {
@@ -23,18 +21,17 @@ export default class ChangeImageTagJob extends PodJob {
   }
 
   progressItems(){
-    console.log("YOOOOOOOOO cjamge");
     const patched = this.readyPods();
     const dead = this.deadPods();
     return [
       this.buildProgressItem(
         "Pods running new image",
-        `${patched.length}/${this.initial.length}`,
+        this.simpleDetail(`${patched.length}/${this.initial.length}`),
         this.simpleStatus(patched.length === this.initial.length)
       ),
       this.buildProgressItem(
         "Old Pods Gone",
-        `${dead.length}/${this.initial.length}`,
+        this.simpleDetail(`${dead.length}/${this.initial.length}`),
         this.simpleStatus(dead.length === this.initial.length)
       )
     ]

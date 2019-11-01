@@ -42,6 +42,11 @@ export default class Job {
     else return "working";
   }
 
+  simpleDetail(detail){
+    if(this.hasStarted()) return detail;
+    else return '';
+  }
+
   logs() { return []; }
   hasStarted() { return this.started; }
   hasConcluded(){ return this.success != null }
