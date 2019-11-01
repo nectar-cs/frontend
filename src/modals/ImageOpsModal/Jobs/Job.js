@@ -58,7 +58,7 @@ export default class Job {
   progressItems(){ return []; }
   async initiateWork(){ throw "Unimplemented!" }
   reloadData(){ throw "Unimplemented!" }
-  prepare() { throw "Unimplemented!" }
+  prepare() {  }
 
   static POLL_RATE = 1200;
 }

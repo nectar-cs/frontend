@@ -172,12 +172,24 @@ export default class ImageOpsModal extends React.Component {
       ...choices,
       deployment,
       matching,
+      commitSha: choices.gitCommit,
+      commitMessage: this.selectedGitCommit().message,
       notifyUpdated: this.notifyUpdated,
       notifyFinished: this.notifyFinished
     });
 
     this.setState(s => ({...s, phase: PHASE_PERFORMING}));
     this.opHelper.perform().then(() => {});
+  }
+
+  selectedGitCommit(){
+    const { choices, remotes } = this.state;
+    const selBranchName = choices.gitBranch;
+    return Helper.selectedCommitBundle(
+      remotes,
+      selBranchName,
+      choices.gitCommit
+    );
   }
 
   notifyUpdated(progressItems){

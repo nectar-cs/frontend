@@ -4,13 +4,16 @@ import DockerBuildJob from "../Jobs/DockerBuildJob";
 import DockerPushJob from "../Jobs/DockerPushJob";
 import ForceImagePullJob from "../Jobs/ForceImagePullJob";
 import ChangeImageTagJob from "../Jobs/ChangeImageTagJob";
+import AnnotateDeploymentJob from "../Jobs/AnnotateDeploymentJob";
 
 export default class BuildPushRunOperation extends BaseOperator {
 
   constructor(bundle) {
     super(bundle);
     this.outImageName = bundle.outImageName;
-    this.gitCommit = bundle.gitCommit;
+    this.commitSha = bundle.gitCommit;
+    this.commitMessage = bundle.commitMessage;
+    this.commitBranch = bundle.gitBranch;
   }
 
   prepareJob(instance) {
@@ -28,6 +31,18 @@ export default class BuildPushRunOperation extends BaseOperator {
 
     if(instance instanceof ForceImagePullJob)
       this.prepareForceReloadJob(instance);
+
+    if(instance instanceof AnnotateDeploymentJob)
+      this.prepareAnnotateJob(instance);
+  }
+
+  prepareAnnotateJob(instance){
+    instance.prepare({
+      deployment: this.deployment,
+      commitSha: this.commitSha,
+      commitBranch: this.commitBranch,
+      commitMessage: this.commitMessage
+    })
   }
 
   prepareTagChangeJob(instance){
@@ -73,7 +88,8 @@ export default class BuildPushRunOperation extends BaseOperator {
     return [
       ...tarJob.progressItems(),
       this.phaseTwoProgressItem(),
-      ...this.podJob().progressItems()
+      ...this.podJob().progressItems(),
+      ...this.getJob(AnnotateDeploymentJob).progressItems()
     ];
   }
 
@@ -138,7 +154,8 @@ export default class BuildPushRunOperation extends BaseOperator {
       TarballJob,
       DockerBuildJob,
       DockerPushJob,
-      PodJob
+      PodJob,
+      AnnotateDeploymentJob
     ]
   }
 }

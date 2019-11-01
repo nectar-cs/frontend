@@ -16,6 +16,11 @@ export class ImageActionsModalHelper {
     return gitBranches[branchName];
   }
 
+  static selectedCommitBundle(remotes, branchName, sha){
+    const branchBundle = this.selectedBranchBundle(remotes, branchName);
+    return branchBundle.find(commit => commit.sha === sha);
+  }
+
   static defaultOpType(props){
     const { matching } = props;
     if(matching && matching.imgRemoteId){
