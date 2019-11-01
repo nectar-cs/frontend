@@ -14,6 +14,7 @@ export default class ForceImagePullJob extends PodJob {
   }
 
   progressItems(){
+    console.log("YOOOOOOOOO force");
     const [_new, dead] = [this.newPods(), this.deadPods()];
     const running = this.runningPods(_new);
 

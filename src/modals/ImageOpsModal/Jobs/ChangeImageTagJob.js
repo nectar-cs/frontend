@@ -23,6 +23,7 @@ export default class ChangeImageTagJob extends PodJob {
   }
 
   progressItems(){
+    console.log("YOOOOOOOOO cjamge");
     const patched = this.readyPods();
     const dead = this.deadPods();
     return [

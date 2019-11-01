@@ -70,14 +70,11 @@ export default class BuildPushRunOperation extends BaseOperator {
 
   progressItems(){
     const tarJob = this.getJob(TarballJob);
-    const podJob = this.jobs[this.jobs.length - 2];
-    console.log("PROG TIME");
-    console.log(podJob.progressItems());
 
     return [
       ...tarJob.progressItems(),
       this.phaseTwoProgressItem(),
-      ...podJob.progressItems()
+      ...this.podJob().progressItems()
     ];
   }
 
@@ -128,6 +125,12 @@ export default class BuildPushRunOperation extends BaseOperator {
     const equality = outImageName === deployment.imageName;
     console.log(`COMPARING ${deployment.imageName} VS ${outImageName} --> ${equality}`);
     return equality;
+  }
+
+  podJob(){
+    const forceReloadJob = this.getJob(ForceImagePullJob);
+    const changeTagJob = this.getJob(ChangeImageTagJob);
+    return forceReloadJob || changeTagJob;
   }
 
   jobClasses(bundle){
