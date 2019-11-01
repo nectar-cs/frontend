@@ -8,7 +8,7 @@ export default class BaseOperator {
     this.deployment = bundle.deployment;
     this.matching = bundle.matching;
 
-    const jobClasses = this.jobClasses();
+    const jobClasses = this.jobClasses(bundle);
     this.jobs = jobClasses.map(c => this.initializeJob(c));
   }
 

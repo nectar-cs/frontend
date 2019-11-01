@@ -19,7 +19,7 @@ export class ImageActionsModalHelper {
   static defaultOpType(props){
     const { matching } = props;
     if(matching && matching.imgRemoteId){
-      return props.operationType || "scale";
+      return props.operationType || "git";
     } else {
       return props.operationType || "change";
     }

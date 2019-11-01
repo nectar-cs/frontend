@@ -26,11 +26,21 @@ export default class BuildPushRunOperation extends BaseOperator {
 
     if(instance instanceof ChangeImageTagJob)
       this.prepareTagChangeJob(instance);
+
+    if(instance instanceof ForceImagePullJob)
+      this.prepareForceReloadJob(instance);
   }
 
   prepareTagChangeJob(instance){
     instance.prepare({
-      imageName: this.outImageName
+      imageName: this.outImageName,
+      deployment: this.deployment
+    })
+  }
+
+  prepareForceReloadJob(instance){
+    instance.prepare({
+      deployment: this.deployment
     })
   }
 
@@ -60,7 +70,10 @@ export default class BuildPushRunOperation extends BaseOperator {
 
   progressItems(){
     const tarJob = this.getJob(TarballJob);
-    const podJob = this.jobs[-1];
+    const podJob = this.jobs[this.jobs.length - 2];
+    console.log("PROG TIME");
+    console.log(podJob.progressItems());
+
     return [
       ...tarJob.progressItems(),
       this.phaseTwoProgressItem(),
@@ -110,21 +123,22 @@ export default class BuildPushRunOperation extends BaseOperator {
     return true;
   }
 
-  isSameImage(){
-    const { deployment, outImageName } = this;
-    return outImageName === deployment.imageName;
+  isSameImage(bundle = {}){
+    const { deployment, outImageName } = { ...bundle, ...this };
+    const equality = outImageName === deployment.imageName;
+    console.log(`COMPARING ${deployment.imageName} VS ${outImageName} --> ${equality}`);
+    return equality;
   }
 
-  jobClasses(){
-    const same = this.isSameImage();
+  jobClasses(bundle){
+    const same = this.isSameImage(bundle);
     const PodJob = same ? ForceImagePullJob : ChangeImageTagJob;
 
     return [
       TarballJob,
       DockerBuildJob,
       DockerPushJob,
-      PodJob,
-      AnnotateDeploymentJob
+      PodJob
     ]
   }
 }

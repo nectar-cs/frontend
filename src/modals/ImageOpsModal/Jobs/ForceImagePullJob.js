@@ -2,6 +2,12 @@ import PodJob from "./PodJob";
 
 export default class ForceImagePullJob extends PodJob {
 
+  prepare(bundle) {
+    super.prepare(bundle);
+    console.log("STARTING FORCE RELOAD IMAGE JOB");
+    console.log(bundle);
+  }
+
   recomputeState() {
     if(this.areNewPodsRunning() && this.areOldPodsGone())
       this.conclude(true);
