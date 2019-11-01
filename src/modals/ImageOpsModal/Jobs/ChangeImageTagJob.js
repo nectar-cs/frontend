@@ -1,14 +1,20 @@
 import PodJob from "./PodJob";
 
-export default class ChangeImageTagJob extends PodJob{
-  prepare({imageName}){
-    this.imageName = imageName;
+export default class ChangeImageTagJob extends PodJob {
+  prepare(bundle){
+    super.prepare(bundle);
+    this.imageName = bundle.imageName;
+    console.log("IM PREPED");
+    console.log(bundle);
   }
 
   recomputeState() {
     const patched = this.readyPods();
-    if(patched.length === this.initial.length)
-      this.conclude(true);
+    if(patched.length === this.initial.length){
+      if(this.deadPods().length === this.initial.length){
+        this.conclude(true);
+      }
+    }
   }
 
   readyPods(){
@@ -19,10 +25,15 @@ export default class ChangeImageTagJob extends PodJob{
   progressItems(){
     const patched = this.readyPods();
     return [
-      super.buildProgressItem(
+      this.buildProgressItem(
         "Pods running new image",
         `${patched.length}/${this.initial.length}`,
-        patched.length === this.initial.length
+        this.simpleStatus(patched.length === this.initial.length)
+      ),
+      this.buildProgressItem(
+        "Old Pods Gone",
+        `${this.deadPods().length}/${this.initial.length}`,
+        this.simpleStatus(this.deadPods().length === this.initial.length)
       )
     ]
   }

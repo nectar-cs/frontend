@@ -13,7 +13,10 @@ export default class ChangeImageTagOperator extends BaseOperator {
   }
 
   prepareJob(instance) {
-    super.prepareJob({imageName: this.imageName});
+    instance.prepare({
+      imageName: this.imageName,
+      deployment: this.deployment
+    });
   }
 
   jobClasses() {

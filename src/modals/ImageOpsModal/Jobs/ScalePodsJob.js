@@ -22,7 +22,6 @@ export default class ScalePodsJob extends PodJob {
         this.conclude(true);
     } else {
       if(runCountGood){
-        console.log(`${this.deadPods().length} VS ${-this.deltaCount()}`);
         if(this.deadPods().length === -this.deltaCount())
           this.conclude(true);
       }

@@ -38,12 +38,6 @@ export default class PodJob extends Job {
     return response['data'];
   }
 
-  arePodsInState(pods, count, func, targetValue){
-    const actualStates = pods.map(func);
-    const targetStates = Array.from(Array(count), () => targetValue);
-    return isEqual(actualStates, targetStates);
-  }
-
   newPods(){
     const oldNames = this.initial.map(op => op.name);
     return this.updated.filter(newPod => (
