@@ -13,6 +13,8 @@ import PodsView from "../../../widgets/PodsView/PodsView";
 import HttpOpsSection from "./HttpOpsSection";
 import moment from "moment";
 import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
+import IntegrationsSection from "./IntegrationsSection";
+import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
 
 function T(props){
   return <Text.P raw pushed {...props}>{props.children}</Text.P>
@@ -28,7 +30,9 @@ class OverviewSectionClass extends Section {
     super(props);
     this.goToDocker = this.goToDocker.bind(this);
     this.goToHttp = this.goToHttp.bind(this);
+    this.goToMatching = this.goToMatching.bind(this);
     this.openCommitModal = this.openCommitModal.bind(this);
+    this.openIntegrationsModal = this.openIntegrationsModal.bind(this);
   }
 
   render(){
@@ -51,7 +55,22 @@ class OverviewSectionClass extends Section {
         { this.renderAnnotatedLine() }
         { this.renderNotAnnotatedLine() }
         { this.renderServiceLines() }
+        { this.renderNotMatchedLine() }
+        { this.renderNotConnectedLine() }
       </SS.ContentRow>
+    )
+  }
+
+  renderHeader(){
+    const { deployment, matching } = this.props;
+    if(!deployment) return null;
+
+    return(
+      <LeftHeader
+        graphicName={MiscUtils.msImage(deployment, matching)}
+        title={`${deployment.namespace} / ${deployment.name}`}
+        subtitle={matching && MiscUtils.gitSummary(matching, true)}
+      />
     )
   }
 
@@ -91,14 +110,6 @@ class OverviewSectionClass extends Section {
     )
   }
 
-  goToDocker(){
-    this.props.onClicked(ImageOpsSection.name);
-  }
-
-  goToHttp(){
-    this.props.onClicked(HttpOpsSection.name);
-  }
-
   renderAnnotatedLine(){
     const { commit } = this.props.deployment;
     if(!commit) return null;
@@ -123,7 +134,7 @@ class OverviewSectionClass extends Section {
         <T>from branch</T>
         <T><b>{branch}</b></T>
         <T>-</T>
-        <T onClick={this.openCommitModal}>"{message}".</T>
+        <Text.PA onClick={this.openCommitModal}>"{message}".</Text.PA>
       </Layout.TextLine>
     )
   }
@@ -140,13 +151,11 @@ class OverviewSectionClass extends Section {
   }
 
   renderNotMatchedLine(){
-    const { matching } = this.props;
-    if(!matching) return null;
-
+    if(this.props.matching) return null;
     return(
       <Layout.TextLine low={1.4}>
         <p>Deployment not matched to a Git repo.</p>
-        <T>Do it here.</T>
+        <TA onClick={this.goToMatching}>Do it here.</TA>
       </Layout.TextLine>
     )
   }
@@ -158,7 +167,7 @@ class OverviewSectionClass extends Section {
     return(
       <Layout.TextLine low={1.4}>
         <p>No Git remotes setup</p>
-        <T>Do it here.</T>
+        <TA onClick={this.openIntegrationsModal}><b>Do it here.</b></TA>
       </Layout.TextLine>
     )
   }
@@ -191,18 +200,13 @@ class OverviewSectionClass extends Section {
     )
   }
 
-  renderHeader(){
-    const { deployment, matching } = this.props;
-    if(!deployment) return null;
-
-    return(
-      <LeftHeader
-        graphicName={MiscUtils.msImage(deployment, matching)}
-        title={`${deployment.namespace} / ${deployment.name}`}
-        subtitle={matching && MiscUtils.gitSummary(matching, true)}
-      />
-    )
+  openIntegrationsModal(){
+    this.props.openModal(IntegrationsModal);
   }
+
+  goToDocker(){ this.props.onClicked(ImageOpsSection.name); }
+  goToHttp(){ this.props.onClicked(HttpOpsSection.name); }
+  goToMatching(){ this.props.onClicked(IntegrationsSection.name); }
 
   static propTypes = {
     remotes: Types.GlobalRemotes.isRequired,
