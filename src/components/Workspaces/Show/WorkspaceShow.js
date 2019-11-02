@@ -12,6 +12,7 @@ import {connect} from "react-redux";
 import Button from "../../../assets/buttons";
 import Micon from "../../../widgets/Micon/Micon";
 import StuntPodRecycleModal from "../../../modals/StuntPodRecycleModal/StuntPodRecycleModal";
+import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
 
 class WorkspaceShowClass extends React.Component{
 
@@ -180,8 +181,10 @@ const connected = connect(s2P)(WorkspaceShowClass);
 
 const WorkspaceShow = AuthenticatedComponent.compose(
   ModalHostComposer.compose(
-    ErrComponent.compose(
-      connected
+    UpdateCheckComposer.compose(
+      ErrComponent.compose(
+        connected
+      )
     )
   )
 );

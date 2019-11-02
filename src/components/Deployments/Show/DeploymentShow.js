@@ -3,6 +3,8 @@ import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ErrComponent from "../../../hocs/ErrComponent";
 import Helper from "./Helper";
 import S from './DeploymentShowStyles'
+import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
+import ModalHostComposer from "../../../hocs/ModalHostComposer";
 
 class DeploymentShowClass extends React.Component{
 
@@ -83,8 +85,12 @@ class DeploymentShowClass extends React.Component{
 }
 
 const DeploymentShow = AuthenticatedComponent.compose(
-  ErrComponent.compose(
-    DeploymentShowClass
+  ModalHostComposer.compose(
+    UpdateCheckComposer.compose(
+      ErrComponent.compose(
+        DeploymentShowClass
+      )
+    )
   )
 );
 

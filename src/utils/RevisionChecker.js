@@ -22,7 +22,10 @@ export default class RevisionChecker {
     };
 
     const ep = '/revisions/compare';
-    return await Backend.blockingPost(ep, payload);
+    const result = await Backend.blockingPost(ep, payload);
+    if(result.isUpdateNecessary){
+      return result;
+    } else return null;
   }
 
   async fetchKapiVersion(){

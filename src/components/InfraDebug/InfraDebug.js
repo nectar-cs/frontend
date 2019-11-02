@@ -9,6 +9,8 @@ import DebugStep from "./DebugStep";
 import Gulpers from "./Gulpers";
 import Loader from "../../assets/loading-spinner";
 import TerminalStep from "./TerminalStep";
+import ModalHostComposer from "../../hocs/ModalHostComposer";
+import UpdateCheckComposer from "../../hocs/UpdateCheckComposer";
 
 class InfraDebugClass extends React.Component {
 
@@ -192,7 +194,11 @@ class InfraDebugClass extends React.Component {
 }
 
 const InfraDebug = AuthenticatedComponent.compose(
-  InfraDebugClass
+  ModalHostComposer.compose(
+    UpdateCheckComposer.compose(
+      InfraDebugClass
+    )
+  )
 );
 
 export default InfraDebug;
