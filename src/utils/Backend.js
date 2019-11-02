@@ -43,8 +43,10 @@ export default class Backend {
     return this.blockingRequest('GET', endpoint, null);
   }
 
-  static blockingPost(endpoint, payload){
-    return this.blockingRequest('POST', endpoint, payload);
+  static async blockingPost(endpoint, payload){
+    payload = DataUtils.obj2Snake(payload);
+    const result = await this.blockingRequest('POST', endpoint, payload);
+    return DataUtils.obj2Camel(result);
   }
 
   static async blockingRequest(method, endpoint, body){

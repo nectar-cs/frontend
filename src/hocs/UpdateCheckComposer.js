@@ -1,25 +1,23 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import RevisionChecker from "../utils/RevisionChecker";
+import SelfUpdateModal from "../modals/UpdateSelf/SelfUpdateModal";
 
 export default class UpdateCheckComposer {
   static compose(Component){
-    return function(props){
-      const checker = new RevisionChecker();
-      const runCheck = () => {
+    return class extends React.Component {
+      componentDidMount() {
+        const props = this.props;
+        const checker = new RevisionChecker();
         checker.perform().then(verdict => {
-          if(verdict){
-            if(!props.openModal){
-              console.log("THIS COMP SHOULD HAVE MODAL OPEN");
-              return;
-            }
-
-            console.log("OH SHIT GOTTA UPDATE");
+          if (verdict) {
+            const { bundle } = verdict;
+            props.openModal(SelfUpdateModal, { bundle });
           }
-        })
-      };
-
-      useEffect(runCheck);
-      return <Component {...props} />
-    }
-  }
+        });
+      }
+      render() {
+        return <Component {...this.props} />
+      }
+    };
+  };
 }

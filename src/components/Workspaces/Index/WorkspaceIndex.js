@@ -14,6 +14,7 @@ import Text from './../../../assets/text-combos'
 import Layout from './../../../assets/layouts'
 import ModestLink from "../../../widgets/ModestLink/ModestLink";
 import {Link, Redirect} from "react-router-dom";
+import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
 
 class WorkspaceIndexClass extends React.Component{
 
@@ -165,8 +166,10 @@ function WorkspaceRow(props) {
 
 const WorkspaceIndex = AuthenticatedComponent.compose(
   ModalHostComposer.compose(
-    ErrComponent.compose(
-      WorkspaceIndexClass
+    UpdateCheckComposer.compose(
+      ErrComponent.compose(
+        WorkspaceIndexClass
+      )
     )
   )
 );

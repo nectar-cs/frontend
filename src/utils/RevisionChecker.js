@@ -16,16 +16,13 @@ export default class RevisionChecker {
   }
 
   async fetchVerdict(){
-    const payload = {
-      frontend: this.myVersion(),
-      kapi: await this.fetchKapiVersion()
-    };
-
+    const frontend = this.myVersion();
+    const kapi = await this.fetchKapiVersion();
+    const currentVersions = { frontend, kapi };
+    const payload = { currentVersions };
     const ep = '/revisions/compare';
     const result = await Backend.blockingPost(ep, payload);
-    if(result.isUpdateNecessary){
-      return result;
-    } else return null;
+    return result['updateNecessary'] ? result : null;
   }
 
   async fetchKapiVersion(){
