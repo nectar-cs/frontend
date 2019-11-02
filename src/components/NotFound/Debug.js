@@ -14,12 +14,17 @@ export default function Debug(){
     try{ return REVISION } catch { return ""; }
   }
 
+  function revision2(){
+    try{ return REACT_APP_REVISION } catch { return ""; }
+  }
+
   return(
     <ul>
       <li><p>Node Env: {process.env.NODE_ENV}</p></li>
       <li><p>Backend URL: {process.env.REACT_APP_BACKEND_URL}</p></li>
       <li><p>Backend URL: {backendURL()}</p></li>
-      <li><p>REVISION: {revision()}</p></li>
+      <li><p>REVISION: {revision()} {process.env.REVISION}</p></li>
+      <li><p>REVISION2: {revision2()} {process.env.REACT_APP_REVISION}</p></li>
       <li><p>---</p></li>
       <All/>
     </ul>
