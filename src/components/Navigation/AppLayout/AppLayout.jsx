@@ -8,6 +8,7 @@ import Backend from "../../../utils/Backend";
 import {setPath, setRemotes, setWorkspaces} from "../../../actions/action";
 import {connect} from "react-redux";
 import DataUtils from "../../../utils/DataUtils";
+import RevisionChecker from "../../../utils/RevisionChecker";
 
 class AppLayoutClass extends React.Component {
   render(){
@@ -29,15 +30,22 @@ class AppLayoutClass extends React.Component {
   }
 
   componentDidMount(){
-    const { setWorkspaces, setRemotes } = this.props;
-
     Backend.raisingFetch(`/workspaces`, resp => {
-      setWorkspaces(DataUtils.obj2Camel(resp['data']));
+      this.props.setWorkspaces(DataUtils.obj2Camel(resp['data']));
     });
 
     Backend.raisingFetch(`/remotes/connected`, resp => {
-      setRemotes(DataUtils.obj2Camel(resp['data']));
+      this.props.setRemotes(DataUtils.obj2Camel(resp['data']));
     });
+
+    const checker = new RevisionChecker();
+    checker.perform().then(verdict => {
+      if(verdict){
+        console.log("OH SHIT GOTTA UPDATE");
+      } else {
+        console.log("No updates required");
+      }
+    })
   }
 }
 
