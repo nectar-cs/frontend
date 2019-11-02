@@ -4,7 +4,7 @@ import moment from "moment";
 import Cookies from "js-cookie";
 
 const KEY = "last_revision_check";
-const THRESHOLD = { minutes: 0 };
+const THRESHOLD = { minutes: 10 };
 const YEAR_2000 = "2000-01-01T00:00:00-00:00";
 
 export default class RevisionChecker {
@@ -58,8 +58,8 @@ export default class RevisionChecker {
   }
 
   isNonDevEnvironment(){
-    // const myEnv = process.env.NODE_ENV;
-    // return myEnv !== 'development';
-    return true;
+    const myEnv = process.env.NODE_ENV;
+    return myEnv !== 'development';
+    // return true;
   }
 }
