@@ -11,7 +11,7 @@ export default function Debug(){
   }
 
   function revision(){
-    try{ return BACKEND_URL } catch { return ""; }
+    try{ return REVISION } catch { return ""; }
   }
 
   return(
