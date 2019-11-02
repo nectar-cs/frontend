@@ -1,8 +1,8 @@
 FROM node:8 as react-build
 WORKDIR /app
 COPY . ./
-ARG REVISION
-ENV REACT_APP_REVISION=$REVISION
+ARG REACT_APP_REVISION
+ENV REACT_APP_REVISION=$REACT_APP_REVISION
 ENV REACT_APP_BACKEND_URL https://mosaic-backend-stage.herokuapp.com
 RUN yarn
 RUN yarn build
