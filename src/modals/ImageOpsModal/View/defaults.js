@@ -4,24 +4,24 @@ export const defaults ={
 
   previewCommands: {
     reload: ({dep, ns, orig}) => [
-      `kubectl scale deploy ${dep} --replicas=0 --namespace=${ns}`,
-      `kubectl scale deploy ${dep} --replicas=${orig} --namespace=${ns}`
+      `kubectl scale deploy ${dep} --replicas=0 -n ${ns}`,
+      `kubectl scale deploy ${dep} --replicas=${orig} -n ${ns}`
     ],
     change: ({dep, ns, cont, img}) => [
-      `kubectl set image deploy/${dep} ${cont}=${img} --namespace=${ns}`,
+      `kubectl set image deploy/${dep} ${cont}=${img} -n ${ns}`,
     ],
     scale:  ({dep, ns, scaleTo}) => [
-      `kubectl scale deploy ${dep} --replicas=${scaleTo} --namespace=${ns}`,
+      `kubectl scale deploy ${dep} --replicas=${scaleTo} -n ${ns}`,
     ],
     docker: ({dep, ns, dImg, cont}) => [
-      `kubectl set image deploy/${dep} ${cont}=${dImg} --namespace=${ns}`
+      `kubectl set image deploy/${dep} ${cont}=${dImg} -n ${ns}`
     ],
     git: ({gRem, gRep, sha, dep, ns, dImg, dPath, cont}) => gRem && [
       `git clone git@github.com:${gRem}/${gRep}.git`,
       `git fetch origin ${sha}`,
       `docker build .${dPath} -t ${dImg}`,
       `docker push ${dImg}`,
-      `kubectl set image deploy/${dep} ${cont}=${dImg} --namespace=${ns}`
+      `kubectl set image deploy/${dep} ${cont}=${dImg} -n ${ns}`
     ],
   },
 
