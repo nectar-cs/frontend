@@ -13,13 +13,18 @@ export default function Debug(){
   let kapiVersion = null;
   let verdict = null;
 
-  useEffect(() => checker.fetchKapiVersion().then(r => {
-    kapiVersion = r;
-  }));
+  useEffect(() => {
+    checker.fetchKapiVersion().then(r => {
+      console.log("HEY");
+      console.log(r);
+      kapiVersion = r;
+    })
+  }, []);
 
-  useEffect(() => checker.fetchVerdict().then(r => {
-    verdict = r;
-  }));
+  useEffect(() => {
+    checker.fetchVerdict().then(r => {
+      verdict = r;
+  })});
 
   return(
     <ul>
@@ -28,11 +33,11 @@ export default function Debug(){
       <li><p>REVISION: {revision()}</p></li>
       <li><p>Backend: {Backend.baseUrl()}</p></li>
       <li><p>Kapi: {Kapi.baseUrl()}</p></li>
-      <li><p>Non Dev: {checker.isNonDevEnvironment()}</p></li>
-      <li><p>Was last check long ago: {checker.wasLastCheckAgesAgo()}</p></li>
+      <li><p>Non Dev: {checker.isNonDevEnvironment().toString()}</p></li>
+      <li><p>Was last check long ago: {checker.wasLastCheckAgesAgo().toString()}</p></li>
       <li><p>Last Check: {checker.lastCheckTime().format()}</p></li>
       <li><p>furthestBackAcceptableCheckTime: {checker.furthestBackAcceptableCheckTime().format()}</p></li>
-      <li><p>Should Perform: {checker.shouldPerform()}</p></li>
+      <li><p>Should Perform: {checker.shouldPerform().toString()}</p></li>
       <li><p>Kapi version: {JSON.stringify(kapiVersion)}</p></li>
       <li><p>Update verdict: {JSON.stringify(verdict)}</p></li>
 
