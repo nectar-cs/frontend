@@ -65,7 +65,6 @@ const PodStatusesBox = styled.div`
 const AdditionalControlsBox = styled.div`
   position: absolute;
   bottom: -4px;
-  left: -2px;
   right: 4px;
   display: inline-flex;
   flex-direction: row-reverse;
@@ -88,6 +87,9 @@ const PodCircle = styled.div`
   border-radius: 50%;
   margin-left: 6px;
   background: ${p => colored(p.emotion)}; 
+  &:hover{
+    cursor: pointer;
+  }
 `;
 
 const

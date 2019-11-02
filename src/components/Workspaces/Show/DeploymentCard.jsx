@@ -12,6 +12,7 @@ import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal"
 import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
 import {Link} from "react-router-dom";
 import HotReloadModal from "../../../modals/HotReloadingModal/HotReloadModal";
+import PodModal from "../../../modals/PodModal/PodModal";
 
 export default class DeploymentCard extends React.Component {
 
@@ -94,6 +95,7 @@ export default class DeploymentCard extends React.Component {
     const pods = this.props.deployment.pods;
     const views = pods.map(pod =>
       <S.PodCircle
+        onClick={() => this.openPodModal(pod)}
         key={pod.name}
         emotion={pod.state}
         title={pod.name}
@@ -167,6 +169,13 @@ export default class DeploymentCard extends React.Component {
     const { deployment, matching } = this.props;
     let bundle = {deployment, matching, mode: 'modal'};
     this.props.openModal(CommandsModal, bundle);
+  }
+
+  openPodModal(pod){
+    console.log("ASdasdad");
+    const { deployment, matching } = this.props;
+    const bundle = { deployment, matching, pod };
+    this.props.openModal(PodModal, bundle);
   }
 
   buildRow(label, text, callback, material){
