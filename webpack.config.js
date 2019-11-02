@@ -64,7 +64,8 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'BACKEND_URL': JSON.stringify(process.env.REACT_APP_BACKEND_URL)
+      'BACKEND_URL': JSON.stringify(process.env.REACT_APP_BACKEND_URL),
+      'REVISION': JSON.stringify(process.env.REACT_APP_REVISION),
     }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
