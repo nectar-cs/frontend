@@ -212,7 +212,9 @@ class OverviewSectionClass extends Section {
     remotes: Types.GlobalRemotes.isRequired,
     deployment: Types.Deployment,
     matching: Types.Matching
-  }
+  };
+
+  _className() { return "OverviewSection"; }
 }
 
 function s2P(state){

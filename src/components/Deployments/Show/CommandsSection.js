@@ -13,4 +13,6 @@ export default class CommandsSection extends Section {
       />
     );
   }
+
+  _className() { return "CommandsSection"; }
 }

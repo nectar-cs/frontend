@@ -1,4 +1,7 @@
-import React from "react";
+import React, {useEffect} from "react";
+import Kapi from "../../utils/Kapi";
+import Backend from "../../utils/Backend";
+import RevisionChecker from "../../utils/RevisionChecker";
 
 export default function Debug(){
 
@@ -6,27 +9,43 @@ export default function Debug(){
     <li key={key}><p>{key}: {process.env[key]}</p></li>
   ));
 
-  function backendURL(){
-    try{ return BACKEND_URL } catch { return ""; }
-  }
+  const checker = new RevisionChecker();
+  let kapiVersion = null;
+  let verdict = null;
 
-  function revision(){
-    try{ return REVISION } catch { return ""; }
-  }
+  useEffect(() => checker.fetchKapiVersion().then(r => {
+    kapiVersion = r;
+  }));
 
-  function revision2(){
-    try{ return REACT_APP_REVISION } catch { return ""; }
-  }
+  useEffect(() => checker.fetchVerdict().then(r => {
+    verdict = r;
+  }));
 
   return(
     <ul>
       <li><p>Node Env: {process.env.NODE_ENV}</p></li>
-      <li><p>Backend URL: {process.env.REACT_APP_BACKEND_URL}</p></li>
       <li><p>Backend URL: {backendURL()}</p></li>
-      <li><p>REVISION: {revision()} {process.env.REVISION}</p></li>
-      <li><p>REVISION2: {revision2()} {process.env.REACT_APP_REVISION}</p></li>
+      <li><p>REVISION: {revision()}</p></li>
+      <li><p>Backend: {Backend.baseUrl()}</p></li>
+      <li><p>Kapi: {Kapi.baseUrl()}</p></li>
+      <li><p>Non Dev: {checker.isNonDevEnvironment()}</p></li>
+      <li><p>Was last check long ago: {checker.wasLastCheckAgesAgo()}</p></li>
+      <li><p>Last Check: {checker.lastCheckTime().format()}</p></li>
+      <li><p>furthestBackAcceptableCheckTime: {checker.furthestBackAcceptableCheckTime().format()}</p></li>
+      <li><p>Should Perform: {checker.shouldPerform()}</p></li>
+      <li><p>Kapi version: {JSON.stringify(kapiVersion)}</p></li>
+      <li><p>Update verdict: {JSON.stringify(verdict)}</p></li>
+
       <li><p>---</p></li>
       <All/>
     </ul>
   )
+}
+
+function backendURL(){
+  try{ return BACKEND_URL } catch { return ""; }
+}
+
+function revision(){
+  try{ return REVISION } catch { return ""; }
 }

@@ -14,4 +14,6 @@ export default class InfraDebugSection extends Section {
       />
     );
   }
+
+  _className() { return "InfraDebugSection"; }
 }

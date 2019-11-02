@@ -4,7 +4,7 @@ import moment from "moment";
 import Cookies from "js-cookie";
 
 const KEY = "last_revision_check";
-const THRESHOLD = { minutes: 10 };
+const THRESHOLD = { minutes: 1 };
 const YEAR_2000 = "2000-01-01T00:00:00-00:00";
 
 export default class RevisionChecker {
@@ -12,7 +12,8 @@ export default class RevisionChecker {
   async perform() {
     if (!this.shouldPerform()) return null;
     this.recordCheckTimestamp();
-    return await this.fetchVerdict();
+    const result = await this.fetchVerdict();
+    return result['updateNecessary'] ? result : null;
   }
 
   async fetchVerdict(){
@@ -21,8 +22,7 @@ export default class RevisionChecker {
     const currentVersions = { frontend, kapi };
     const payload = { currentVersions };
     const ep = '/revisions/compare';
-    const result = await Backend.blockingPost(ep, payload);
-    return result['updateNecessary'] ? result : null;
+    return await Backend.blockingPost(ep, payload);
   }
 
   async fetchKapiVersion(){
@@ -50,11 +50,17 @@ export default class RevisionChecker {
     Cookies.set(KEY, nowISOStr);
   }
 
-  wasLastCheckAgesAgo(){
-    const minAcceptableTime = moment().subtract(THRESHOLD);
+  lastCheckTime(){
     const rawStamp = Cookies.get(KEY) || YEAR_2000;
-    const lastCheck = moment(rawStamp);
-    return lastCheck < minAcceptableTime;
+    return moment(rawStamp);
+  }
+
+  furthestBackAcceptableCheckTime(){
+    return moment().subtract(THRESHOLD);
+  }
+
+  wasLastCheckAgesAgo(){
+    return this.lastCheckTime() < this.furthestBackAcceptableCheckTime();
   }
 
   isNonDevEnvironment(){

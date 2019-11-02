@@ -15,4 +15,6 @@ export default class HotReloadSection extends Section {
       />
     )
   }
+
+  _className() { return "HotReloadSection"; }
 }

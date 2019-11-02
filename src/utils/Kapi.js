@@ -1,9 +1,17 @@
 import DataUtils from "./DataUtils";
 
-const DEFAULT_URL = "http://localhost:5000";
-const BACKEND_URL = process.env['KUBE_HANDLER_URL'] || DEFAULT_URL;
-
 export default class Kapi {
+
+
+  static baseUrl(){
+    if(process.env.NODE_ENV === 'development'){
+      return 'http://localhost:5000';
+    } else {
+      return "http://kapi.nectar:5000";
+    }
+  }
+
+
   static filterFetch(endpoint, ws, callback, errorCallback=null){
     const nsFilterType = `ns_filter_type=${ws.nsFilterType}`;
     const nsFilter = `ns_filters=${ws.nsFilters.join(',')}`;
@@ -35,7 +43,7 @@ export default class Kapi {
   }
 
   static url(endpoint){
-    return `${BACKEND_URL}${endpoint}`;
+    return `${this.baseUrl()}${endpoint}`;
   }
 
   static async blockingFetch(endpoint){

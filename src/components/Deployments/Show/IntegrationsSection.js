@@ -18,4 +18,6 @@ export default class IntegrationsSection extends Section {
       />
     )
   }
+
+  _className() { return "IntegrationsSection"; }
 }

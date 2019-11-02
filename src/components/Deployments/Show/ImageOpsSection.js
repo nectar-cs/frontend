@@ -15,4 +15,6 @@ export default class ImageOpsSection extends Section {
       />
     );
   }
+
+  _className() { return "ImageOpsSection"; }
 }

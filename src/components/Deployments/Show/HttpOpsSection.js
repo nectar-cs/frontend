@@ -14,4 +14,6 @@ export default class HttpOpsSection extends Section {
       />
     )
   }
+
+  _className() { return "HttpOpsSection"; }
 }
