@@ -5,7 +5,6 @@ import { Route, BrowserRouter } from 'react-router-dom'
 import {makeRoute, ROUTES as R} from './RoutesConsts';
 import {Redirect, Switch} from "react-router";
 import NotFound from "../components/NotFound/NotFound";
-import Backend from "../utils/Backend";
 import Debug from "../components/NotFound/Debug";
 
 export default class Root extends Component {
