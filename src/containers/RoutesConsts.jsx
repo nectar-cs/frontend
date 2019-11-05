@@ -1,5 +1,4 @@
 import Authenticate from "../components/Auth/Authenticate";
-import Matching from "../components/Deployments/Matching/Matching";
 import LoginAndRegister from "../components/Auth/LoginAndRegister";
 import WorkspaceIndex from "../components/Workspaces/Index/WorkspaceIndex";
 import WorkspaceEdit from "../components/Workspaces/Edit/WorkspaceEdit";
@@ -7,6 +6,7 @@ import WorkspaceShow from "../components/Workspaces/Show/WorkspaceShow";
 import DeploymentShow from "../components/Deployments/Show/DeploymentShow";
 import NetworkTest from "../components/Laboratory/NetworkTest";
 import InfraDebug from "../components/InfraDebug/InfraDebug";
+import BulkMatch from "../components/BulkMatch/BulkMatch";
 
 export const ROUTES = {
   clusters: {
@@ -14,9 +14,12 @@ export const ROUTES = {
   },
 
   deployments: {
-    detect: { path: '/deployments/detect', comp: Matching },
     debug: { path: '/deployments/:ns/:id/debug/:type', comp: InfraDebug },
     show: { path: '/deployments/:ns/:id', comp: DeploymentShow }
+  },
+
+  bulkMatch: {
+    index: { path: '/deployments/detect', comp: BulkMatch },
   },
 
   workspaces: {

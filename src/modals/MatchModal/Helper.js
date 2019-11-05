@@ -1,8 +1,28 @@
-import DataUtils from "../../../utils/DataUtils";
-import Backend from "../../../utils/Backend";
-import { toast } from 'react-toastify';
+import DataUtils from "../../utils/DataUtils";
+import Backend from "../../utils/Backend";
+import MiscUtils from "../../utils/MiscUtils";
 
 export default class Helper{
+
+  static frameworkImage(inst){
+    if(inst.props.mode === 'detail'){
+      return "attachment";
+    } else {
+      const framework = inst.state.bundle.framework;
+      return MiscUtils.frameworkImage(framework || 'docker');
+    }
+  }
+
+  static graphicType(inst) {
+    return inst.props.mode === 'detail' ? "icon" : 'image';
+  }
+
+  static title(inst){
+    if(inst.props.mode === 'detail')
+      return "Git and Docker Matching";
+    else return inst.props.deployment.name;
+  }
+
 
   static matching2Bundle(matching){
     return {

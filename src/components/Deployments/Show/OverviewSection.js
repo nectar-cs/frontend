@@ -13,8 +13,8 @@ import PodsView from "../../../widgets/PodsView/PodsView";
 import HttpOpsSection from "./HttpOpsSection";
 import moment from "moment";
 import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
-import IntegrationsSection from "./IntegrationsSection";
 import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
+import MatchingSection from "./MatchingSection";
 
 function T(props){
   return <Text.P raw pushed {...props}>{props.children}</Text.P>
@@ -206,7 +206,7 @@ class OverviewSectionClass extends Section {
 
   goToDocker(){ this.props.onClicked(ImageOpsSection.name); }
   goToHttp(){ this.props.onClicked(HttpOpsSection.name); }
-  goToMatching(){ this.props.onClicked(IntegrationsSection.name); }
+  goToMatching(){ this.props.onClicked(MatchingSection.name); }
 
   static propTypes = {
     remotes: Types.GlobalRemotes.isRequired,

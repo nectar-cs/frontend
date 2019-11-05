@@ -2,12 +2,12 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types'
 import s from './GithubAuth.sass';
 import defaults from './defaults'
-import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
-import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
-import Button from "../../../assets/buttons";
-import ModalHostComposer from "../../../hocs/ModalHostComposer";
-import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
-import Backend from "../../../utils/Backend";
+import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
+import IntegrationsModal from "../../modals/IntegrationsModal/IntegrationsModal";
+import Button from "../../assets/buttons";
+import ModalHostComposer from "../../hocs/ModalHostComposer";
+import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
+import Backend from "../../utils/Backend";
 
 const IntegrationsPromptClass = class extends React.Component {
   constructor(props){

@@ -1,13 +1,13 @@
 import React from 'react'
 import Section from "./Section";
-import MatchPreview from "../Matching/MatchPreview";
+import MatchModal from "../../../modals/MatchModal/MatchModal";
 
-export default class IntegrationsSection extends Section {
+export default class MatchingSection extends Section {
 
   _renderActivityModal(source){
     const { deployment } = source || this.props;
     return(
-      <MatchPreview
+      <MatchModal
         mode='detail'
         deployment={deployment}
         onDeploymentReviewed={null}
@@ -19,5 +19,5 @@ export default class IntegrationsSection extends Section {
     )
   }
 
-  _className() { return "IntegrationsSection"; }
+  _className() { return "MatchingSection"; }
 }

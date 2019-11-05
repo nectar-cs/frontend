@@ -1,7 +1,7 @@
 import React from 'react'
 import Autocomplete from 'react-autocomplete';
 import s from './PathSuggest.sass'
-import DataUtils from '../../../utils/DataUtils';
+import DataUtils from '../../utils/DataUtils';
 
 export default class PathSuggest extends React.Component {
 

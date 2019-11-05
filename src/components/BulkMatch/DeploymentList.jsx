@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import s from './DeploymentList.sass'
-import TextOverLineTitle from '../../../widgets/TextOverLineTitle/TextOverLineTitle';
-import {Icon} from "../../../modals/ImageOpsModal/View/ChecklistStyles";
+import TextOverLineTitle from '../../widgets/TextOverLineTitle/TextOverLineTitle';
+import {Icon} from "../../modals/ImageOpsModal/View/ChecklistStyles";
 
 function ListHeader() {
   return(

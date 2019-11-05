@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import Kapi from "../../utils/Kapi";
 import Backend from "../../utils/Backend";
-import RevisionChecker from "../../utils/RevisionChecker";
+import UpdateChecker from "../../utils/UpdateChecker";
 
 export default function Debug(){
 
@@ -9,7 +9,7 @@ export default function Debug(){
     <li key={key}><p>{key}: {process.env[key]}</p></li>
   ));
 
-  const checker = new RevisionChecker();
+  const checker = new UpdateChecker();
   let kapiVersion = null;
   let verdict = null;
 

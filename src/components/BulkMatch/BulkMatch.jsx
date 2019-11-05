@@ -1,20 +1,20 @@
 import React, {Fragment} from 'react';
-import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
-import LeftHeader, { ICON} from '../../../widgets/LeftHeader/LeftHeader';
-import Backend from '../../../utils/Backend';
+import AuthenticatedComponent from '../../hocs/AuthenticatedComponent';
+import LeftHeader, { ICON} from '../../widgets/LeftHeader/LeftHeader';
+import Backend from '../../utils/Backend';
 import DeploymentList from './DeploymentList';
-import MatchPreview from './MatchPreview';
-import Kapi from "../../../utils/Kapi";
+import MatchModal from '../../modals/MatchModal/MatchModal';
+import Kapi from "../../utils/Kapi";
 import IntegrationsPrompt from "./IntegrationsPrompt";
-import ErrComponent from "../../../hocs/ErrComponent";
-import ModalHostComposer from "../../../hocs/ModalHostComposer";
-import {ROUTES} from "../../../containers/RoutesConsts";
-import DataUtils from "../../../utils/DataUtils";
-import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
-import Layout from "../../../assets/layouts";
-import Loader from "../../../assets/loading-spinner";
+import ErrComponent from "../../hocs/ErrComponent";
+import ModalHostComposer from "../../hocs/ModalHostComposer";
+import {ROUTES} from "../../containers/RoutesConsts";
+import DataUtils from "../../utils/DataUtils";
+import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
+import Layout from "../../assets/layouts";
+import Loader from "../../assets/loading-spinner";
 
-class MatchingClass extends React.Component {
+class BulkMatchingClass extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -133,7 +133,7 @@ class MatchingClass extends React.Component {
 
     const sif = (v) => this.setState((s) => ({...s, isRightFetching: v}));
     return(
-      <MatchPreview
+      <MatchModal
         mode='tutorial'
         deployment={this.selectedDeployment()}
         onDeploymentReviewed={this.onDeploymentReviewed}
@@ -249,12 +249,12 @@ function Header(){
   )
 }
 
-const Matching = AuthenticatedComponent.compose(
+const BulkMatch = AuthenticatedComponent.compose(
   ModalHostComposer.compose(
     ErrComponent.compose(
-      MatchingClass
+      BulkMatchingClass
     )
   )
 );
 
-export { Matching as default };
+export { BulkMatch as default };

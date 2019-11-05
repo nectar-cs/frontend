@@ -7,7 +7,7 @@ const KEY = "last_revision_check";
 const THRESHOLD = { minutes: 1 };
 const YEAR_2000 = "2000-01-01T00:00:00-00:00";
 
-export default class RevisionChecker {
+export default class UpdateChecker {
 
   async perform() {
     if (!this.shouldPerform()) return null;

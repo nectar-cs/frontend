@@ -1,4 +1,4 @@
-@import './../../../assets/constants'
+@import '../../assets/constants'
 
 .deploymentList
   margin-top: 0
@@ -20,13 +20,13 @@
   background: $content-background-color
 
 .check
-  margin-right: 0px
+  margin-right: 0
 
 .checkHead
   margin-left: 20px
 
 .nsTag
-  composes: statusTag from './../../../assets/text-combos.sass'
+  composes: statusTag from '../../assets/text-combos.sass'
   background: $ready-lukewarm
   margin-left: 3px
   &:nth-child(1)
@@ -36,22 +36,22 @@
   padding-left: 190px
 
 .status
-  composes: statusDecoration from './../../../assets/text-combos.sass'
+  composes: statusDecoration from '../../assets/text-combos.sass'
 
 .statusPending
   composes: status
-  composes: fontColorIdle from './../../../assets/text-combos.sass'
+  composes: fontColorIdle from '../../assets/text-combos.sass'
 
 .statusAccepted
   composes: status
-  composes: fontColorSuccess from './../../../assets/text-combos.sass'
+  composes: fontColorSuccess from '../../assets/text-combos.sass'
 
 .statusRejected
   composes: status
-  composes: fontColorWarn from './../../../assets/text-combos.sass'
+  composes: fontColorWarn from '../../assets/text-combos.sass'
 
 .confirm
-  composes: centerSubmitButton from './../../../assets/input-combos.sass'
+  composes: centerSubmitButton from '../../assets/input-combos.sass'
   width: 140px
   position: absolute
   bottom: 20px

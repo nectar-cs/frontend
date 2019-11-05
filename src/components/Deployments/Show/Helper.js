@@ -5,11 +5,11 @@ import Backend from "../../../utils/Backend";
 import InfraDebugSection from "./InfraDebugSection";
 import ImageOpsSection from "./ImageOpsSection";
 import LoggingSection from "./LoggingSection";
-import IntegrationsSection from "./IntegrationsSection";
 import CommandsSection from "./CommandsSection";
 import PortForwardSection from "./PortForwardSection";
 import HttpOpsSection from "./HttpOpsSection";
 import HotReloadSection from "./HotReloadSection";
+import MatchingSection from "./MatchingSection";
 
 export default class Helper {
 
@@ -22,10 +22,10 @@ export default class Helper {
     PortForwardSection,
     HotReloadSection,
     LoggingSection,
-    IntegrationsSection
+    MatchingSection
   ];
 
-  static defaultSection = ImageOpsSection;
+  static defaultSection = MatchingSection;
 
   static classNameToKey(className){
     const key = className.replace("Section", "");

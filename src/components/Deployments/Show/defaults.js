@@ -21,7 +21,7 @@ const defaults = {
       iconName: "camera_alt"
     },
 
-    integrations: {
+    matching: {
       title: "Git & Docker Matching",
       iconName: "attachment"
     },

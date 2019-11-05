@@ -9,7 +9,7 @@ import Kapi from "../../utils/Kapi";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 
-export default class SelfUpdateModal extends React.Component {
+export default class SoftwareUpdateModal extends React.Component {
 
   constructor(props) {
     super(props);
