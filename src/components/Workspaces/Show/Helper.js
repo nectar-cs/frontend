@@ -15,7 +15,7 @@ export default class Helper{
 
     Kapi.filterFetch('/api/deployments', workspace, r => {
       onSuccess(DataUtils.obj2Camel(r['data']));
-    }, inst.props.kubeErrorCallback);
+    }, show ? inst.props.kubeErrorCallback : null);
   }
 
   static fetchMatchings(inst){
