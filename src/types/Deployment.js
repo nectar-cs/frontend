@@ -89,7 +89,9 @@ const Deployment = PropTypes.shape({
 const Matching = PropTypes.shape({
   framework: PropTypes.string.isRequired,
   gitRemoteName: PropTypes.string,
+  imgRemoteName: PropTypes.string,
   gitRepoName: PropTypes.string,
+  imgRepoName: PropTypes.string,
   gitRemoteId: PropTypes.number,
   imgRemoteId: PropTypes.number,
   dockerfilePath: PropTypes.string

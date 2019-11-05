@@ -16,7 +16,7 @@ export default class MatchModal extends React.Component {
 
     super(props);
     this.state = {
-      choices: MatchModal.defaultChoices(),
+      choices: MatchModal.defaultChoices(props),
       isGitFetching: false,
       isDockerFetching: false,
       isSubmitting: false,
@@ -31,6 +31,7 @@ export default class MatchModal extends React.Component {
   }
 
   componentDidMount() {
+
   }
 
   // componentWillReceiveProps(nextProps){
@@ -88,7 +89,6 @@ export default class MatchModal extends React.Component {
     return(
       <MatchForm
         deployment={this.props.deployment}
-        notifyChanged={this.notifyFormValueChanged}
         gitRemoteChoices={RemotesHelper.remoteOptions()}
         imgRemoteChoices={RemotesHelper.remoteOptions()}
         gitRepoChoices={RemotesHelper.remoteOptions()}
@@ -97,6 +97,7 @@ export default class MatchModal extends React.Component {
         gitRemoteName={choices.gitRemoteName}
         gitRepoName={choices.gitRepoName}
         dfPath={choices.dfPath}
+        framework={choices.framework}
         notifyFormValueChange={this.update}
       />
     )
@@ -134,17 +135,22 @@ export default class MatchModal extends React.Component {
     else Helper.submitDelete(this, deployment);
   }
 
-  static defaultChoices(){
+  static defaultChoices(props){
+    let { matching } = props;
+    matching = matching || {};
+
     return({
-      gitRemoteName: '',
-      imgRemoteName: '',
-      gitRepoName: '',
-      imgRepoName: '',
-      dfPath: '',
       gitRemoteList: [],
       imgRemoteList: [],
       dfPathList: [],
-      framework: ''
+
+      gitRemoteName: matching.gitRemoteName || '',
+      imgRemoteName: matching.imgRemoteName || '',
+      gitRepoName: matching.gitRepoName || '',
+      imgRepoName: matching.imgRepoName || '',
+
+      dfPath: '',
+      framework: matching.framework
     });
   }
 

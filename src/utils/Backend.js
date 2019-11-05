@@ -39,8 +39,10 @@ export default class Backend {
     return { method, headers, body };
   }
 
-  static blockingFetch(endpoint){
-    return this.blockingRequest('GET', endpoint, null);
+  static async blockingFetch(endpoint){
+    const raw = await this.blockingRequest('GET', endpoint, null);
+    let cleaned = DataUtils.obj2Camel(raw);
+    return cleaned['data'] ? cleaned['data'] : cleaned;
   }
 
   static async blockingPost(endpoint, payload){

@@ -8,7 +8,7 @@ export default class Helper{
     if(inst.props.mode === 'detail'){
       return "attachment";
     } else {
-      const framework = inst.state.bundle.framework;
+      const framework = inst.state.choices.framework;
       return MiscUtils.frameworkImage(framework || 'docker');
     }
   }

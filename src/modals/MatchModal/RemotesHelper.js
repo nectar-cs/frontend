@@ -1,8 +1,16 @@
 import MiscUtils from "../../utils/MiscUtils";
-import {stacks} from "../../misc/stacks";
+import Backend from "../../utils/Backend";
 const StringSimilarity = require('string-similarity');
 
 export default class RemotesHelper{
+
+  static async fetchGitRemotes(inst){
+    inst.setState(s => ({...s, isGitFetching: true}));
+    const ep = '/remotes/loaded?entity=git';
+    const remotesList = Backend.blockingFetch(ep);
+    inst.update('remotesList', remotesList);
+    inst.setState(s => ({...s, isGitFetching: false}));
+  }
 
   static remoteOptions(remoteList){
     // return remoteList.map(r => r.identifier);

@@ -99,6 +99,8 @@ class MatchFormClass extends React.Component {
     gitRepoName: PropTypes.string,
     imgRepoName: PropTypes.string,
 
+    framework: PropTypes.string,
+
     deployment: PropTypes.shape({
       name: PropTypes.string.isRequired
     }).isRequired
