@@ -2,7 +2,6 @@ import DataUtils from "./DataUtils";
 
 export default class Kapi {
 
-
   static baseUrl(){
     if(process.env.NODE_ENV === 'development'){
       return 'http://localhost:5000';
