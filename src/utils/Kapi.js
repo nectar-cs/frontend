@@ -11,6 +11,7 @@ export default class Kapi {
     }
   }
 
+
   static filterFetch(endpoint, ws, callback, errorCallback=null){
     const nsFilterType = `ns_filter_type=${ws.nsFilterType}`;
     const nsFilter = `ns_filters=${ws.nsFilters.join(',')}`;
