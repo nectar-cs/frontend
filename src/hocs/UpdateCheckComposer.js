@@ -1,5 +1,5 @@
 import React from 'react'
-import RevisionChecker from "../utils/RevisionChecker";
+import UpdateChecker from "../utils/RevisionChecker";
 import SelfUpdateModal from "../modals/UpdateSelf/SelfUpdateModal";
 
 export default class UpdateCheckComposer {
@@ -7,7 +7,7 @@ export default class UpdateCheckComposer {
     return class extends React.Component {
       componentDidMount() {
         const props = this.props;
-        const checker = new RevisionChecker();
+        const checker = new UpdateChecker();
         checker.perform().then(verdict => {
           if (verdict) {
             const { bundle } = verdict;

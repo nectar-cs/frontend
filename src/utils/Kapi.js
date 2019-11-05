@@ -7,10 +7,9 @@ export default class Kapi {
     if(process.env.NODE_ENV === 'development'){
       return 'http://localhost:5000';
     } else {
-      return "kapi.nectar:5000";
+      return "http://localhost:5000";
     }
   }
-
 
   static filterFetch(endpoint, ws, callback, errorCallback=null){
     const nsFilterType = `ns_filter_type=${ws.nsFilterType}`;

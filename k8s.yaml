@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
@@ -15,12 +15,9 @@ spec:
         app: frontend
     spec:
       containers:
-        - name: frontend-container
+        - name: main
           image: xnectar/frontend:latest
           imagePullPolicy: 'Always'
-          env:
-            - name: BACKEND_URL
-              value: <%= backend_url %>
 
 ---
 
