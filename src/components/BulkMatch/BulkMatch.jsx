@@ -22,8 +22,8 @@ class BulkMatchingClass extends React.Component<Props, State> {
     this.state = BulkMatchingClass.defaultState();
     this.update = this.update.bind(this);
     this.onIntegrationDone = this.onIntegrationDone.bind(this);
-    this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);
     this.notifyDeploymentSelected = this.notifyDeploymentSelected.bind(this);
+    this.onMatchingEvent = this.onMatchingEvent.bind(this);
   }
 
   componentDidMount(){
@@ -98,20 +98,6 @@ class BulkMatchingClass extends React.Component<Props, State> {
     return <IntegrationsPrompt callback={this.onIntegrationDone}/>;
   }
 
-  renderOfferSubmit(){
-    if(!this.isSubmitReady()) return;
-    if(this.state.isSubmitting) return;
-    if(this.state.areAllSubmitted) return;
-
-    return(
-      <CenterAnnouncement
-        action={this.submit}
-        iconName='done'
-        text="Review Complete. Click to commit."
-      />
-    )
-  }
-
   renderSubmitted(){
     if(!this.state.areAllSubmitted) return;
 
@@ -130,12 +116,16 @@ class BulkMatchingClass extends React.Component<Props, State> {
     if(this.state.isSubmitting) return null;
     if(!this.selectedDeployment()) return null;
 
+    const { matchings } = this.state;
+    const deployment = this.selectedDeployment();
+    const matching = Helper.depMatching(deployment, matchings);
+
     return(
       <MatchModal
         mode='tutorial'
-        deployment={this.selectedDeployment()}
-        onDeploymentReviewed={this.onDeploymentReviewed}
-        matching={null}
+        deployment={deployment}
+        matching={matching}
+        callback={this.onMatchingEvent}
       />
     )
   }
@@ -146,7 +136,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
     else return null;
   }
 
-  onDeploymentReviewed(name, bundle){
+  onMatchingEvent(name, bundle){
     const deployments = this.state.deployments.map((d) => {
       if(d.name === name)
         return { ...d, ms: bundle, isReviewed: true };
@@ -154,12 +144,6 @@ class BulkMatchingClass extends React.Component<Props, State> {
     });
     const selectedIndex = this.state.selectedIndex + 1;
     this.setState((s) => ({...s, deployments, selectedIndex}));
-  }
-
-  isSubmitReady(){
-    if(this.state.selectedIndex != null && this.state.deployments != null){
-      return this.state.selectedIndex === this.state.deployments.length;
-    } else return false;
   }
 
   onIntegrationDone(status){
@@ -183,6 +167,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
     Helper.fetchItems(this.update);
   }
 
+  reloadMatchings(){ Helper.fetchMatchings(this.update); }
   hasPassedIntCheck(){ return !!this.state.isIntegrated; }
   isIntChecking(){ return !!this.state.isCheckingIntegration; }
 

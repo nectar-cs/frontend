@@ -98,9 +98,10 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   renderSubmitButton(){
+    const copy = `Save ${!this.amInDetailMode() ? "and to the Next" : ''}`;
     return(
       <Button.BigButton onClick={this.submit}>
-        Save
+        { copy }
       </Button.BigButton>
     )
   }
@@ -108,7 +109,7 @@ export default class MatchModal extends React.Component<Props, State> {
   renderSkipButton(){
     if(this.amInDetailMode()) return null;
     const { callback } = this.props;
-    return <Text.PA low={4.6} onClick={callback}>Or Skip</Text.PA>;
+    return <Text.PA low={4.6} onClick={callback}>Or Skip This One</Text.PA>;
   }
 
   submit(){

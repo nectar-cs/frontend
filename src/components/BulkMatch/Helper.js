@@ -6,10 +6,20 @@ export default class Helper{
 
   static async fetchItems(setter) {
     setter({isFetching: true});
+    await this.fetchDeployments(setter);
+    await this.fetchMatchings(setter);
+    setter({isFetching: false});
+  }
+
+  static async fetchDeployments(setter){
     let ep = '/api/deployments/across_namespaces';
     const deployments = await Kapi.bFetch(ep);
+    setter({deployments});
+  }
+
+  static async fetchMatchings(setter){
     const matchings = await Backend.bFetch('/microservices');
-    setter({deployments, matchings, isFetching: false});
+    setter({matchings});
   }
 
   static async fetchIsIntegrated(callback){
