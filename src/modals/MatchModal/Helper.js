@@ -4,6 +4,14 @@ import MiscUtils from "../../utils/MiscUtils";
 
 export default class Helper{
 
+  static injestMatching(matching, callback){
+    if(!matching) return;
+    const {gitRemoteName, gitRepoName} = matching;
+    const {imgRemoteName, imgRepoName, framework} = matching;
+    const bun = { gitRemoteName, gitRepoName, imgRemoteName, imgRepoName, framework };
+    Object.keys(bun).forEach(key => { callback(key, bun[key]); });
+  }
+
   static frameworkImage(inst){
     if(inst.props.mode === 'detail'){
       return "attachment";

@@ -2,7 +2,7 @@ import React, {Fragment} from 'react'
 import defaults from "./defaults";
 import Layout from './../../assets/layouts'
 import Text from './../../assets/text-combos'
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 
 export default class HowToAnnotate extends React.Component {
   render(){

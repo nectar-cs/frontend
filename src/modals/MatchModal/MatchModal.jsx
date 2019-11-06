@@ -1,17 +1,18 @@
+//@flow
 import React, {Fragment} from 'react';
 import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import PropTypes from 'prop-types'
-import TextOverLineTitle from '../../widgets/TextOverLineTitle/TextOverLineTitle';
 import MatchForm from './MatchForm';
 import Button from "../../assets/buttons";
 import MiscUtils from "../../utils/MiscUtils";
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 import Loader from "../../assets/loading-spinner";
 import Helper from "./Helper";
 import defaults from './defaults'
 import RemotesHelper from "./RemotesHelper";
+import type {Deployment, Matching, RemoteBundle} from "../../types/Types";
 
-export default class MatchModal extends React.Component {
+export default class MatchModal extends React.Component<Props, State> {
   constructor(props){
 
     super(props);
@@ -26,48 +27,24 @@ export default class MatchModal extends React.Component {
 
     this.deploymentName = MiscUtils.tor(() => props.deployment.name);
     this.update = this.update.bind(this);
+    this.updateAssign = this.updateAssign.bind(this);
     this.acceptMatch = this.acceptMatch.bind(this);
     this.skipMatch = this.skipMatch.bind(this);
   }
 
   componentDidMount() {
-
+    const { matching } = this.props;
+    Helper.injestMatching(matching, this.update);
+    RemotesHelper.fetchGitRemotes(this);
   }
-
-  // componentWillReceiveProps(nextProps){
-  //   if(nextProps.deployment){
-  //     this.deploymentName = nextProps.deployment.name;
-  //     if(this.props.deployment.name !== this.deploymentName){
-  //       if(this.props.hasGitRemote) this.onNewDeployment('git');
-  //       if(this.props.hasImageRegistry) this.onNewDeployment('img');
-  //     }
-  //   }
-  // }
 
   render(){
     return(
       <Fragment>
         { this.renderHeader() }
         { this.renderTopRightLoader() }
-        { this.renderTitle() }
         { this.renderForm() }
         { this.renderButtons() }
-      </Fragment>
-    )
-  }
-
-  update(field, value){
-    this.setState(s => ({
-      ...s,
-      choices: {...s.choices, [field]: value}
-    }));
-  }
-
-  renderTitle(){
-    return(
-      <Fragment>
-        <TextOverLineTitle text={defaults.previewTitle}/>
-        <p>{defaults.previewIntro}</p>
       </Fragment>
     )
   }
@@ -86,6 +63,7 @@ export default class MatchModal extends React.Component {
 
   renderForm(){
     const { choices } = this.state;
+
     return(
       <MatchForm
         deployment={this.props.deployment}
@@ -98,7 +76,7 @@ export default class MatchModal extends React.Component {
         gitRepoName={choices.gitRepoName}
         dfPath={choices.dfPath}
         framework={choices.framework}
-        notifyFormValueChange={this.update}
+        notifyFormValueChanged={this.update}
       />
     )
   }
@@ -135,22 +113,35 @@ export default class MatchModal extends React.Component {
     else Helper.submitDelete(this, deployment);
   }
 
-  static defaultChoices(props){
-    let { matching } = props;
-    matching = matching || {};
+  update(field: string, value){
+    console.log("HELLLLLOOO " + field);
+    const choices = {...this.state.choices, [field]: value};
+    this.setState(s => ({...s, choices}));
+  }
 
+  updateGitRemotesList(list: Array<RemoteBundle>): void {
+    this.update("gitRemotesList", list);
+  }
+
+  updateAssign(assignment){
+    Object.keys(assignment).forEach(key => {
+      this.update(key, assignment[key]);
+    });
+  }
+
+  static defaultChoices(_){
     return({
       gitRemoteList: [],
       imgRemoteList: [],
       dfPathList: [],
 
-      gitRemoteName: matching.gitRemoteName || '',
-      imgRemoteName: matching.imgRemoteName || '',
-      gitRepoName: matching.gitRepoName || '',
-      imgRepoName: matching.imgRepoName || '',
+      gitRemoteName: '',
+      imgRemoteName: '',
+      gitRepoName: '',
+      imgRepoName: '',
 
       dfPath: '',
-      framework: matching.framework
+      framework: ''
     });
   }
 
@@ -163,3 +154,23 @@ export default class MatchModal extends React.Component {
     mode: PropTypes.oneOf(['detail', 'tutorial']).isRequired
   };
 }
+
+type State = {
+  choices: {
+    gitRemoteList: Array<RemoteBundle>,
+    imgRemoteList: Array<RemoteBundle>,
+    dfPathList: Array<string>,
+    gitRemoteName: string,
+    imgRemoteName: string,
+    gitRepoName: string,
+    imgRepoName: string,
+  }
+}
+
+type Props = {
+   deployment: Deployment,
+   matching: Matching,
+   onDeploymentReviewed: () => void,
+   hasImageRegistry: boolean,
+   mode: 'detail' | 'tutorial'
+ }

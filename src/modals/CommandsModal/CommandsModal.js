@@ -2,7 +2,7 @@ import React, {Fragment} from 'react'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 import CommandForm from "./CommandForm";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import ModalButton from "../../widgets/Buttons/ModalButton";

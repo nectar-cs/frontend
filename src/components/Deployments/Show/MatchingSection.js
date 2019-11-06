@@ -5,11 +5,12 @@ import MatchModal from "../../../modals/MatchModal/MatchModal";
 export default class MatchingSection extends Section {
 
   _renderActivityModal(source){
-    const { deployment } = source || this.props;
+    const { deployment, matching } = source || this.props;
     return(
       <MatchModal
         mode='detail'
         deployment={deployment}
+        matching={matching}
         onDeploymentReviewed={null}
         setIsFetching={null}
         hasGitRemote={true}

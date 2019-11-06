@@ -7,7 +7,7 @@ import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnoun
 import {defaults} from "./defaults";
 import {ROUTES} from "../../../containers/RoutesConsts";
 import IntegrationsModal from "../../IntegrationsModal/IntegrationsModal";
-import {Types} from "../../../types/Deployment";
+import {Types} from "../../../types/CommonTypes";
 import {ImageActionsModalHelper} from "./ImageActionsModalHelper";
 import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import ModalClientComposer from "../../../hocs/ModalClientComposer";

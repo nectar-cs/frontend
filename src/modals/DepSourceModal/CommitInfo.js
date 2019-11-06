@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import S from './CommitInfoStyles'
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 import Text from './../../assets/text-combos'
 import Img from './../../assets/img-combos'
 import FileChange from "./FileChange";

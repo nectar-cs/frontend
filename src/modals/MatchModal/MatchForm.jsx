@@ -1,14 +1,17 @@
+//@flow
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import MiscUtils from "../../utils/MiscUtils";
 import {stacks} from "../../misc/stacks";
 import FormComponent from "../../hocs/FormComponent";
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
-class MatchFormClass extends React.Component {
+class MatchFormClass extends React.Component<Props> {
 
   render(){
     return(
       <Fragment>
+        <TextOverLineSubtitle text={'Point and Choose'}/>
         { this.renderGitRemoteInput() }
         { this.renderGitRepoSelect() }
         { this.renderDfPathSelect() }
@@ -23,7 +26,7 @@ class MatchFormClass extends React.Component {
     if(!this.hasGitRemote()) return null;
     const { gitRemoteChoices } = this.props;
 
-    this.props.makeSelect(
+    return this.props.makeSelect(
       'Git Remote',
       'gitRemoteName',
       MiscUtils.arrayOptions(gitRemoteChoices)
@@ -43,7 +46,6 @@ class MatchFormClass extends React.Component {
 
   renderDfPathSelect(){
     if(!this.hasGitRemote()) return null;
-    if(!this.props.hasGitRemote) return null;
     const { dfPathChoices } = this.props;
     return this.props.makeSelect(
       'Dockerfile Path',
@@ -56,7 +58,7 @@ class MatchFormClass extends React.Component {
     if(!this.hasImgRemote()) return null;
     const { imgRemoteChoices } = this.props;
     return this.props.makeSelect(
-      'Image Registry',
+      'Docker Registry',
       'imgRemoteName',
       MiscUtils.arrayOptions(imgRemoteChoices)
     );
@@ -64,11 +66,10 @@ class MatchFormClass extends React.Component {
 
   renderImgRepoSelect(){
     if(!this.hasImgRemote()) return null;
-    if(!this.props.hasImageRegistry) return null;
     const { imgRepoChoices } = this.props;
 
     return this.props.makeSelect(
-      'Image Repo',
+      'Docker Repository',
       'imgRepoName',
       MiscUtils.arrayOptions(imgRepoChoices)
     );
@@ -100,11 +101,21 @@ class MatchFormClass extends React.Component {
     imgRepoName: PropTypes.string,
 
     framework: PropTypes.string,
-
-    deployment: PropTypes.shape({
-      name: PropTypes.string.isRequired
-    }).isRequired
   };
+}
+
+type Props = {
+  gitRemoteChoices: Array<string>,
+  imgRemoteChoices: Array<string>,
+  gitRepoChoices: Array<string>,
+  imgRepoChoices: Array<string>,
+  dfPathChoices: Array<string>,
+  gitRemoteName: string,
+  imgRemoteName: string,
+  gitRepoName: string,
+  imgRepoName: PropTypes.string,
+  dfPath: string,
+  framework: PropTypes.string,
 }
 
 const MatchForm = FormComponent.compose(

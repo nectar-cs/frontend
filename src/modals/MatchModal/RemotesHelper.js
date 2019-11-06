@@ -1,5 +1,7 @@
+//@flow
 import MiscUtils from "../../utils/MiscUtils";
 import Backend from "../../utils/Backend";
+import type {RemoteBundle} from "../../types/Types";
 const StringSimilarity = require('string-similarity');
 
 export default class RemotesHelper{
@@ -7,8 +9,8 @@ export default class RemotesHelper{
   static async fetchGitRemotes(inst){
     inst.setState(s => ({...s, isGitFetching: true}));
     const ep = '/remotes/loaded?entity=git';
-    const remotesList = Backend.blockingFetch(ep);
-    inst.update('remotesList', remotesList);
+    const remotesList: RemoteBundle[] = await Backend.blockingFetch(ep);
+    inst.updateGitRemotesList(remotesList);
     inst.setState(s => ({...s, isGitFetching: false}));
   }
 

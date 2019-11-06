@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../../utils/MiscUtils";
-import {Types} from "../../../types/Deployment";
+import {Types} from "../../../types/CommonTypes";
 import ModalButton from "../../../widgets/Buttons/ModalButton";
 import ImageForm from "./ImageForm";
 import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";

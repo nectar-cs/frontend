@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import Tabs from "../../widgets/Tabs/Tabs";
 import DestinationPane from "./DestinationPane";
@@ -8,7 +8,6 @@ import SourcePane from "./SourcePane";
 import Kapi from "../../utils/Kapi";
 import CodeEditor from "./CodeEditor";
 import {defaultBody, defaultHeaders} from "./defaults";
-import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response";

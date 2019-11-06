@@ -1,6 +1,6 @@
 import React from 'react'
 import FlexibleModal from "../../hocs/FlexibleModal";
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 

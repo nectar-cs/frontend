@@ -3,7 +3,7 @@ import Layout from "../../assets/layouts";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 import HowToAnnotate from "./HowToAnnotate";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import Helper from "./Helper";

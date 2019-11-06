@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 import DecisionTree from "./DecisionTree";
 import NetworkDebugForm from "./DebugOptions";
 

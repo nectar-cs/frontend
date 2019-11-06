@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Types} from "../../../types/Deployment";
+import {Types} from "../../../types/CommonTypes";
 import S from './SectionStyles'
 import defaults from "./defaults";
 import Helper from "./Helper";

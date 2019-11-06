@@ -8,7 +8,7 @@ import S from './DebugModalStyles'
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
 import ModalButton from "../../widgets/Buttons/ModalButton";
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 import {ROUTES} from "../../containers/RoutesConsts";
 import {Redirect} from "react-router";
 

@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import PropTypes from 'prop-types'
 import s from './DestinationPane.sass'
 import MiscUtils from "../../utils/MiscUtils";
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 
 const HTTP_VERBS = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'];
 

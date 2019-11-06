@@ -7,7 +7,7 @@ import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLin
 import PortForwardForm from "./PortForwardForm";
 import Helper from "./Helper";
 import CopyWizard from "./CopyWizard";
-import {Types} from "../../types/Deployment";
+import {Types} from "../../types/CommonTypes";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import FormGulper from "./FormGulper";
 

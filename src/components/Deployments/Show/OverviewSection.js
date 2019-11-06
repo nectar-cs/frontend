@@ -7,7 +7,7 @@ import OverviewModal from "../../../modals/OverviewModal/OverviewModal";
 import Layout from "../../../assets/layouts";
 import Text from "../../../assets/text-combos";
 import {connect} from "react-redux";
-import {Types} from "../../../types/Deployment";
+import {Types} from "../../../types/CommonTypes";
 import ImageOpsSection from "./ImageOpsSection";
 import PodsView from "../../../widgets/PodsView/PodsView";
 import HttpOpsSection from "./HttpOpsSection";
