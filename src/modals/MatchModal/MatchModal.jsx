@@ -34,6 +34,12 @@ export default class MatchModal extends React.Component<Props, State> {
     Helper.fetchGitRemotes(this);
   }
 
+  componentWillReceiveProps(): * {
+    const { gitRemoteName } = this.state.choices;
+    if(gitRemoteName)
+      this.updateAssign({gitRemoteName})
+  }
+
   componentWillUnmount(): * {
     this.gulper = null;
   }
@@ -127,7 +133,8 @@ export default class MatchModal extends React.Component<Props, State> {
   createPassDownBundle(){
     const { choices } = this.state;
     const fetchDfPaths = this.fetchDfPaths;
-    return { ...choices, fetchDfPaths };
+    const deploymentName = this.props.deployment.name;
+    return { ...choices, fetchDfPaths, deploymentName };
   }
 
   fetchDfPaths(remoteName: string, repoName: string){

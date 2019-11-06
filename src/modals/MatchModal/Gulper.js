@@ -1,6 +1,7 @@
 import Setter from "../../utils/StateGulp";
 import type {RemoteBundle} from "../../types/Types";
 import Helper from "./Helper";
+const StringSimilarity = require('string-similarity');
 
 class GitRemoteListSetter extends Setter {
   sideEffects(bundle) {
@@ -11,11 +12,16 @@ class GitRemoteListSetter extends Setter {
 }
 
 class GitRemoteNameSetter extends Setter {
+  guessRepo(target, options){
+    const sorting = StringSimilarity.findBestMatch(target, options);
+    return options[sorting.bestMatchIndex];
+  }
+
   sideEffects(bundle) {
     const remoteName: string = this._value;
     const remoteList: Array<RemoteBundle> = bundle.gitRemoteList;
-    const remote = Helper.selectedRemote(remoteList, remoteName);
-    const firstRepo = remote && remote.contents[0].name;
+    const repoNames = Helper.repoOptions(remoteList, remoteName);
+    const firstRepo = this.guessRepo(bundle.deploymentName, repoNames);
     return this.assignDown('gitRepoName', firstRepo);
   }
 }

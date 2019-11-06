@@ -106,7 +106,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
         contentType='nav-link'
         action='/workspaces'
         iconName='done_all'
-        text="All done. Click to continue."
+        text="Nice. You can change these whenever. Click to continue."
       />
     )
   }
@@ -136,14 +136,10 @@ class BulkMatchingClass extends React.Component<Props, State> {
     else return null;
   }
 
-  onMatchingEvent(name, bundle){
-    const deployments = this.state.deployments.map((d) => {
-      if(d.name === name)
-        return { ...d, ms: bundle, isReviewed: true };
-      else return d;
-    });
+  onMatchingEvent(positive){
+    if(positive) this.reloadMatchings();
     const selectedIndex = this.state.selectedIndex + 1;
-    this.setState((s) => ({...s, deployments, selectedIndex}));
+    this.setState((s) => ({...s, selectedIndex}));
   }
 
   onIntegrationDone(status){
