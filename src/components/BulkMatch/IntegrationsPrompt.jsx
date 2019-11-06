@@ -8,37 +8,7 @@ import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncem
 import ModalClientComposer from "../../hocs/ModalClientComposer";
 
 class IntegrationsPromptClass extends React.Component<Props> {
-  constructor(props){
-    super(props);
-    this.state = {
-      isDone: false,
-      isChecking: false,
-    };
-  }
-
   render(){
-    return(
-      <Fragment>
-        { this.renderPrompting() }
-        { this.renderDone() }
-      </Fragment>
-    )
-  }
-
-  renderDone(){
-    if(!this.state.isDone) return null;
-    return(
-      <CenterAnnouncement
-        text={"Done. Resume Matching."}
-        contentType='action'
-        iconName='check'
-        action={this.props.callback(true)}
-      />
-    )
-  }
-
-  renderPrompting(){
-    if(this.state.isDone) return null;
     const skip = () => this.props.callback(false);
     const cont = () => this.showOffer();
 
@@ -62,7 +32,9 @@ class IntegrationsPromptClass extends React.Component<Props> {
   }
 
   showOffer(){
-    this.props.openModal(IntegrationsModal, {});
+    this.props.openModal(IntegrationsModal, {
+      onDataChanged: () => this.props.callback(true)
+    });
   }
 }
 

@@ -7,6 +7,12 @@ import type {RemoteBundle, RemoteRepo} from "../../types/Types";
 
 export default class Helper{
 
+  static async submit(deploymentName, bundle, callback){
+    const payload = {...bundle, deployment: deploymentName };
+    const status = await Backend.bPost('/microservices', payload);
+    callback();
+  }
+
   static async fetchGitRemotes(inst){
     inst.setState(s => ({...s, isGitFetching: true}));
     const ep = '/remotes/loaded?entity=git';

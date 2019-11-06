@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import s from './DeploymentList.sass'
-import TextOverLineTitle from '../../widgets/TextOverLineTitle/TextOverLineTitle';
 import {Icon} from "../../modals/ImageOpsModal/View/ChecklistStyles";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
@@ -9,7 +8,7 @@ function ListHeader() {
   return(
     <tr>
       <th><p>Deployment</p></th>
-      <th><p>Found in Namespaces</p></th>
+      <th><p>Found in</p></th>
       <th><p className={s.checkHead}>Git</p></th>
       <th><p className={s.checkHead}>Docker</p></th>
     </tr>

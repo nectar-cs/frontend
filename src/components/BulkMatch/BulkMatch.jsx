@@ -1,5 +1,5 @@
 //@flow
-import React from 'react';
+import React, {Fragment} from 'react';
 import AuthenticatedComponent from '../../hocs/AuthenticatedComponent';
 import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import DeploymentList from './DeploymentList';
@@ -7,47 +7,71 @@ import MatchModal from '../../modals/MatchModal/MatchModal';
 import IntegrationsPrompt from "./IntegrationsPrompt";
 import ErrComponent from "../../hocs/ErrComponent";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
-import {ROUTES} from "../../containers/RoutesConsts";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import Layout from "../../assets/layouts";
 import Loader from "../../assets/loading-spinner";
 import defaults from './defaults'
 import Helper from './Helper'
 import type {Matching, WideDeployment} from "../../types/Types";
+import {Redirect} from "react-router";
+import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 
 class BulkMatchingClass extends React.Component<Props, State> {
   constructor(props){
     super(props);
     this.state = BulkMatchingClass.defaultState();
     this.update = this.update.bind(this);
+    this.onIntegrationDone = this.onIntegrationDone.bind(this);
     this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);
     this.notifyDeploymentSelected = this.notifyDeploymentSelected.bind(this);
   }
 
   componentDidMount(){
-    Helper.fetchIsIntegrated(this.update);
-    Helper.fetchItems(this.update);
+    this.reload();
   }
 
   render(){
     return(
       <React.Fragment>
+        { this.renderSkipAhead() }
+        { this.renderObtLoading() }
         { this.renderLeftSide() }
         { this.renderRightSide() }
       </React.Fragment>
     )
   }
 
+  renderSkipAhead(){
+    if(!this.state.skipRequested) return null;
+    return <Redirect to='/workspaces'/>
+  }
+
+  renderObtLoading(){
+    if(!this.isIntChecking()) return null;
+
+    return(
+      <Fragment>
+        <Layout.LeftPanel><CenterLoader/></Layout.LeftPanel>
+        <Layout.RightPanel><CenterLoader/></Layout.RightPanel>
+      </Fragment>
+    )
+  }
+
   renderLeftSide(){
+    if(this.isIntChecking()) return null;
+
     return(
       <Layout.LeftPanel>
         <LeftHeader {...defaults.header} />
+        { <Loader.TopRightSpinner there={this.state.isFetching} /> }
         { this.renderDeploymentsList() }
       </Layout.LeftPanel>
     )
   }
 
   renderRightSide(){
+    if(this.isIntChecking()) return null;
+
     return(
       <Layout.RightPanel>
         { this.renderIntegrationsPrompt() }
@@ -57,17 +81,20 @@ class BulkMatchingClass extends React.Component<Props, State> {
   }
 
   renderDeploymentsList(){
+    if(!this.hasPassedIntCheck()) return null;
+    const { deployments, selectedIndex } = this.state;
+
     return(
       <DeploymentList
-        deployments={this.state.deployments}
-        selectedIndex={this.state.selectedIndex}
+        deployments={deployments}
+        selectedIndex={selectedIndex}
         notifyDeploymentSelected={this.notifyDeploymentSelected}
       />
     )
   }
 
   renderIntegrationsPrompt(){
-    if(this.state.isIntegrated !== false) return null;
+    if(this.hasPassedIntCheck()) return null;
     return <IntegrationsPrompt callback={this.onIntegrationDone}/>;
   }
 
@@ -135,12 +162,9 @@ class BulkMatchingClass extends React.Component<Props, State> {
     } else return false;
   }
 
-  onIntegrationDone(status, hash){
-    if(status){
-      const { hasGitRemote, hasImageRegistry } = hash;
-      const integrations = {hasGitRemote, hasImageRegistry};
-      this.setState((s) => ({...s, integrations }));
-    } else window.location = ROUTES.workspaces.index.path;
+  onIntegrationDone(status){
+    if(status) this.reload();
+    else this.setState(s => ({...s, skipRequested: true}));
   }
 
   notifyDeploymentSelected(name){
@@ -154,12 +178,20 @@ class BulkMatchingClass extends React.Component<Props, State> {
     this.setState(s => ({...s, ...assignment}));
   }
 
+  reload(){
+    Helper.fetchIsIntegrated(this.update);
+    Helper.fetchItems(this.update);
+  }
+
+  hasPassedIntCheck(){ return !!this.state.isIntegrated; }
+  isIntChecking(){ return !!this.state.isCheckingIntegration; }
+
   static defaultState(){
     return({
       deployments: [],
       matchings: [],
       isIntegrated: null,
-      authUrl: null,
+      isCheckingIntegration: false,
       selectedIndex: 0,
       isSubmitting: false,
       areAllSubmitted: false,
@@ -186,11 +218,12 @@ const BulkMatch = AuthenticatedComponent.compose(
 
 export { BulkMatch as default };
 
-
 type State = {
   deployments: Array<WideDeployment>,
   matchings: Array<Matching>,
   isIntegrated: ?boolean,
+  isCheckingIntegration: ?boolean,
+  skipRequested: false,
   phase: 'fetching' | 'integrating' | 'submitting'
 };
 

@@ -23,16 +23,19 @@ export default class MatchModal extends React.Component<Props, State> {
       matching: null
     };
 
-    this.gulper = new Gulper();
     this.update = this.update.bind(this);
     this.fetchDfPaths = this.fetchDfPaths.bind(this);
     this.updateAssign = this.updateAssign.bind(this);
-    this.acceptMatch = this.acceptMatch.bind(this);
-    this.skipMatch = this.skipMatch.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   componentDidMount() {
+    this.gulper = new Gulper();
     Helper.fetchGitRemotes(this);
+  }
+
+  componentWillUnmount(): * {
+    this.gulper = null;
   }
 
   render(){
@@ -87,26 +90,18 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   renderButtons(){
-    const { mode } = this.props;
     return(
       <Button.BigBottomButtons>
-        <Button.BigButton onClick={this.acceptMatch}>
-          Submit { mode }
+        <Button.BigButton onClick={this.submit}>
+          Save
         </Button.BigButton>
       </Button.BigBottomButtons>
     );
   }
 
-  acceptMatch(){
+  submit(){
     const { mode, onDeploymentReviewed, deployment } = this.props;
-    if(mode === 'tutorial') onDeploymentReviewed(deployment.name, deployment);
-    else Helper.submitSingle(this, deployment);
-  }
-
-  skipMatch(){
-    const { mode, deployment, onDeploymentReviewed } = this.props;
-    if(mode === 'tutorial') onDeploymentReviewed(deployment.name, null);
-    else Helper.submitDelete(this, deployment);
+    Helper.submit(deployment.name, this.state.choices);
   }
 
   update(field: string, value: any): void {
@@ -170,5 +165,5 @@ type Props = {
   mode: 'detail' | 'tutorial',
   deployment: Deployment,
   matching: Matching,
-  onDeploymentReviewed: () => void,
+  callback: () => void,
 }
