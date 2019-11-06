@@ -1,15 +1,12 @@
 //@flow
 import React, {Fragment} from 'react';
 import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
-import PropTypes from 'prop-types'
 import MatchForm from './MatchForm';
 import Button from "../../assets/buttons";
 import MiscUtils from "../../utils/MiscUtils";
-import {Types} from "../../types/CommonTypes";
 import Loader from "../../assets/loading-spinner";
-import Helper from "./Helper";
 import defaults from './defaults'
-import RemotesHelper from "./RemotesHelper";
+import Helper from "./Helper";
 import type {Deployment, Matching, RemoteBundle} from "../../types/Types";
 import Gulper from "./Gulper";
 
@@ -28,14 +25,14 @@ export default class MatchModal extends React.Component<Props, State> {
 
     this.gulper = new Gulper();
     this.update = this.update.bind(this);
+    this.fetchDfPaths = this.fetchDfPaths.bind(this);
     this.updateAssign = this.updateAssign.bind(this);
     this.acceptMatch = this.acceptMatch.bind(this);
     this.skipMatch = this.skipMatch.bind(this);
   }
 
   componentDidMount() {
-    const { matching } = this.props;
-    RemotesHelper.fetchGitRemotes(this);
+    Helper.fetchGitRemotes(this);
   }
 
   render(){
@@ -64,16 +61,17 @@ export default class MatchModal extends React.Component<Props, State> {
   renderForm(){
     const { choices } = this.state;
     const { gitRemoteList, gitRemoteName, gitRepoName } = choices;
+    const { dfPathDict } = choices;
     console.log(`${gitRemoteName} --> ${gitRepoName}`);
 
     return(
       <MatchForm
         deployment={this.props.deployment}
-        gitRemoteChoices={RemotesHelper.remoteOptions(choices.gitRemoteList)}
-        imgRemoteChoices={RemotesHelper.remoteOptions()}
-        gitRepoChoices={RemotesHelper.repoOptions(gitRemoteList, gitRemoteName)}
-        imgRepoChoices={RemotesHelper.remoteOptions()}
-        dfPathChoices={RemotesHelper.dockerfileChoices()}
+        gitRemoteChoices={Helper.remoteOptions(choices.gitRemoteList)}
+        imgRemoteChoices={Helper.remoteOptions()}
+        gitRepoChoices={Helper.repoOptions(gitRemoteList, gitRemoteName)}
+        imgRepoChoices={Helper.remoteOptions()}
+        dfPathChoices={Helper.dfPathChoices(gitRemoteName, gitRepoName, dfPathDict)}
         gitRemoteName={gitRemoteName}
         gitRepoName={gitRepoName}
         dfPath={choices.dfPath}
@@ -112,10 +110,27 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   update(field: string, value: any): void {
-    const bundle = this.state.choices;
+    const bundle = this.createPassDownBundle();
     const assignment = this.gulper.assign(field, value, bundle);
     const choices = {...this.state.choices, ...assignment};
     this.setState(s => ({...s, choices}));
+  }
+
+  createPassDownBundle(){
+    const { choices } = this.state;
+    const fetchDfPaths = this.fetchDfPaths;
+    return { ...choices, fetchDfPaths };
+  }
+
+  fetchDfPaths(remoteName: string, repoName: string){
+    const { dfPathDict } = this.state.choices;
+    Helper.fetchDfPaths(
+      remoteName,
+      repoName,
+      dfPathDict,
+      (isPathsFetching) => this.setState(s => ({...s, isPathsFetching})),
+      (dfPathDict) => this.updateAssign({dfPathDict})
+    )
   }
 
   updateGitRemotesList(gitRemoteList: Array<RemoteBundle>): void {
@@ -130,35 +145,20 @@ export default class MatchModal extends React.Component<Props, State> {
 
   static defaultChoices(_){
     return({
-      gitRemoteList: [],
-      imgRemoteList: [],
-      dfPathList: [],
-
-      gitRemoteName: '',
-      imgRemoteName: '',
-      gitRepoName: '',
-      imgRepoName: '',
-
-      dfPath: '',
-      framework: ''
+      gitRemoteList: [], imgRemoteList: [], dfPathDict: {},
+      gitRemoteName: '', imgRemoteName: '',
+      gitRepoName: '', imgRepoName: '',
+      dfPath: '', framework: ''
     });
   }
-
-  static propTypes = {
-    deployment: PropTypes.object,
-    matching: Types.Deployment,
-    onDeploymentReviewed: PropTypes.func,
-    hasGitRemote: PropTypes.bool.isRequired,
-    hasImageRegistry: PropTypes.bool.isRequired,
-    mode: PropTypes.oneOf(['detail', 'tutorial']).isRequired
-  };
 }
 
 type State = {
   choices: {
     gitRemoteList: Array<RemoteBundle>,
     imgRemoteList: Array<RemoteBundle>,
-    dfPathList: Array<string>,
+    dfPath: string,
+    dfPathDict: { [string]: Array<string> },
     gitRemoteName: string,
     imgRemoteName: string,
     gitRepoName: string,

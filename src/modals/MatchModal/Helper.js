@@ -1,8 +1,43 @@
+//@flow
+
 import DataUtils from "../../utils/DataUtils";
 import Backend from "../../utils/Backend";
 import MiscUtils from "../../utils/MiscUtils";
+import type {RemoteBundle, RemoteRepo} from "../../types/Types";
 
 export default class Helper{
+
+  static async fetchGitRemotes(inst){
+    inst.setState(s => ({...s, isGitFetching: true}));
+    const ep = '/remotes/loaded?entity=git';
+    const remotesList: RemoteBundle[] = await Backend.blockingFetch(ep);
+    inst.updateGitRemotesList(remotesList);
+    inst.setState(s => ({...s, isGitFetching: false}));
+  }
+
+  static remoteOptions(remoteList: ?Array<RemoteBundle>){
+    return (remoteList || []).map(r => r.identifier);
+  }
+
+  static repoOptions(remoteList: RemoteBundle[], remoteName: string): string[]{
+    const remote = remoteList.find(r => r.identifier === remoteName);
+    return remote ? remote.contents.map(r => r.name) : [];
+  }
+
+  static dfPathChoices(remoteName, repoName, dfPathDict){
+    return dfPathDict[`${remoteName}_${repoName}`] || [];
+  }
+
+  static selectedRemote(remoteList, remoteName){
+    return remoteList.find(
+      remote => remote.identifier === remoteName
+    )
+  }
+
+  static selectedRepo(remoteList, remoteName, repoName){
+    const remote = this.selectedRemote(remoteList, remoteName);
+    return remote ? remote.contents.find(r => r.name === repoName) : null;
+  }
 
   static injestMatching(matching, callback){
     if(!matching) return;
@@ -97,14 +132,15 @@ export default class Helper{
     });
   }
 
-  static showNeg(inst){
-    if(inst.props.mode === 'tutorial'){
-      return true;
-    } else {
-      const { matchingId } = inst.state;
-      return (matchingId) ? true : null;
-    }
+  static async fetchDfPaths(remote, repo, hash, loadingCallback, setter){
+    loadingCallback(true);
+    const ep = `/remotes/${remote}/${repo}/dockerfile_paths`;
+    const newDfPaths = await Backend.blockingFetch(ep);
+    const dictKey = `${remote}_${repo}`;
+    setter({ ...hash, [dictKey]: newDfPaths });
+    loadingCallback(false);
   }
+
 
   static isLoading(inst){
     const { isGitFetching, isDockerFetching } = inst.state;

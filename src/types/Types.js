@@ -8,7 +8,7 @@ export type RemoteBundle = {
   contents: Array<RemoteRepo>
 }
 
-type RemoteRepo = {
+export type RemoteRepo = {
   id: number,
   name: string,
   framework: ?string,

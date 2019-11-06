@@ -42,6 +42,6 @@ export default class Setter {
     return {...thisOut, ...sideEffectsOut}
   }
 
-  sideEffects(){}
+  sideEffects(bundle){}
   static defaultReceiver = (key, value) => ({ [key]: value });
 }
