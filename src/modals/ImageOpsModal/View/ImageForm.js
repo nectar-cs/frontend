@@ -202,7 +202,7 @@ export default class ImageForm extends React.Component {
 
 function BlockPromptFunc(props){
   const replaceModal = props.replaceModal;
-  const bindPath = ROUTES.deployments.detect.path;
+  const bindPath = ROUTES.bulkMatch.index.path;
   const connAction = () => replaceModal(IntegrationsModal);
 
   const l1 = defaults.els.blockedConn(connAction, props.remoteType);

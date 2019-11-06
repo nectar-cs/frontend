@@ -3,12 +3,12 @@ import React, {Fragment} from 'react';
 import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import MatchForm from './MatchForm';
 import Button from "../../assets/buttons";
-import MiscUtils from "../../utils/MiscUtils";
 import Loader from "../../assets/loading-spinner";
 import defaults from './defaults'
 import Helper from "./Helper";
 import type {Deployment, Matching, RemoteBundle} from "../../types/Types";
 import Gulper from "./Gulper";
+import Text from "../../assets/text-combos";
 
 export default class MatchModal extends React.Component<Props, State> {
   constructor(props){
@@ -69,7 +69,6 @@ export default class MatchModal extends React.Component<Props, State> {
 
     return(
       <MatchForm
-        deployment={this.props.deployment}
         gitRemoteChoices={Helper.remoteOptions(choices.gitRemoteList)}
         imgRemoteChoices={Helper.remoteOptions()}
         gitRepoChoices={Helper.repoOptions(gitRemoteList, gitRemoteName)}
@@ -92,16 +91,29 @@ export default class MatchModal extends React.Component<Props, State> {
   renderButtons(){
     return(
       <Button.BigBottomButtons>
-        <Button.BigButton onClick={this.submit}>
-          Save
-        </Button.BigButton>
+        { this.renderSubmitButton() }
+        { this.renderSkipButton() }
       </Button.BigBottomButtons>
     );
   }
 
+  renderSubmitButton(){
+    return(
+      <Button.BigButton onClick={this.submit}>
+        Save
+      </Button.BigButton>
+    )
+  }
+
+  renderSkipButton(){
+    if(this.amInDetailMode()) return null;
+    const { callback } = this.props;
+    return <Text.PA low={4.6} onClick={callback}>Or Skip</Text.PA>;
+  }
+
   submit(){
-    const { mode, onDeploymentReviewed, deployment } = this.props;
-    Helper.submit(deployment.name, this.state.choices);
+    const { deployment, callback } = this.props;
+    Helper.submit(deployment.name, this.state.choices, callback);
   }
 
   update(field: string, value: any): void {
@@ -136,6 +148,10 @@ export default class MatchModal extends React.Component<Props, State> {
     Object.keys(assignment).forEach(key => {
       this.update(key, assignment[key]);
     });
+  }
+
+  amInDetailMode(){
+    return this.props.mode === 'detail';
   }
 
   static defaultChoices(_){

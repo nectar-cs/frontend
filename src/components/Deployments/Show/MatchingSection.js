@@ -15,8 +15,7 @@ export default class MatchingSection extends Section {
         setIsFetching={null}
         hasGitRemote={true}
         hasImageRegistry={true}
-        refreshCallback={this.props.refreshCallback}
-      />
+        callback={this.props.refreshCallback}/>
     )
   }
 

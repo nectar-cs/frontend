@@ -9,8 +9,11 @@ export default class Helper{
 
   static async submit(deploymentName, bundle, callback){
     const payload = {...bundle, deployment: deploymentName };
-    const status = await Backend.bPost('/microservices', payload);
-    callback();
+    console.log(payload);
+    const matching = await Backend.bPost('/microservices', payload);
+    console.log("OUTCOME ");
+    console.log(matching);
+    callback(matching);
   }
 
   static async fetchGitRemotes(inst){

@@ -47,8 +47,9 @@ export default class Backend {
 
   static async bPost(endpoint, payload){
     payload = DataUtils.obj2Snake(payload);
-    const result = await this.blockingRequest('POST', endpoint, payload);
-    return DataUtils.obj2Camel(result);
+    const raw = await this.blockingRequest('POST', endpoint, payload);
+    let cleaned = DataUtils.obj2Camel(raw);
+    return cleaned['data'] ? cleaned['data'] : cleaned;
   }
 
   static async blockingRequest(method, endpoint, body){
