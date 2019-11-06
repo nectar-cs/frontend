@@ -45,9 +45,10 @@ export default class Kapi {
     return `${this.baseUrl()}${endpoint}`;
   }
 
-  static async blockingFetch(endpoint){
-    const result = await this.blockingRequest('GET', endpoint, null);
-    return DataUtils.obj2Camel(result);
+  static async bFetch(endpoint){
+    const raw = await this.blockingRequest('GET', endpoint, null);
+    let cleaned = DataUtils.obj2Camel(raw);
+    return cleaned['data'] ? cleaned['data'] : cleaned;
   }
 
   static async blockingPost(endpoint, payload){

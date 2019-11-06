@@ -11,7 +11,7 @@ class MatchFormClass extends React.Component<Props> {
   render(){
     return(
       <Fragment>
-        <TextOverLineSubtitle text={'Point and Choose'}/>
+        <TextOverLineSubtitle text={'Git and Docker Repos'}/>
         { this.renderGitRemoteInput() }
         { this.renderGitRepoSelect() }
         { this.renderDfPathSelect() }
@@ -83,8 +83,8 @@ class MatchFormClass extends React.Component<Props> {
     );
   }
 
-  hasGitRemote(){ return this.props.gitRemoteChoices != null; }
-  hasImgRemote(){ return this.props.imgRemoteChoices != null; }
+  hasGitRemote(){ return this.props.gitRemoteChoices.length > 0; }
+  hasImgRemote(){ return this.props.imgRemoteChoices.length > 0; }
 
   static propTypes = {
     gitRemoteChoices: PropTypes.array,

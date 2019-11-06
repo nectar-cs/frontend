@@ -22,12 +22,12 @@ export default class UpdateChecker {
     const currentVersions = { frontend, kapi };
     const payload = { currentVersions };
     const ep = '/revisions/compare';
-    return await Backend.blockingPost(ep, payload);
+    return await Backend.bPost(ep, payload);
   }
 
   async fetchKapiVersion(){
     const ep = '/api/status/revision';
-    return (await Kapi.blockingFetch(ep))['sha'];
+    return (await Kapi.bFetch(ep))['sha'];
   }
 
   myVersion(){

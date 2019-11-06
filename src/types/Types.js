@@ -16,6 +16,7 @@ export type RemoteRepo = {
 
 export type Matching = {
   id: number,
+  deploymentName: string,
   framework: ?string,
   gitRemoteName: ?string,
   imgRemoteName: ?string,
@@ -34,3 +35,8 @@ export type Deployment = {
   containerName: string,
   imagePullPolicy: ('Always' | 'Never')
 };
+
+export type WideDeployment = {
+  name: string,
+  namespaces: Array<String>
+}

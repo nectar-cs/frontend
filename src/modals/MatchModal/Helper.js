@@ -10,7 +10,7 @@ export default class Helper{
   static async fetchGitRemotes(inst){
     inst.setState(s => ({...s, isGitFetching: true}));
     const ep = '/remotes/loaded?entity=git';
-    const remotesList: RemoteBundle[] = await Backend.blockingFetch(ep);
+    const remotesList: RemoteBundle[] = await Backend.bFetch(ep);
     inst.updateGitRemotesList(remotesList);
     inst.setState(s => ({...s, isGitFetching: false}));
   }
@@ -47,17 +47,16 @@ export default class Helper{
     Object.keys(bun).forEach(key => { callback(key, bun[key]); });
   }
 
-  static frameworkImage(inst){
-    if(inst.props.mode === 'detail'){
+  static frameworkImage(mode: 'detail' | 'tutorial', framework: string): string {
+    if(mode === 'detail'){
       return "attachment";
     } else {
-      const framework = inst.state.choices.framework;
       return MiscUtils.frameworkImage(framework || 'docker');
     }
   }
 
-  static graphicType(inst) {
-    return inst.props.mode === 'detail' ? "icon" : 'image';
+  static graphicType(mode: 'detail' | 'tutorial'):string {
+    return mode === 'detail' ? "icon" : 'image';
   }
 
   static title(inst){
@@ -135,7 +134,7 @@ export default class Helper{
   static async fetchDfPaths(remote, repo, hash, loadingCallback, setter){
     loadingCallback(true);
     const ep = `/remotes/${remote}/${repo}/dockerfile_paths`;
-    const newDfPaths = await Backend.blockingFetch(ep);
+    const newDfPaths = await Backend.bFetch(ep);
     const dictKey = `${remote}_${repo}`;
     setter({ ...hash, [dictKey]: newDfPaths });
     loadingCallback(false);

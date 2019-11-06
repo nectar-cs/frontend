@@ -19,7 +19,7 @@ export const ROUTES = {
   },
 
   bulkMatch: {
-    index: { path: '/deployments/detect', comp: BulkMatch },
+    index: { path: '/bulk-matching', comp: BulkMatch },
   },
 
   workspaces: {

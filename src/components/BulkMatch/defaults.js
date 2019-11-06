@@ -1,4 +1,12 @@
+import LeftHeader, {ICON} from "../../widgets/LeftHeader/LeftHeader";
+
 const defaults = {
+  header: {
+    title: 'Deployment Matching',
+    subtitle: 'Match your deployments to your git and docker repos',
+    graphicName: 'developer_board',
+    graphicType: 'icon'
+  },
   previewTitle: "Matching Git and Docker Repos",
   previewIntro: "Point this deployment to its Git and Docker repos. " +
     "This makes Mosaic do lots of useful things.",
@@ -18,4 +26,4 @@ const defaults = {
   }
 };
 
-export { defaults as default };
+export default defaults;

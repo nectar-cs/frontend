@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import s from './DeploymentList.sass'
 import TextOverLineTitle from '../../widgets/TextOverLineTitle/TextOverLineTitle';
 import {Icon} from "../../modals/ImageOpsModal/View/ChecklistStyles";
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 function ListHeader() {
   return(
@@ -56,7 +57,7 @@ export default class DeploymentList extends React.Component {
 
     return(
       <div className={s.deploymentList}>
-        <TextOverLineTitle text='Kubernetes Deployments'/>
+        <TextOverLineSubtitle text='Kubernetes Deployments'/>
         <p>{text}</p>
         <table className={s.mainTable}>
           <tbody>

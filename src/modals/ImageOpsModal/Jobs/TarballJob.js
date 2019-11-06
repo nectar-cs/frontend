@@ -12,7 +12,7 @@ export default class TarballJob extends Job {
     this.broadcastProgress();
     const ep = `/microservices/${this.matchingId}/src_tarball`;
     const payload = {sha: this.gitCommit};
-    this.tarBundle = await Backend.blockingPost(ep, payload);
+    this.tarBundle = await Backend.bPost(ep, payload);
     this.broadcastProgress();
     this.conclude(true);
   }

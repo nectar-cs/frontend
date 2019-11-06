@@ -47,11 +47,12 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   renderHeader(){
-    const { mode, deployment } = this.props;
+    let { mode, deployment } = this.props;
+    const { framework } = this.state.choices;
     return(
       <LeftHeader
-        graphicName={Helper.frameworkImage(this)}
-        graphicType={MiscUtils.modalGraphicType(this)}
+        graphicName={Helper.frameworkImage(mode, framework)}
+        graphicType={Helper.graphicType(mode)}
         title={defaults.header.title(mode, deployment)}
         subtitle={defaults.header.subtitle}
       />
@@ -62,7 +63,6 @@ export default class MatchModal extends React.Component<Props, State> {
     const { choices } = this.state;
     const { gitRemoteList, gitRemoteName, gitRepoName } = choices;
     const { dfPathDict } = choices;
-    console.log(`${gitRemoteName} --> ${gitRepoName}`);
 
     return(
       <MatchForm
@@ -167,9 +167,8 @@ type State = {
 }
 
 type Props = {
-   deployment: Deployment,
-   matching: Matching,
-   onDeploymentReviewed: () => void,
-   hasImageRegistry: boolean,
-   mode: 'detail' | 'tutorial'
- }
+  mode: 'detail' | 'tutorial',
+  deployment: Deployment,
+  matching: Matching,
+  onDeploymentReviewed: () => void,
+}

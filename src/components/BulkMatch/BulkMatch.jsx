@@ -1,51 +1,32 @@
-import React, {Fragment} from 'react';
+//@flow
+import React from 'react';
 import AuthenticatedComponent from '../../hocs/AuthenticatedComponent';
-import LeftHeader, { ICON} from '../../widgets/LeftHeader/LeftHeader';
-import Backend from '../../utils/Backend';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import DeploymentList from './DeploymentList';
 import MatchModal from '../../modals/MatchModal/MatchModal';
-import Kapi from "../../utils/Kapi";
 import IntegrationsPrompt from "./IntegrationsPrompt";
 import ErrComponent from "../../hocs/ErrComponent";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
 import {ROUTES} from "../../containers/RoutesConsts";
-import DataUtils from "../../utils/DataUtils";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import Layout from "../../assets/layouts";
 import Loader from "../../assets/loading-spinner";
+import defaults from './defaults'
+import Helper from './Helper'
+import type {Matching, WideDeployment} from "../../types/Types";
 
-class BulkMatchingClass extends React.Component {
+class BulkMatchingClass extends React.Component<Props, State> {
   constructor(props){
     super(props);
-    this.state = {
-      isFetching: false,
-      isRightFetching: false,
-      isIntegrated: false,
-      authUrl: null,
-      deployments: [],
-      selectedIndex: null,
-      isSubmitting: false,
-      areAllSubmitted: false,
-      query: DEFAULT_QUERY,
-      integrations: null,
-      isOverriding: false
-    };
-
+    this.state = BulkMatchingClass.defaultState();
+    this.update = this.update.bind(this);
     this.onDeploymentReviewed = this.onDeploymentReviewed.bind(this);
-    this.fetchClusterDeploys = this.fetchClusterDeploys.bind(this);
-    this.submit = this.submit.bind(this);
-    this.onIntegrationDone = this.onIntegrationDone.bind(this);
     this.notifyDeploymentSelected = this.notifyDeploymentSelected.bind(this);
   }
 
   componentDidMount(){
-    this.fetchClusterDeploys();
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.hasKubeError){
-      this.setState((s) => ({...s, isFetching: false}))
-    }
+    Helper.fetchIsIntegrated(this.update);
+    Helper.fetchItems(this.update);
   }
 
   render(){
@@ -58,45 +39,36 @@ class BulkMatchingClass extends React.Component {
   }
 
   renderLeftSide(){
-    const { isFetching } = this.state;
     return(
       <Layout.LeftPanel>
-        <Header/>
-        <Loader.TopRightSpinner there={isFetching}/>
-        <DeploymentList
-          deployments={this.state.deployments}
-          selectedIndex={this.state.selectedIndex}
-          notifyDeploymentSelected={this.notifyDeploymentSelected}
-        />
+        <LeftHeader {...defaults.header} />
+        { this.renderDeploymentsList() }
       </Layout.LeftPanel>
     )
   }
 
   renderRightSide(){
-    const { isRightFetching } = this.state;
     return(
       <Layout.RightPanel>
-        <Loader.TopRightSpinner there={isRightFetching}/>
-        <Fragment>
-          { this.renderIntegrationsPrompt() }
-          { this.renderMatchingPreview() }
-          { this.renderOfferSubmit() }
-          { this.renderSubmitted() }
-        </Fragment>
+        { this.renderIntegrationsPrompt() }
+        { this.renderMatchingModal() }
       </Layout.RightPanel>
     )
   }
 
-  renderIntegrationsPrompt(){
-    if(this.state.integrations) return null;
-
+  renderDeploymentsList(){
     return(
-      <IntegrationsPrompt
-        authUrl={this.state.authUrl}
-        notifyIntegrationDone={this.onIntegrationDone}
-        openModal={this.props.openModal}
+      <DeploymentList
+        deployments={this.state.deployments}
+        selectedIndex={this.state.selectedIndex}
+        notifyDeploymentSelected={this.notifyDeploymentSelected}
       />
-    );
+    )
+  }
+
+  renderIntegrationsPrompt(){
+    if(this.state.isIntegrated !== false) return null;
+    return <IntegrationsPrompt callback={this.onIntegrationDone}/>;
   }
 
   renderOfferSubmit(){
@@ -126,20 +98,17 @@ class BulkMatchingClass extends React.Component {
     )
   }
 
-  renderMatchingPreview(){
-    if(!this.state.integrations) return null;
+  renderMatchingModal(){
+    if(!this.state.isIntegrated) return null;
     if(this.state.isSubmitting) return null;
     if(!this.selectedDeployment()) return null;
 
-    const sif = (v) => this.setState((s) => ({...s, isRightFetching: v}));
     return(
       <MatchModal
         mode='tutorial'
         deployment={this.selectedDeployment()}
         onDeploymentReviewed={this.onDeploymentReviewed}
-        setIsFetching={sif}
-        hasGitRemote={this.state.integrations.hasGitRemote}
-        hasImageRegistry={this.state.integrations.hasImageRegistry}
+        matching={null}
       />
     )
   }
@@ -151,9 +120,6 @@ class BulkMatchingClass extends React.Component {
   }
 
   onDeploymentReviewed(name, bundle){
-    // if(this.state.isSubmitting) return;
-    console.log("CALLED");
-    console.log(bundle);
     const deployments = this.state.deployments.map((d) => {
       if(d.name === name)
         return { ...d, ms: bundle, isReviewed: true };
@@ -167,21 +133,6 @@ class BulkMatchingClass extends React.Component {
     if(this.state.selectedIndex != null && this.state.deployments != null){
       return this.state.selectedIndex === this.state.deployments.length;
     } else return false;
-  }
-
-  fetchClusterDeploys(){
-    this.setState((s) => ({...s, isFetching: true}));
-    Kapi.fetch('/api/deployments/across_namespaces', (payload) => {
-      const bundle = { isChecked: true, isReviewed: false };
-      const deployments = payload['data'].map((d) => ({...d, ...bundle}));
-      const selectedIndex = deployments.length > 0 ? 0 : null;
-      this.setState((s) => ({
-        ...s,
-        deployments,
-        isFetching: false,
-        selectedIndex
-      }));
-    }, this.props.kubeErrorCallback);
   }
 
   onIntegrationDone(status, hash){
@@ -199,55 +150,31 @@ class BulkMatchingClass extends React.Component {
     this.setState((s) => ({...s, selectedIndex}))
   }
 
-  submit(){
-    if(this.state.isSubmitting || this.props.hasKubeError) return;
-    const deps = this.state.deployments.filter(d => d.ms);
+  update(assignment){
+    this.setState(s => ({...s, ...assignment}));
+  }
 
-    let formatted = deps.map((deployment) => {
-      const {gitRemoteName, gitRepoName} = deployment.ms;
-      const {imgRemoteName, imgRepoName} = deployment.ms;
-      const {framework, dfPath} = deployment.ms;
-
-      return {
-        deployment: deployment.name,
-        namespaces: deployment.namespaces,
-        gitRemoteName, gitRepoName,
-        imgRemoteName, imgRepoName,
-        framework, dockerfilePath: dfPath
-      }
-    });
-
-    const payload = { data: DataUtils.obj2Snake(formatted) };
-
-    this.setState((s) => ({...s, isSubmitting: true}));
-
-    Backend.raisingPost(`/microservices`, payload, () => {
-      this.setState((s) => ({...s,
-        isSubmitting: false,
-        areAllSubmitted: true
-      }));
-    });
+  static defaultState(){
+    return({
+      deployments: [],
+      matchings: [],
+      isIntegrated: null,
+      authUrl: null,
+      selectedIndex: 0,
+      isSubmitting: false,
+      areAllSubmitted: false,
+      query: DEFAULT_QUERY,
+      integrations: null,
+      isOverriding: false
+    })
   }
 }
 
-const DEFAULT_QUERY = [
-  {
-    field: "namespace",
-    op: "one-of",
-    challenge: ["default"]
-  }
-];
-
-function Header(){
-  return(
-    <LeftHeader
-      title='Deployment Matching'
-      subtitle='Match your deployments to your git and docker repos'
-      graphicType={ICON}
-      graphicName='developer_board'
-    />
-  )
-}
+const DEFAULT_QUERY = [{
+  field: "namespace",
+  op: "one-of",
+  challenge: ["default"]
+}];
 
 const BulkMatch = AuthenticatedComponent.compose(
   ModalHostComposer.compose(
@@ -258,3 +185,13 @@ const BulkMatch = AuthenticatedComponent.compose(
 );
 
 export { BulkMatch as default };
+
+
+type State = {
+  deployments: Array<WideDeployment>,
+  matchings: Array<Matching>,
+  isIntegrated: ?boolean,
+  phase: 'fetching' | 'integrating' | 'submitting'
+};
+
+type Props = {};

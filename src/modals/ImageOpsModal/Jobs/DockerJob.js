@@ -35,7 +35,7 @@ export default class DockerJob extends Job {
   async reloadData(){
     const { type, id } = this.job;
     const ep = `/api/docker/${type}/${id}/job_info`;
-    const result = await Kapi.blockingFetch(ep);
+    const result = await Kapi.bFetch(ep);
     const { logs, status } = result;
     this.job = { ...this.job, logs, status };
   }

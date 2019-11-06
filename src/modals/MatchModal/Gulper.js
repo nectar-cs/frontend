@@ -21,11 +21,9 @@ class GitRemoteNameSetter extends Setter {
 }
 
 class GitRepoNameSetter extends Setter {
-
   repoObject(bundle){
-    const { gitRemoteList, gitRemoteName } = bundle;
-    const repoName = this._value;
-    return Helper.selectedRepo(gitRemoteList, gitRemoteName, repoName);
+    const { gitRepoName, gitRemoteList, gitRemoteName } = bundle;
+    return Helper.selectedRepo(gitRemoteList, gitRemoteName, gitRepoName);
   }
 
   firstDockerfilePath(bundle){

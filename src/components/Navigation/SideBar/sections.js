@@ -39,7 +39,8 @@ const settings = {
   title: 'Settings',
   icon: 'settings',
   items: [
-    { title: "Git & Docker", modal: IntegrationsModal }
+    { title: "Git & Docker", modal: IntegrationsModal },
+    { title: "Bulk Matching", path: '/bulk-matching' }
   ]
 };
 

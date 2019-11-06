@@ -8,6 +8,6 @@ function s2p(state){
 
 export default class ModalClientComposer{
   static compose(component){
-    connect(s2p)(component);
+    return connect(s2p)(component);
   }
 }
