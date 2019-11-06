@@ -83,6 +83,7 @@ export default class MatchModal extends React.Component<Props, State> {
         gitRemoteName={gitRemoteName}
         gitRepoName={gitRepoName}
         dfPath={choices.dfPath}
+        buildCtxPath={choices.buildCtxPath}
         framework={choices.framework}
         notifyFormValueChanged={this.update}
       />
@@ -167,7 +168,7 @@ export default class MatchModal extends React.Component<Props, State> {
       gitRemoteList: [], imgRemoteList: [], dfPathDict: {},
       gitRemoteName: '', imgRemoteName: '',
       gitRepoName: '', imgRepoName: '',
-      dfPath: '', framework: ''
+      dfPath: '', framework: '', buildCtxPath: ''
     });
   }
 }
@@ -178,6 +179,7 @@ type State = {
     imgRemoteList: Array<RemoteBundle>,
     dfPath: string,
     dfPathDict: { [string]: Array<string> },
+    buildCtxPath: string,
     gitRemoteName: string,
     imgRemoteName: string,
     gitRepoName: string,

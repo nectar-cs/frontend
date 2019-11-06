@@ -43,9 +43,9 @@ class GitRepoNameSetter extends Setter {
   sideEffects(bundle) {
     const repo = this.repoObject(bundle);
     return {
-      framework: repo.framework,
-      dfPath: this.firstDockerfilePath(bundle)
-    }
+      ...this.assignDown('framework', repo.framework),
+      ...this.assignDown('dfPath', this.firstDockerfilePath(bundle))
+    };
   }
 }
 
@@ -54,13 +54,22 @@ class DfPathDictSetter extends Setter {
     const newDict = this._value;
     const { gitRemoteName, gitRepoName } = bundle;
     const pathList = newDict[`${gitRemoteName}_${gitRepoName}`];
-    return { dfPath: pathList[0] };
+    return this.assignDown('dfPath', pathList[0]);
+  }
+}
+
+class DfPathSetter extends Setter {
+  sideEffects(bundle) {
+    const { dfPath } = bundle;
+    const buildCtxPath = dfPath.replace("Dockerfile", "");
+    return this.assignDown('buildCtxPath', buildCtxPath)
   }
 }
 
 export default class Gulper{
   constructor(){
-    const dfPathDict = new DfPathDictSetter();
+    const dfPath = new DfPathSetter();
+    const dfPathDict = new DfPathDictSetter({dfPath});
     const gitRepoName = new GitRepoNameSetter();
     const gitRemoteName = new GitRemoteNameSetter({gitRepoName});
     const gitRemoteList = new GitRemoteListSetter({gitRemoteName});
@@ -69,7 +78,8 @@ export default class Gulper{
       gitRemoteList,
       gitRemoteName,
       gitRepoName,
-      dfPathDict
+      dfPathDict,
+      dfPath
     });
   }
 

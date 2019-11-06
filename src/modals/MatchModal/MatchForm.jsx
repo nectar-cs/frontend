@@ -15,6 +15,7 @@ class MatchFormClass extends React.Component<Props> {
         { this.renderGitRemoteInput() }
         { this.renderGitRepoSelect() }
         { this.renderDfPathSelect() }
+        { this.renderBuildCtxInput() }
         { this.renderImgRemoteSelect() }
         { this.renderImgRepoSelect() }
         { this.renderFrameworkSelect() }
@@ -52,6 +53,15 @@ class MatchFormClass extends React.Component<Props> {
       'dfPath',
       MiscUtils.arrayOptions(dfPathChoices)
     );
+  }
+
+  renderBuildCtxInput(){
+    if(!this.hasGitRemote()) return null;
+    const { dfPathChoices } = this.props;
+    return this.props.makeInput(
+      "Build Context Path",
+      "buildCtxPath",
+    )
   }
 
   renderImgRemoteSelect(){
@@ -113,6 +123,7 @@ type Props = {
   gitRemoteName: string,
   imgRemoteName: string,
   gitRepoName: string,
+  buildCtxPath: string,
   imgRepoName: PropTypes.string,
   dfPath: string,
   framework: PropTypes.string,
