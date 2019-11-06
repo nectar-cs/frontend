@@ -1,15 +1,7 @@
 import Backend from "../../utils/Backend";
 import Kapi from "../../utils/Kapi";
-import type {Matching, WideDeployment} from "../../types/Types";
 
 export default class Helper{
-
-  static async fetchItems(setter) {
-    setter({isFetching: true});
-    await this.fetchDeployments(setter);
-    await this.fetchMatchings(setter);
-    setter({isFetching: false});
-  }
 
   static async fetchDeployments(setter){
     let ep = '/api/deployments/across_namespaces';

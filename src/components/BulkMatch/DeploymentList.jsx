@@ -27,9 +27,10 @@ function DeploymentItem(props: ItemProps) {
   const YesIcon = () => <Micon n='check' e='success' extras={"margin-left: 22px"}/>;
   const NoIcon = () => <Micon n='close' e='idle' extras={"margin-left: 22px"}/>;
   const StatusIcon = ({name}) => ((matching || {})[name] ? <YesIcon/> : <NoIcon/>);
+  const callback = () => props.callback(deployment.name);
 
   return(
-    <tr className={isSelected ? s.focusedRow : s.row}>
+    <tr className={isSelected ? s.focusedRow : s.row} onClick={callback}>
       <td><p>{deployment.name}</p></td>
       <td><NamespaceTags/></td>
       <td><StatusIcon name='gitRepoName'/></td>
@@ -48,9 +49,9 @@ export default function DeploymentList(props: ListProps) {
         key={i}
         index={i}
         isSelected={i === props.selectedIndex}
-        onClick={props.callback}
         deployment={deployment}
         matching={MiscUtils.depMatching(deployment.name, props.matchings)}
+        callback={props.callback}
       />
     ))
   );
@@ -73,11 +74,12 @@ type ListProps = {
   matchings: Array<Matching>,
   deployments: Array<WideDeployment>,
   selectedIndex: number,
-  callback: () => void
+  callback: (string) => void
 }
 
 type ItemProps = {
   deployment: WideDeployment,
   matching: Matching,
-  isSelected: boolean
+  isSelected: boolean,
+  callback: (string) => void
 }

@@ -36,6 +36,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
       <React.Fragment>
         { this.renderSkipAhead() }
         { this.renderObtLoading() }
+        { this.renderEmptyCluster() }
         { this.renderLeftSide() }
         { this.renderRightSide() }
       </React.Fragment>
@@ -45,6 +46,21 @@ class BulkMatchingClass extends React.Component<Props, State> {
   renderSkipAhead(){
     if(!this.state.skipRequested) return null;
     return <Redirect to='/workspaces'/>
+  }
+
+  renderEmptyCluster() {
+    const {deployments} = this.state;
+
+    if(this.isIntChecking()) return null;
+    if(!this.hasPassedIntCheck()) return null;
+    if (deployments.length > 0) return null;
+
+    return(
+      <CenterAnnouncement
+        text='No non-system deployments found in your cluster...'
+        iconName={''}
+      />
+    )
   }
 
   renderObtLoading(){
@@ -108,7 +124,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
         contentType='nav-link'
         action='/workspaces'
         iconName='done_all'
-        text="Nice. You can change these whenever. Click to continue."
+        text="All done. Click to continue."
       />
     )
   }
@@ -150,21 +166,20 @@ class BulkMatchingClass extends React.Component<Props, State> {
   }
 
   onDeploymentSelected(name){
-    const selectedIndex = this.state.deployments.findIndex(
-      (d) => (d.name === name)
-    );
+    const { deployments } = this.state;
+    const selectedIndex = deployments.findIndex(d => d.name === name);
     this.setState((s) => ({...s, selectedIndex}))
   }
 
-  update(assignment){
-    this.setState(s => ({...s, ...assignment}));
-  }
-
   reload(){
+    this.update({isFetching: true});
     Helper.fetchIsIntegrated(this.update);
-    Helper.fetchItems(this.update);
+    Helper.fetchDeployments(this.update);
+    Helper.fetchMatchings(this.update);
+    this.update({isFetching: false});
   }
 
+  update(assignment){ this.setState(s => ({...s, ...assignment})); }
   reloadMatchings(){ Helper.fetchMatchings(this.update); }
   hasPassedIntCheck(){ return !!this.state.isIntegrated; }
   isIntChecking(){ return !!this.state.isCheckingIntegration; }
