@@ -15,6 +15,7 @@ import Helper from './Helper'
 import type {Matching, WideDeployment} from "../../types/Types";
 import {Redirect} from "react-router";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
+import MiscUtils from "../../utils/MiscUtils";
 
 class BulkMatchingClass extends React.Component<Props, State> {
   constructor(props){
@@ -22,7 +23,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
     this.state = BulkMatchingClass.defaultState();
     this.update = this.update.bind(this);
     this.onIntegrationDone = this.onIntegrationDone.bind(this);
-    this.notifyDeploymentSelected = this.notifyDeploymentSelected.bind(this);
+    this.onDeploymentSelected = this.onDeploymentSelected.bind(this);
     this.onMatchingEvent = this.onMatchingEvent.bind(this);
   }
 
@@ -82,13 +83,14 @@ class BulkMatchingClass extends React.Component<Props, State> {
 
   renderDeploymentsList(){
     if(!this.hasPassedIntCheck()) return null;
-    const { deployments, selectedIndex } = this.state;
+    const { deployments, matchings, selectedIndex } = this.state;
 
     return(
       <DeploymentList
         deployments={deployments}
+        matchings={matchings}
         selectedIndex={selectedIndex}
-        notifyDeploymentSelected={this.notifyDeploymentSelected}
+        callback={this.onDeploymentSelected}
       />
     )
   }
@@ -118,7 +120,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
 
     const { matchings } = this.state;
     const deployment = this.selectedDeployment();
-    const matching = Helper.depMatching(deployment, matchings);
+    const matching = MiscUtils.depMatching(deployment.name, matchings);
 
     return(
       <MatchModal
@@ -147,7 +149,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
     else this.setState(s => ({...s, skipRequested: true}));
   }
 
-  notifyDeploymentSelected(name){
+  onDeploymentSelected(name){
     const selectedIndex = this.state.deployments.findIndex(
       (d) => (d.name === name)
     );

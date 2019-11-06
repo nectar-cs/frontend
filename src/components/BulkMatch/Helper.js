@@ -29,10 +29,4 @@ export default class Helper{
     const isIntegrated = gits.length + docks.length > 0;
     callback({isIntegrated, isCheckingIntegration: false});
   }
-
-  static depMatching(deployment: WideDeployment, matchings: Matching[]): Matching{
-    return matchings.find(matching => (
-      matching.deploymentName === deployment.name
-    ));
-  }
 }

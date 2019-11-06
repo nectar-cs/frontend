@@ -1,7 +1,9 @@
+//@flow
 import React, {Fragment} from 'react'
 import textCombos from './../assets/text-combos.sass'
 import Text from './../assets/text-combos'
 import moment from "moment";
+import type {Matching} from "../types/Types";
 
 const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
@@ -15,6 +17,12 @@ export default class MiscUtils {
 
   static image(name){
     return `${IMG_BASE}/${name}`;
+  }
+
+  static depMatching(deploymentName: string, matchings: Matching[]){
+    return matchings.find(matching => (
+      matching.deploymentName === deploymentName
+    ));
   }
 
   static frameworkImage(framework, suffix='plain.svg'){

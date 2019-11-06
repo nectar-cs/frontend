@@ -3,7 +3,7 @@ import {colored} from "../../assets/constants";
 
 function size(size){
   if(size === 'm+') return "30px";
-  return "22px";
+  return "21px";
 }
 
 const Micon = styled.i`
