@@ -1,4 +1,5 @@
 //@flow
+
 import MiscUtils from "../../utils/MiscUtils";
 import Backend from "../../utils/Backend";
 import type {RemoteBundle} from "../../types/Types";
@@ -14,9 +15,13 @@ export default class RemotesHelper{
     inst.setState(s => ({...s, isGitFetching: false}));
   }
 
-  static remoteOptions(remoteList){
-    // return remoteList.map(r => r.identifier);
-    return [];
+  static remoteOptions(remoteList: ?Array<RemoteBundle>){
+    return (remoteList || []).map(r => r.identifier);
+  }
+
+  static repoOptions(remoteList: RemoteBundle[], remoteName: string): string[]{
+    const remote = remoteList.find(r => r.identifier === remoteName);
+    return remote ? remote.contents.map(r => r.name) : [];
   }
 
   static dockerfileChoices(){
@@ -34,11 +39,6 @@ export default class RemotesHelper{
     const selRemote = this.selectedRemote(remoteList, remoteName);
     if(selRemote) return selRemote.contents.map(repo => repo.name);
     else return [];
-  }
-
-  static repoOptions(inst, remoteName){
-    const names = this.repoNames(inst, remoteName);
-    return MiscUtils.arrayOptions(names);
   }
 
   static selectedRepo(remoteList, remoteName, repoName){

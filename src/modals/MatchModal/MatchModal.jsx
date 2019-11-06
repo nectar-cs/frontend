@@ -11,6 +11,7 @@ import Helper from "./Helper";
 import defaults from './defaults'
 import RemotesHelper from "./RemotesHelper";
 import type {Deployment, Matching, RemoteBundle} from "../../types/Types";
+import Gulper from "./Gulper";
 
 export default class MatchModal extends React.Component<Props, State> {
   constructor(props){
@@ -25,7 +26,7 @@ export default class MatchModal extends React.Component<Props, State> {
       matching: null
     };
 
-    this.deploymentName = MiscUtils.tor(() => props.deployment.name);
+    this.gulper = new Gulper();
     this.update = this.update.bind(this);
     this.updateAssign = this.updateAssign.bind(this);
     this.acceptMatch = this.acceptMatch.bind(this);
@@ -34,7 +35,6 @@ export default class MatchModal extends React.Component<Props, State> {
 
   componentDidMount() {
     const { matching } = this.props;
-    Helper.injestMatching(matching, this.update);
     RemotesHelper.fetchGitRemotes(this);
   }
 
@@ -63,17 +63,19 @@ export default class MatchModal extends React.Component<Props, State> {
 
   renderForm(){
     const { choices } = this.state;
+    const { gitRemoteList, gitRemoteName, gitRepoName } = choices;
+    console.log(`${gitRemoteName} --> ${gitRepoName}`);
 
     return(
       <MatchForm
         deployment={this.props.deployment}
-        gitRemoteChoices={RemotesHelper.remoteOptions()}
+        gitRemoteChoices={RemotesHelper.remoteOptions(choices.gitRemoteList)}
         imgRemoteChoices={RemotesHelper.remoteOptions()}
-        gitRepoChoices={RemotesHelper.remoteOptions()}
+        gitRepoChoices={RemotesHelper.repoOptions(gitRemoteList, gitRemoteName)}
         imgRepoChoices={RemotesHelper.remoteOptions()}
         dfPathChoices={RemotesHelper.dockerfileChoices()}
-        gitRemoteName={choices.gitRemoteName}
-        gitRepoName={choices.gitRepoName}
+        gitRemoteName={gitRemoteName}
+        gitRepoName={gitRepoName}
         dfPath={choices.dfPath}
         framework={choices.framework}
         notifyFormValueChanged={this.update}
@@ -98,32 +100,29 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   acceptMatch(){
-    const { mode, onDeploymentReviewed } = this.props;
-    const deployment = this.state.bundle;
-    if(mode === 'tutorial')
-      onDeploymentReviewed(this.deploymentName, deployment);
+    const { mode, onDeploymentReviewed, deployment } = this.props;
+    if(mode === 'tutorial') onDeploymentReviewed(deployment.name, deployment);
     else Helper.submitSingle(this, deployment);
   }
 
   skipMatch(){
-    const { mode, onDeploymentReviewed } = this.props;
-    const deployment = this.state.bundle;
-    if(mode === 'tutorial')
-      onDeploymentReviewed(this.deploymentName, null);
+    const { mode, deployment, onDeploymentReviewed } = this.props;
+    if(mode === 'tutorial') onDeploymentReviewed(deployment.name, null);
     else Helper.submitDelete(this, deployment);
   }
 
-  update(field: string, value){
-    console.log("HELLLLLOOO " + field);
-    const choices = {...this.state.choices, [field]: value};
+  update(field: string, value: any): void {
+    const bundle = this.state.choices;
+    const assignment = this.gulper.assign(field, value, bundle);
+    const choices = {...this.state.choices, ...assignment};
     this.setState(s => ({...s, choices}));
   }
 
-  updateGitRemotesList(list: Array<RemoteBundle>): void {
-    this.update("gitRemotesList", list);
+  updateGitRemotesList(gitRemoteList: Array<RemoteBundle>): void {
+    this.updateAssign({gitRemoteList});
   }
 
-  updateAssign(assignment){
+  updateAssign(assignment:{string: any}){
     Object.keys(assignment).forEach(key => {
       this.update(key, assignment[key]);
     });
