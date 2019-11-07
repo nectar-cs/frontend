@@ -25,7 +25,7 @@ export default class Helper {
     MatchingSection
   ];
 
-  static defaultSection = MatchingSection;
+  static defaultSection = LoggingSection;
 
   static classNameToKey(className){
     const key = className.replace("Section", "");

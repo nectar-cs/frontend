@@ -3,6 +3,7 @@ import FlexibleModal from "../../hocs/FlexibleModal";
 import {Types} from "../../types/CommonTypes";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
+import Tabs from "../../widgets/Tabs/Tabs";
 
 export default class PodModal extends React.Component {
 
@@ -10,6 +11,7 @@ export default class PodModal extends React.Component {
     return(
       <FlexibleModal mode='modal'>
         { this.renderHeader() }
+        { this.renderTabs() }
       </FlexibleModal>
     )
   }
@@ -22,6 +24,15 @@ export default class PodModal extends React.Component {
         title={`${deployment.namespace} / ${pod.name}`}
         subtitle={`One of ${deployment.name}'s pods.`}
       />
+    )
+  }
+
+  renderTabs(){
+    return(
+      <Tabs tabs={['Status', 'Logs']} selectedInd={0}>
+        <p>stat</p>
+        <p>log</p>
+      </Tabs>
     )
   }
 
