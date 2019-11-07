@@ -87,6 +87,7 @@ class MatchFormClass extends React.Component<Props> {
   }
 
   renderFrameworkSelect(){
+    if(!this.hasGitRemote()) return null;
     return this.props.makeSelect(
       'Framework or Language',
       'framework',

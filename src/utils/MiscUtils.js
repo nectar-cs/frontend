@@ -76,6 +76,8 @@ export default class MiscUtils {
   }
 
   static gitSummary(ms, extended){
+    if(!ms) return "An unmatched deployment";
+
     const first = (
       <Text.A href={`https://www.github.com/${ms.gitRemoteName}`} target="_blank">
         {ms.gitRemoteName}@github

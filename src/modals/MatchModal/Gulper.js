@@ -33,16 +33,18 @@ class GitRemoteListSetter extends GitAndImgSetter {
 
 class RemoteNameSetter extends GitAndImgSetter {
   guessRepo(target: string, options: string[]){
-    const sorting = StringSimilarity.findBestMatch(target, options);
-    return options[sorting.bestMatchIndex];
+    if(target && options.length > 0){
+      const sorting = StringSimilarity.findBestMatch(target, options);
+      return options[sorting.bestMatchIndex];
+    } else return null;
   }
 
   sideEffects(bundle) {
     const remoteName: string = this._value;
     const remoteList: Array<RemoteBundle> = this.remoteList(bundle);
     const repoNames = Helper.repoOptions(remoteList, remoteName);
-    const firstRepoName = this.guessRepo(bundle.deploymentName, repoNames);
-    return { [`${this.type}RepoName`]: firstRepoName || '' };
+    const repoGuess = this.guessRepo(bundle.deploymentName, repoNames);
+    return { [`${this.type}RepoName`]: repoGuess || '' };
   }
 }
 
@@ -81,7 +83,7 @@ class DfPathDictSetter extends Setter {
 class DfPathSetter extends Setter {
   sideEffects(bundle) {
     const { dfPath } = bundle;
-    const buildCtxPath = dfPath.replace("Dockerfile", "");
+    const buildCtxPath = (dfPath || '').replace("Dockerfile", "");
     return { buildCtxPath }
   }
 }
@@ -116,13 +118,15 @@ export default class Gulper{
   }
 
   setConsumableMatching(matching){
-    const { gitRemoteName, gitRepoName } = matching;
-    const { imgRemoteName, imgRepoName } = matching;
-    const { dfPath, buildCtxPath, framework } = matching;
-    this.consumable = {
-      gitRemoteName, gitRepoName, imgRemoteName, imgRepoName,
-      dfPath, buildCtxPath, framework
-    };
+    if(matching){
+      const { gitRemoteName, gitRepoName } = matching;
+      const { imgRemoteName, imgRepoName } = matching;
+      const { dfPath, buildCtxPath, framework } = matching;
+      this.consumable = {
+        gitRemoteName, gitRepoName, imgRemoteName, imgRepoName,
+        dfPath, buildCtxPath, framework
+      };
+    } else this.consumable = {};
   }
 
   assign(key, value, bundle){

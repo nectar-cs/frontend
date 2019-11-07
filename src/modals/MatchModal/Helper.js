@@ -16,13 +16,13 @@ export default class Helper{
     callback(matching);
   }
 
-  static async fetchGitRemotes(type: 'git' | 'img', dataSet, progSet){
+  static async fetchRemotes(type: 'git' | 'img', dataSet, progSet){
     progSet(type, true);
     if(type === 'img') type = 'docker';
     const remotes = await Backend.bFetch(`/remotes/loaded?entity=${type}`);
     if(type === 'docker') type = 'img';
-    dataSet(type, remotes);
     progSet(type, false);
+    dataSet(type, remotes);
   }
 
   static remoteOptions(remoteList: ?Array<RemoteBundle>){
@@ -77,8 +77,8 @@ export default class Helper{
   }
 
   static isLoading(state){
-    const { isGitFetching, isImgFetching } = state;
-    const { isSubmitting, isPathsFetching } = state;
-    return isGitFetching || isImgFetching || isSubmitting || isPathsFetching;
+    const { isSubmitting, isPathsFetching, isGitFetching, isImgFetching } = state;
+    return isSubmitting || isPathsFetching || isGitFetching || isImgFetching;
   }
 }
+

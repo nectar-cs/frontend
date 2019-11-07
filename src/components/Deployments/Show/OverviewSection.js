@@ -69,7 +69,7 @@ class OverviewSectionClass extends Section {
       <LeftHeader
         graphicName={MiscUtils.msImage(deployment, matching)}
         title={`${deployment.namespace} / ${deployment.name}`}
-        subtitle={matching && MiscUtils.gitSummary(matching, true)}
+        subtitle={MiscUtils.gitSummary(matching, true)}
       />
     )
   }

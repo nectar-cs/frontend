@@ -34,16 +34,16 @@ export default class MatchModal extends React.Component<Props, State> {
 
   componentDidMount() {
     this.gulper = new Gulper();
-    this.gulper.setConsumableMatching(this.props.matching || {});
-    Helper.fetchGitRemotes('git', this.updateRemotesList, this.updateFetchProg);
-    Helper.fetchGitRemotes('img', this.updateRemotesList, this.updateFetchProg);
+    this.gulper.setConsumableMatching(this.props.matching);
+    Helper.fetchRemotes('git', this.updateRemotesList, this.updateFetchProg);
+    Helper.fetchRemotes('img', this.updateRemotesList, this.updateFetchProg);
   }
 
   componentWillReceiveProps(nextProps:Props): * {
     const thisMatch = (this.props.matching || {id: 0}).id;
     const newMatch = (nextProps.matching || {id: 0}).id;
     if(thisMatch !== newMatch)
-      this.gulper.setConsumableMatching(nextProps.matching || {});
+      this.gulper.setConsumableMatching(nextProps.matching);
     this.update('deployment', null);
   }
 
