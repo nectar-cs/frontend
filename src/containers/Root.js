@@ -17,6 +17,7 @@ export default class Root extends Component {
             { Root.renderRoute(R.auth.authenticate) }
             { Root.renderRoute(R.auth.login) }
             { Root.renderRoute(R.auth.register) }
+            { Root.renderRoute(R.welcome.index) }
             { Root.renderRoute(R.bulkMatch.index) }
             { Root.renderRoute(R.deployments.debug) }
             { Root.renderRoute(R.deployments.show) }
@@ -26,17 +27,12 @@ export default class Root extends Component {
             { Root.renderRoute(R.workspaces.show) }
             { Root.renderRoute(R.experiments.networkTest) }
             <Route path='/debugz' exact component={Debug} />
-            <Route path={'/'} exact {...this.homePageRoute()}/>
+            <Route path='/' exact component={R.workspaces.default.comp} />
             <Route component={NotFound}/>
           </Switch>
         </BrowserRouter>
       </Provider>
     );
-  }
-
-  homePageRoute(){
-    const path = makeRoute(R.workspaces.index.path, {});
-    return { render: () => <Redirect to={path}/> }
   }
 
   static renderRoute(hash){

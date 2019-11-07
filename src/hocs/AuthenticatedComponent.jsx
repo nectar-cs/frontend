@@ -3,14 +3,18 @@ import { Redirect } from 'react-router';
 import AppLayout from '../components/Navigation/AppLayout/AppLayout';
 import { ROUTES } from '../containers/RoutesConsts';
 import Backend from "../utils/Backend";
+import type {LightUser} from "../types/Types";
 
 export default class AuthenticatedComponent {
 
-  static compose(WrappedComponent){
+  static compose(WrappedComponent, bypassOnboarding = false){
     return class extends React.Component {
       constructor(props){
         super(props);
-        this.state = { authConfirmation: null };
+        this.state = {
+          authConfirmation: null,
+          onboardingNeeded: false
+        };
         this.onAuthConfirmed = this.onAuthConfirmed.bind(this);
         this.onAuthRejected = this.onAuthRejected.bind(this);
       }
@@ -24,12 +28,21 @@ export default class AuthenticatedComponent {
       }
 
       render(){
+        if(this.isAuthenticated()){
+          if(this.wasOnboarded())
+            return this.renderRegularComponent();
+          else return <Redirect to={ROUTES.welcome.index.path}/>;
+        } else return <Redirect to={ROUTES.auth.login.path}/>;
+      }
+
+      isAuthenticated(){
         const { authConfirmation } = this.state;
-        if(Backend.accessToken() && authConfirmation !== false){
-          return this.renderRegularComponent()
-        } else {
-          return <Redirect to={ROUTES.auth.login.path}/>
-        }
+        return Backend.accessToken() && authConfirmation !== false;
+      }
+
+      wasOnboarded(){
+        const { onboardingNeeded } = this.state;
+        return true || bypassOnboarding || onboardingNeeded !== false;
       }
 
       renderRegularComponent(){
@@ -40,9 +53,14 @@ export default class AuthenticatedComponent {
         )
       }
 
-      onAuthConfirmed(){ this.setState(s => ({...s, authConfirmation: true})); }
+      onAuthConfirmed(user: LightUser) {
+        this.setState(s => ({
+          ...s,
+          authConfirmation: true,
+        }));
+      }
+
       onAuthRejected(){ this.setState(s => ({...s, authConfirmation: false})); }
     }
   }
 }
-

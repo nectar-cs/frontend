@@ -9,7 +9,7 @@ import {setPath, setRemotes, setWorkspaces} from "../../../actions/action";
 import {connect} from "react-redux";
 import DataUtils from "../../../utils/DataUtils";
 
-class AppLayoutClass extends React.Component {
+class AppLayoutClass extends React.Component<Props> {
   render(){
     return(
       <ThemeProvider theme={theme}>
@@ -29,6 +29,8 @@ class AppLayoutClass extends React.Component {
   }
 
   componentDidMount(){
+    if(this.props.skipSetup) return;
+
     Backend.raisingFetch(`/workspaces`, resp => {
       this.props.setWorkspaces(DataUtils.obj2Camel(resp['data']));
     });
@@ -37,6 +39,10 @@ class AppLayoutClass extends React.Component {
       this.props.setRemotes(DataUtils.obj2Camel(resp['data']));
     });
   }
+}
+
+type Props = {
+  skipSetup: ?boolean
 }
 
 function d2P(dispatch){

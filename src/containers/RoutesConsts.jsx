@@ -7,6 +7,8 @@ import DeploymentShow from "../components/Deployments/Show/DeploymentShow";
 import NetworkTest from "../components/Laboratory/NetworkTest";
 import InfraDebug from "../components/InfraDebug/InfraDebug";
 import BulkMatch from "../components/BulkMatch/BulkMatch";
+import Welcome from "../components/Welcome/Welcome";
+import DefaultWorkspace from "../components/Deployments/Default/Default";
 
 export const ROUTES = {
   clusters: {
@@ -15,16 +17,21 @@ export const ROUTES = {
 
   deployments: {
     debug: { path: '/deployments/:ns/:id/debug/:type', comp: InfraDebug },
-    show: { path: '/deployments/:ns/:id', comp: DeploymentShow }
+    show: { path: '/deployments/:ns/:id', comp: DeploymentShow },
   },
 
   bulkMatch: {
     index: { path: '/bulk-matching', comp: BulkMatch },
   },
 
+  welcome: {
+    index: { path: '/welcome', comp: Welcome }
+  },
+
   workspaces: {
     index: { path: '/workspaces', comp: WorkspaceIndex},
     new: { path: '/workspaces/new', comp: WorkspaceEdit },
+    default: { path: '/workspaces/default', comp: DefaultWorkspace },
     edit: { path: '/workspaces/:id/edit', comp: WorkspaceEdit },
     show: { path: '/workspaces/:id', comp: WorkspaceShow }
   },

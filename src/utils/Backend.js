@@ -41,8 +41,10 @@ export default class Backend {
 
   static async bFetch(endpoint){
     const raw = await this.blockingRequest('GET', endpoint, null);
-    let cleaned = DataUtils.obj2Camel(raw);
-    return cleaned['data'] ? cleaned['data'] : cleaned;
+    if(raw){
+      let cleaned = DataUtils.obj2Camel(raw);
+      return cleaned['data'] ? cleaned['data'] : cleaned;
+    } else return null;
   }
 
   static async bPost(endpoint, payload){
@@ -60,7 +62,7 @@ export default class Backend {
 
   static async blockingRequest(method, endpoint, body){
     const response = await fetch(this.url(endpoint), this.prepReq(method, body));
-    return DataUtils.obj2Camel(await response.json());
+    return response.ok ? DataUtils.obj2Camel(await response.json()) : null;
   }
 
   static raisingRequest(method, endpoint, body, callback, errorCallback){

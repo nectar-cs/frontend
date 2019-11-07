@@ -31,6 +31,11 @@ export default class WorkspaceForm extends React.Component {
         </div>
 
         <div className={s.inputLine}>
+          <p className={s.label}>Make Default</p>
+          { this.renderDefaultCheckbox() }
+        </div>
+
+        <div className={s.inputLine}>
           <p className={s.label}>Namespace Filter</p>
           { this.renderAutocomplete('namespaces') }
         </div>
@@ -50,6 +55,18 @@ export default class WorkspaceForm extends React.Component {
           { this.renderFilterTypeSelect('labels') }
         </div>
       </div>
+    )
+  }
+
+  renderDefaultCheckbox(){
+    return(
+      <select
+        className={s.selectInput}
+        value={this.props.isDefault}
+        onChange={(e) => this.onIsDefaultChanged(e.target.value)}>
+        <option value='true'>Yes</option>
+        <option value='false'>No</option>
+      </select>
     )
   }
 
@@ -147,6 +164,7 @@ export default class WorkspaceForm extends React.Component {
 
   static propTypes = {
     onFieldsChanged: PropTypes.func.isRequired,
+    isDefault: PropTypes.string.isRequired,
     workspaceName: PropTypes.string,
     namespaces: WorkspaceForm.itemPropTypes,
     labels:  WorkspaceForm.itemPropTypes

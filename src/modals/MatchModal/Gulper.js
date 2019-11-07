@@ -27,7 +27,7 @@ class GitRemoteListSetter extends GitAndImgSetter {
   sideEffects(bundle) {
     const remoteList: Array<RemoteBundle> = this._value;
     const firstRemote: RemoteBundle = remoteList[0];
-    if(firstRemote !== null)
+    if(firstRemote)
       return { [`${this.type}RemoteName`]: firstRemote.identifier };
     else return {};
   }
@@ -45,10 +45,7 @@ class RemoteNameSetter extends GitAndImgSetter {
     const remoteName: string = this._value;
     const remoteList: Array<RemoteBundle> = this.remoteList(bundle);
     const repoNames = Helper.repoOptions(remoteList, remoteName);
-    console.log(this.type + " REMOTE NAME " + remoteName);
-    console.log(this.type + " REPO NAMES " + repoNames.join(', '));
     const repoGuess = this.guessRepo(bundle.deploymentName, repoNames);
-    console.log("SETTING TO " + repoGuess);
     return { [`${this.type}RepoName`]: repoGuess || '' };
   }
 }
@@ -123,8 +120,6 @@ export default class Gulper{
   }
 
   setConsumableMatching(matching){
-    console.log("MATCHING");
-    console.log(matching);
     if(matching){
       const { gitRemoteName, gitRepoName } = matching;
       const { imgRemoteName, imgRepoName } = matching;

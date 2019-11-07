@@ -40,3 +40,13 @@ export type WideDeployment = {
   name: string,
   namespaces: Array<String>
 }
+
+export type LightUser = {
+  id: number,
+  wasOnboarded: boolean
+}
+
+export type Workspace = {
+  id: number,
+  name: string,
+}
