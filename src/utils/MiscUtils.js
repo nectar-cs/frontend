@@ -91,8 +91,8 @@ export default class MiscUtils {
       </Text.A>
     );
 
-    const third = extended && ms.dockerfilePath &&
-      <Text.A pushed>/ {ms.dockerfilePath.replace("/Dockerfile", "SSD")}</Text.A>;
+    const third = extended && ms.dockerBuildPath &&
+      <Text.A pushed>{ms.dockerBuildPath}</Text.A>;
 
     return <Fragment>{first} / {second}{third}</Fragment>;
   }
