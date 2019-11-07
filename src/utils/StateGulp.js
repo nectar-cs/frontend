@@ -37,11 +37,20 @@ export default class Setter {
 
   produce(){
     const delegate = !!this.downstreamReceiver();
-    const thisOut = delegate ? this.assignDown() : this.assignLocal();
-    const sideEffectsOut = this.sideEffects({...this._bundle, ...thisOut});
-    return {...thisOut, ...sideEffectsOut}
+    const localAssignResult = delegate ? this.assignDown() : this.assignLocal();
+    const passDownBundle = { ...this._bundle, ...localAssignResult };
+    const sideEffectAssignResult = this.gulpSideEffects(passDownBundle);
+    return {...localAssignResult, ...sideEffectAssignResult}
   }
 
-  sideEffects(bundle){}
+  gulpSideEffects(bundle){
+    const given = this.sideEffects(bundle) || {};
+    return Object.keys(given).reduce((whole, key) => (
+      { ...whole, ...this.assignDown(key, given[key]) }
+    ), {});
+  }
+
+  sideEffects(bundle){ return {} }
+
   static defaultReceiver = (key, value) => ({ [key]: value });
 }

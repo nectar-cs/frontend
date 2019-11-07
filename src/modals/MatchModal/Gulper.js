@@ -1,3 +1,4 @@
+//@flow
 import Setter from "../../utils/StateGulp";
 import type {RemoteBundle} from "../../types/Types";
 import Helper from "./Helper";
@@ -7,12 +8,12 @@ class GitRemoteListSetter extends Setter {
   sideEffects(bundle) {
     const remoteList: Array<RemoteBundle> = this._value;
     const firstRemote: string = remoteList[0].identifier;
-    return this.assignDown('gitRemoteName', firstRemote);
+    return { gitRemoteName: firstRemote };
   }
 }
 
 class GitRemoteNameSetter extends Setter {
-  guessRepo(target, options){
+  guessRepo(target: string, options: string[]){
     const sorting = StringSimilarity.findBestMatch(target, options);
     return options[sorting.bestMatchIndex];
   }
@@ -21,8 +22,8 @@ class GitRemoteNameSetter extends Setter {
     const remoteName: string = this._value;
     const remoteList: Array<RemoteBundle> = bundle.gitRemoteList;
     const repoNames = Helper.repoOptions(remoteList, remoteName);
-    const firstRepo = this.guessRepo(bundle.deploymentName, repoNames);
-    return this.assignDown('gitRepoName', firstRepo);
+    const firstRepoName = this.guessRepo(bundle.deploymentName, repoNames);
+    return { gitRepoName: firstRepoName };
   }
 }
 
@@ -42,10 +43,8 @@ class GitRepoNameSetter extends Setter {
 
   sideEffects(bundle) {
     const repo = this.repoObject(bundle);
-    return {
-      ...this.assignDown('framework', repo.framework),
-      ...this.assignDown('dfPath', this.firstDockerfilePath(bundle))
-    };
+    const dfPath = this.firstDockerfilePath(bundle);
+    return { framework: repo.framework, dfPath };
   }
 }
 
@@ -54,7 +53,7 @@ class DfPathDictSetter extends Setter {
     const newDict = this._value;
     const { gitRemoteName, gitRepoName } = bundle;
     const pathList = newDict[`${gitRemoteName}_${gitRepoName}`];
-    return this.assignDown('dfPath', pathList[0]);
+    return { dfPath: pathList[0] };
   }
 }
 
@@ -62,7 +61,7 @@ class DfPathSetter extends Setter {
   sideEffects(bundle) {
     const { dfPath } = bundle;
     const buildCtxPath = dfPath.replace("Dockerfile", "");
-    return this.assignDown('buildCtxPath', buildCtxPath)
+    return { buildCtxPath }
   }
 }
 

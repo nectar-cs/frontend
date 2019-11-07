@@ -5,7 +5,7 @@ class DeploymentSetter extends Setter {
   sideEffects(bundle) {
     bundle.inst.fetchTree();
     const firstService = this._value.services[0];
-    return super.assignDown('service', firstService.name);
+    return { service: firstService.name };
   }
 }
 
@@ -14,7 +14,7 @@ class ServiceSetter extends Setter {
     const { services } = bundle.deployment;
     const service = services.find(s => s.name === this._value);
     const firstPort = service.ports[0].fromPort;
-    return super.assignDown('port', firstPort);
+    return { port: firstPort }
   }
 }
 

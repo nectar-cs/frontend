@@ -11,13 +11,15 @@ class MatchFormClass extends React.Component<Props> {
   render(){
     return(
       <Fragment>
-        <TextOverLineSubtitle text={'Git and Docker Repos'}/>
+        <TextOverLineSubtitle text={'Git Remote'}/>
         { this.renderGitRemoteInput() }
         { this.renderGitRepoSelect() }
-        { this.renderDfPathSelect() }
-        { this.renderBuildCtxInput() }
+        <TextOverLineSubtitle text={'Docker Remote'}/>
         { this.renderImgRemoteSelect() }
         { this.renderImgRepoSelect() }
+        <TextOverLineSubtitle text={'Application'}/>
+        { this.renderDfPathSelect() }
+        { this.renderBuildCtxInput() }
         { this.renderFrameworkSelect() }
       </Fragment>
     )

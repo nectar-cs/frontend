@@ -4,7 +4,7 @@ import Helper from './Helper'
 class ResourceTypeSetter extends Setter {
   sideEffects() {
     const resName = this._bundle.getResNames(this._value)[0];
-    return this.assignDown("resName", resName)
+    return { resName }
   }
 }
 
