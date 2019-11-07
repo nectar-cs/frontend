@@ -9,6 +9,7 @@ import Helper from "./Helper";
 import type {Deployment, Matching, RemoteBundle} from "../../types/Types";
 import Gulper from "./Gulper";
 import Text from "../../assets/text-combos";
+import DataUtils from "../../utils/DataUtils";
 
 export default class MatchModal extends React.Component<Props, State> {
   constructor(props){
@@ -40,10 +41,7 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps:Props): * {
-    const thisMatch = (this.props.matching || {id: 0}).id;
-    const newMatch = (nextProps.matching || {id: 0}).id;
-    if(thisMatch !== newMatch)
-      this.gulper.setConsumableMatching(nextProps.matching);
+    this.gulper.setConsumableMatching(nextProps.matching);
     this.update('deployment', null);
   }
 

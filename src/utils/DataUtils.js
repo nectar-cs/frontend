@@ -1,5 +1,16 @@
 export default class DataUtils {
 
+  static areObjsEquiv(a, b) {
+    const aProps = Object.getOwnPropertyNames(a);
+    const bProps = Object.getOwnPropertyNames(b);
+    if (aProps.length !== bProps.length) return false;
+    for (let i = 0; i < aProps.length; i++) {
+      const propName = aProps[i];
+      if (a[propName] !== b[propName]) return false;
+    }
+    return true;
+  }
+
   static pluck(hash, keys){
     let newHash = {};
     keys.forEach(key => {newHash[key] = hash[key]});

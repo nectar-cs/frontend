@@ -1,3 +1,4 @@
+//@flow
 export default class Setter {
   constructor(downstreamSetters = {}){
     this.downstreamSetters = downstreamSetters;
