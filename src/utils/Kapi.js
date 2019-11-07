@@ -47,8 +47,10 @@ export default class Kapi {
 
   static async bFetch(endpoint){
     const raw = await this.blockingRequest('GET', endpoint, null);
-    let cleaned = DataUtils.obj2Camel(raw);
-    return cleaned['data'] ? cleaned['data'] : cleaned;
+    if(raw){
+      let cleaned = DataUtils.obj2Camel(raw);
+      return cleaned['data'] ? cleaned['data'] : cleaned;
+    } else return null;
   }
 
   static async blockingPost(endpoint, payload){
@@ -57,10 +59,8 @@ export default class Kapi {
   }
 
   static async blockingRequest(method, endpoint, body){
-    const finalUrl = this.url(endpoint);
-    const bodyAndHeaders = this.prepReq(method, body);
-    const response = await fetch(finalUrl, bodyAndHeaders);
-    return await response.json();
+    const response = await fetch(this.url(endpoint), this.prepReq(method, body));
+    return response.ok ? DataUtils.obj2Camel(await response.json()) : null;
   }
 
   static raisingRequest(method, endpoint, body, callback, errorCallback=null){

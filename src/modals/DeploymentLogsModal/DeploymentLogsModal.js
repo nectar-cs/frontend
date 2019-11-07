@@ -52,16 +52,19 @@ export default class DeploymentLogsModal extends React.Component<Props> {
   }
 
   renderLogs(){
+    const { deployment } = this.props;
+    const { selectedPodName } = this.state;
     return(
       <ResourceLogs
+        namespace={deployment.namespace}
         resourceType='pods'
-        resourceName={this.state.selectedPodName}
+        resourceName={selectedPodName}
       />
     )
   }
 
   update(key, value){
-    this.set(s => ({...s, [key]: value }))
+    this.setState(s => ({...s, [key]: value }))
   }
 }
 

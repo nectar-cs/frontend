@@ -1,9 +1,9 @@
 //@flow
 import React, {useRef} from 'react'
 import moment from "moment";
-import Backend from "../../utils/Backend";
 import {LogsView} from "./Styles";
 import Text from "../../assets/text-combos";
+import Kapi from "../../utils/Kapi";
 
 const POLL_RATE = 1500;
 
@@ -11,8 +11,8 @@ export default class ResourceLogs extends React.Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      startAt: null,
-      logs: ['some', 'city']
+      startAt: moment().add({seconds: -10}),
+      logs: []
     };
     this.lineEndRef = React.createRef();
     this.fetchLogsRepeatWrapper = this.fetchLogsRepeatWrapper.bind(this);
@@ -22,17 +22,13 @@ export default class ResourceLogs extends React.Component<Props> {
     this.fetchLogsRepeatWrapper();
   }
 
-  componentWillUnmount(): * {
-    this._willUnmount = true;
-  }
-
   componentWillReceiveProps(){
     this.resetTime();
   }
 
   renderLogLines(){
     return this.state.logs.map((log, i) => (
-      <Text.Code key={i}>{log}</Text.Code>
+      <Text.Code key={i} chill>{log}</Text.Code>
     ))
   }
 
@@ -46,17 +42,21 @@ export default class ResourceLogs extends React.Component<Props> {
   }
 
   async fetchLogsRepeatWrapper(){
-    if(!this._willUnmount) return;
+    if(this._willUnmount) return;
     await this.fetchLogs();
     setTimeout(this.fetchLogsRepeatWrapper, POLL_RATE);
   }
 
   async fetchLogs(){
-    const { namespace, resourceType, resourceName } = this.props;
-    const ep = `/api/${namespace}/${resourceType}/${resourceName}/logs`;
-    const logs = (await Backend.bFetch(ep))['logs'];
-    this.setState(s => ({...s, logs}));
+    const logs = (await Kapi.bFetch(this.genUrl()))['logs'];
+    if(logs) this.setState(s => ({...s, logs}));
     this.lineEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }
+
+  genUrl(){
+    const { namespace, resourceType, resourceName } = this.props;
+    const ep = `/api/${resourceType}/${namespace}/${resourceName}/logs`;
+    return `${ep}?timestamp=${this.state.startAt.format()}`;
   }
 
   resetTime(){
@@ -65,9 +65,12 @@ export default class ResourceLogs extends React.Component<Props> {
       logs: []
     }))
   }
+
+  componentWillUnmount(): * { this._willUnmount = true; }
 }
 
 type Props = {
+  namespace: string,
   resourceType: 'pod' | 'deployment' | 'service',
   resourceName: string
 };
