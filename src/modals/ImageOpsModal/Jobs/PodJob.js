@@ -34,8 +34,7 @@ export default class PodJob extends Job {
   async fetchPods() {
     const {name, namespace} = this.deployment;
     const ep = `/api/deployments/${namespace}/${name}/pods`;
-    const response = await Kapi.bFetch(ep);
-    return response['data'];
+    return await Kapi.bFetch(ep);
   }
 
   newPods(){
