@@ -52,6 +52,12 @@ export default class Backend {
     return cleaned['data'] ? cleaned['data'] : cleaned;
   }
 
+  static async bDelete(endpoint){
+    const raw = await this.blockingRequest('DELETE', endpoint);
+    let cleaned = DataUtils.obj2Camel(raw);
+    return cleaned['data'] ? cleaned['data'] : cleaned;
+  }
+
   static async blockingRequest(method, endpoint, body){
     const response = await fetch(this.url(endpoint), this.prepReq(method, body));
     return DataUtils.obj2Camel(await response.json());

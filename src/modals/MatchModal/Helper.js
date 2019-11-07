@@ -11,6 +11,11 @@ export default class Helper{
     callback(matching);
   }
 
+  static async delete(matching, callback){
+    await Backend.bDelete(`/microservices/${matching.id}`);
+    callback(matching);
+  }
+
   static async fetchGitRemotes(type: 'git' | 'img', dataSet, progSet){
     progSet(type, true);
     if(type === 'img') type = 'docker';
@@ -42,14 +47,6 @@ export default class Helper{
   static selectedRepo(remoteList, remoteName, repoName): RemoteRepo {
     const remote = this.selectedRemote(remoteList, remoteName);
     return remote ? remote.contents.find(r => r.name === repoName) : null;
-  }
-
-  static injestMatching(matching, callback){
-    if(!matching) return;
-    const {gitRemoteName, gitRepoName} = matching;
-    const {imgRemoteName, imgRepoName, framework} = matching;
-    const bun = { gitRemoteName, gitRepoName, imgRemoteName, imgRepoName, framework };
-    Object.keys(bun).forEach(key => { callback(key, bun[key]); });
   }
 
   static frameworkImage(mode: 'detail' | 'tutorial', framework: string): string {

@@ -27,20 +27,24 @@ export default class MatchModal extends React.Component<Props, State> {
     this.fetchDfPaths = this.fetchDfPaths.bind(this);
     this.updateAssign = this.updateAssign.bind(this);
     this.submit = this.submit.bind(this);
+    this.delete = this.delete.bind(this);
     this.updateRemotesList = this.updateRemotesList.bind(this);
     this.updateFetchProg = this.updateFetchProg.bind(this);
   }
 
   componentDidMount() {
     this.gulper = new Gulper();
+    this.gulper.setConsumableMatching(this.props.matching || {});
     Helper.fetchGitRemotes('git', this.updateRemotesList, this.updateFetchProg);
     Helper.fetchGitRemotes('img', this.updateRemotesList, this.updateFetchProg);
   }
 
-  componentWillReceiveProps(): * {
-    const { gitRemoteName, imgRemoteName } = this.state.choices;
-    if(gitRemoteName) this.updateAssign({gitRemoteName});
-    if(imgRemoteName) this.updateAssign({imgRemoteName});
+  componentWillReceiveProps(nextProps:Props): * {
+    const thisMatch = (this.props.matching || {id: 0}).id;
+    const newMatch = (nextProps.matching || {id: 0}).id;
+    if(thisMatch !== newMatch)
+      this.gulper.setConsumableMatching(nextProps.matching || {});
+    this.update('deployment', null);
   }
 
   componentWillUnmount(): * {
@@ -104,6 +108,7 @@ export default class MatchModal extends React.Component<Props, State> {
   renderButtons(){
     return(
       <Button.BigBottomButtons>
+        { this.renderDeleteButton() }
         { this.renderSubmitButton() }
         { this.renderSkipButton() }
       </Button.BigBottomButtons>
@@ -119,6 +124,15 @@ export default class MatchModal extends React.Component<Props, State> {
     )
   }
 
+  renderDeleteButton(){
+    if(!this.props.matching) return null;
+    return(
+      <Button.BigButton onClick={this.delete} emotion='idle'>
+        { "Un-Match" }
+      </Button.BigButton>
+    )
+  }
+
   renderSkipButton(){
     if(this.amInDetailMode()) return null;
     const { callback } = this.props;
@@ -128,6 +142,11 @@ export default class MatchModal extends React.Component<Props, State> {
   submit(){
     const { deployment, callback } = this.props;
     Helper.submit(deployment.name, this.state.choices, callback);
+  }
+
+  delete(){
+    const { matching, callback } = this.props;
+    Helper.delete(matching, callback);
   }
 
   update(field: string, value: any): void {
@@ -156,8 +175,6 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   updateRemotesList(type, remoteList: Array<RemoteBundle>): void {
-    console.log("RECEIVED " + type);
-    console.log(remoteList);
     this.update(`${type}RemoteList`, remoteList)
   }
 
@@ -167,10 +184,8 @@ export default class MatchModal extends React.Component<Props, State> {
     });
   }
 
-  amInDetailMode(){ return this.props.mode === 'detail'; }
   updateFetchProg(type, status) {
     const key = `is${type[0].toUpperCase() + type.slice(1)}Fetching`;
-    console.log(`${type} --> ${status}`);
     this.setState(s => ({ ...s, [key]: status }))
   }
 
@@ -182,6 +197,8 @@ export default class MatchModal extends React.Component<Props, State> {
       dfPath: '', framework: '', buildCtxPath: ''
     });
   }
+
+  amInDetailMode(){ return this.props.mode === 'detail'; }
 }
 
 type State = {

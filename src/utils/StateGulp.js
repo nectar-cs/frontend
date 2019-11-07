@@ -3,10 +3,11 @@ export default class Setter {
     this.downstreamSetters = downstreamSetters;
   }
 
-  update(key, value, bundle): Setter {
+  update(key, value, bundle, defaults = {}): Setter {
     this._key = key;
     this._bundle = bundle;
     this._value = value;
+    this._defaults = defaults;
     return this;
   }
 
@@ -17,7 +18,7 @@ export default class Setter {
   invokeReceiver(receiver, key, value, downBundle): { [string]: any }{
     const isSimple = receiver instanceof Function;
     if(isSimple) return receiver(key, value);
-    receiver.update(key, value, downBundle);
+    receiver.update(key, value, downBundle, this._defaults);
     return receiver.produce();
   }
 
@@ -44,10 +45,21 @@ export default class Setter {
   }
 
   gulpSideEffects(bundle): { [string]: any }{
-    const given = this.sideEffects(bundle) || {};
-    return Object.keys(given).reduce((whole, key) => (
-      { ...whole, ...this.assignDown(key, given[key]) }
-    ), {});
+    const rawSideEffects = this.sideEffects(bundle) || {};
+    return Object.keys(rawSideEffects).reduce((whole, assignedKey) => {
+      const assignedValue = rawSideEffects[assignedKey];
+      const revisedValue = this.overrideWithConsumable(assignedKey, assignedValue);
+      const finalAssignment = this.assignDown(assignedKey, revisedValue);
+      return { ...whole, ...finalAssignment }
+    }, {});
+  }
+
+  overrideWithConsumable(key, value){
+    if(Object.keys(this._defaults).includes(key)){
+      const overrideValue = this._defaults[key];
+      delete this._defaults[key];
+      return overrideValue;
+    } else return value;
   }
 
   sideEffects(bundle){ return {} }
