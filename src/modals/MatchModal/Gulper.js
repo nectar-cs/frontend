@@ -28,7 +28,7 @@ class GitRemoteListSetter extends GitAndImgSetter {
     const remoteList: Array<RemoteBundle> = this._value;
     const firstRemote: RemoteBundle = remoteList[0];
     if(firstRemote)
-      return { [`${this.type}RemoteName`]: firstRemote.identifier };
+      return {[`${this.type}RemoteName`]: firstRemote.identifier};
     else return {};
   }
 }
@@ -59,9 +59,12 @@ class RepoNameSetter extends GitAndImgSetter {
   firstDockerfilePath(bundle): ?string {
     const key = `${bundle.gitRemoteName}_${this._value}`;
     const paths = bundle.dfPathDict[key];
-    if(paths != null) return paths[0];
-    bundle.fetchDfPaths(bundle.gitRemoteName, this._value);
-    return null;
+    if(paths != null) {
+      return paths[0];
+    } else if(bundle.gitRemoteName && this._value){
+      bundle.fetchDfPaths(bundle.gitRemoteName, this._value);
+      return null;
+    }
   }
 
   sideEffects(bundle) {
@@ -104,7 +107,9 @@ export default class Gulper{
     const imgRemoteName = new RemoteNameSetter('img', {imgRepoName});
     const imgRemoteList = new GitRemoteListSetter('img', {imgRemoteName});
 
-    const deploymentName = new DeploymentNameSetter({gitRemoteList, imgRemoteList});
+    const deploymentName = new DeploymentNameSetter({
+      gitRemoteList, imgRemoteList
+    });
 
     this.master = new Setter({
       deploymentName,

@@ -59,7 +59,7 @@ export default class Setter {
     if(Object.keys(this._defaults).includes(key)){
       const overrideValue = this._defaults[key];
       delete this._defaults[key];
-      return overrideValue;
+      return overrideValue || value;
     } else return value;
   }
 

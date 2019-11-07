@@ -96,6 +96,9 @@ class MatchModalClass extends React.Component<Props, State> {
     const { gitRemoteList, gitRemoteName, gitRepoName } = choices;
     const { imgRemoteList, imgRemoteName, imgRepoName } = choices;
     const { dfPathDict } = choices;
+    const dfPaths = Helper.dfPathChoices(
+      gitRemoteName, gitRepoName, dfPathDict
+    );
 
     return(
       <MatchForm
@@ -103,7 +106,7 @@ class MatchModalClass extends React.Component<Props, State> {
         imgRemoteChoices={Helper.remoteOptions(choices.imgRemoteList)}
         gitRepoChoices={Helper.repoOptions(gitRemoteList, gitRemoteName)}
         imgRepoChoices={Helper.repoOptions(imgRemoteList, imgRemoteName)}
-        dfPathChoices={Helper.dfPathChoices(gitRemoteName, gitRepoName, dfPathDict)}
+        dfPathChoices={dfPaths}
         gitRemoteName={gitRemoteName}
         gitRepoName={gitRepoName}
         imgRemoteName={imgRemoteName}
