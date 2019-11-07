@@ -1,16 +1,16 @@
 //@flow
 import Setter from "../../utils/StateGulp";
-import type {RemoteBundle} from "../../types/Types";
+import type {RemoteBundle, RemoteRepo} from "../../types/Types";
 import Helper from "./Helper";
 const StringSimilarity = require('string-similarity');
 
 class GitAndImgSetter extends Setter{
-  constructor(type, ...defaultArgs){
+  constructor(type: 'git' | 'img', ...defaultArgs){
     super(...defaultArgs);
     this.type = type;
   }
 
-  remoteList(bundle){
+  remoteList(bundle): RemoteBundle[] {
     return bundle[`${this.type}RemoteList`];
   }
 }
@@ -39,12 +39,12 @@ class RemoteNameSetter extends GitAndImgSetter {
 }
 
 class RepoNameSetter extends GitAndImgSetter {
-  repoObject(bundle){
+  repoObject(bundle): RemoteRepo{
     const { gitRepoName, gitRemoteList, gitRemoteName } = bundle;
     return Helper.selectedRepo(gitRemoteList, gitRemoteName, gitRepoName);
   }
 
-  firstDockerfilePath(bundle){
+  firstDockerfilePath(bundle): ?string {
     const key = `${bundle.gitRemoteName}_${this._value}`;
     const paths = bundle.dfPathDict[key];
     if(paths != null) return paths[0];

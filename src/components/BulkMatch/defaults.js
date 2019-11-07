@@ -2,7 +2,7 @@ import LeftHeader, {ICON} from "../../widgets/LeftHeader/LeftHeader";
 
 const defaults = {
   header: {
-    title: 'Deployment Matching',
+    title: 'Bulk Deployment Matching',
     subtitle: 'Match your deployments to your git and docker repos',
     graphicName: 'developer_board',
     graphicType: 'icon'

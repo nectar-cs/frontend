@@ -59,7 +59,6 @@ class MatchFormClass extends React.Component<Props> {
 
   renderBuildCtxInput(){
     if(!this.hasGitRemote()) return null;
-    const { dfPathChoices } = this.props;
     return this.props.makeInput(
       "Build Context Path",
       "buildCtxPath",

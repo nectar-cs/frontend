@@ -17,7 +17,7 @@ export default class MatchModal extends React.Component<Props, State> {
     this.state = {
       choices: MatchModal.defaultChoices(props),
       isGitFetching: false,
-      isDockerFetching: false,
+      isImgFetching: false,
       isSubmitting: false,
       isPathsFetching: false,
       matching: null
@@ -27,17 +27,20 @@ export default class MatchModal extends React.Component<Props, State> {
     this.fetchDfPaths = this.fetchDfPaths.bind(this);
     this.updateAssign = this.updateAssign.bind(this);
     this.submit = this.submit.bind(this);
+    this.updateRemotesList = this.updateRemotesList.bind(this);
+    this.updateFetchProg = this.updateFetchProg.bind(this);
   }
 
   componentDidMount() {
     this.gulper = new Gulper();
-    Helper.fetchGitRemotes(this);
+    Helper.fetchGitRemotes('git', this.updateRemotesList, this.updateFetchProg);
+    Helper.fetchGitRemotes('img', this.updateRemotesList, this.updateFetchProg);
   }
 
   componentWillReceiveProps(): * {
-    const { gitRemoteName } = this.state.choices;
-    if(gitRemoteName)
-      this.updateAssign({gitRemoteName})
+    const { gitRemoteName, imgRemoteName } = this.state.choices;
+    if(gitRemoteName) this.updateAssign({gitRemoteName});
+    if(imgRemoteName) this.updateAssign({imgRemoteName});
   }
 
   componentWillUnmount(): * {
@@ -71,17 +74,20 @@ export default class MatchModal extends React.Component<Props, State> {
   renderForm(){
     const { choices } = this.state;
     const { gitRemoteList, gitRemoteName, gitRepoName } = choices;
+    const { imgRemoteList, imgRemoteName, imgRepoName } = choices;
     const { dfPathDict } = choices;
 
     return(
       <MatchForm
         gitRemoteChoices={Helper.remoteOptions(choices.gitRemoteList)}
-        imgRemoteChoices={Helper.remoteOptions()}
+        imgRemoteChoices={Helper.remoteOptions(choices.imgRemoteList)}
         gitRepoChoices={Helper.repoOptions(gitRemoteList, gitRemoteName)}
-        imgRepoChoices={Helper.remoteOptions()}
+        imgRepoChoices={Helper.repoOptions(imgRemoteList, imgRemoteName)}
         dfPathChoices={Helper.dfPathChoices(gitRemoteName, gitRepoName, dfPathDict)}
         gitRemoteName={gitRemoteName}
         gitRepoName={gitRepoName}
+        imgRemoteName={imgRemoteName}
+        imgRepoName={imgRepoName}
         dfPath={choices.dfPath}
         buildCtxPath={choices.buildCtxPath}
         framework={choices.framework}
@@ -91,7 +97,7 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   renderTopRightLoader(){
-    if(!Helper.isLoading(this)) return null;
+    if(!Helper.isLoading(this.state)) return null;
     return <Loader.TopRightSpinner/>;
   }
 
@@ -149,18 +155,23 @@ export default class MatchModal extends React.Component<Props, State> {
     )
   }
 
-  updateGitRemotesList(gitRemoteList: Array<RemoteBundle>): void {
-    this.updateAssign({gitRemoteList});
+  updateRemotesList(type, remoteList: Array<RemoteBundle>): void {
+    console.log("RECEIVED " + type);
+    console.log(remoteList);
+    this.update(`${type}RemoteList`, remoteList)
   }
 
-  updateAssign(assignment:{string: any}){
+  updateAssign(assignment:{string: any}): void{
     Object.keys(assignment).forEach(key => {
       this.update(key, assignment[key]);
     });
   }
 
-  amInDetailMode(){
-    return this.props.mode === 'detail';
+  amInDetailMode(){ return this.props.mode === 'detail'; }
+  updateFetchProg(type, status) {
+    const key = `is${type[0].toUpperCase() + type.slice(1)}Fetching`;
+    console.log(`${type} --> ${status}`);
+    this.setState(s => ({ ...s, [key]: status }))
   }
 
   static defaultChoices(_){

@@ -1,6 +1,4 @@
 //@flow
-
-import DataUtils from "../../utils/DataUtils";
 import Backend from "../../utils/Backend";
 import MiscUtils from "../../utils/MiscUtils";
 import type {RemoteBundle, RemoteRepo} from "../../types/Types";
@@ -9,19 +7,17 @@ export default class Helper{
 
   static async submit(deploymentName, bundle, callback){
     const payload = {...bundle, deployment: deploymentName };
-    console.log(payload);
     const matching = await Backend.bPost('/microservices', payload);
-    console.log("OUTCOME ");
-    console.log(matching);
     callback(matching);
   }
 
-  static async fetchGitRemotes(inst){
-    inst.setState(s => ({...s, isGitFetching: true}));
-    const ep = '/remotes/loaded?entity=git';
-    const remotesList: RemoteBundle[] = await Backend.bFetch(ep);
-    inst.updateGitRemotesList(remotesList);
-    inst.setState(s => ({...s, isGitFetching: false}));
+  static async fetchGitRemotes(type: 'git' | 'img', dataSet, progSet){
+    progSet(type, true);
+    if(type === 'img') type = 'docker';
+    const remotes = await Backend.bFetch(`/remotes/loaded?entity=${type}`);
+    if(type === 'docker') type = 'img';
+    dataSet(type, remotes);
+    progSet(type, false);
   }
 
   static remoteOptions(remoteList: ?Array<RemoteBundle>){
@@ -43,7 +39,7 @@ export default class Helper{
     )
   }
 
-  static selectedRepo(remoteList, remoteName, repoName){
+  static selectedRepo(remoteList, remoteName, repoName): RemoteRepo {
     const remote = this.selectedRemote(remoteList, remoteName);
     return remote ? remote.contents.find(r => r.name === repoName) : null;
   }
@@ -83,10 +79,9 @@ export default class Helper{
     loadingCallback(false);
   }
 
-
-  static isLoading(inst){
-    const { isGitFetching, isDockerFetching } = inst.state;
-    const { isSubmitting, isPathsFetching } = inst.state;
-    return isGitFetching || isDockerFetching || isSubmitting || isPathsFetching;
+  static isLoading(state){
+    const { isGitFetching, isImgFetching } = state;
+    const { isSubmitting, isPathsFetching } = state;
+    return isGitFetching || isImgFetching || isSubmitting || isPathsFetching;
   }
 }
