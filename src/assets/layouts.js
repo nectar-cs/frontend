@@ -7,6 +7,15 @@ const Dims = {
   containerPaddingHor: "16px",
 };
 
+const ThemePage = styled.div`
+  background: ${p => p.theme.colors.primaryColor};
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
+
 const ModalLayout = styled.div`
   padding: 14px 20px 14px 20px;
   width: 580px;
@@ -71,6 +80,7 @@ const Layout = {
   BigCodeViewer,
   ModalLayout,
   Dims,
-  halfPanelOffset
+  halfPanelOffset,
+  ThemePage
 };
 export default Layout;

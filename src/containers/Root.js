@@ -17,6 +17,7 @@ export default class Root extends Component {
             { Root.renderRoute(R.auth.authenticate) }
             { Root.renderRoute(R.auth.login) }
             { Root.renderRoute(R.auth.register) }
+            { Root.renderRoute(R.auth.logout) }
             { Root.renderRoute(R.welcome.index) }
             { Root.renderRoute(R.bulkMatch.index) }
             { Root.renderRoute(R.deployments.debug) }

@@ -45,7 +45,7 @@ const TitleLogo = styled.img`
 const TitleText = styled.h1`
   display: inline-block;
   font-size: 30px;
-  letter-spacing: 2px;
+  letter-spacing: 1.2px;
   margin-left: 7px;
   color: ${p => p.theme.colors.contrastFont};
   text-transform: capitalize;

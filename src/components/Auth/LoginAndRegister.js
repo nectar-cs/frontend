@@ -87,7 +87,7 @@ export default class LoginAndRegister extends React.Component{
   }
 
   static renderAuthenticated(){
-    return<Redirect to='/' />;
+    return <Redirect to='/' />;
   }
 
   renderRegisterButton(){

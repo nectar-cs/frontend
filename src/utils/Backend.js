@@ -125,7 +125,15 @@ export default class Backend {
     return Cookies.set(key, value);
   }
 
+  static kvUnset(key){
+    Cookies.remove(key);
+  }
+
   static accessToken(){
     return Backend.kvGet('accessToken');
+  }
+
+  static clearAccessToken(){
+    Backend.kvUnset("accessToken");
   }
 }

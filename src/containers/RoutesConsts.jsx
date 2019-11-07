@@ -9,6 +9,7 @@ import InfraDebug from "../components/InfraDebug/InfraDebug";
 import BulkMatch from "../components/BulkMatch/BulkMatch";
 import Welcome from "../components/Welcome/Welcome";
 import DefaultWorkspace from "../components/Deployments/Default/Default";
+import Logout from "../components/Auth/Logout";
 
 export const ROUTES = {
   clusters: {
@@ -39,7 +40,8 @@ export const ROUTES = {
   auth: {
     authenticate: { path: '/auth/authenticate', comp: Authenticate },
     login: { path: '/auth/login', comp: LoginAndRegister },
-    register: { path: '/auth/register', comp: LoginAndRegister }
+    register: { path: '/auth/register', comp: LoginAndRegister },
+    logout: { path: '/auth/logout', comp: Logout }
   },
 
   experiments: {

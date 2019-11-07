@@ -40,7 +40,8 @@ const settings = {
   icon: 'settings',
   items: [
     { title: "Git & Docker", modal: IntegrationsModal },
-    { title: "Bulk Matching", path: '/bulk-matching' }
+    { title: "Bulk Matching", path: '/bulk-matching' },
+    { title: "Log out of Session", path: '/auth/logout' }
   ]
 };
 

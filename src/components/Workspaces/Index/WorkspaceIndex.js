@@ -10,9 +10,10 @@ import Backend from "../../../utils/Backend";
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import ColoredLabelList from "../../../widgets/ColoredLabelList/ColoredLabelList";
 import Button from "../../../assets/buttons";
+import Text from './../../../assets/text-combos'
 import Layout from './../../../assets/layouts'
+import ModestLink from "../../../widgets/ModestLink/ModestLink";
 import {Link, Redirect} from "react-router-dom";
-import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
 
 class WorkspaceIndexClass extends React.Component{
 
@@ -29,6 +30,7 @@ class WorkspaceIndexClass extends React.Component{
     this.setState(s => ({...s, isLoading: true}));
     Backend.raisingFetch('/workspaces', (payload) => {
       const workspaces = payload['data'];
+      // TODO have logic for begin tutorial here!
       this.setState((s) => ({...s, isLoading: false, workspaces }));
     }, this.props.apiErrorCallback);
   }
@@ -108,6 +110,7 @@ function WorkspaceHeader() {
   return(
     <tr>
       <th><p>Workspace</p></th>
+      <th><p>Default?</p></th>
       <th><p>Namespace Filters</p></th>
       <th><p>Label Filters</p></th>
       <th><p>Actions</p></th>
@@ -135,6 +138,9 @@ function WorkspaceRow(props) {
         <Link to={showPath}><p>{props.name}</p></Link>
       </td>
       <td>
+        <p><Text.BoldStatus>{props.is_default.toString()}</Text.BoldStatus></p>
+      </td>
+      <td>
         <ColoredLabelList
           labelType={props.ns_filter_type}
           labels={props.ns_filters}
@@ -159,10 +165,8 @@ function WorkspaceRow(props) {
 
 const WorkspaceIndex = AuthenticatedComponent.compose(
   ModalHostComposer.compose(
-    UpdateCheckComposer.compose(
-      ErrComponent.compose(
-        WorkspaceIndexClass
-      )
+    ErrComponent.compose(
+      WorkspaceIndexClass
     )
   )
 );
