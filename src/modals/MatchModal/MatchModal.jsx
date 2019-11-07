@@ -9,9 +9,11 @@ import Helper from "./Helper";
 import type {Deployment, Matching, RemoteBundle} from "../../types/Types";
 import Gulper from "./Gulper";
 import Text from "../../assets/text-combos";
-import DataUtils from "../../utils/DataUtils";
+import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
+import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
+import ModalClientComposer from "../../hocs/ModalClientComposer";
 
-export default class MatchModal extends React.Component<Props, State> {
+class MatchModalClass extends React.Component<Props, State> {
   constructor(props){
 
     super(props);
@@ -31,13 +33,13 @@ export default class MatchModal extends React.Component<Props, State> {
     this.delete = this.delete.bind(this);
     this.updateRemotesList = this.updateRemotesList.bind(this);
     this.updateFetchProg = this.updateFetchProg.bind(this);
+    this.reloadRemotes = this.reloadRemotes.bind(this);
   }
 
   componentDidMount() {
     this.gulper = new Gulper();
     this.gulper.setConsumableMatching(this.props.matching);
-    Helper.fetchRemotes('git', this.updateRemotesList, this.updateFetchProg);
-    Helper.fetchRemotes('img', this.updateRemotesList, this.updateFetchProg);
+    this.reloadRemotes();
   }
 
   componentWillReceiveProps(nextProps:Props): * {
@@ -55,8 +57,22 @@ export default class MatchModal extends React.Component<Props, State> {
         { this.renderHeader() }
         { this.renderTopRightLoader() }
         { this.renderForm() }
+        { this.renderNoRemotesPrompt() }
         { this.renderButtons() }
       </Fragment>
+    )
+  }
+
+  renderNoRemotesPrompt(){
+    if(Helper.isLoading(this.state)) return null;
+    if(this.hasAnyRemotes()) return null;
+    return(
+      <CenterAnnouncement
+        iconName='extension'
+        text="Matching only works with Git/Docker. Click to connect."
+        action={() => this.openIntegrationsModal()}
+        light={true}
+      />
     )
   }
 
@@ -74,6 +90,8 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   renderForm(){
+    if(!this.hasAnyRemotes()) return null;
+
     const { choices } = this.state;
     const { gitRemoteList, gitRemoteName, gitRepoName } = choices;
     const { imgRemoteList, imgRemoteName, imgRepoName } = choices;
@@ -90,8 +108,8 @@ export default class MatchModal extends React.Component<Props, State> {
         gitRepoName={gitRepoName}
         imgRemoteName={imgRemoteName}
         imgRepoName={imgRepoName}
-        dfPath={choices.dfPath}
-        buildCtxPath={choices.buildCtxPath}
+        dockerfilePath={choices.dockerfilePath}
+        dockerBuildPath={choices.dockerBuildPath}
         framework={choices.framework}
         notifyFormValueChanged={this.update}
       />
@@ -104,6 +122,9 @@ export default class MatchModal extends React.Component<Props, State> {
   }
 
   renderButtons(){
+    if(Helper.isLoading(this.state)) return null;
+    if(!this.hasAnyRemotes()) return null;
+
     return(
       <Button.BigBottomButtons>
         { this.renderDeleteButton() }
@@ -172,6 +193,11 @@ export default class MatchModal extends React.Component<Props, State> {
     )
   }
 
+  reloadRemotes(){
+    Helper.fetchRemotes('git', this.updateRemotesList, this.updateFetchProg);
+    Helper.fetchRemotes('img', this.updateRemotesList, this.updateFetchProg);
+  }
+
   updateRemotesList(type, remoteList: Array<RemoteBundle>): void {
     this.update(`${type}RemoteList`, remoteList)
   }
@@ -192,20 +218,32 @@ export default class MatchModal extends React.Component<Props, State> {
       gitRemoteList: [], imgRemoteList: [], dfPathDict: {},
       gitRemoteName: '', imgRemoteName: '',
       gitRepoName: '', imgRepoName: '',
-      dfPath: '', framework: '', buildCtxPath: ''
+      dockerfilePath: '', framework: '', dockerBuildPath: ''
     });
   }
 
+  hasAnyRemotes(){
+    const { gitRemoteList, imgRemoteList } = this.state.choices;
+    return gitRemoteList.length + imgRemoteList.length > 0;
+  }
+
   amInDetailMode(){ return this.props.mode === 'detail'; }
+
+  openIntegrationsModal(){
+    this.props.openModal(
+      IntegrationsModal,
+      { onDataChanged: this.reloadRemotes }
+    );
+  }
 }
 
 type State = {
   choices: {
     gitRemoteList: Array<RemoteBundle>,
     imgRemoteList: Array<RemoteBundle>,
-    dfPath: string,
+    dockerfilePath: string,
     dfPathDict: { [string]: Array<string> },
-    buildCtxPath: string,
+    dockerBuildPath: string,
     gitRemoteName: string,
     imgRemoteName: string,
     gitRepoName: string,
@@ -219,3 +257,9 @@ type Props = {
   matching: Matching,
   callback: () => void,
 }
+
+const MatchModal = ModalClientComposer.compose(
+  MatchModalClass
+);
+
+export default MatchModal;

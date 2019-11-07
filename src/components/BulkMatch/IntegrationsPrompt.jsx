@@ -8,10 +8,13 @@ import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncem
 import ModalClientComposer from "../../hocs/ModalClientComposer";
 
 class IntegrationsPromptClass extends React.Component<Props> {
-  render(){
-    const skip = () => this.props.callback(false);
-    const cont = () => this.showOffer();
 
+  constructor(props) {
+    super(props);
+    this.showOffer = this.showOffer.bind(this);
+  }
+
+  render(){
     return(
       <div className={s.connectContainer}>
         <div className={s.innerBox}>
@@ -19,15 +22,30 @@ class IntegrationsPromptClass extends React.Component<Props> {
           <i className={`${s.containerIcon} material-icons`}>extension</i>
           <p className={s.text}>{defaults.integration.skip}</p>
           <div className={s.buttons}>
-            <Button.FixedSmallButton emotion={'idle'} onClick={skip}>
-              Skip
-            </Button.FixedSmallButton>
-            <Button.FixedSmallButton onClick={cont}>
-              Connect
-            </Button.FixedSmallButton>
+            { this.renderSkipButton() }
+            { this.renderConnectButton() }
           </div>
         </div>
       </div>
+    )
+  }
+
+  renderConnectButton(){
+    return(
+      <Button.FixedSmallButton onClick={this.showOffer}>
+        Connect
+      </Button.FixedSmallButton>
+    )
+  }
+
+  renderSkipButton(){
+    const { callback, hideSkip } = this.props;
+    if(hideSkip) return null;
+
+    return(
+      <Button.FixedSmallButton emotion={'idle'} onClick={callback}>
+        Skip
+      </Button.FixedSmallButton>
     )
   }
 
@@ -38,7 +56,10 @@ class IntegrationsPromptClass extends React.Component<Props> {
   }
 }
 
-type Props = { callback: (boolean, {}) => string };
+type Props = {
+  callback: (boolean, {}) => string,
+  hideSkip: ?boolean
+};
 
 const IntegrationPrompt = ModalClientComposer.compose(
   IntegrationsPromptClass

@@ -16,7 +16,7 @@ export default function Micon(props){
 
 Micon.propTypes = {
   n: PropTypes.string.isRequired,
-  e: PropTypes.object,
+  e: PropTypes.any,
   size: PropTypes.string,
   rotate: PropTypes.number,
   callback: PropTypes.func,

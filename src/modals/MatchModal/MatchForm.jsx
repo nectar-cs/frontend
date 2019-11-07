@@ -52,7 +52,7 @@ class MatchFormClass extends React.Component<Props> {
     const { dfPathChoices } = this.props;
     return this.props.makeSelect(
       'Dockerfile Path',
-      'dfPath',
+      'dockerfilePath',
       MiscUtils.arrayOptions(dfPathChoices)
     );
   }
@@ -61,7 +61,7 @@ class MatchFormClass extends React.Component<Props> {
     if(!this.hasGitRemote()) return null;
     return this.props.makeInput(
       "Build Context Path",
-      "buildCtxPath",
+      "dockerBuildPath",
     )
   }
 
@@ -107,7 +107,7 @@ class MatchFormClass extends React.Component<Props> {
 
     gitRemoteName: PropTypes.string,
     imgRemoteName: PropTypes.string,
-    dfPath: PropTypes.string,
+    dockerfilePath: PropTypes.string,
 
     gitRepoName: PropTypes.string,
     imgRepoName: PropTypes.string,
@@ -125,9 +125,9 @@ type Props = {
   gitRemoteName: string,
   imgRemoteName: string,
   gitRepoName: string,
-  buildCtxPath: string,
+  dockerBuildPath: string,
   imgRepoName: PropTypes.string,
-  dfPath: string,
+  dockerfilePath: string,
   framework: PropTypes.string,
 }
 

@@ -117,7 +117,6 @@ class WorkspaceEditClass extends React.Component{
         <WorkspaceForm
           onFieldsChanged={this.onFieldsChanged}
           workspaceName={workspaceName}
-          isDefault={isDefault}
           namespaces={namespaces}
           labels={labels}
         />
@@ -198,7 +197,6 @@ class WorkspaceEditClass extends React.Component{
 
     const payload = {
       name: this.state.workspaceName,
-      is_default: this.state.isDefault,
       ns_filter_type: this.state.namespaces.filterType,
       ns_filters: this.state.namespaces.filters,
       lb_filter_type: this.state.labels.filterType,
