@@ -5,7 +5,7 @@ import Helper from "./Helper";
 
 const StringSimilarity = require('string-similarity');
 
-class DeploymentSetter extends Setter {
+class DeploymentNameSetter extends Setter {
   sideEffects(bundle): {} {
     const { gitRemoteList, imgRemoteList } = bundle;
     return { gitRemoteList, imgRemoteList };
@@ -27,8 +27,9 @@ class GitRemoteListSetter extends GitAndImgSetter {
   sideEffects(bundle) {
     const remoteList: Array<RemoteBundle> = this._value;
     const firstRemote: RemoteBundle = remoteList[0];
-    if(firstRemote)
+    if(firstRemote !== null)
       return { [`${this.type}RemoteName`]: firstRemote.identifier };
+    else return {};
   }
 }
 
@@ -44,7 +45,10 @@ class RemoteNameSetter extends GitAndImgSetter {
     const remoteName: string = this._value;
     const remoteList: Array<RemoteBundle> = this.remoteList(bundle);
     const repoNames = Helper.repoOptions(remoteList, remoteName);
+    console.log(this.type + " REMOTE NAME " + remoteName);
+    console.log(this.type + " REPO NAMES " + repoNames.join(', '));
     const repoGuess = this.guessRepo(bundle.deploymentName, repoNames);
+    console.log("SETTING TO " + repoGuess);
     return { [`${this.type}RepoName`]: repoGuess || '' };
   }
 }
@@ -68,7 +72,7 @@ class RepoNameSetter extends GitAndImgSetter {
       const framework = (this.repoObject(bundle) || {}).framework || '';
       const dockerfilePath = this.firstDockerfilePath(bundle) || '';
       return { framework, dockerfilePath };
-    } else return null;
+    } else return {};
   }
 }
 
@@ -103,10 +107,10 @@ export default class Gulper{
     const imgRemoteName = new RemoteNameSetter('img', {imgRepoName});
     const imgRemoteList = new GitRemoteListSetter('img', {imgRemoteName});
 
-    const deployment = new DeploymentSetter({gitRemoteList, imgRemoteList});
+    const deploymentName = new DeploymentNameSetter({gitRemoteList, imgRemoteList});
 
     this.master = new Setter({
-      deployment,
+      deploymentName,
       gitRemoteList,
       gitRemoteName,
       gitRepoName,

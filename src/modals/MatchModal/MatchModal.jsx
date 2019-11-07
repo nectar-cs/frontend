@@ -44,7 +44,7 @@ class MatchModalClass extends React.Component<Props, State> {
 
   componentWillReceiveProps(nextProps:Props): * {
     this.gulper.setConsumableMatching(nextProps.matching);
-    this.update('deployment', null);
+    this.update('deploymentName', nextProps.deployment.name);
   }
 
   componentWillUnmount(): * {
@@ -178,8 +178,7 @@ class MatchModalClass extends React.Component<Props, State> {
   createPassDownBundle(){
     const { choices } = this.state;
     const fetchDfPaths = this.fetchDfPaths;
-    const deploymentName = this.props.deployment.name;
-    return { ...choices, fetchDfPaths, deploymentName };
+    return { ...choices, fetchDfPaths };
   }
 
   fetchDfPaths(remoteName: string, repoName: string){
@@ -213,8 +212,9 @@ class MatchModalClass extends React.Component<Props, State> {
     this.setState(s => ({ ...s, [key]: status }))
   }
 
-  static defaultChoices(_){
+  static defaultChoices(props){
     return({
+      deploymentName: props.deployment.name,
       gitRemoteList: [], imgRemoteList: [], dfPathDict: {},
       gitRemoteName: '', imgRemoteName: '',
       gitRepoName: '', imgRepoName: '',
@@ -248,6 +248,7 @@ type State = {
     imgRemoteName: string,
     gitRepoName: string,
     imgRepoName: string,
+    deploymentName: string
   }
 }
 
