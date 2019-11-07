@@ -49,16 +49,14 @@ class BulkMatchingClass extends React.Component<Props, State> {
   }
 
   renderEmptyCluster() {
-    const {deployments} = this.state;
-
     if(this.isIntChecking()) return null;
     if(!this.hasPassedIntCheck()) return null;
-    if (deployments.length > 0) return null;
+    if(!this.isClusterTrivial()) return null;
 
     return(
       <CenterAnnouncement
-        text='No non-system deployments found in your cluster...'
-        iconName={''}
+        text='No deployments found in your cluster...'
+        iconName='search'
       />
     )
   }
@@ -76,6 +74,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
 
   renderLeftSide(){
     if(this.isIntChecking()) return null;
+    if(this.isClusterTrivial()) return null;
 
     return(
       <Layout.LeftPanel>
@@ -88,11 +87,13 @@ class BulkMatchingClass extends React.Component<Props, State> {
 
   renderRightSide(){
     if(this.isIntChecking()) return null;
+    if(this.isClusterTrivial()) return null;
 
     return(
       <Layout.RightPanel>
         { this.renderIntegrationsPrompt() }
         { this.renderMatchingModal() }
+        { this.renderSubmitted() }
       </Layout.RightPanel>
     )
   }
@@ -117,7 +118,8 @@ class BulkMatchingClass extends React.Component<Props, State> {
   }
 
   renderSubmitted(){
-    if(!this.state.areAllSubmitted) return;
+    const { selectedIndex, deployments } = this.state;
+    if(selectedIndex !== deployments.length) return null;
 
     return(
       <CenterAnnouncement
@@ -183,6 +185,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
   reloadMatchings(){ Helper.fetchMatchings(this.update); }
   hasPassedIntCheck(){ return !!this.state.isIntegrated; }
   isIntChecking(){ return !!this.state.isCheckingIntegration; }
+  isClusterTrivial() { return this.state.deployments.length === 0 }
 
   static defaultState(){
     return({
