@@ -5,6 +5,7 @@ export default class DockerBuildJob extends DockerJob {
   prepare(bundle){
     this.tarballUrl = bundle.tarballUrl;
     this.dockerfilePath = bundle.dockerfilePath;
+    this.dockerBuildPath = bundle.dockerBuildPath;
     this.outImageName = bundle.outImageName;
   }
 
@@ -12,6 +13,7 @@ export default class DockerBuildJob extends DockerJob {
     return {
       repoTarUrl: this.tarballUrl,
       dockerfilePath: this.dockerfilePath,
+      dockerBuildPath: this.dockerBuildPath,
       outputImg: this.outImageName
     };
   }

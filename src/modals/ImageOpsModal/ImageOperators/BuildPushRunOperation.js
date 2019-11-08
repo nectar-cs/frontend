@@ -70,6 +70,7 @@ export default class BuildPushRunOperation extends BaseOperator {
     instance.prepare({
       tarballUrl: tarJob.getTarballUrl(),
       dockerfilePath: this.matching.dockerfilePath,
+      dockerBuildPath: this.matching.dockerBuildPath,
       outImageName: this.outImageName
     })
   }

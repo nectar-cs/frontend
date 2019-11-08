@@ -16,10 +16,10 @@ export const defaults ={
     docker: ({dep, ns, dImg, cont}) => [
       `kubectl set image deploy/${dep} ${cont}=${dImg} -n ${ns}`
     ],
-    git: ({gRem, gRep, sha, dep, ns, dImg, dPath, cont}) => gRem && [
+    git: ({gRem, gRep, bPath, sha, dep, ns, dImg, dPath, cont}) => gRem && [
       `git clone git@github.com:${gRem}/${gRep}.git`,
       `git fetch origin ${sha}`,
-      `docker build .${dPath} -t ${dImg}`,
+      `docker build ${bPath} -f ${dPath} -t ${dImg}`,
       `docker push ${dImg}`,
       `kubectl set image deploy/${dep} ${cont}=${dImg} -n ${ns}`
     ],
