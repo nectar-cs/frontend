@@ -10,9 +10,9 @@ const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
 
 export default class MiscUtils {
 
-  static tor(func){
+  static tor(func, fallback){
     try{ return func() }
-    catch (_) { return null; }
+    catch (_) { return fallback || null; }
   }
 
   static image(name){

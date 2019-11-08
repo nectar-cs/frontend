@@ -1,6 +1,5 @@
 import Backend from "../../utils/Backend";
 import Kapi from "../../utils/Kapi";
-
 export default class Helper{
 
   static async fetchDeployments(setter){

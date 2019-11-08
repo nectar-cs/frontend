@@ -13,7 +13,9 @@ export default class DeploymentLogsModal extends React.Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedPodName: defaultPodName(props)
+      podName: defaultPodName(props),
+      sinceMinutes: 10,
+      sinceSeconds: 0
     };
     this.update = this.update.bind(this);
   }
@@ -32,7 +34,7 @@ export default class DeploymentLogsModal extends React.Component<Props> {
     const { deployment, mode } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.modalImage(this, 'book')}
+        graphicName={MiscUtils.modalImage(this, 'format_list_bulleted')}
         title={defaults.header.title(deployment.name, mode)}
         subtitle={defaults.header.subtitle}
         graphicType={MiscUtils.modalGraphicType(this)}
@@ -42,10 +44,13 @@ export default class DeploymentLogsModal extends React.Component<Props> {
 
   renderLogsForm(){
     const { pods } = this.props.deployment;
+    const { sinceMinutes, sinceSeconds, podName } = this.state;
     return(
       <LogsForm
-        selectedPodName={this.state.selectedPodName}
         podNameChoices={pods.map(p => p.name)}
+        selectedPodName={podName}
+        sinceMinutes={sinceMinutes}
+        sinceSeconds={sinceSeconds}
         notifyFormValueChanged={this.update}
       />
     )
@@ -53,12 +58,13 @@ export default class DeploymentLogsModal extends React.Component<Props> {
 
   renderLogs(){
     const { deployment } = this.props;
-    const { selectedPodName } = this.state;
+    const { sinceMinutes, sinceSeconds, podName } = this.state;
     return(
       <ResourceLogs
         namespace={deployment.namespace}
-        resourceType='pods'
-        resourceName={selectedPodName}
+        podName={podName}
+        sinceMinutes={sinceMinutes}
+        sinceSeconds={sinceSeconds}
       />
     )
   }
@@ -69,7 +75,7 @@ export default class DeploymentLogsModal extends React.Component<Props> {
 }
 
 function defaultPodName(props){
-  return MiscUtils.tor(() =>  props.deployment.pods[0].name);
+  return MiscUtils.tor((() => props.deployment.pods[0].name), '');
 }
 
 type Props = {

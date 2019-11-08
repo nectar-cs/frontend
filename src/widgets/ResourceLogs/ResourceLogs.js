@@ -1,19 +1,18 @@
 //@flow
-import React, {useRef} from 'react'
+import React, {Fragment} from 'react'
 import moment from "moment";
 import {LogsView} from "./Styles";
 import Text from "../../assets/text-combos";
 import Kapi from "../../utils/Kapi";
+import Loader from "../../assets/loading-spinner";
+import CenterAnnouncement from "../CenterAnnouncement/CenterAnnouncement";
 
-const POLL_RATE = 1500;
+const POLL_RATE = 2500;
 
 export default class ResourceLogs extends React.Component<Props> {
   constructor(props) {
     super(props);
-    this.state = {
-      startAt: moment().add({seconds: -10}),
-      logs: []
-    };
+    this.state = { logs: [], isFetching: false };
     this.lineEndRef = React.createRef();
     this.fetchLogsRepeatWrapper = this.fetchLogsRepeatWrapper.bind(this);
   }
@@ -23,7 +22,6 @@ export default class ResourceLogs extends React.Component<Props> {
   }
 
   componentWillReceiveProps(){
-    this.resetTime();
   }
 
   renderLogLines(){
@@ -33,6 +31,29 @@ export default class ResourceLogs extends React.Component<Props> {
   }
 
   render(){
+    const { isFetching } = this.state;
+    return(
+      <Fragment>
+        <Loader.TopRightSpinner there={isFetching}/>
+        { this.renderNoPod() }
+        { this.renderMainContent() }
+      </Fragment>
+    )
+  }
+
+  renderNoPod(){
+    if(this.props.podName) return null;
+    return(
+      <CenterAnnouncement
+        iconName='search'
+        text='No pods to read logs from'
+      />
+    )
+  }
+
+  renderMainContent(){
+    if(!this.props.podName) return null;
+
     return(
       <LogsView>
         { this.renderLogLines() }
@@ -48,22 +69,17 @@ export default class ResourceLogs extends React.Component<Props> {
   }
 
   async fetchLogs(){
-    const logs = (await Kapi.bFetch(this.genUrl()))['logs'];
+    this.setState(s => ({...s, isFetching: true}));
+    const logs = await Kapi.bFetch(this.genUrl());
     if(logs) this.setState(s => ({...s, logs}));
+    this.setState(s => ({...s, isFetching: false}));
     this.lineEndRef.current.scrollIntoView({ behavior: "smooth" });
   }
 
   genUrl(){
-    const { namespace, resourceType, resourceName } = this.props;
-    const ep = `/api/${resourceType}/${namespace}/${resourceName}/logs`;
-    return `${ep}?timestamp=${this.state.startAt.format()}`;
-  }
-
-  resetTime(){
-    this.setState(s => ({...s,
-      startAt: moment().add({seconds: -10}),
-      logs: []
-    }))
+    const { namespace, podName, sinceMinutes, sinceSeconds } = this.props;
+    const secondsOffset = sinceMinutes * 60 + sinceSeconds;
+    return `/api/pods/${namespace}/${podName}/logs?since_seconds=${secondsOffset}`;
   }
 
   componentWillUnmount(): * { this._willUnmount = true; }
@@ -71,6 +87,7 @@ export default class ResourceLogs extends React.Component<Props> {
 
 type Props = {
   namespace: string,
-  resourceType: 'pod' | 'deployment' | 'service',
-  resourceName: string
+  podName: string,
+  sinceMinutes: string,
+  sinceSeconds: string
 };

@@ -9,19 +9,36 @@ export default class FormComponent {
         super(props);
         this.makeSelect = this.makeSelect.bind(this);
         this.makeInput = this.makeInput.bind(this);
+        this.makeSelectItem = this.makeSelectItem.bind(this);
+        this.makeLine = this.makeLine.bind(this);
       }
 
-      makeSelect(title, field, choices){
-        const callback = (e) => { this.parentCallback(field, e.target.value); };
+      makeLine(title, builders){
         return(
           <In.InputLine>
             <In.LineLabel size='large'>{title}</In.LineLabel>
-            <In.LineInput
-              as='select'
-              value={this.getValue(field)}
-              onChange={(e) => callback(e)}>
-              { choices }
-            </In.LineInput>
+            { builders.map(b => b()) }
+          </In.InputLine>
+        )
+      }
+
+      makeSelectItem(field, choices){
+        const callback = (e) => { this.parentCallback(field, e.target.value); };
+        return(
+          <In.LineInput
+            as='select'
+            value={this.getValue(field)}
+            onChange={(e) => callback(e)}>
+            { choices }
+          </In.LineInput>
+        )
+      }
+
+      makeSelect(title, field, choices){
+        return(
+          <In.InputLine>
+            <In.LineLabel size='large'>{title}</In.LineLabel>
+            { this.makeSelectItem(field, choices) }
           </In.InputLine>
         )
       }
@@ -46,6 +63,8 @@ export default class FormComponent {
           <InnerComponent
             makeSelect={this.makeSelect}
             makeInput={this.makeInput}
+            makeSelectItem={this.makeSelectItem}
+            makeLine={this.makeLine}
             {...this.props}
           />
         )
