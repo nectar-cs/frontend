@@ -182,7 +182,7 @@ export default class ImageForm extends React.Component {
       reload: "Force pull & apply an image with the same name",
       change: "Supply a new image name",
       scale: "Scale the number of pods",
-      docker: "Choose a docker image from your remote registry",
+      docker: "Apply a different image from the same registry",
       git: "Build & apply an image from a git remote"
     })
   }

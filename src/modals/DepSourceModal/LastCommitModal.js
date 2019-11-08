@@ -9,19 +9,18 @@ import ModalButton from "../../widgets/Buttons/ModalButton";
 import Helper from "./Helper";
 import CommitInfo from "./CommitInfo";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
+import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
+import {ROUTES} from "../../containers/RoutesConsts";
 
-export default class DepSourceModal extends React.Component {
+export default class LastCommitModal extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {
-      isFetching: false,
-      commit: null
-    }
+    this.state = { isFetching: false, commit: null }
   }
 
   componentDidMount(){
-    if(Helper.isAnnotated(this))
+    if(this.isMatched() && this.isAnnotated())
       Helper.fetchCommit(this);
   }
 
@@ -29,8 +28,9 @@ export default class DepSourceModal extends React.Component {
     return(
       <Layout.ModalLayout>
         { this.renderHeader() }
-        { this.renderHowTo() }
+        { this.renderExplainAnnotations() }
         { this.renderCommitInfo() }
+        { this.renderNotMatched() }
         { this.renderLoading() }
         { this.renderButton() }
       </Layout.ModalLayout>
@@ -48,21 +48,33 @@ export default class DepSourceModal extends React.Component {
     )
   }
 
-  renderHowTo(){
-    if(Helper.isAnnotated(this)) return null;
+  renderNotMatched(){
+    if(!this.isAnnotated()) return null;
+    if(this.isMatched()) return null;
+
+    return(
+      <CenterAnnouncement
+        iconName='extension'
+        text={defaults.notMatched.line}
+        light={true}
+        contentType='nav-link'
+        action={ROUTES.bulkMatch.index.path}
+      />
+    )
+  }
+
+  renderExplainAnnotations(){
+    if(this.isAnnotated()) return null;
+
     return(
       <HowToAnnotate deployment={this.props.deployment}/>
     )
   }
 
   renderCommitInfo(){
-    if(!this.state.commit) return null;
-
-    return(
-      <CommitInfo
-        commit={this.state.commit}
-      />
-    )
+    if(!this.isAnnotated()) return null;
+    if(!this.isMatched()) return null;
+    return <CommitInfo commit={this.state.commit}/>;
   }
 
   renderLoading(){
@@ -71,7 +83,8 @@ export default class DepSourceModal extends React.Component {
   }
 
   renderButton(){
-    if(Helper.isAnnotated(this)) return null;
+    if(this.isAnnotated()) return null;
+
     return(
       <ModalButton
         callback={() => Helper.goToImageOps(this)}
@@ -79,6 +92,9 @@ export default class DepSourceModal extends React.Component {
       />
     )
   }
+
+  isMatched(){ return Helper.isMatched(this.props.matching); }
+  isAnnotated(){ return Helper.isAnnotated(this); }
 
   static propTypes = {
     deployment: Types.Deployment,

@@ -7,7 +7,7 @@ import CardRow from "./CardRow";
 import {Types} from "../../../types/CommonTypes";
 import ImageOpsModal from "../../../modals/ImageOpsModal/View/ImageOpsModal";
 import { S } from "./DeploymentCardStyles"
-import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
+import LastCommitModal from "../../../modals/DepSourceModal/LastCommitModal";
 import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
 import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
 import {Link} from "react-router-dom";
@@ -156,7 +156,7 @@ export default class DeploymentCard extends React.Component {
   openSourceModal(){
     const { deployment, matching, replaceModal } = this.props;
     let bundle = {deployment, matching, replaceModal, mode: 'modal'};
-    this.props.openModal(DepSourceModal, bundle);
+    this.props.openModal(LastCommitModal, bundle);
   }
 
   openPortForwardModal(){

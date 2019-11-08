@@ -16,7 +16,11 @@ export default class Helper{
     const { sha } = (commit || {});
     return sha;
   }
-  
+
+  static isMatched(matching){
+    return matching && matching.gitRemoteId;
+  }
+
   static fetchCommit(inst){
     const { deployment, matching } = inst.props;
     inst.setState(s => ({...s, isFetching: true}));

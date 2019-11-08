@@ -6,6 +6,11 @@ const defaults = {
     title: (name) => `${name} / active commit`,
     subtitle: "What's running on this deployment?"
   },
+
+  notMatched: {
+    line: "Bind to a repo so Mosaic can read the commit. Click me start."
+  },
+
   howTo: {
     title: "Y u no Annotate?",
     title2: "Annotate from your CD",

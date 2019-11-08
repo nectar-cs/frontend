@@ -9,10 +9,10 @@ import Text from "../../../assets/text-combos";
 import {connect} from "react-redux";
 import {Types} from "../../../types/CommonTypes";
 import ImageOpsSection from "./ImageOpsSection";
-import PodsView from "../../../widgets/PodsView/PodsView";
+import PodsAtGlance from "../../../widgets/PodsView/PodsAtGlance";
 import HttpOpsSection from "./HttpOpsSection";
 import moment from "moment";
-import DepSourceModal from "../../../modals/DepSourceModal/DepSourceModal";
+import LastCommitModal from "../../../modals/DepSourceModal/LastCommitModal";
 import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
 import MatchingSection from "./MatchingSection";
 
@@ -145,7 +145,7 @@ class OverviewSectionClass extends Section {
     return(
       <Layout.TextLine low={1.4}>
         <p>Annotations about the latest commit not found.</p>
-        <T><u>Learn more.</u></T>
+        <TA onClick={this.openCommitModal}><u>Learn more.</u></TA>
       </Layout.TextLine>
     )
   }
@@ -173,12 +173,8 @@ class OverviewSectionClass extends Section {
   }
 
   renderPods(){
-    const { deployment } = this.props;
-    if(!deployment) return null;
-
-    return(
-      <PodsView pods={deployment.pods}/>
-    );
+    const { deployment, matching } = this.props;
+    return <PodsAtGlance deployment={deployment} matching={matching}/>;
   }
 
   _renderActivityModal(key, source) {
@@ -195,7 +191,7 @@ class OverviewSectionClass extends Section {
   openCommitModal(){
     const { deployment, matching } = this.props;
     this.props.openModal(
-      DepSourceModal,
+      LastCommitModal,
       { deployment, matching }
     )
   }
