@@ -10,6 +10,7 @@ import PortForwardSection from "./PortForwardSection";
 import HttpOpsSection from "./HttpOpsSection";
 import HotReloadSection from "./HotReloadSection";
 import MatchingSection from "./MatchingSection";
+import type {Deployment, Matching} from "../../../types/Types";
 
 export default class Helper {
 
@@ -25,29 +26,20 @@ export default class Helper {
     MatchingSection
   ];
 
-  static defaultSection = LoggingSection;
+  static defaultSection = OverviewSection;
 
   static classNameToKey(className){
     const key = className.replace("Section", "");
     return key.charAt(0).toLowerCase() + key.slice(1);
   }
 
-  static fetchDeployment(inst){
-    const ep = `/api/deployments/${this.depNs(inst)}/${this.depName(inst)}`;
-    Kapi.fetch(ep, resp => {
-      const deployment = DataUtils.obj2Camel(resp);
-      inst.setState(s => ({...s, deployment}));
-    });
+  static async fetchDeployment(namespace: string, name: string): Deployment{
+    const depEp = `/api/deployments/${namespace}/${name}`;
+    return await Kapi.bFetch(depEp);
   }
 
-  static fetchMatching(inst){
-    const ep = `/microservices/${this.depName(inst)}`;
-    Backend.raisingFetch(ep, resp => {
-      const matching = DataUtils.obj2Camel(resp)['data'];
-      inst.setState(s => ({...s, matching}));
-    }, () => inst.setState(s => ({...s, matching: null})));
+  static async fetchMatching(name: string): Matching{
+    const matchingEp = `/microservices/${name}`;
+    return await Backend.bFetch(matchingEp);
   }
-
-  static depName(inst){ return inst.props.match.params['id'] }
-  static depNs(inst){ return inst.props.match.params['ns'] }
 }

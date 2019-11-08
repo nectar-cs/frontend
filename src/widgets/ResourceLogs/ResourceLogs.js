@@ -1,6 +1,5 @@
 //@flow
 import React, {Fragment} from 'react'
-import moment from "moment";
 import {LogsView} from "./Styles";
 import Text from "../../assets/text-combos";
 import Kapi from "../../utils/Kapi";
@@ -14,19 +13,22 @@ export default class ResourceLogs extends React.Component<Props> {
     super(props);
     this.state = { logs: [], isFetching: false };
     this.lineEndRef = React.createRef();
+    this.isLoopRunning = true;
     this.fetchLogsRepeatWrapper = this.fetchLogsRepeatWrapper.bind(this);
   }
 
-  componentDidMount(): void {
+  async componentDidMount(): void {
     this.fetchLogsRepeatWrapper();
   }
 
   componentWillReceiveProps(){
+    if(!this.isLoopRunning)
+      this.fetchLogsRepeatWrapper();
   }
 
   renderLogLines(){
     return this.state.logs.map((log, i) => (
-      <Text.Code key={i} chill>{log}</Text.Code>
+      <Text.Code key={`${log}-${i}`} chill>{log}</Text.Code>
     ))
   }
 
@@ -42,17 +44,17 @@ export default class ResourceLogs extends React.Component<Props> {
   }
 
   renderNoPod(){
-    if(this.props.podName) return null;
+    if(this.amReady()) return null;
     return(
       <CenterAnnouncement
         iconName='search'
-        text='No pods to read logs from'
+        text='No pods to read logs from.'
       />
     )
   }
 
   renderMainContent(){
-    if(!this.props.podName) return null;
+    if(!this.amReady()) return null;
 
     return(
       <LogsView>
@@ -63,15 +65,18 @@ export default class ResourceLogs extends React.Component<Props> {
   }
 
   async fetchLogsRepeatWrapper(){
-    if(this._willUnmount) return;
-    await this.fetchLogs();
-    setTimeout(this.fetchLogsRepeatWrapper, POLL_RATE);
+    if(!this._willUnmount && this.amReady()){
+      await this.fetchLogs();
+      setTimeout(this.fetchLogsRepeatWrapper, POLL_RATE);
+    } else {
+      this.isLoopRunning = false;
+    }
   }
 
   async fetchLogs(){
     this.setState(s => ({...s, isFetching: true}));
     const logs = await Kapi.bFetch(this.genUrl());
-    if(logs) this.setState(s => ({...s, logs}));
+    if((logs || []).length > 0) this.setState(s => ({...s, logs}));
     this.setState(s => ({...s, isFetching: false}));
     this.lineEndRef.current.scrollIntoView({ behavior: "smooth" });
   }
@@ -80,6 +85,10 @@ export default class ResourceLogs extends React.Component<Props> {
     const { namespace, podName, sinceMinutes, sinceSeconds } = this.props;
     const secondsOffset = sinceMinutes * 60 + sinceSeconds;
     return `/api/pods/${namespace}/${podName}/logs?since_seconds=${secondsOffset}`;
+  }
+
+  amReady(){
+    return !!this.props.podName;
   }
 
   componentWillUnmount(): * { this._willUnmount = true; }

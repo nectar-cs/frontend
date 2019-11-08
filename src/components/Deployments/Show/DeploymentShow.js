@@ -5,6 +5,8 @@ import Helper from "./Helper";
 import S from './DeploymentShowStyles'
 import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
+import Layout from "../../../assets/layouts";
+import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 
 class DeploymentShowClass extends React.Component{
 
@@ -16,6 +18,7 @@ class DeploymentShowClass extends React.Component{
       deployment: null,
       matching: null,
       commit: null,
+      isInitialFetching: true,
       focusedSection
     };
 
@@ -26,19 +29,31 @@ class DeploymentShowClass extends React.Component{
   }
 
   componentDidMount(){
-    this.reload();
+    this.reloadLoop();
   }
 
   render(){
     return(
       <Fragment>
+        { this.renderInitialFetching() }
         { this.renderSections() }
         { this.renderRightSideModal() }
       </Fragment>
     )
   }
 
+  renderInitialFetching(){
+    if(!this.isInitialFetching()) return null;
+    return(
+      <Layout.FullWidthPanel>
+        <CenterLoader/>
+      </Layout.FullWidthPanel>
+    )
+  }
+
   renderSections(){
+    if(this.isInitialFetching()) return null;
+
     const { deployment, matching  } = this.state;
     const { focusedSection } = this.state;
     const Sections = () => Helper.sectionClasses.map(Section => (
@@ -78,10 +93,25 @@ class DeploymentShowClass extends React.Component{
     this.setState(s => ({ ...s, focusedSection }));
   }
 
-  reload(){
-    Helper.fetchDeployment(this);
-    Helper.fetchMatching(this);
+  async reloadLoop(){
+    while(!this._willUnmount){
+      await this.reload();
+      await this.pollWait();
+    }
   }
+
+  async reload(){
+    const { ns, id: name } = this.props.match.params;
+    const deployment = await Helper.fetchDeployment(ns, name);
+    this.update({deployment, isInitialFetching: false});
+    const matching = await Helper.fetchMatching(name);
+    this.update({matching});
+  }
+
+  update(assignments){ this.setState(s => ({...s, ...assignments})); }
+  isInitialFetching(){ return this.state.isInitialFetching; }
+  componentWillUnmount(): * { this._willUnmount = true; }
+  async pollWait() {return new Promise(r => setTimeout(r, 5000));}
 }
 
 const DeploymentShow = AuthenticatedComponent.compose(
