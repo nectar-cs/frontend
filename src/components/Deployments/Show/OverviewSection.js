@@ -12,9 +12,9 @@ import ImageOpsSection from "./ImageOpsSection";
 import PodsAtGlance from "../../../widgets/PodsView/PodsAtGlance";
 import HttpOpsSection from "./HttpOpsSection";
 import moment from "moment";
-import LastCommitModal from "../../../modals/DepSourceModal/LastCommitModal";
 import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
 import MatchingSection from "./MatchingSection";
+import LastCommitModal from "../../../modals/LastCommitModal/LastCommitModal";
 
 function T(props){
   return <Text.P raw pushed {...props}>{props.children}</Text.P>

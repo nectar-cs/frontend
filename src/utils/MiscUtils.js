@@ -48,9 +48,8 @@ export default class MiscUtils {
     return array.join(', ')
   }
 
-  static commitDetailPath(deployment, matching){
+  static commitGHPath(commit, matching){
     const {gitRemoteId, gitRepoName} = matching;
-    const { commit } = deployment;
     return `/remotes/${gitRemoteId}/${gitRepoName}/commit/${commit.sha}`;
   }
 

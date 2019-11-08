@@ -1,3 +1,4 @@
+//@flow
 import React from 'react'
 import Layout from "../../assets/layouts";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
@@ -6,11 +7,12 @@ import defaults from "./defaults";
 import {Types} from "../../types/CommonTypes";
 import HowToAnnotate from "./HowToAnnotate";
 import ModalButton from "../../widgets/Buttons/ModalButton";
-import Helper from "./Helper";
 import CommitInfo from "./CommitInfo";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import {ROUTES} from "../../containers/RoutesConsts";
+import Backend from "../../utils/Backend";
+import ImageOpsModal from "../ImageOpsModal/View/ImageOpsModal";
 
 export default class LastCommitModal extends React.Component {
 
@@ -19,9 +21,8 @@ export default class LastCommitModal extends React.Component {
     this.state = { isFetching: false, commit: null }
   }
 
-  componentDidMount(){
-    if(this.isMatched() && this.isAnnotated())
-      Helper.fetchCommit(this);
+  async componentDidMount(){
+    this.fetchCommit();
   }
 
   render(){
@@ -31,6 +32,7 @@ export default class LastCommitModal extends React.Component {
         { this.renderExplainAnnotations() }
         { this.renderCommitInfo() }
         { this.renderNotMatched() }
+        { this.renderCommitFetchFailed() }
         { this.renderLoading() }
         { this.renderButton() }
       </Layout.ModalLayout>
@@ -44,6 +46,20 @@ export default class LastCommitModal extends React.Component {
         graphicName={MiscUtils.msImage(deployment, matching)}
         title={defaults.header.title(deployment.name)}
         subtitle={defaults.header.subtitle}
+      />
+    )
+  }
+
+  renderCommitFetchFailed(){
+    if(!this.isMatched() || !this.isAnnotated()) return null;
+    if(this.isCommitReady()) return null;
+    const { sha } = this.props.deployment.commit;
+    const { gitRemoteName } = this.props.matching;
+
+    return(
+      <CenterAnnouncement
+        iconName='sentiment_dissatisfied'
+        text={defaults.noFetch.message(gitRemoteName, sha)}
       />
     )
   }
@@ -72,8 +88,7 @@ export default class LastCommitModal extends React.Component {
   }
 
   renderCommitInfo(){
-    if(!this.isAnnotated()) return null;
-    if(!this.isMatched()) return null;
+    if(!this.isCommitReady()) return null;
     return <CommitInfo commit={this.state.commit}/>;
   }
 
@@ -87,14 +102,45 @@ export default class LastCommitModal extends React.Component {
 
     return(
       <ModalButton
-        callback={() => Helper.goToImageOps(this)}
+        callback={() => this.goToImageOps()}
         title={"Deploy from Git..."}
       />
     )
   }
 
-  isMatched(){ return Helper.isMatched(this.props.matching); }
-  isAnnotated(){ return Helper.isAnnotated(this); }
+  async fetchCommit(){
+    if(this.isMatched() && this.isAnnotated()){
+      this.setState(s => ({...s, isFetching: false}));
+      const commit = await Backend.bFetch(this.commitAddr());
+      this.setState(s => ({...s, commit, isFetching: false}));
+    }
+  }
+
+  isMatched(): boolean {
+    const { matching } = this.props;
+    return matching && !!matching.gitRemoteId;
+  }
+
+  isAnnotated(): boolean {
+    const { deployment } = this.props;
+    return deployment && deployment.commit && !!deployment.commit.sha
+  }
+
+  isCommitReady(): boolean{
+    return !!this.state.commit;
+  }
+
+  commitAddr(){
+    const { deployment, matching } = this.props;
+    return MiscUtils.commitGHPath(deployment.commit, matching);
+  }
+
+  goToImageOps(){
+    const { deployment, matching } = this.props;
+    let bundle = { deployment, matching };
+    bundle = {...bundle, operationType: 'git'};
+    this.props.openModal(ImageOpsModal, bundle);
+  }
 
   static propTypes = {
     deployment: Types.Deployment,

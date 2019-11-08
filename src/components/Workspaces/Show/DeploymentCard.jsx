@@ -7,12 +7,12 @@ import CardRow from "./CardRow";
 import {Types} from "../../../types/CommonTypes";
 import ImageOpsModal from "../../../modals/ImageOpsModal/View/ImageOpsModal";
 import { S } from "./DeploymentCardStyles"
-import LastCommitModal from "../../../modals/DepSourceModal/LastCommitModal";
 import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
 import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
 import {Link} from "react-router-dom";
 import HotReloadModal from "../../../modals/HotReloadingModal/HotReloadModal";
 import PodModal from "../../../modals/PodModal/PodModal";
+import LastCommitModal from "../../../modals/LastCommitModal/LastCommitModal";
 
 export default class DeploymentCard extends React.Component {
 

@@ -11,6 +11,10 @@ const defaults = {
     line: "Bind to a repo so Mosaic can read the commit. Click me start."
   },
 
+  noFetch: {
+    message: (addr, sha) => `Fetch failed - ${addr} isn't returning data for sha ${sha}.`
+  },
+
   howTo: {
     title: "Y u no Annotate?",
     title2: "Annotate from your CD",
