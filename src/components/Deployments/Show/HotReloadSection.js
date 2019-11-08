@@ -1,6 +1,5 @@
 import React from 'react'
 import Section from "./Section";
-import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
 import HotReloadModal from "../../../modals/HotReloadingModal/HotReloadModal";
 
 export default class HotReloadSection extends Section {
@@ -16,5 +15,6 @@ export default class HotReloadSection extends Section {
     )
   }
 
-  _className() { return "HotReloadSection"; }
+  _className() { return HotReloadSection._className() }
+  static _className(){ return "HotReloadSection"; }
 }

@@ -14,5 +14,6 @@ export default class CommandsSection extends Section {
     );
   }
 
-  _className() { return "CommandsSection"; }
+  _className() { return CommandsSection._className() }
+  static _className(){ return "CommandsSection"; }
 }

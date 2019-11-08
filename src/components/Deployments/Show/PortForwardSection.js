@@ -14,5 +14,6 @@ export default class PortForwardSection extends Section {
     );
   }
 
-  _className() { return "PortForwardSection"; }
+  _className() { return PortForwardSection._className() }
+  static _className(){ return "PortForwardSection"; }
 }

@@ -5,12 +5,12 @@ import { S } from './ImageFormStyles'
 import MiscUtils from "../../../utils/MiscUtils";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 import {defaults} from "./defaults";
-import {ROUTES} from "../../../containers/RoutesConsts";
 import IntegrationsModal from "../../IntegrationsModal/IntegrationsModal";
 import {Types} from "../../../types/CommonTypes";
 import {ImageActionsModalHelper} from "./ImageActionsModalHelper";
 import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import ModalClientComposer from "../../../hocs/ModalClientComposer";
+import {ROUTES} from "../../../containers/RoutesConsts";
 
 export default class ImageForm extends React.Component {
   render(){
@@ -139,19 +139,22 @@ export default class ImageForm extends React.Component {
     )
   }
 
-
   renderDockBlock(){
     if(this.props.operationType !== 'docker') return null;
     if(this.props.availableTags) return null;
     const args = { remoteType:'Docker', remoteEntity: 'registry' };
-    return <BlockPrompt {...args}/>;
+    return <BlockPrompt openSection={this.props.openSection} {...args}/>;
   }
 
   renderGitBlock(){
-    if(this.props.operationType !== 'git') return null;
-    if(this.props.availableBranches) return null;
-    const args = { remoteType: 'Git', remoteEntity: 'repo' };
-    return <BlockPrompt {...args}/>;
+    const { operationType, availableBranches, availableTags } = this.props;
+    if(operationType === 'git'){
+      if(availableBranches && availableTags)
+        return null;
+
+      const args = { remoteType: 'Git & Docker', remoteEntity: 'repo and a registry' };
+      return <BlockPrompt openSection={this.props.openSection} {...args}/>;
+    } else return null;
   }
 
   onAssignment(name, event){
@@ -201,12 +204,13 @@ export default class ImageForm extends React.Component {
 }
 
 function BlockPromptFunc(props){
-  const replaceModal = props.replaceModal;
-  const bindPath = ROUTES.bulkMatch.index.path;
+  const replaceModal = props.openModal;
   const connAction = () => replaceModal(IntegrationsModal);
+  const bindPath =ROUTES.bulkMatch.index.path;
 
   const l1 = defaults.els.blockedConn(connAction, props.remoteType);
   const l2 = defaults.els.blockedBind(bindPath, props.remoteEntity);
+
   const icon = defaults.els.blockedIcon;
 
   return(
@@ -222,5 +226,5 @@ const BlockPrompt = ModalClientComposer.compose(BlockPromptFunc);
 BlockPromptFunc.propTypes = {
   replaceModal: PropTypes.func.isRequired,
   remoteType: PropTypes.string.isRequired,
-  remoteEntity: PropTypes.string.isRequired
+  remoteEntity: PropTypes.string.isRequired,
 };

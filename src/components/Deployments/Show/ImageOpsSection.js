@@ -16,5 +16,6 @@ export default class ImageOpsSection extends Section {
     );
   }
 
-  _className() { return "ImageOpsSection"; }
+  static _className(){ return "ImageOpsSection"; }
+  _className() { return ImageOpsSection._className() }
 }

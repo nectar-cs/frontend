@@ -71,14 +71,11 @@ export default class Section extends React.Component {
     return <p>Unimplemented ({this._className()})</p>;
   }
 
-  _className(){
-    return this.constructor.name.replace("Class", "");
-  }
-
   key(){
     return Helper.classNameToKey(this._className());
   }
 
+  _className(){ throw "Unimplemented!" }
   config() { return defaults.sections[this.key()] }
   iconName(){ return this.config().iconName }
   title(){ return this.config().title  }

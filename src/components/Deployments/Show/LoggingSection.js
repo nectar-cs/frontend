@@ -16,5 +16,6 @@ export default class LoggingSection extends Section {
     );
   }
 
-  _className() { return "LoggingSection"; }
+  _className() { return LoggingSection._className() }
+  static _className(){ return "LoggingSection"; }
 }

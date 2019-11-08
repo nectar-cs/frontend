@@ -19,5 +19,6 @@ export default class MatchingSection extends Section {
     )
   }
 
-  _className() { return "MatchingSection"; }
+  _className() { return MatchingSection._className() }
+  static _className(){ return "MatchingSection"; }
 }

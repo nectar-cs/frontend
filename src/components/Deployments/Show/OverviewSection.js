@@ -214,7 +214,8 @@ class OverviewSectionClass extends Section {
     matching: Types.Matching
   };
 
-  _className() { return "OverviewSection"; }
+  _className() { return OverviewSectionClass._className() }
+  static _className(){ return "OverviewSection"; }
 }
 
 function s2P(state){

@@ -131,10 +131,14 @@ export default class ImageOpsModal extends React.Component {
   }
 
   renderGamePlan(){
+    const { remotes, choices } = this.state;
     const runner = this.opHelper;
     const isRunningOrConcluded = !this.isConfiguring();
     const supportsOut = runner && runner.supportsLogging();
     if(isRunningOrConcluded && supportsOut) return null;
+
+    if(['docker', 'git'].includes(choices.operationType))
+      if(!remotes.imageTags) return null;
 
     return(
       <TermSection
