@@ -12,6 +12,7 @@ import Text from "../../assets/text-combos";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
 import ModalClientComposer from "../../hocs/ModalClientComposer";
+import DataUtils from "../../utils/DataUtils";
 
 class MatchModalClass extends React.Component<Props, State> {
   constructor(props){
@@ -22,8 +23,7 @@ class MatchModalClass extends React.Component<Props, State> {
       isGitFetching: false,
       isImgFetching: false,
       isSubmitting: false,
-      isPathsFetching: false,
-      matching: null
+      isPathsFetching: false
     };
 
     this.update = this.update.bind(this);
@@ -43,8 +43,19 @@ class MatchModalClass extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps:Props): * {
-    this.gulper.setConsumableMatching(nextProps.matching);
-    this.update('deploymentName', nextProps.deployment.name);
+    const oldMatching = this.props.matching;
+    const newMatching = nextProps.matching;
+    const matchChanged = !DataUtils.deepEqual(oldMatching, newMatching);
+
+    const oldDepName = this.state.choices.deploymentName;
+    const newDepName = nextProps.deployment.name;
+    const depChanged = oldDepName !== newDepName;
+
+    if(matchChanged)
+      this.gulper.setConsumableMatching(nextProps.matching);
+
+    if(depChanged)
+      this.update('deploymentName', nextProps.deployment.name);
   }
 
   componentWillUnmount(): * {

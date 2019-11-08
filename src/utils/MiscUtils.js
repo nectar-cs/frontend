@@ -145,4 +145,11 @@ export default class MiscUtils {
       return textCombos.statusTagReady;
     else return textCombos.statusTagWarn;
   }
+
+  static areMatchesEquiv(m1, m2){
+    if(m1.id !== m2.id) return false;
+    if(m1.gitRemoteName !== m2.gitRemoteName) return false;
+    if(m1.id !== m2.id) return false;
+    if(m1.id !== m2.id) return false;
+  }
 }

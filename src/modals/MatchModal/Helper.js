@@ -2,6 +2,7 @@
 import Backend from "../../utils/Backend";
 import MiscUtils from "../../utils/MiscUtils";
 import type {RemoteBundle, RemoteRepo} from "../../types/Types";
+import DataUtils from "../../utils/DataUtils";
 
 export default class Helper{
 
@@ -79,6 +80,10 @@ export default class Helper{
   static isLoading(state){
     const { isSubmitting, isPathsFetching, isGitFetching, isImgFetching } = state;
     return isSubmitting || isPathsFetching || isGitFetching || isImgFetching;
+  }
+
+  static isNewMatching(original, updated){
+    return DataUtils.deepEqual(original, updated);
   }
 }
 
