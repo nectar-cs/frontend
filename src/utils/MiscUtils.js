@@ -31,7 +31,7 @@ export default class MiscUtils {
   }
 
   static msImage(deployment, matching){
-    const name = matching ? matching.framework : "docker";
+    const name = matching && matching.framework ? matching.framework : "docker";
     return this.frameworkImage(name);
   }
 
