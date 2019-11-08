@@ -26,7 +26,7 @@ export default class Helper {
     MatchingSection
   ];
 
-  static defaultSection = OverviewSection;
+  static defaultSection = OverviewSection._className();
 
   static classNameToKey(className){
     const key = className.replace("Section", "");

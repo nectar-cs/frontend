@@ -7,12 +7,13 @@ import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Layout from "../../../assets/layouts";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
+import OverviewSection from "./OverviewSection";
 
 class DeploymentShowClass extends React.Component{
 
   constructor(props){
     super(props);
-    const focusedSection = Helper.defaultSection.name;
+    const focusedSection = Helper.defaultSection;
 
     this.state = {
       deployment: null,
@@ -53,15 +54,14 @@ class DeploymentShowClass extends React.Component{
 
   renderSections(){
     if(this.isInitialFetching()) return null;
-
     const { deployment, matching  } = this.state;
     const { focusedSection } = this.state;
     const Sections = () => Helper.sectionClasses.map(Section => (
       <Section
-        key={Section.name}
+        key={Section._className()}
         deployment={deployment}
         matching={matching}
-        isChosen={Section.name === focusedSection}
+        isChosen={Section._className() === focusedSection}
         defaultDetailSetter={this.setDefaultDetailFn}
         onClicked={this.onSectionToggled}
         refreshCallback={this.reload}

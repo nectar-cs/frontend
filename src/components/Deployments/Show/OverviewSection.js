@@ -223,6 +223,7 @@ function s2P(state){
 
 const Hack = connect(s2P)(OverviewSectionClass);
 
-export default function OverviewSection(props){
-  return <Hack {...props}/>;
+export default class OverviewSection extends React.Component{
+  render(){ return <Hack {...this.props}/>; }
+  static _className() { return "OverviewSection"; }
 }

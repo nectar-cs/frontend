@@ -52,7 +52,7 @@ export default class LastCommitModal extends React.Component {
 
   renderCommitFetchFailed(){
     if(!this.isMatched() || !this.isAnnotated()) return null;
-    if(this.isCommitReady()) return null;
+    if(this.isCommitReady() || this.isFetching()) return null;
     const { sha } = this.props.deployment.commit;
     const { gitRemoteName } = this.props.matching;
 
@@ -110,7 +110,7 @@ export default class LastCommitModal extends React.Component {
 
   async fetchCommit(){
     if(this.isMatched() && this.isAnnotated()){
-      this.setState(s => ({...s, isFetching: false}));
+      this.setState(s => ({...s, isFetching: true}));
       const commit = await Backend.bFetch(this.commitAddr());
       this.setState(s => ({...s, commit, isFetching: false}));
     }
@@ -134,6 +134,8 @@ export default class LastCommitModal extends React.Component {
     const { deployment, matching } = this.props;
     return MiscUtils.commitGHPath(deployment.commit, matching);
   }
+
+  isFetching(){ return this.state.isFetching; }
 
   goToImageOps(){
     const { deployment, matching } = this.props;
