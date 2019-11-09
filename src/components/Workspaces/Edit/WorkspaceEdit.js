@@ -11,6 +11,8 @@ import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import DoneAnnouncement from "./DoneAnnouncement";
 import Layout from "../../../assets/layouts";
 import ConfigurationSide from "./ConfigurationSide";
+import Helper from "./Helper";
+import type {Deployment, Workspace} from "../../../types/Types";
 
 class WorkspaceEditClass extends React.Component<State, Props> {
 
@@ -23,13 +25,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
       deployments: [],
       namespaces: [],
       labels: [],
-      workspace: {
-        name: '',
-        nsFilters: [],
-        lbFilters: [],
-        nsFilterType: 'whitelist',
-        lbFilterType: 'blacklist'
-      }
+      workspace: defaultWorkspace
     };
 
     this.update = this.update.bind(this);
@@ -37,22 +33,18 @@ class WorkspaceEditClass extends React.Component<State, Props> {
   }
 
   async componentDidMount(){
-    this.fetchPossibilities();
+    this.reloadNamespacesAndLabels()
   }
 
   render(){
     return(
       <Fragment>
+        { this.renderInitialLoading() }
         { this.renderLeftSide() }
         { this.renderRightSide() }
-        { this.renderInitialLoading() }
         { this.renderDone() }
       </Fragment>
     );
-  }
-
-  renderDone(){
-    return <DoneAnnouncement id={this.id()} name={this.state.name} />
   }
 
   renderInitialLoading(){
@@ -103,80 +95,55 @@ class WorkspaceEditClass extends React.Component<State, Props> {
     )
   }
 
-  update(changes) {
-    const nsChanged = Object.keys(changes).includes('namespaces');
-    const lbChanged = Object.keys(changes).includes('labels');
-
-    this.setState((s) => ({...s,
-      ...changes,
-      filtersChanged: nsChanged || lbChanged
-    }));
-  }
-
-  fetchPossibilities(){
-    this.setState(s => ({...s, isFetching: true}));
-    const ep1 = '/api/cluster/namespaces';
-    const ep2 = '/api/cluster/label_combinations';
-
-    Kapi.fetch(ep1, (r1) => {
-      Kapi.fetch(ep2, (r2) => {
-        if (this.id()){
-          Backend.raisingFetch(`/workspaces/${this.id()}/`, r3 => {
-            this.onAllFetched(r1, r2, r3);
-          });
-        }
-        else this.onAllFetched(r1, r2);
-      });
-    }, this.props.kubeErrorCallback);
-  }
-
-  onAllFetched(nsResp, lbResp, wipResp={}){
-    this.setState(s => ({...s,
-      isFetching: false,
-      workspaceName: wipResp['name'],
-      isDefault: (wipResp['is_default'] || false).toString(),
-      namespaces: {
-        filters: wipResp['ns_filters'] || s.namespaces.filters,
-        filterType: wipResp['ns_filter_type'] || s.namespaces.filterType,
-        possibilities: nsResp['data']
-      },
-      labels: {
-        filters: wipResp['lb_filters'] || s.labels.filters,
-        filterType: wipResp['lb_filter_type'] || s.labels.filterType,
-        possibilities: lbResp['data']
-      }
-    }));
-  }
-
-  submit(){
-    this.setState((s) => ({...s, submit: 'submitting'}));
-    const endpoint = `/workspaces/${this.id() ? this.id() : ''}`;
-    const method = this.id() ? 'PATCH' : 'POST';
-
-    const payload = {
-      name: this.state.workspaceName,
-      is_default: this.state.isDefault,
-      ns_filter_type: this.state.namespaces.filterType,
-      ns_filters: this.state.namespaces.filters,
-      lb_filter_type: this.state.labels.filterType,
-      lb_filters: this.state.labels.filters
-    };
-
-    const onSuccess = (response) => {
-      this.setState(s => ({...s, submit: 'done', wip: response.data.id}));
-    };
-
-    Backend.raisingRequest(
-      method,
-      endpoint,
-      { workspace: payload },
-      onSuccess,
-      this.onSubmitFailed
+  renderDone(){
+    return(
+      <DoneAnnouncement
+        id={this.id()}
+        name={this.state.name}
+      />
     )
   }
 
+  update(changes) {
+    const { workspace: oldWorkspace } = this.state;
+
+    if(Helper.deploymentsNeedReload(changes, oldWorkspace))
+      this.reloadDeployments(changes.workspace);
+
+    this.setState((s) => ({...s, ...changes}));
+  }
+
+  async reloadNamespacesAndLabels(){
+    this.update({isFetching: true});
+    const namespaces = await Helper.fetchNamespaces();
+    const labels = await Helper.fetchLabels();
+    console.log("THE LABELS LOOK LIKE");
+    console.log(labels);
+    this.update({namespaces, labels, isFetching: false});
+  }
+
+  async reloadDeployments(newWorkspace){
+    this.update({isReloadingDeployments: true});
+    const sourceOfTruth = newWorkspace || this.state.workspace;
+    const filterBundle = Helper.coreWorkspace(sourceOfTruth);
+    const deployments = await Helper.fetchDeployments(filterBundle);
+    this.update({deployments, isReloadingDeployments: false});
+  }
+
+  async reloadWorkspace(){
+    this.update({isFetching: true});
+    const workspace = Helper.fetchWorkspace(this.id());
+    this.update({workspace, isFetching: false});
+  }
+
+  submit(){
+    this.update({isSubmitting: true});
+    const { workspace: oldWorkspace } = this.state;
+    const workspace = Helper.postWorkspace(oldWorkspace);
+    this.update({workspace, isSubmitting: false, isDone: true});
+  }
+
   id(){ return this.props.match.params['id']; }
-  onSubmitFailed(){ alert("Some bad happened"); }
 }
 
 type Props = {
@@ -184,7 +151,18 @@ type Props = {
 };
 
 type State = {
+  namespaces: string[],
+  labels: string[],
+  workspace: Workspace,
+  deployments: Deployment[]
+};
 
+const defaultWorkspace = {
+  name: '',
+  nsFilters: [],
+  lbFilters: [],
+  nsFilterType: 'whitelist',
+  lbFilterType: 'blacklist'
 };
 
 const WorkspaceEdit = AuthenticatedComponent.compose(

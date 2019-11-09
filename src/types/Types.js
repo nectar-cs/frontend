@@ -48,7 +48,7 @@ export type LightUser = {
 }
 
 export type Workspace = {
-  id: number,
+  id: ?number,
   name: string,
   isDefault: boolean,
   nsFilters: string[],

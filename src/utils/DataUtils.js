@@ -1,5 +1,12 @@
 export default class DataUtils {
 
+  static objWithout(obj, blackKeys){
+    const remainingKeys = Object.keys(obj).filter(key => (
+      !blackKeys.includes(key)
+    ));
+    return this.pluck(obj, remainingKeys);
+  }
+
   static pluck(hash, keys){
     let newHash = {};
     keys.forEach(key => {newHash[key] = hash[key]});
