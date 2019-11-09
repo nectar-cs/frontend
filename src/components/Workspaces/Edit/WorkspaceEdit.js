@@ -22,6 +22,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
       isFetching: true,
       isReloadingDeployments: false,
       isSubmitting: false,
+      isDone: false,
       deployments: [],
       namespaces: [],
       labels: [],
@@ -30,6 +31,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
 
     this.update = this.update.bind(this);
     this.submit = this.submit.bind(this);
+    this.updateWorkspace = this.updateWorkspace.bind(this);
   }
 
   async componentDidMount(){
@@ -41,7 +43,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
       <Fragment>
         { this.renderInitialLoading() }
         { this.renderLeftSide() }
-        { this.renderRightSide() }
+        {/*{ this.renderRightSide() }*/}
         { this.renderDone() }
       </Fragment>
     );
@@ -70,6 +72,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
           labels={labels}
           workspace={workspace}
           isFetching={isFetching}
+          callback={this.updateWorkspace}
         />
       </Layout.LeftPanel>
     );
@@ -96,6 +99,8 @@ class WorkspaceEditClass extends React.Component<State, Props> {
   }
 
   renderDone(){
+    if(!this.state.isDone) return null;
+
     return(
       <DoneAnnouncement
         id={this.id()}
@@ -108,17 +113,21 @@ class WorkspaceEditClass extends React.Component<State, Props> {
     const { workspace: oldWorkspace } = this.state;
 
     if(Helper.deploymentsNeedReload(changes, oldWorkspace))
-      this.reloadDeployments(changes.workspace);
+      // this.reloadDeployments(changes.workspace);
 
     this.setState((s) => ({...s, ...changes}));
+  }
+
+  updateWorkspace(key, value){
+    const { workspace: oldWorkspace } = this.state;
+    const workspace = { ...oldWorkspace, [key]: value };
+    this.update({workspace});
   }
 
   async reloadNamespacesAndLabels(){
     this.update({isFetching: true});
     const namespaces = await Helper.fetchNamespaces();
     const labels = await Helper.fetchLabels();
-    console.log("THE LABELS LOOK LIKE");
-    console.log(labels);
     this.update({namespaces, labels, isFetching: false});
   }
 
@@ -159,6 +168,7 @@ type State = {
 
 const defaultWorkspace = {
   name: '',
+  isDefault: false,
   nsFilters: [],
   lbFilters: [],
   nsFilterType: 'whitelist',

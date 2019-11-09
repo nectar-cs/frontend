@@ -13,7 +13,7 @@ export default class Helper {
     return await Kapi.bFetch('/api/cluster/namespaces');
   }
 
-  static async fetchLabels(){
+  static async fetchLabels(): string[] {
     return await Kapi.bFetch('/api/cluster/label_combinations');
   }
 

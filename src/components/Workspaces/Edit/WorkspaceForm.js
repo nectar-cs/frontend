@@ -1,87 +1,62 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import s from './WorkspaceForm.sass'
 import ReactTags from 'react-tag-autocomplete';
 import ss from './../../../assets/react-tags.sass'
+import FormComponent from "../../../hocs/FormComponent";
+import MiscUtils from "../../../utils/MiscUtils";
+import type {Workspace} from "../../../types/Types";
 
-const AUTO_COMPLETE_STYLES = {
-  root: s.autoComplete,
-  selected: ss.reactTagsSelected,
-  selectedTag: ss.reactTagsSelectedTag,
-  search: ss.reactTagsSearch,
-  suggestions: ss.reactTagsSuggestions
-};
-
-export default class WorkspaceForm extends React.Component {
+class WorkspaceFormClass extends React.Component<Props> {
 
   constructor(props) {
     super(props);
     this.onFilterAdded = this.onFilterAdded.bind(this);
     this.onFilterRemoved = this.onFilterRemoved.bind(this);
-    this.onFilterTypeChanged = this.onFilterTypeChanged.bind(this);
-    this.onIsDefaultChanged = this.onIsDefaultChanged.bind(this);
   }
 
   render() {
     return (
-      <div className={s.form}>
-        <div className={s.inputLine}>
-          <p className={s.label}>Workspace Name</p>
-          { this.renderNameInput() }
-        </div>
+      <Fragment>
+        { this.renderNameInput() }
+        { this.renderDefaultCheckbox() }
+        { this.renderFilterTypeSelect('ns') }
+        { this.renderFilterTypeSelect('lb') }
 
-        <div className={s.inputLine}>
-          <p className={s.label}>Make Default</p>
-          { this.renderDefaultCheckbox() }
-        </div>
+        {/*<div className={s.inputLine}>*/}
+        {/*  <p className={s.label}>Namespace Filter</p>*/}
+        {/*  { this.renderAutocomplete('namespaces') }*/}
+        {/*</div>*/}
 
-        <div className={s.inputLine}>
-          <p className={s.label}>Namespace Filter</p>
-          { this.renderAutocomplete('namespaces') }
-        </div>
-
-        <div className={s.inputLine}>
-          <p className={s.label}>Filter Method</p>
-          { this.renderFilterTypeSelect('namespaces') }
-        </div>
-
-        <div className={s.inputLine}>
-          <p className={s.label}>Label Filter</p>
-          { this.renderAutocomplete('labels') }
-        </div>
-
-        <div className={s.inputLine}>
-          <p className={s.label}>Filter Method</p>
-          { this.renderFilterTypeSelect('labels') }
-        </div>
-      </div>
-    )
-  }
-
-  renderDefaultCheckbox(){
-    return(
-      <select
-        className={s.selectInput}
-        value={this.props.isDefault}
-        onChange={(e) => this.onIsDefaultChanged(e.target.value)}>
-        <option value='true'>Yes</option>
-        <option value='false'>No</option>
-      </select>
+        {/*<div className={s.inputLine}>*/}
+        {/*  <p className={s.label}>Label Filter</p>*/}
+        {/*  { this.renderAutocomplete('labels') }*/}
+        {/*</div>*/}
+      </Fragment>
     )
   }
 
   renderNameInput(){
-    const onChange = (e) => {
-      this.props.onFieldsChanged({workspaceName: e.target.value})
-    };
+    return this.props.makeInput(
+      "Workspace Name",
+      "name",
+      "e.g Data science apps"
+    )
+  }
 
-    return(
-      <input
-        value={this.props.workspaceName}
-        onChange={onChange}
-        className={s.textInput}
-        placeholder='e.g Data science apps'
-      />
+  renderDefaultCheckbox(){
+    return this.props.makeSelect(
+      "Make Default",
+      "isDefault",
+      YES_NO_OPTIONS
+    );
+  }
+
+  renderFilterTypeSelect(which){
+    return this.props.makeSelect(
+      "Filter type",
+      `${which}FilterType`,
+      FILTER_TYPE_OPTIONS
     )
   }
 
@@ -133,19 +108,6 @@ export default class WorkspaceForm extends React.Component {
     );
   }
 
-  renderFilterTypeSelect(which){
-    return(
-      <select
-        className={s.selectInput}
-        value={this.props[which].filterType}
-        onChange={(e) => this.onFilterTypeChanged(which, e.target.value)}
-      >
-        <option value='whitelist'>Whitelist</option>
-        <option value='blacklist'>Blacklist</option>
-      </select>
-    )
-  }
-
   onFilterTypeChanged(which, filterType){
     const bundle = this.props[which];
     const newBundle = {...bundle, filterType};
@@ -161,12 +123,34 @@ export default class WorkspaceForm extends React.Component {
     filterType: PropTypes.string.isRequired,
     possibilities: PropTypes.arrayOf(PropTypes.string).isRequired
   }).isRequired;
-
-  static propTypes = {
-    onFieldsChanged: PropTypes.func.isRequired,
-    isDefault: PropTypes.string.isRequired,
-    workspaceName: PropTypes.string,
-    namespaces: WorkspaceForm.itemPropTypes,
-    labels:  WorkspaceForm.itemPropTypes
-  }
 }
+
+type Props = {
+  ...Workspace,
+  namespaceChoices: string[],
+  labelChoices: string[]
+}
+
+const YES_NO_OPTIONS = MiscUtils.hashOptions({
+  true: "Yes",
+  false: "No"
+});
+
+const FILTER_TYPE_OPTIONS = MiscUtils.hashOptions({
+  whitelist: "Whitelist",
+  blacklist: "Blacklist"
+});
+
+const AUTO_COMPLETE_STYLES = {
+  root: s.autoComplete,
+  selected: ss.reactTagsSelected,
+  selectedTag: ss.reactTagsSelectedTag,
+  search: ss.reactTagsSearch,
+  suggestions: ss.reactTagsSuggestions
+};
+
+const WorkspaceForm = FormComponent.compose(
+  WorkspaceFormClass
+);
+
+export default WorkspaceForm;

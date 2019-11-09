@@ -8,7 +8,7 @@ import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOver
 export default function ConfigurationSide(props: Props) {
   return(
     <Fragment>
-      <Loader.TopRightSpinner there={}/>
+      <Loader.TopRightSpinner there={props.isFetching}/>
       <LeftHeader
         title={props.workspace.name || "My New Workspace"}
         subtitle='Define what goes in your dashboard.'
@@ -20,7 +20,7 @@ export default function ConfigurationSide(props: Props) {
         {...props.workspace}
         namespacesChoices={props.namespaces}
         labelChoices={props.namespaces}
-        notifyFormValueChanged={this.callback}
+        notifyFormValueChanged={props.callback}
       />
     </Fragment>
   )
@@ -30,5 +30,6 @@ type Props = {
   workspace: Workspace,
   isFetching: boolean,
   namespaces: string[],
-  labels: []
+  labels: [],
+  callback: (*) => (*)
 }
