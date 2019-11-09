@@ -2,7 +2,6 @@ import React from 'react';
 import s from './LeftHeader.sass'
 import PropTypes from 'prop-types'
 
-export const IMAGE = "image";
 export const ICON = "icon";
 
 export default class LeftHeader extends React.Component {
@@ -20,9 +19,12 @@ export default class LeftHeader extends React.Component {
   }
 
   renderGraphic() {
-    if(this.props.graphicType === ICON){
+    if(this.props.graphicType === 'icon')
       return this.renderMaterialIcon();
-    } else return this.renderImage();
+    else if(this.props.graphicType === 'image')
+      return this.renderImage();
+    else if(this.props.graphicType === 'stub')
+      return this.renderStub();
   }
 
   renderMaterialIcon(){
@@ -38,6 +40,10 @@ export default class LeftHeader extends React.Component {
     return <img src={source} className={s.image} alt={null}/>;
   }
 
+  renderStub(){
+    return <div className={s.imageStub}/>;
+  }
+
   static propTypes = {
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.any.isRequired,
@@ -46,6 +52,6 @@ export default class LeftHeader extends React.Component {
   };
 
   static defaultProps = {
-    graphicType: 'material-icon'
+    graphicType: 'image'
   };
 }

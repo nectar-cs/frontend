@@ -4,21 +4,32 @@ import s from './WorkspaceDepsPreview.sass'
 import Loader from "../../../assets/loading-spinner";
 import type {Deployment} from "../../../types/Types";
 import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 
 export default function WorkspaceDepsPreview(props: Props) {
 
   const { deployments, isFetching } = props;
 
-  const DeploymentRows = deployments.map((deployment) => (
+  const DeploymentRows = () => deployments.map((deployment) => (
     <DeploymentRow
       key={deployment.name}
       {...deployment}
     />
   ));
 
+  const Header = () => (
+    <LeftHeader
+      graphicName='cached'
+      graphicType='icon'
+      title='Preview'
+      subtitle='Change the filters on the left side to see this update.'
+    />
+  );
+
   return (
     <Fragment>
-      <Loader.TopRightSpinner there={isFetching}/>;
+      <Header/>
+      <Loader.TopRightSpinner there={isFetching}/>
       <TextOverLineSubtitle text='Preview'/>
       <p>The following deployments will appear in your workspace:</p>
       <table className={s.table}>

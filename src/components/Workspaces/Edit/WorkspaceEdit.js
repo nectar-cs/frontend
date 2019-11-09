@@ -43,7 +43,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
       <Fragment>
         { this.renderInitialLoading() }
         { this.renderLeftSide() }
-        {/*{ this.renderRightSide() }*/}
+        { this.renderRightSide() }
         { this.renderDone() }
       </Fragment>
     );
@@ -113,7 +113,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
     const { workspace: oldWorkspace } = this.state;
 
     if(Helper.deploymentsNeedReload(changes, oldWorkspace))
-      // this.reloadDeployments(changes.workspace);
+      this.reloadDeployments(changes.workspace);
 
     this.setState((s) => ({...s, ...changes}));
   }
@@ -169,7 +169,7 @@ type State = {
 const defaultWorkspace = {
   name: '',
   isDefault: false,
-  nsFilters: [],
+  nsFilters: ['default'],
   lbFilters: [],
   nsFilterType: 'whitelist',
   lbFilterType: 'blacklist'

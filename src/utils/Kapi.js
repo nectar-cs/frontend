@@ -1,4 +1,6 @@
+//@flow
 import DataUtils from "./DataUtils";
+import type {Workspace} from "../types/Types";
 
 export default class Kapi {
 
@@ -10,17 +12,25 @@ export default class Kapi {
     }
   }
 
+  static workspaceToFilterUrlParams(w: Workspace): string {
+    const { nsFilterType, nsFilters, lbFilterType, lbFilters } = w;
+    const valueTransformed = {
+      nsFilterType, lbFilterType,
+      nsFilters:  nsFilters.join(','), lbFilters:  lbFilters.join(',')
+    };
+
+    const eqStrings = Object.keys(valueTransformed).map(key => {
+      const newKey = DataUtils.camelStringToSnake(key);
+      const value = valueTransformed[key];
+      return `${newKey}=${value}`
+    });
+
+    return eqStrings.join('&');
+  }
 
   static filterFetch(endpoint, ws, callback, errorCallback=null){
-    const nsFilterType = `ns_filter_type=${ws.nsFilterType}`;
-    const nsFilter = `ns_filters=${ws.nsFilters.join(',')}`;
-
-    const lbFilterType = `lb_filter_type=${ws.lbFilterType}`;
-    const lbFilter = `lb_filters=${ws.lbFilters.join(',')}`;
-
-    const args = `${nsFilterType}&${nsFilter}&${lbFilterType}&${lbFilter}`;
+    const args = this.workspaceToFilterUrlParams(ws);
     endpoint = `${endpoint}?${args}&full=true`;
-
     this.fetch(endpoint, callback, errorCallback);
   }
 
