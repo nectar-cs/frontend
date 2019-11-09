@@ -1,148 +1,109 @@
-import React from 'react'
+//@flow
+import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
-import ls from "../../../assets/content-layouts.sass";
-import LeftHeader, {ICON} from "../../../widgets/LeftHeader/LeftHeader";
-import WorkspaceForm from "./WorkspaceForm";
 import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
-import s from './WorkspaceEdit.sass'
-import {explanation} from "./copy";
 import Kapi from "../../../utils/Kapi";
 import ModalButton from "../../../widgets/Buttons/ModalButton";
 import Backend from "../../../utils/Backend";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
-import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
-import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
-import Loader from "../../../assets/loading-spinner";
+import DoneAnnouncement from "./DoneAnnouncement";
+import Layout from "../../../assets/layouts";
+import ConfigurationSide from "./ConfigurationSide";
 
-class WorkspaceEditClass extends React.Component{
+class WorkspaceEditClass extends React.Component<State, Props> {
 
   constructor(props){
     super(props);
     this.state = {
-      wip: null,
       isFetching: true,
-      submit: null,
-      filtersChanged: true,
-      workspaceName: '',
-      isDefault: 'false',
-      namespaces: {
-        filters: ['default'],
-        filterType: 'whitelist',
-        possibilities: []
-      },
-      labels: {
-        filters: [],
-        filterType: 'whitelist',
-        possibilities: []
+      isReloadingDeployments: false,
+      isSubmitting: false,
+      deployments: [],
+      namespaces: [],
+      labels: [],
+      workspace: {
+        name: '',
+        nsFilters: [],
+        lbFilters: [],
+        nsFilterType: 'whitelist',
+        lbFilterType: 'blacklist'
       }
     };
 
-    this.onFieldsChanged = this.onFieldsChanged.bind(this);
-    this.submitWorkspace = this.submitWorkspace.bind(this);
+    this.update = this.update.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
-  render(){
-    if (this.state.submit === null){
-      return(
-        <React.Fragment>
-          { this.renderLeftSide() }
-          { this.renderRightSide() }
-        </React.Fragment>
-      )
-    } else if (this.state.submit === 'submitting'){
-      return this.renderAllLoading();
-    } else if (this.state.submit === 'done'){
-      return this.renderDone();
-    }
-  }
-
-  componentDidMount(){
+  async componentDidMount(){
     this.fetchPossibilities();
   }
 
-  wip(){
-    return this.props.match.params['id'];
+  render(){
+    return(
+      <Fragment>
+        { this.renderLeftSide() }
+        { this.renderRightSide() }
+        { this.renderInitialLoading() }
+        { this.renderDone() }
+      </Fragment>
+    );
   }
 
   renderDone(){
-    const { wip } = this.state;
-    const bundle = ROUTES.workspaces;
-    const editPath = makeRoute(bundle.edit.path, {id: wip});
-    const continuePath = makeRoute(bundle.show.path, {id: wip});
-
-    return(
-      <div className={ls.fullScreen}>
-        <CenterAnnouncement
-          contentType='children'
-          action={ROUTES.workspaces.index.path}
-          iconName='done_all'>
-          <p className={s.doneText}>
-            {this.state.workspaceName} saved.
-          </p>
-          <p className={s.doneText}>
-            <a href={editPath}>Keep editing</a>,
-            or,
-            <a href={continuePath}>continue</a>.
-          </p>
-        </CenterAnnouncement>
-      </div>
-    )
+    return <DoneAnnouncement id={this.id()} name={this.state.name} />
   }
 
-  renderAllLoading(){
+  renderInitialLoading(){
+    const { isFetching, isSubmitting } = this.state;
+    if(!isFetching || isSubmitting) return null;
+
     return(
-      <div className={ls.fullScreen}>
+      <Layout.FullWidthPanel>
         <CenterLoader/>
-      </div>
+      </Layout.FullWidthPanel>
     )
   }
 
   renderLeftSide(){
-    const { isFetching } = this.state;
-    const { workspaceName, namespaces, labels, isDefault } = this.state;
-    const Load = () => isFetching && <Loader.TopRightSpinner/>;
+    const {  workspace, isFetching, isSubmitting } = this.state;
+    const { namespaces, labels } = this.state;
+    if(isFetching || isSubmitting) return null;
 
     return(
-      <div className={ls.halfScreePanelLeft}>
-        <LeftHeader
-          graphicType={ICON}
-          graphicName='developer_board'
-          title={this.state.workspaceName || "My New Workspace"}
-          subtitle={"Made for organizing"}
-        />
-        <Load/>
-        <div className={s.introBox}>{ explanation }</div>
-        <WorkspaceForm
-          onFieldsChanged={this.onFieldsChanged}
-          workspaceName={workspaceName}
-          isDefault={isDefault}
+      <Layout.LeftPanel>
+        <ConfigurationSide
           namespaces={namespaces}
           labels={labels}
+          workspace={workspace}
+          isFetching={isFetching}
         />
-      </div>
-    )
+      </Layout.LeftPanel>
+    );
   }
 
   renderRightSide(){
+    const { isReloadingDeployments, deployments  } = this.state;
+    const { isFetching, isSubmitting  } = this.state;
+    if(isFetching || isSubmitting) return null;
+
     return(
-      <div className={ls.halfScreePanelRight}>
+      <Layout.RightPanel>
         <WorkspaceDepsPreview
-          namespaces={this.state.namespaces}
-          labels={this.state.labels}
-          filtersChanged={this.state.filtersChanged}
+          isFetching={isReloadingDeployments}
+          deployments={deployments}
         />
         <ModalButton
-          callback={this.submitWorkspace}
+          callback={this.submit}
           title='Save'
-          isEnabled={this.state.submit === null}
+          isEnabled={!isSubmitting}
         />
-      </div>
+      </Layout.RightPanel>
     )
   }
 
-  onFieldsChanged(changes) {
+  update(changes) {
     const nsChanged = Object.keys(changes).includes('namespaces');
     const lbChanged = Object.keys(changes).includes('labels');
 
@@ -159,8 +120,8 @@ class WorkspaceEditClass extends React.Component{
 
     Kapi.fetch(ep1, (r1) => {
       Kapi.fetch(ep2, (r2) => {
-        if (this.wip()){
-          Backend.raisingFetch(`/workspaces/${this.wip()}/`, r3 => {
+        if (this.id()){
+          Backend.raisingFetch(`/workspaces/${this.id()}/`, r3 => {
             this.onAllFetched(r1, r2, r3);
           });
         }
@@ -187,14 +148,10 @@ class WorkspaceEditClass extends React.Component{
     }));
   }
 
-  onSubmitFailed(error){
-    alert("Some bad happened. Soz");
-  }
-
-  submitWorkspace(){
+  submit(){
     this.setState((s) => ({...s, submit: 'submitting'}));
-    const endpoint = `/workspaces/${this.wip() ? this.wip() : ''}`;
-    const method = this.wip() ? 'PATCH' : 'POST';
+    const endpoint = `/workspaces/${this.id() ? this.id() : ''}`;
+    const method = this.id() ? 'PATCH' : 'POST';
 
     const payload = {
       name: this.state.workspaceName,
@@ -217,7 +174,18 @@ class WorkspaceEditClass extends React.Component{
       this.onSubmitFailed
     )
   }
+
+  id(){ return this.props.match.params['id']; }
+  onSubmitFailed(){ alert("Some bad happened"); }
 }
+
+type Props = {
+
+};
+
+type State = {
+
+};
 
 const WorkspaceEdit = AuthenticatedComponent.compose(
   ModalHostComposer.compose(

@@ -63,7 +63,7 @@ export default class Setter {
     } else return value;
   }
 
-  sideEffects(bundle){ return {} }
+  sideEffects(bundle: { [string]: *}): { [string]: *} { return {} }
 
   static defaultReceiver = (key, value) => ({ [key]: value });
 }

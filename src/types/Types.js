@@ -33,6 +33,7 @@ export type Deployment = {
   replicas: number,
   imageName: string,
   containerName: string,
+  labels: {  [string]: string }
   imagePullPolicy: ('Always' | 'Never')
 };
 
@@ -49,4 +50,9 @@ export type LightUser = {
 export type Workspace = {
   id: number,
   name: string,
+  isDefault: boolean,
+  nsFilters: string[],
+  lbFilters: string[],
+  nsFilterType: 'whitelist' | 'blacklist',
+  lbFilterType: 'whitelist' | 'blacklist'
 }
