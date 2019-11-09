@@ -21,7 +21,7 @@ export default function WorkspaceDepsPreview(props: Props) {
     <LeftHeader
       graphicName='cached'
       graphicType='icon'
-      title='Preview'
+      title='Deployments'
       subtitle='Change the filters on the left side to see this update.'
     />
   );
@@ -30,8 +30,6 @@ export default function WorkspaceDepsPreview(props: Props) {
     <Fragment>
       <Header/>
       <Loader.TopRightSpinner there={isFetching}/>
-      <TextOverLineSubtitle text='Preview'/>
-      <p>The following deployments will appear in your workspace:</p>
       <table className={s.table}>
         <tbody>
         <DeploymentHeaderRow/>

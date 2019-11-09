@@ -11,7 +11,7 @@ export default function ConfigurationSide(props: Props) {
       <Loader.TopRightSpinner there={props.isFetching}/>
       <LeftHeader
         title={props.workspace.name || "My New Workspace"}
-        subtitle='Define what goes in your dashboard.'
+        subtitle='Which deployments should go in this workspace?'
         graphicType='icon'
         graphicName='developer_board'
       />

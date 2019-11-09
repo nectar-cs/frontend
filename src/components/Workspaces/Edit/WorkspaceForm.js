@@ -7,7 +7,6 @@ import ss from './../../../assets/react-tags.sass'
 import FormComponent from "../../../hocs/FormComponent";
 import MiscUtils from "../../../utils/MiscUtils";
 import type {Workspace} from "../../../types/Types";
-import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 class WorkspaceFormClass extends React.Component<Props> {
 

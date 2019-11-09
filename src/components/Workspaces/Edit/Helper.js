@@ -21,10 +21,13 @@ export default class Helper {
     return await Backend.bFetch(`/workspaces/${id}`);
   }
 
-  static async postWorkspace(workspace: Workspace){
-    const ep = `/workspaces/${workspace.id}`;
+  static async patchOrPostWorkspace(workspace: Workspace){
+    const ep = `/workspaces/${workspace.id ? workspace.id : ''}`;
     const idLessPayload = DataUtils.objWithout(workspace, ['id']);
-    return await Backend.bPost(ep, idLessPayload);
+    if(workspace.id)
+      return await Backend.bPatch(ep, idLessPayload);
+    else
+      return await Backend.bPost(ep, idLessPayload);
   }
 
   static coreWorkspace(workspace){

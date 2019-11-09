@@ -4,9 +4,7 @@ import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
 import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
-import Kapi from "../../../utils/Kapi";
 import ModalButton from "../../../widgets/Buttons/ModalButton";
-import Backend from "../../../utils/Backend";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import DoneAnnouncement from "./DoneAnnouncement";
 import Layout from "../../../assets/layouts";
@@ -35,7 +33,8 @@ class WorkspaceEditClass extends React.Component<State, Props> {
   }
 
   async componentDidMount(){
-    this.reloadNamespacesAndLabels()
+    this.reloadNamespacesAndLabels();
+    this.reloadWorkspace();
   }
 
   render(){
@@ -140,24 +139,28 @@ class WorkspaceEditClass extends React.Component<State, Props> {
   }
 
   async reloadWorkspace(){
-    this.update({isFetching: true});
-    const workspace = Helper.fetchWorkspace(this.id());
-    this.update({workspace, isFetching: false});
+    if(this.id()){
+      this.update({isFetching: true});
+      const workspace = await Helper.fetchWorkspace(this.id());
+      this.update({workspace, isFetching: false});
+    }
   }
 
-  submit(){
+  async submit(){
     this.update({isSubmitting: true});
-    const { workspace: oldWorkspace } = this.state;
-    const workspace = Helper.postWorkspace(oldWorkspace);
+    const { workspace: editedWorkspace } = this.state;
+    const workspace = await Helper.patchOrPostWorkspace(editedWorkspace);
     this.update({workspace, isSubmitting: false, isDone: true});
   }
 
-  id(){ return this.props.match.params['id']; }
+  id() {
+    const { id: fromModel } = this.state.workspace;
+    const { id: fromPath } = this.props.match.params;
+    return fromModel || fromPath;
+  }
 }
 
-type Props = {
-
-};
+type Props = {  };
 
 type State = {
   namespaces: string[],
