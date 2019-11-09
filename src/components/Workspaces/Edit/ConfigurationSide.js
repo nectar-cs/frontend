@@ -18,8 +18,8 @@ export default function ConfigurationSide(props: Props) {
       <TextOverLineSubtitle text='Setup'/>
       <WorkspaceForm
         {...props.workspace}
-        namespacesChoices={props.namespaces}
-        labelChoices={props.namespaces}
+        namespaceChoices={props.namespaces}
+        labelChoices={props.labels}
         notifyFormValueChanged={props.callback}
       />
     </Fragment>

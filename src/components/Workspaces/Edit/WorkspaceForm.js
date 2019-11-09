@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
 import s from './WorkspaceForm.sass'
 import ReactTags from 'react-tag-autocomplete';
 import ss from './../../../assets/react-tags.sass'
@@ -21,17 +20,9 @@ class WorkspaceFormClass extends React.Component<Props> {
         { this.renderNameInput() }
         { this.renderDefaultCheckbox() }
         { this.renderFilterTypeSelect('ns') }
+        { this.renderNamespaceFilters() }
         { this.renderFilterTypeSelect('lb') }
-
-        {/*<div className={s.inputLine}>*/}
-        {/*  <p className={s.label}>Namespace Filter</p>*/}
-        {/*  { this.renderAutocomplete('namespaces') }*/}
-        {/*</div>*/}
-
-        {/*<div className={s.inputLine}>*/}
-        {/*  <p className={s.label}>Label Filter</p>*/}
-        {/*  { this.renderAutocomplete('labels') }*/}
-        {/*</div>*/}
+        { this.renderLabelFilters() }
       </Fragment>
     )
   }
@@ -60,69 +51,74 @@ class WorkspaceFormClass extends React.Component<Props> {
     )
   }
 
-  onFilterAdded(which, value){
-    const bundle = this.props[which];
-    const filters = [].concat(bundle.filters, value.name);
-    const newBundle = {...bundle, filters};
-    this.props.onFieldsChanged({[which]: newBundle});
+  renderNamespaceFilters(){
+    return this.renderFilterSelect(
+      'Namespace Filters',
+      'namespaceChoices',
+      'nsFilters'
+    );
   }
 
-  onFilterRemoved(which, i){
-    const bundle = this.props[which];
-    let filters = bundle.filters.filter(f => f !== bundle.filters[i]);
-    const newBundle = {...bundle, filters};
-    this.props.onFieldsChanged({[which]: newBundle});
+  renderLabelFilters(){
+    return this.renderFilterSelect(
+      'Label Filters',
+      'labelChoices',
+      'lbFilters'
+    );
   }
 
-  tags(which){
-    return this.rinseTags(this.props[which].filters);
+  renderFilterSelect(name, poolKey, currentOptionsKey){
+    return(
+      <div className={s.inputLine}>
+        <p className={s.label}>{name}</p>
+        { this.renderAutocomplete(poolKey, currentOptionsKey) }
+      </div>
+    )
   }
 
-  rinseTags(tags){
-    return tags.map((t) => (
-      { id: t, name: t }
-    ));
-  }
-
-  suggestions(which) {
-    const bundle = this.props[which];
-    const truncated = bundle.possibilities.filter((poss) => (
-      !bundle.filters.includes(poss)
-    ));
-    return this.rinseTags(truncated);
-  }
-
-  renderAutocomplete(which) {
+  renderAutocomplete(poolKey, currentOptionsKey) {
     return (
       <ReactTags
-        key={which}
+        key={currentOptionsKey}
         minQueryLength={0}
-        placeholder={`Filter by ${which}...`}
-        tags={this.tags(which)}
-        suggestions={this.suggestions(which)}
-        handleDelete={(t) => this.onFilterRemoved(which, t)}
-        handleAddition={(t) => this.onFilterAdded(which, t)}
+        tags={this.tags(currentOptionsKey)}
+        suggestions={this.suggestions(poolKey, currentOptionsKey)}
+        handleDelete={(t) => this.onFilterRemoved(currentOptionsKey, t)}
+        handleAddition={(t) => this.onFilterAdded(currentOptionsKey, t)}
         autofocus={false}
         classNames={AUTO_COMPLETE_STYLES}
       />
     );
   }
 
-  onFilterTypeChanged(which, filterType){
-    const bundle = this.props[which];
-    const newBundle = {...bundle, filterType};
-    this.props.onFieldsChanged({[which]: newBundle});
+  onFilterAdded(currentChoicesKey, value){
+    const oldList = this.props[currentChoicesKey];
+    const newList = [...oldList, value.name];
+    this.manualBroadcast(currentChoicesKey, newList);
   }
 
-  onIsDefaultChanged(value){
-    this.props.onFieldsChanged({isDefault: value});
+  onFilterRemoved(currentChoicesKey, index){
+    const oldList = this.props[currentChoicesKey];
+    const item = oldList[index];
+    const newList = oldList.filter(e => e !== item);
+    this.manualBroadcast(currentChoicesKey, newList);
   }
 
-  static itemPropTypes = PropTypes.shape({
-    filters: PropTypes.arrayOf(PropTypes.string).isRequired,
-    filterType: PropTypes.string.isRequired,
-    possibilities: PropTypes.arrayOf(PropTypes.string).isRequired
-  }).isRequired;
+  suggestions(poolKey, currentChoicesKey) {
+    const all = this.props[poolKey];
+    const alreadyUsed = this.props[currentChoicesKey];
+    const truncated = all.filter((choice) => (
+      !alreadyUsed.includes(choice)
+    ));
+    return this.formatTags(truncated);
+  }
+
+  manualBroadcast(key, value){
+    this.props.notifyFormValueChanged(key, value);
+  }
+
+  tags(which){ return this.formatTags(this.props[which]); }
+  formatTags(tags){ return tags.map((t) => ({ id: t, name: t })); }
 }
 
 type Props = {
