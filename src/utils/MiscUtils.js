@@ -4,11 +4,18 @@ import textCombos from './../assets/text-combos.sass'
 import Text from './../assets/text-combos'
 import moment from "moment";
 import type {Matching} from "../types/Types";
-
+import * as Sentry from "@sentry/browser";
 const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
+import mixpanel from 'mixpanel-browser';
 
 export default class MiscUtils {
+
+  static MP_TOKEN = MiscUtils.tor(() => "a7a296ecc2f23d28eb9b0f3de878ff34");
+  static SENTRY_DSN = MiscUtils.tor(() => SENTRY_DSN);
+
+  static hasMixPanel(){ return !!this.MP_TOKEN; }
+  static hasSentry(){ return !!this.SENTRY_DSN; }
 
   static tor(func, fallback){
     try{ return func() }
@@ -150,5 +157,20 @@ export default class MiscUtils {
     if(m1.gitRemoteName !== m2.gitRemoteName) return false;
     if(m1.id !== m2.id) return false;
     if(m1.id !== m2.id) return false;
+  }
+
+  static senTrack(e){
+    Sentry.captureException(e);
+  }
+
+  static mp(name, hash){
+    try{
+      if(this.hasMixPanel()){
+        mixpanel.track(name, hash);
+      }
+    } catch (e) {
+      this.senTrack(e);
+      console.log("MP FAIL " + e);
+    }
   }
 }

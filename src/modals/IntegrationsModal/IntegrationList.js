@@ -40,7 +40,7 @@ function IntegrationItem(props) {
 export default function IntegrationList(props){
   const items = props.items.map(item => (
     <IntegrationItem
-      requestDelete={() => props.requestDelete(item.id)}
+      requestDelete={() => props.requestDelete(item)}
       key={item.id}
       {...item}
     />

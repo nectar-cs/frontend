@@ -12,6 +12,10 @@ class PortForwardFormClass extends React.Component{
     this.makeInput = props.makeInput;
   }
 
+  componentDidMount(){
+    MiscUtils.mp("Port Forward Start", {});
+  }
+
   render(){
     return(
       <Fragment>

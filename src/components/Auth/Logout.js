@@ -6,6 +6,7 @@ import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import {ROUTES} from "../../containers/RoutesConsts";
 import {theme} from "../../assets/constants";
 import {ThemeProvider} from "styled-components";
+import MiscUtils from "../../utils/MiscUtils";
 
 export default class Logout extends React.Component{
 
@@ -15,6 +16,7 @@ export default class Logout extends React.Component{
   }
 
   async componentDidMount(){
+    MiscUtils.mp("Logout", {});
     await Backend.bDelete('/auth/logout');
     Backend.clearAccessToken();
     this.setState(s => ({...s, isDone: true}));

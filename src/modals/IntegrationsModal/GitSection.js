@@ -4,6 +4,7 @@ import IntegrationSection from "./IntegrationSection";
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
 import {S} from './IntegrationSectionStyles'
+import MiscUtils from "../../utils/MiscUtils";
 
 export default class GitSection extends IntegrationSection {
   performFetch(whenDone){
@@ -21,6 +22,7 @@ export default class GitSection extends IntegrationSection {
 
   formRenderer(){
     super.formSubmit = () => {
+      MiscUtils.mp('Integration Create', {type: "GitHub",  entity: "git"});
       const url = this.state.authUrls[this.props.vendor];
       window.open(url, "_blank");
       super.onSubmitted();

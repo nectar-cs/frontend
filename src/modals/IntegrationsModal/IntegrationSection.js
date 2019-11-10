@@ -26,6 +26,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   componentDidMount(){
+    MiscUtils.mp("Integrations Start", {});
     this.props.setReloadPerformer(this.fetchIntegrations);
     this.fetchIntegrations();
     this.fetchAuthUrls();
@@ -44,10 +45,11 @@ export default class IntegrationSection extends React.PureComponent {
     )
   }
 
-  deleteItem(id){
+  deleteItem({id, type, entity}){
     if (window.confirm(defaults.confirmDelete)) {
       this.setState(s => ({...s, isSubmitting: true}));
       this.performDelete(id, () => {
+        MiscUtils.mp('Integration Delete', {type, entity});
         this.setState(s => ({...s, isSubmitting: false}));
         this.fetchIntegrations();
       });

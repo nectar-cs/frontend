@@ -44,12 +44,6 @@ export default class DebugStep extends React.Component {
     )
   }
 
-  renderTopLoader(){
-    const { step, isStepExecuting } = this.props;
-    if(!(!step || isStepExecuting)) return null;
-    return <Loader.TopRightSpinner/>;
-  }
-
   renderNotReady(){
     if(this.props.isConfigDone) return null;
 

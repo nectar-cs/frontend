@@ -16,6 +16,10 @@ export default class PodModal extends React.Component {
     )
   }
 
+  componentDidMount(){
+    MiscUtils.mp("Pod Modal Start", {});
+  }
+
   renderHeader(){
     const { pod, deployment, matching } = this.props;
     return(

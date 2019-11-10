@@ -3,6 +3,7 @@ import defaults from "./defaults";
 import Layout from './../../assets/layouts'
 import Text from './../../assets/text-combos'
 import {Types} from "../../types/CommonTypes";
+import MiscUtils from "../../utils/MiscUtils";
 
 export default class HowToAnnotate extends React.Component {
   render(){
@@ -17,6 +18,10 @@ export default class HowToAnnotate extends React.Component {
         { this.renderLines(defaults.howTo.lines3) }
       </Fragment>
     )
+  }
+
+  componentDidMount(){
+    MiscUtils.mp("Last Commit Start", {bound: false});
   }
 
   renderLines(lines){

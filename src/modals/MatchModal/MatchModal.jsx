@@ -13,6 +13,7 @@ import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncem
 import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
 import ModalClientComposer from "../../hocs/ModalClientComposer";
 import DataUtils from "../../utils/DataUtils";
+import MiscUtils from "../../utils/MiscUtils";
 
 class MatchModalClass extends React.Component<Props, State> {
   constructor(props){
@@ -37,6 +38,7 @@ class MatchModalClass extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    MiscUtils.mp("Matching Start", {});
     this.gulper = new Gulper();
     this.gulper.setConsumableMatching(this.props.matching);
     this.reloadRemotes();
@@ -174,7 +176,19 @@ class MatchModalClass extends React.Component<Props, State> {
 
   submit(){
     const { deployment, callback } = this.props;
+    this.mixTrack();
     Helper.submit(deployment.name, this.state.choices, callback);
+  }
+
+  mixTrack(){
+    try{
+      const { gitRemoteName, imgRemoteName } = this.state.choices;
+      const [withGit, withDocker] = [!!gitRemoteName, !!imgRemoteName];
+      const { mode } = this.props;
+      MiscUtils.mp('Matching Create', {withGit, withDocker, mode});
+    } catch (e){
+      MiscUtils.senTrack(e);
+    }
   }
 
   delete(){

@@ -13,6 +13,7 @@ import Button from "../../../assets/buttons";
 import Micon from "../../../widgets/Micon/Micon";
 import StuntPodRecycleModal from "../../../modals/StuntPodRecycleModal/StuntPodRecycleModal";
 import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
+import MiscUtils from "../../../utils/MiscUtils";
 
 class WorkspaceShowClass extends React.Component{
 
@@ -37,6 +38,7 @@ class WorkspaceShowClass extends React.Component{
   }
 
   componentDidMount(){
+    MiscUtils.mp("Workspace Index", {});
     this.fetchMatchings();
   }
 

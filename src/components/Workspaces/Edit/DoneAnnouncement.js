@@ -2,6 +2,7 @@ import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import ls from "../../../assets/content-layouts.sass";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 import React from "react";
+import Text from "../../../assets/text-combos";
 
 
 export default function  DoneAnnouncement({name, id}){
@@ -16,11 +17,11 @@ export default function  DoneAnnouncement({name, id}){
         contentType='children'
         action={bundle.index.path}
         iconName='done_all'>
-        <p>
+        <Text.P low={2}>
           {name} saved.
           <a href={editPath}>Keep editing</a>, or,
           <a href={continuePath}>continue</a>.
-        </p>
+        </Text.P>
       </CenterAnnouncement>
     </div>
   )

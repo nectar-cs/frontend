@@ -5,6 +5,10 @@ const actionKeys = {
 
 export { actionKeys };
 
+export function setMixpanel(mixpanel){
+
+}
+
 export function setWorkspaces(workspaces){
   return {
     type: actionKeys.SimpleSet,

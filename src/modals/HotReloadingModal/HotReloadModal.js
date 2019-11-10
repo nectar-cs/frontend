@@ -16,6 +16,10 @@ export default class HotReloadModal extends React.Component{
     )
   }
 
+  componentDidMount(){
+    MiscUtils.mp("Live Sync Start", {});
+  }
+
   renderHeader(){
     const { deployment } = this.props;
     return(

@@ -7,6 +7,7 @@ import FileChange from "./FileChange";
 import moment from "moment";
 import defaults from "./defaults";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import MiscUtils from "../../utils/MiscUtils";
 
 export default class CommitInfo extends React.Component{
 
@@ -21,6 +22,10 @@ export default class CommitInfo extends React.Component{
         { this.renderTable() }
       </Fragment>
     )
+  }
+
+  componentDidMount(){
+    MiscUtils.mp("Last Commit Start", {bound: true});
   }
 
   renderAuthorInfo(){

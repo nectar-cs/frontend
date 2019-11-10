@@ -12,6 +12,7 @@ import FlexibleModal from "../../../hocs/FlexibleModal";
 import TermSection from "../../../widgets/TermSection/TermSection";
 import Checklist from "./Checklist";
 import Conclusion from "./Conclusion";
+import mixpanel from "mixpanel-browser";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
@@ -35,6 +36,7 @@ export default class ImageOpsModal extends React.Component {
   }
 
   componentDidMount(){
+    MiscUtils.mp("Image Operations Start", {});
     Helper.fetchImgTags(this);
     Helper.fetchGitBranches(this);
   }
@@ -173,6 +175,8 @@ export default class ImageOpsModal extends React.Component {
     const  { deployment, matching } = this.props;
     const { choices } = this.state;
 
+    MiscUtils.mp('Image Operation', {operationType});
+
     this.opHelper = new Operator({
       ...choices,
       deployment,
@@ -188,13 +192,17 @@ export default class ImageOpsModal extends React.Component {
   }
 
   selectedGitCommit(){
-    const { choices, remotes } = this.state;
-    const selBranchName = choices.gitBranch;
-    return Helper.selectedCommitBundle(
-      remotes,
-      selBranchName,
-      choices.gitCommit
-    );
+    try{
+      const { choices, remotes } = this.state;
+      const selBranchName = choices.gitBranch;
+      return Helper.selectedCommitBundle(
+        remotes,
+        selBranchName,
+        choices.gitCommit
+      );
+    } catch {
+      return {}
+    }
   }
 
   notifyUpdated(progressItems){

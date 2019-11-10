@@ -8,6 +8,7 @@ import Layout from "../../assets/layouts";
 import Kapi from "../../utils/Kapi";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
+import MiscUtils from "../../utils/MiscUtils";
 
 export default class SoftwareUpdateModal extends React.Component {
 
@@ -18,6 +19,10 @@ export default class SoftwareUpdateModal extends React.Component {
       isDone: false
     };
     this.submit = this.submit.bind(this);
+  }
+
+  componentDidMount(){
+    MiscUtils.mp("Software Update Start", {});
   }
 
   render(){
@@ -118,6 +123,7 @@ export default class SoftwareUpdateModal extends React.Component {
   }
 
   async submit(){
+    MiscUtils.mp("Software Update Submit", {});
     this.setState(s => ({...s, isSubmitting: true}));
     const ep = '/api/status/restart';
     const deployments = this.outdatedDeployments();

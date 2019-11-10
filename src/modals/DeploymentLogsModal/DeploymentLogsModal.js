@@ -20,6 +20,10 @@ export default class DeploymentLogsModal extends React.Component<Props> {
     this.update = this.update.bind(this);
   }
 
+  componentDidMount(){
+    MiscUtils.mp("Read Logs", {});
+  }
+
   render(){
     return(
       <FlexibleModal mode={this.props.mode}>

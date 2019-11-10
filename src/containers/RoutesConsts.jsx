@@ -4,7 +4,6 @@ import WorkspaceIndex from "../components/Workspaces/Index/WorkspaceIndex";
 import WorkspaceEdit from "../components/Workspaces/Edit/WorkspaceEdit";
 import WorkspaceShow from "../components/Workspaces/Show/WorkspaceShow";
 import DeploymentShow from "../components/Deployments/Show/DeploymentShow";
-import NetworkTest from "../components/Laboratory/NetworkTest";
 import InfraDebug from "../components/InfraDebug/InfraDebug";
 import BulkMatch from "../components/BulkMatch/BulkMatch";
 import Welcome from "../components/Welcome/Welcome";
@@ -42,13 +41,6 @@ export const ROUTES = {
     login: { path: '/auth/login', comp: LoginAndRegister },
     register: { path: '/auth/register', comp: LoginAndRegister },
     logout: { path: '/auth/logout', comp: Logout }
-  },
-
-  experiments: {
-    networkTest: {
-      path: '/experiments/network_test/',
-      comp: NetworkTest
-    }
   }
 };
 

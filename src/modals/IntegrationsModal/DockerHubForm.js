@@ -4,6 +4,7 @@ import In from "../../assets/input-combos";
 import {S} from "./IntegrationSectionStyles";
 import defaults from "./defaults";
 import Backend from "../../utils/Backend";
+import MiscUtils from "../../utils/MiscUtils";
 
 export default class DockerHubForm extends React.Component{
   constructor(props){
@@ -32,6 +33,7 @@ export default class DockerHubForm extends React.Component{
     const endpoint = `/remotes/dockerhub`;
     const { username, password } = this.state;
     const payload = { identifier: username, secret: password };
+    MiscUtils.mp('Integration Create', {type: "DockerHub",  entity: "docker"});
     Backend.raisingPost(endpoint, payload, this.props.notifySubmitted);
   }
 

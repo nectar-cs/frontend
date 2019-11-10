@@ -20,8 +20,8 @@ export default class LoginAndRegister extends React.Component{
       password: React.createRef()
     };
     this.submit = this.submit.bind(this);
-    this.onRegisterSuccess = this.onRegisterSuccess.bind(this);
-    this.onRegisterFailed = this.onRegisterFailed.bind(this);
+    this.onAuthSuccess = this.onAuthSuccess.bind(this);
+    this.onAuthFailure = this.onAuthFailure.bind(this);
   }
 
   render(){
@@ -142,20 +142,20 @@ export default class LoginAndRegister extends React.Component{
     const password = this.fieldRefs['password'].current.value;
     const payload = { email: email, password: password };
     this.setState((s) => ({...s, isLoading: true}));
-    Backend.postJsonWithErr(
-      `/auth/${this.isLogin() ? 'login' : 'register'}`,
-      payload,
-      this.onRegisterSuccess,
-      this.onRegisterFailed
-    )
+    const ep = `/auth/${this.isLogin() ? 'login' : 'register'}`;
+    const receivers = [this.onAuthSuccess, this.onAuthFailure];
+    Backend.raisingPost(ep, payload, ...receivers);
   }
 
-  onRegisterSuccess(data){
+  onAuthSuccess(data){
+    data = data['data'];
     Backend.kvSet('accessToken', data['accessToken']);
+    Backend.kvSet('uid', data['id']);
+    Backend.kvSet('email', data['email']);
     this.setState((s) => ({...s, isLoading: false, authenticated: true}));
   }
 
-  onRegisterFailed(data){
+  onAuthFailure(data){
     this.setState((s) => ({...s, isLoading: false, errors: data['reasons']}));
   }
 }

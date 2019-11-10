@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import MiscUtils from "../../utils/MiscUtils";
 import defaults from "./defaults";
@@ -30,6 +30,10 @@ export default class CommandsModal extends React.Component{
     this.useHistoryItem = this.useHistoryItem.bind(this);
     this.downstreamReloader = null;
     this.eraseOutput = false;
+  }
+
+  componentDidMount(){
+    MiscUtils.mp("Command Operations Start", {});
   }
 
   render(){
@@ -136,6 +140,7 @@ export default class CommandsModal extends React.Component{
   }
 
   submit(){
+    MiscUtils.mp("Command Operations Send", {});
     this.setState(s => ({...s, isExecuting: true}));
     Helper.submitCommand(this, (resp) => {
       this.eraseOutput = false;

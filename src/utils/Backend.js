@@ -100,30 +100,6 @@ export default class Backend {
     )
   }
 
-  static postJsonWithErr(endPoint, hash, callback, errorCallback, method='POST'){
-    let url = `${this.baseUrl()}${endPoint}`;
-    fetch(url, {
-      method: method,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Token': this.accessToken()
-      },
-      body: JSON.stringify(hash)
-    }).then(result => {
-        if (result.ok) return result.json();
-        else throw result;
-      }
-    )
-    .then((parsed_result) => {
-      callback(parsed_result)
-    })
-    .catch(error => {
-      error.json().then((body) => { errorCallback && errorCallback(body)});
-    })
-  }
-
   static kvGet(key){
     return Cookies.get(key);
   }

@@ -48,7 +48,10 @@ export default class AuthenticatedComponent {
       renderRegularComponent(){
         return(
           <AppLayout>
-            <WrappedComponent{...this.props}/>
+            <WrappedComponent
+              {...this.props}
+
+            />
           </AppLayout>
         )
       }

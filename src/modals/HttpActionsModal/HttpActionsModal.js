@@ -68,6 +68,9 @@ export default class HttpActionsModal extends React.Component {
   }
 
   componentDidMount(){
+
+    MiscUtils.mp("HTTP Operations Start", {});
+
     Kapi.fetch('/api/cluster/namespaces', (resp) => {
       if(this._isMounted)
         this.setState(s => ({...s, namespaces: resp['data'] }))
@@ -261,6 +264,8 @@ export default class HttpActionsModal extends React.Component {
     const {verb, path, host } = this.state.destination;
     const { namespace } = this.state.source;
     let payload = { verb, url: `${host}${path}`, namespace };
+
+    MiscUtils.mp('HTTP Operations Send', {verb, path});
 
     Kapi.post(
       "/api/run/curl",

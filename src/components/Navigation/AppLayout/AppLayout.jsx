@@ -8,6 +8,7 @@ import Backend from "../../../utils/Backend";
 import {setPath, setRemotes, setWorkspaces} from "../../../actions/action";
 import {connect} from "react-redux";
 import DataUtils from "../../../utils/DataUtils";
+import mixpanel from "mixpanel-browser";
 
 class AppLayoutClass extends React.Component<Props> {
   render(){

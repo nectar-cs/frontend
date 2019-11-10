@@ -28,6 +28,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
   }
 
   componentDidMount(){
+    MiscUtils.mp("Bulk Matching Start", {});
     this.reload();
   }
 

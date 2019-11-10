@@ -11,6 +11,7 @@ import Layout from "../../../assets/layouts";
 import ConfigurationSide from "./ConfigurationSide";
 import Helper from "./Helper";
 import type {Deployment, Workspace} from "../../../types/Types";
+import MiscUtils from "../../../utils/MiscUtils";
 
 class WorkspaceEditClass extends React.Component<State, Props> {
 
@@ -103,7 +104,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
     return(
       <DoneAnnouncement
         id={this.id()}
-        name={this.state.name}
+        name={this.state.workspace.name}
       />
     )
   }
@@ -147,10 +148,16 @@ class WorkspaceEditClass extends React.Component<State, Props> {
   }
 
   async submit(){
+    this.mpTrack();
     this.update({isSubmitting: true});
     const { workspace: editedWorkspace } = this.state;
     const workspace = await Helper.patchOrPostWorkspace(editedWorkspace);
     this.update({workspace, isSubmitting: false, isDone: true});
+  }
+
+  mpTrack(){
+    const verb = this.id() ? "Update" : "Create";
+    MiscUtils.mp("Workspace Save", { verb });
   }
 
   id() {
