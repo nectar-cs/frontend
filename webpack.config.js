@@ -66,7 +66,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'BACKEND_URL': JSON.stringify(process.env.REACT_APP_BACKEND_URL),
       'REVISION': JSON.stringify(process.env.REACT_APP_REVISION),
-      'MIXPANEL_TOKEN': JSON.stringify(process.env.REACT_APP_MIXPANEL_TOKEN)
+      'MIXPANEL_TOKEN': JSON.stringify(process.env.REACT_APP_MIXPANEL_TOKEN),
+      'SENTRY_DSN': JSON.stringify(process.env.REACT_APP_SENTRY_DSN)
     }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({

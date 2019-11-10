@@ -43,7 +43,7 @@ export default function Debug(){
       <li><p>Update verdict: {JSON.stringify(verdict)}</p></li>
       <li><p>MP: {MiscUtils.MP_TOKEN}</p></li>
       <li><p>Sentry: {MiscUtils.SENTRY_DSN}</p></li>
-      <li><p>Sanity: 1</p></li>
+      <li><p>Sanity: 2</p></li>
 
       <li><p>---</p></li>
       <All/>
