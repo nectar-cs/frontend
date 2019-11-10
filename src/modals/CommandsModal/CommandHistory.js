@@ -22,7 +22,7 @@ function HistoryRow(props){
   const Command = () => <Text.ContrastCode>{props.command}</Text.ContrastCode>;
   const Status = () => (
     <Text.StatusTag emotion={emotion}>
-      Code {props.status}
+      Code ?
     </Text.StatusTag>
   );
 

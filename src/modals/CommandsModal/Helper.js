@@ -40,7 +40,7 @@ export default class Helper {
   static previewCommand(inst){
     const { namespace } = inst.props.deployment;
     const { command, podName } = inst.state.choices;
-    return `$ kubectl exec ${command} ${podName} --namespace=${namespace}`
+    return `kubectl exec -it ${podName} -n ${namespace} -- sh -c '${command}'`;
   }
 
   static hasPods(inst){

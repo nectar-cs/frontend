@@ -11,7 +11,7 @@ import mixpanel from 'mixpanel-browser';
 
 export default class MiscUtils {
 
-  static MP_TOKEN = MiscUtils.tor(() => "a7a296ecc2f23d28eb9b0f3de878ff34");
+  static MP_TOKEN = MiscUtils.tor(() => MIXPANEL_TOKEN);
   static SENTRY_DSN = MiscUtils.tor(() => SENTRY_DSN);
 
   static hasMixPanel(){ return !!this.MP_TOKEN; }
