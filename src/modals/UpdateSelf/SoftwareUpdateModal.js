@@ -102,17 +102,15 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
     const { isFetching, isSubmitting, isDone } = this.state;
     if(isSubmitting || isDone || isFetching) return null;
 
-    const Lines = () => this.targetDepNames().map(d => (
-      <Fragment>
-        <Text.Code>{`kubectl scale deploy ${d} --replicas=0 -n nectar`}</Text.Code>
-        <Text.Code>{`kubectl scale deploy ${d} --replicas=1 -n nectar`}</Text.Code>
-      </Fragment>
-    ));
+    const exp = this.targetDepNames().join(', ');
+    const deleteCmd = `kubectl delete pod -l 'app in (${exp})' -n nectar`;
+    const watchCmd = `kubectl get pod -n nectar -w`;
 
     return(
       <Fragment>
         <Layout.BigCodeViewer>
-          <Lines/>
+          <Text.Code>{deleteCmd}</Text.Code>
+          <Text.Code>{watchCmd}</Text.Code>
         </Layout.BigCodeViewer>
       </Fragment>
     )
