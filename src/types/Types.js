@@ -56,3 +56,16 @@ export type Workspace = {
   nsFilterType: 'whitelist' | 'blacklist',
   lbFilterType: 'whitelist' | 'blacklist'
 }
+
+export type RevisionStatus = {
+  appName: string,
+  updateNecessary: boolean,
+  currentRevision: ?string,
+  latestRevision: ?string
+}
+
+
+
+
+
+

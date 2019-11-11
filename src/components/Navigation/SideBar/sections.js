@@ -1,4 +1,5 @@
 import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
+import SoftwareUpdateModal from "../../../modals/UpdateSelf/SoftwareUpdateModal";
 
 const workbench = {
   title: 'Workbench',
@@ -41,7 +42,8 @@ const settings = {
   items: [
     { title: "Git & Docker", modal: IntegrationsModal },
     { title: "Bulk Matching", path: '/bulk-matching' },
-    { title: "Log out of Session", path: '/auth/logout' }
+    { title: "Log out of Session", path: '/auth/logout' },
+    { title: "Software Update", modal: SoftwareUpdateModal }
   ]
 };
 

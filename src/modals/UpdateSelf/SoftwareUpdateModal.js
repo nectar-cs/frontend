@@ -1,3 +1,4 @@
+//@flow
 import React, {Fragment} from 'react'
 import FlexibleModal from "../../hocs/FlexibleModal";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
@@ -9,33 +10,48 @@ import Kapi from "../../utils/Kapi";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import MiscUtils from "../../utils/MiscUtils";
+import Backend from "../../utils/Backend";
+import type {RevisionStatus} from "../../types/Types";
+import ExplanationBlock from "./ExplanationBlock";
 
-export default class SoftwareUpdateModal extends React.Component {
+export default class SoftwareUpdateModal extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
     this.state = {
+      isFetching: true,
+      statuses: [],
       isSubmitting: false,
-      isDone: false
+      isDone: false,
+      checks: {},
     };
     this.submit = this.submit.bind(this);
   }
 
-  componentDidMount(){
-    MiscUtils.mp("Software Update Start", {});
+  async componentDidMount(){
+    const { wasPrompted } = this.props;
+    MiscUtils.mp("Software Update Start", {wasPrompted});
+    this.fetchStatuses();
   }
 
   render(){
     return(
       <FlexibleModal mode='modal'>
         { this.renderHeader() }
+        { this.renderLoading() }
         { this.renderExplanation() }
+        { this.renderGamePlan() }
         { this.renderBreakdown() }
         { this.renderButton() }
         { this.renderLoader() }
         { this.renderDone() }
       </FlexibleModal>
     )
+  }
+
+  renderLoading(){
+    if(!this.state.isFetching) return null;
+    return <CenterLoader/>;
   }
 
   renderHeader(){
@@ -50,18 +66,24 @@ export default class SoftwareUpdateModal extends React.Component {
   }
 
   renderBreakdown(){
-    const { isSubmitting, isDone } = this.state;
-    if(isSubmitting || isDone) return null;
+    const { statuses, isSubmitting, isDone, checks } = this.state;
+    if(isSubmitting || isDone || statuses.length < 1) return null;
 
-    const { bundle } = this.props;
-    const Rows = () => Object.keys(bundle).map(app => (
-      <AppRow key={app} name={app} hot={bundle[app]['updateNecessary']} />
+    const Rows = () => statuses.map(status => (
+      <AppRow 
+        key={status.appName} 
+        status={status}
+        isChecked={checks[status.appName]}
+        callback={() => this.changeCheck(status.appName)}
+      />
     ));
+
     return(
       <Fragment>
         <TextOverLineSubtitle text="Deployments"/>
         <table>
           <tbody>
+            <HeaderRow/>
             <Rows/>
           </tbody>
         </table>
@@ -70,23 +92,26 @@ export default class SoftwareUpdateModal extends React.Component {
   }
 
   renderExplanation(){
-    const { isSubmitting, isDone } = this.state;
-    if(isSubmitting || isDone) return null;
+    const { isFetching, isSubmitting, isDone } = this.state;
+    if(isSubmitting || isDone || isFetching) return null;
+    return <ExplanationBlock/>;
+  }
+
+  renderGamePlan(){
+    const { isFetching, isSubmitting, isDone } = this.state;
+    if(isSubmitting || isDone || isFetching) return null;
+
+    const Lines = () => this.targetDepNames().map(d => (
+      <Fragment>
+        <Text.Code>{`kubectl scale deploy ${d} --replicas=0 -n nectar`}</Text.Code>
+        <Text.Code>{`kubectl scale deploy ${d} --replicas=1 -n nectar`}</Text.Code>
+      </Fragment>
+    ));
 
     return(
       <Fragment>
-        <TextOverLineSubtitle text="What's going on?"/>
-        <Text.P><b>Mosaic</b>, which is running in your cluster, needs to update
-          one or more of the images inside its deployments.
-        </Text.P>
-        <Text.P low={2}><b>What will happen</b> is Nectar will kill its own pods so that
-          they can be restarted with the new image.
-        </Text.P>
-        <Text.P low={2}><b>This means</b> the app will stop working for ~15 seconds.
-          To monitor the update, run
-        </Text.P>
         <Layout.BigCodeViewer>
-          <Text.Code>kubectl get deploy -n nectar</Text.Code>
+          <Lines/>
         </Layout.BigCodeViewer>
       </Fragment>
     )
@@ -122,30 +147,86 @@ export default class SoftwareUpdateModal extends React.Component {
     )
   }
 
+  async fetchStatuses(){
+    const frontend = MiscUtils.REVISION || '';
+    const kapi = (await Kapi.bFetch('/api/status/revision'))['sha'];
+    const payload = { currentVersions: { frontend, kapi } };
+    const statuses = await Backend.bPost('/revisions/compare', payload);
+    const checks = this.computeDefaultChecks(statuses);
+    this.setState(s => ({...s, isFetching: false, statuses, checks}));
+  }
+
   async submit(){
     MiscUtils.mp("Software Update Submit", {});
     this.setState(s => ({...s, isSubmitting: true}));
     const ep = '/api/status/restart';
-    const deployments = this.outdatedDeployments();
+    const deployments = this.targetDepNames();
     await Kapi.blockingPost(ep, { deployments });
     this.setState(s => ({...s, isSubmitting: false, isDone: true}));
   }
 
-  outdatedDeployments(){
-    const { bundle } = this.props;
-    return Object.keys(bundle).filter(key => (
-      bundle[key]['updateNecessary']
-    ));
+  targetDepNames(){
+    const { checks } = this.state;
+    return Object.keys(checks).filter(k => checks[k]);
+  }
+  
+  computeDefaultChecks(versions){
+    return Object.keys(versions).reduce((h, k) => (
+      { ...h, [versions[k].appName]: versions[k].updateNecessary }
+    ), {});
+  }
+
+  changeCheck(which){
+    this.setState(s => ({...s,
+      checks: { ...s.checks, [which]: !s.checks[which] }
+    }));
   }
 }
 
-function AppRow({name, hot}){
-  const emotion = hot ? 'failure' : 'success';
-  const word = hot ? 'needs updating' : 'up to date';
+type Props = {
+  wasPrompted: boolean
+}
+
+type State = {
+  statuses: RevisionStatus[],
+  isFetching: boolean
+}
+
+function AppRow(props: RowProps){
+  const { isChecked, status, callback } = props;
+
+  const emotion = status.updateNecessary ?
+    (status.latestRevision ? 'failure' : 'warn') : 'success';
+
+  const actual = (status.currentRevision || 'N/A').substring(0, 10);
+
+  const Check = () => (
+    <input type='checkbox' checked={isChecked} onChange={callback}/>
+  );
+
   return(
     <tr>
-      <td><p>{name}</p></td>
-      <td><Text.BoldStatus raw emotion={emotion}>{word}</Text.BoldStatus></td>
+      <td><Check/></td>
+      <td><p>{status.appName}</p></td>
+      <td><Text.BoldStatus raw emotion={emotion}>{actual}</Text.BoldStatus></td>
+      <td><p>{status.latestRevision}</p></td>
+    </tr>
+  )
+}
+
+type RowProps = {
+  status: RevisionStatus,
+  isChecked: boolean,
+  callback: (string) => void
+};
+
+function HeaderRow() {
+  return(
+    <tr>
+      <th><p>Update</p></th>
+      <th><p>App</p></th>
+      <th><p>Current V</p></th>
+      <th><p>Available V</p></th>
     </tr>
   )
 }

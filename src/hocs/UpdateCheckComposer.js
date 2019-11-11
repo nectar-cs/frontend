@@ -9,10 +9,11 @@ export default class UpdateCheckComposer {
         const props = this.props;
         const checker = new UpdateChecker();
         checker.perform().then(verdict => {
-          if (verdict) {
-            const { bundle } = verdict;
-            props.openModal(SoftwareUpdateModal, { bundle });
-          }
+          // if (verdict) {
+          //   const { bundle } = verdict;
+          //   props.openModal(SoftwareUpdateModal, { bundle });
+          // }
+          props.openModal(SoftwareUpdateModal);
         });
       }
       render() {

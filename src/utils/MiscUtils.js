@@ -13,6 +13,7 @@ export default class MiscUtils {
 
   static MP_TOKEN = MiscUtils.tor(() => MIXPANEL_TOKEN);
   static SENTRY_DSN = MiscUtils.tor(() => SENTRY_DSN);
+  static REVISION = MiscUtils.tor(() => REVISION);
 
   static hasMixPanel(){ return !!this.MP_TOKEN; }
   static hasSentry(){ return !!this.SENTRY_DSN; }
