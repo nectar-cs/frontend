@@ -81,7 +81,7 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
 
     return(
       <Fragment>
-        <TextOverLineSubtitle text="Deployments"/>
+        <TextOverLineSubtitle text="Mosaic's Deployments"/>
         <table>
           <tbody>
             <Table.HeaderRow/>
@@ -123,11 +123,13 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
   }
 
   renderButton(){
-    const { isSubmitting, isDone } = this.state;
+    const { isSubmitting, isDone, checks } = this.state;
     if(isSubmitting || isDone) return null;
+    const areAnyMarked = Object.values(checks).includes(true);
 
     return(
       <ModalButton
+        isEnabled={areAnyMarked}
         callback={this.submit}
         title='Update'
       />
