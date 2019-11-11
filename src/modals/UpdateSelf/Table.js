@@ -7,7 +7,7 @@ function AppRow(props: RowProps){
 
   const emo = (which) => status.updateNecessary ?
     (which ? 'failure' : 'warnSoft') : 'success';
-  const fmt = (which) => (which || 'N/A').substring(0, 6);
+  const fmt = (which) => (which || 'N/A').substring(0, 7);
   const line = (which) => (
     <Text.BoldStatus raw emotion={emo(which)}>
       { fmt(which) }
