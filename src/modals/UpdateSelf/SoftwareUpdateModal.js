@@ -13,6 +13,7 @@ import MiscUtils from "../../utils/MiscUtils";
 import Backend from "../../utils/Backend";
 import type {RevisionStatus} from "../../types/Types";
 import ExplanationBlock from "./ExplanationBlock";
+import Table from "./Table";
 
 export default class SoftwareUpdateModal extends React.Component<Props, State> {
 
@@ -70,7 +71,7 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
     if(isSubmitting || isDone || statuses.length < 1) return null;
 
     const Rows = () => statuses.map(status => (
-      <AppRow 
+      <Table.AppRow
         key={status.appName} 
         status={status}
         isChecked={checks[status.appName]}
@@ -83,7 +84,7 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
         <TextOverLineSubtitle text="Deployments"/>
         <table>
           <tbody>
-            <HeaderRow/>
+            <Table.HeaderRow/>
             <Rows/>
           </tbody>
         </table>
@@ -192,41 +193,3 @@ type State = {
   isFetching: boolean
 }
 
-function AppRow(props: RowProps){
-  const { isChecked, status, callback } = props;
-
-  const emotion = status.updateNecessary ?
-    (status.latestRevision ? 'failure' : 'warn') : 'success';
-
-  const actual = (status.currentRevision || 'N/A').substring(0, 10);
-
-  const Check = () => (
-    <input type='checkbox' checked={isChecked} onChange={callback}/>
-  );
-
-  return(
-    <tr>
-      <td><Check/></td>
-      <td><p>{status.appName}</p></td>
-      <td><Text.BoldStatus raw emotion={emotion}>{actual}</Text.BoldStatus></td>
-      <td><p>{status.latestRevision}</p></td>
-    </tr>
-  )
-}
-
-type RowProps = {
-  status: RevisionStatus,
-  isChecked: boolean,
-  callback: (string) => void
-};
-
-function HeaderRow() {
-  return(
-    <tr>
-      <th><p>Update</p></th>
-      <th><p>App</p></th>
-      <th><p>Current V</p></th>
-      <th><p>Available V</p></th>
-    </tr>
-  )
-}
