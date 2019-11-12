@@ -34,8 +34,7 @@ export default class HotReloadModal extends React.Component{
 
   renderComingSoon(){
     return(
-      <ComingSoonSection
-      />
+      <ComingSoonSection/>
     )
   }
 }
