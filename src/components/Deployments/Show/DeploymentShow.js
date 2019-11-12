@@ -46,11 +46,7 @@ class DeploymentShowClass extends React.Component{
 
   renderInitialFetching(){
     if(!this.isInitialFetching()) return null;
-    return(
-      <Layout.FullWidthPanel>
-        <CenterLoader/>
-      </Layout.FullWidthPanel>
-    )
+    return <CenterLoader/>;
   }
 
   renderSections(){

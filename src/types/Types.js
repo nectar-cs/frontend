@@ -1,7 +1,5 @@
 //@flow
 
-import PropTypes from "prop-types";
-
 export type RemoteBundle = {
   identifier: string,
   type: string,
@@ -63,9 +61,4 @@ export type RevisionStatus = {
   currentRevision: ?string,
   latestRevision: ?string
 }
-
-
-
-
-
 

@@ -68,6 +68,7 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
 
   renderBreakdown(){
     const { statuses, isSubmitting, isDone, checks } = this.state;
+    if(statuses == null) return null;
     if(isSubmitting || isDone || statuses.length < 1) return null;
 
     const Rows = () => statuses.map(status => (
@@ -152,7 +153,8 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
     const frontend = MiscUtils.REVISION || '';
     const kapi = (await Kapi.bFetch('/api/status/revision'))['sha'];
     const payload = { currentVersions: { frontend, kapi } };
-    const statuses = await Backend.bPost('/revisions/compare', payload);
+    let statuses = await Backend.bPost('/revisions/compare', payload);
+    statuses = massageStatuses(statuses);
     const checks = this.computeDefaultChecks(statuses);
     this.setState(s => ({...s, isFetching: false, statuses, checks}));
   }
@@ -184,6 +186,30 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
   }
 }
 
+
+function massageStatuses(statuses){
+  if(isResultOk(statuses)){
+    return statuses;
+  } else {
+    MiscUtils.senTrack("Bad statuses for revision")
+  }
+}
+
+function genFallbackStatuses(){
+  return APPS.map(appName => (
+    { appName: appName, updateNecessary: false }
+  ));
+}
+
+function isResultOk(statuses){
+  try{
+    const appNames = statuses.map(s => s.appName);
+    return APPS.every(e => appNames.includes(e));
+  } catch(e) {
+    return false;
+  }
+}
+
 type Props = {
   wasPrompted: boolean
 }
@@ -193,3 +219,4 @@ type State = {
   isFetching: boolean
 }
 
+const APPS = ['frontend', 'kapi'];
