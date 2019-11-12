@@ -62,13 +62,26 @@ const FloatingPlus = styled.button`
   box-shadow: 2px 2px 3px #999;
 `;
 
+const SpicyButton = styled.button`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  background: ${p => p.theme.colors.warn};
+  color: ${p => p.theme.colors.contrastColor};
+  &:disabled{
+    background: ${p => p.theme.colors.disabled};
+  }
+`;
+
 const Button = {
   FloatingPlus,
   SmallButton,
   FixedSmallButton,
   BigBottomButtons,
   BigButton,
-  SmallClearButton
+  SmallClearButton,
+  SpicyButton
 };
 
 export default Button;

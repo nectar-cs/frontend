@@ -1,4 +1,3 @@
-import Authenticate from "../components/Auth/Authenticate";
 import LoginAndRegister from "../components/Auth/LoginAndRegister";
 import WorkspaceIndex from "../components/Workspaces/Index/WorkspaceIndex";
 import WorkspaceEdit from "../components/Workspaces/Edit/WorkspaceEdit";
@@ -37,7 +36,6 @@ export const ROUTES = {
   },
 
   auth: {
-    authenticate: { path: '/auth/authenticate', comp: Authenticate },
     login: { path: '/auth/login', comp: LoginAndRegister },
     register: { path: '/auth/register', comp: LoginAndRegister },
     logout: { path: '/auth/logout', comp: Logout }

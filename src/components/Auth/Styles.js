@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Layout from "../../assets/layouts";
 
 const Content = styled.div`
   height: 200px;
@@ -26,10 +27,10 @@ const FormBox = styled.div`
   margin: 26px 22px 0 22px;
 `;
 
-const RegisterLink = styled.p`
-  margin: 18px 0 20px 0;
+const Options = styled.div`
+  margin: 38px 0 20px 0;
+  justify-content: center;
   text-align: center;
-  color: ${p => p.theme.colors.contrastColor};
 `;
 
 const TitleLogo = styled.img`
@@ -37,21 +38,13 @@ const TitleLogo = styled.img`
   height: 36px;
 `;
 
-const ErrorBox = styled.ul`
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-
 const S = {
   Content,
   TitleBox,
   TitleText,
   FormBox,
-  RegisterLink,
-  TitleLogo,
-  ErrorBox,
+  Options,
+  TitleLogo
 };
 
 export default S;

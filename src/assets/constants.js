@@ -4,8 +4,8 @@ export const theme = {
     primaryFont: "#5c6070",
     primaryFontMuted: "#FFFFFF48",
     primaryFontLess: "#5c6070",
-    contrastColor: 'white',
-    contrastFont: "white",
+    contrastColor: '#FFFFFF',
+    contrastFont: "#FFFFFF",
     contrastLessFont: "#acb2c1",
     secondaryColor: "#455D7A",
     contentBackgroundColor: "#e1e3e8",
@@ -15,7 +15,8 @@ export const theme = {
     fail: "darkred",
     warn: "tomato",
     warn2: "orange",
-    warnSoft: "#F6AE2D"
+    warnSoft: "#F6AE2D",
+    disabled: "#cecece"
   },
 
   dims: {

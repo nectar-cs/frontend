@@ -24,6 +24,8 @@ const A = styled.a`
     text-decoration: underline;
     text-decoration-color: ${p => p.theme.colors.contrastFont};  
   }
+  margin-top: ${p => p.raw ? 0 : `${(p.low || 1) * 12}px`};
+  color: ${p => colored(p.emotion || 'primaryFont')};
 `;
 
 const PA = styled.p`
@@ -37,6 +39,7 @@ const PA = styled.p`
   margin-top: ${p => p.raw ? 0 : `${(p.low || 0) * 12}px`};
   margin-right: ${p => p.push ? "3px" : '0'}
   margin-left: ${p => p.pushed ? "3px" : '0'}
+  color: ${p => colored(p.emotion || 'primaryFont')};
 `;
 
 const CleanStatus = styled.p`

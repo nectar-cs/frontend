@@ -15,6 +15,8 @@ export default class AuthForm extends React.Component<Props>{
   }
 
   renderField(name, type){
+    if(this.props[name] == null) return null;
+
     const parent = this.props.callback;
     const callback = e => { parent(name, e.target.value) };
     return(
@@ -23,6 +25,7 @@ export default class AuthForm extends React.Component<Props>{
         value={this.props[name]}
         onChange={callback}
         placeholder={name}
+        required
       />
     )
   }
