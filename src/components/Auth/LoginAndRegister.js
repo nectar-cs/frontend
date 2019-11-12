@@ -133,7 +133,7 @@ export default class LoginAndRegister extends React.Component{
   }
 
   static defaultCredentials(){
-    if(true || MiscUtils.isNonDev()){
+    if(MiscUtils.isNonDev()){
       return({email: '', password: '', confirm: ''})
     } else {
       return({

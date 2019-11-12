@@ -1,7 +1,6 @@
 import React, {Fragment} from "react";
 import Modal from "react-modal";
 import KubeErrorModal from "../widgets/Modals/KubeErrorModal";
-import AuthErrorModal from "../widgets/Modals/AuthErrorModal";
 
 Modal.defaultStyles.overlay.backgroundColor = "rgba(49, 54, 72, 0.6)";
 
@@ -52,12 +51,10 @@ export default class ErrComponent{
 
       handleInternalServerError(){
         this.setState(s => ({...s, hasFatalError: true}));
-        this.props.openModal(AuthErrorModal);
       }
 
       handleAuthError(){
         this.setState(s => ({...s, hasFatalError: true}));
-        this.props.openModal(AuthErrorModal);
       }
 
       kubeErrorCallback(error){
