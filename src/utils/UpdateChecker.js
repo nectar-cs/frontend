@@ -35,7 +35,7 @@ export default class UpdateChecker {
   }
 
   shouldPerform(){
-    const nonDev = this.isNonDevEnvironment();
+    const nonDev = MiscUtils.isNonDev();
     const lastCheckOutdated = this.wasLastCheckLongAgo();
     return nonDev && lastCheckOutdated;
   }
@@ -56,11 +56,5 @@ export default class UpdateChecker {
 
   wasLastCheckLongAgo(){
     return this.lastCheckTime() < this.furthestBackAcceptableCheckTime();
-  }
-
-  isNonDevEnvironment(){
-    const myEnv = process.env.NODE_ENV;
-    return myEnv !== 'development';
-    // return true;
   }
 }

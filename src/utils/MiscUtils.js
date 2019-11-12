@@ -153,15 +153,11 @@ export default class MiscUtils {
     else return textCombos.statusTagWarn;
   }
 
-  static areMatchesEquiv(m1, m2){
-    if(m1.id !== m2.id) return false;
-    if(m1.gitRemoteName !== m2.gitRemoteName) return false;
-    if(m1.id !== m2.id) return false;
-    if(m1.id !== m2.id) return false;
-  }
-
   static senTrack(e){
-    Sentry.captureException(e);
+    if(typeof e === 'string')
+      Sentry.captureMessage(e);
+    else
+      Sentry.captureException(e);
   }
 
   static mp(name, hash){
@@ -173,5 +169,10 @@ export default class MiscUtils {
       this.senTrack(e);
       console.log("MP FAIL " + e);
     }
+  }
+
+  static isNonDev(){
+    const myEnv = process.env.NODE_ENV;
+    return myEnv !== 'development';
   }
 }

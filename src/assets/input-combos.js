@@ -10,6 +10,19 @@ const InputLine = styled.div`
   justify-content: space-between;
 `;
 
+const ContrastInput = styled.input`
+  width: 95%;
+  border-color: ${p => p.theme.colors.contrastColor};
+  border-width: 0 0 1px 0;
+  padding-left: 0;
+  border-radius: 0;
+  color: ${p => p.theme.colors.contrastFont};
+  &::placeholder{
+    opacity: 1.0;
+    color: ${p => p.theme.colors.contrastLessFont}
+  }
+`;
+
 const LineInput = styled.input`
   width: 100%;
   border-color: ${p => p.theme.colors.primaryColor};
@@ -37,5 +50,5 @@ const LineLabel = styled.p`
   min-width: 120px;
 `;
 
-const In = {InputLine, LineInput, LineLabel };
+const In = {InputLine, LineInput, LineLabel, ContrastInput };
 export default In;

@@ -1,27 +1,22 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import SideBar from './../SideBar/SideBar'
 import TopBar from './../TopBar/TopBar'
-import {theme} from "../../../assets/constants";
-import {ThemeProvider} from "styled-components";
 import {AppContent} from "./AppLayoutStyles";
 import Backend from "../../../utils/Backend";
 import {setPath, setRemotes, setWorkspaces} from "../../../actions/action";
 import {connect} from "react-redux";
 import DataUtils from "../../../utils/DataUtils";
-import mixpanel from "mixpanel-browser";
 
 class AppLayoutClass extends React.Component<Props> {
   render(){
     return(
-      <ThemeProvider theme={theme}>
-        <React.Fragment>
-          <TopBar/>
-          <SideBar/>
-          <AppContent>
-            { this.props.children }
-          </AppContent>
-        </React.Fragment>
-      </ThemeProvider>
+      <Fragment>
+        <TopBar/>
+        <SideBar/>
+        <AppContent>
+          { this.props.children }
+        </AppContent>
+      </Fragment>
     )
   }
 
