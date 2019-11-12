@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import Kapi from "../../utils/Kapi";
 import Backend from "../../utils/Backend";
 import UpdateChecker from "../../utils/UpdateChecker";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 export default function Debug(){
 
@@ -41,8 +41,8 @@ export default function Debug(){
       <li><p>Should Perform: {checker.shouldPerform().toString()}</p></li>
       <li><p>Kapi version: {JSON.stringify(kapiVersion)}</p></li>
       <li><p>Update verdict: {JSON.stringify(verdict)}</p></li>
-      <li><p>MP: {MiscUtils.MP_TOKEN}</p></li>
-      <li><p>Sentry: {MiscUtils.SENTRY_DSN}</p></li>
+      <li><p>MP: {Utils.MP_TOKEN}</p></li>
+      <li><p>Sentry: {Utils.SENTRY_DSN}</p></li>
       <li><p>Sanity: 8</p></li>
 
       <li><p>---</p></li>

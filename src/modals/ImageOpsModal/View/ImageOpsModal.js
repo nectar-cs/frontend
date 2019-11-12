@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../../utils/MiscUtils";
+import Utils from "../../../utils/Utils";
 import {Types} from "../../../types/CommonTypes";
 import ModalButton from "../../../widgets/Buttons/ModalButton";
 import ImageForm from "./ImageForm";
@@ -36,7 +36,7 @@ export default class ImageOpsModal extends React.Component {
   }
 
   componentDidMount(){
-    MiscUtils.mp("Image Operations Start", {});
+    Utils.mp("Image Operations Start", {});
     Helper.fetchImgTags(this);
     Helper.fetchGitBranches(this);
   }
@@ -61,8 +61,8 @@ export default class ImageOpsModal extends React.Component {
     const { deployment, mode} = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.modalImage(this, "camera_alt")}
-        graphicType={MiscUtils.modalGraphicType(this)}
+        graphicName={Utils.modalImage(this, "camera_alt")}
+        graphicType={Utils.modalGraphicType(this)}
         title={defaults.header.title(deployment.name, mode)}
         subtitle={defaults.header.subtitle}
       />
@@ -175,7 +175,7 @@ export default class ImageOpsModal extends React.Component {
     const  { deployment, matching } = this.props;
     const { choices } = this.state;
 
-    MiscUtils.mp('Image Operation', {operationType});
+    Utils.mp('Image Operation', {operationType});
 
     this.opHelper = new Operator({
       ...choices,

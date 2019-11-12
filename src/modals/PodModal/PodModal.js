@@ -2,7 +2,7 @@ import React from 'react'
 import FlexibleModal from "../../hocs/FlexibleModal";
 import {Types} from "../../types/CommonTypes";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import Tabs from "../../widgets/Tabs/Tabs";
 
 export default class PodModal extends React.Component {
@@ -17,14 +17,14 @@ export default class PodModal extends React.Component {
   }
 
   componentDidMount(){
-    MiscUtils.mp("Pod Modal Start", {});
+    Utils.mp("Pod Modal Start", {});
   }
 
   renderHeader(){
     const { pod, deployment, matching } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.msImage(deployment, matching)}
+        graphicName={Utils.msImage(deployment, matching)}
         title={`${deployment.namespace} / ${pod.name}`}
         subtitle={`One of ${deployment.name}'s pods.`}
       />

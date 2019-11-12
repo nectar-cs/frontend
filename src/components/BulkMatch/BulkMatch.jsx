@@ -15,7 +15,7 @@ import Helper from './Helper'
 import type {Matching, WideDeployment} from "../../types/Types";
 import {Redirect} from "react-router";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 class BulkMatchingClass extends React.Component<Props, State> {
   constructor(props){
@@ -28,7 +28,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
   }
 
   componentDidMount(){
-    MiscUtils.mp("Bulk Matching Start", {});
+    Utils.mp("Bulk Matching Start", {});
     document.title = `Bulk Matching`;
     this.reload();
   }
@@ -140,7 +140,7 @@ class BulkMatchingClass extends React.Component<Props, State> {
 
     const { matchings } = this.state;
     const deployment = this.selectedDeployment();
-    const matching = MiscUtils.depMatching(deployment.name, matchings);
+    const matching = Utils.depMatching(deployment.name, matchings);
 
     return(
       <MatchModal

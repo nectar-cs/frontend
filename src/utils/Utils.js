@@ -9,11 +9,11 @@ const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
 import mixpanel from 'mixpanel-browser';
 
-export default class MiscUtils {
+export default class Utils {
 
-  static MP_TOKEN = MiscUtils.tor(() => MIXPANEL_TOKEN);
-  static SENTRY_DSN = MiscUtils.tor(() => SENTRY_DSN);
-  static REVISION = MiscUtils.tor(() => REVISION);
+  static MP_TOKEN = Utils.tor(() => MIXPANEL_TOKEN);
+  static SENTRY_DSN = Utils.tor(() => SENTRY_DSN);
+  static REVISION = Utils.tor(() => REVISION);
 
   static hasMixPanel(){ return !!this.MP_TOKEN; }
   static hasSentry(){ return !!this.SENTRY_DSN; }

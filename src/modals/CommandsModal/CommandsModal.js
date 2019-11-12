@@ -1,6 +1,6 @@
 import React from 'react'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import {Types} from "../../types/CommonTypes";
 import CommandForm from "./CommandForm";
@@ -33,7 +33,7 @@ export default class CommandsModal extends React.Component{
   }
 
   componentDidMount(){
-    MiscUtils.mp("Command Operations Start", {});
+    Utils.mp("Command Operations Start", {});
   }
 
   render(){
@@ -54,8 +54,8 @@ export default class CommandsModal extends React.Component{
     const { deployment, mode } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.modalImage(this, "attach_money")}
-        graphicType={MiscUtils.modalGraphicType(this)}
+        graphicName={Utils.modalImage(this, "attach_money")}
+        graphicType={Utils.modalGraphicType(this)}
         title={defaults.header.title(deployment.name, mode)}
         subtitle={defaults.header.subtitle}
       />
@@ -140,7 +140,7 @@ export default class CommandsModal extends React.Component{
   }
 
   submit(){
-    MiscUtils.mp("Command Operations Send", {});
+    Utils.mp("Command Operations Send", {});
     this.setState(s => ({...s, isExecuting: true}));
     Helper.submitCommand(this, (resp) => {
       this.eraseOutput = false;

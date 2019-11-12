@@ -11,7 +11,7 @@ import ModalButton from "../../widgets/Buttons/ModalButton";
 import Kapi from "../../utils/Kapi";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 export default class StuntPodRecycleModal extends React.Component {
 
@@ -26,7 +26,7 @@ export default class StuntPodRecycleModal extends React.Component {
   }
 
   componentDidMount(){
-    MiscUtils.mp("Pod Recycle Start", {});
+    Utils.mp("Pod Recycle Start", {});
   }
 
   render(){

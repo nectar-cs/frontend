@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import FormComponent from "../../hocs/FormComponent";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 class LogsFormClass extends React.Component<Props> {
   render(){
@@ -17,7 +17,7 @@ class LogsFormClass extends React.Component<Props> {
     return this.props.makeSelect(
       "Pod",
       "podName",
-      MiscUtils.arrayOptions(podNameChoices)
+      Utils.arrayOptions(podNameChoices)
     )
   }
 
@@ -48,11 +48,11 @@ class LogsFormClass extends React.Component<Props> {
     ))
   }
 
-  static MINUTES_OPTIONS = MiscUtils.arrayOfHashesOptions(
+  static MINUTES_OPTIONS = Utils.arrayOfHashesOptions(
     LogsFormClass.timeOptions("Minutes")
   );
 
-  static SECONDS_OPTIONS = MiscUtils.arrayOfHashesOptions(
+  static SECONDS_OPTIONS = Utils.arrayOfHashesOptions(
     LogsFormClass.timeOptions("Seconds")
   );
 }

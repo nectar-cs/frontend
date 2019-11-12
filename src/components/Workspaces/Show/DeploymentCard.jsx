@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import MiscUtils from '../../../utils/MiscUtils';
+import Utils from '../../../utils/Utils';
 import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
 import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
 import CardRow from "./CardRow";
@@ -39,8 +39,8 @@ export default class DeploymentCard extends React.Component {
 
   renderHeader(){
     const { deployment, matching } = this.props;
-    let frameworkImg = MiscUtils.msImage(deployment, matching);
-    let git = this.hasGit() ? MiscUtils.gitSummary(matching) : null;
+    let frameworkImg = Utils.msImage(deployment, matching);
+    let git = this.hasGit() ? Utils.gitSummary(matching) : null;
     const subtitle = git || "Not connected to Git";
     const Ref = (p) => <Link to={this.detailPath()}>{p.children}</Link>;
 
@@ -63,7 +63,7 @@ export default class DeploymentCard extends React.Component {
 
   renderContentRows(){
     const dep = this.props.deployment;
-    const sourceText = MiscUtils.sourceString(dep.commit);
+    const sourceText = Utils.sourceString(dep.commit);
     const portText = `Ok CPU, low RAM`;
 
     return <S.ContentRows>

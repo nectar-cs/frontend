@@ -1,6 +1,6 @@
 //@flow
 import Backend from "../../utils/Backend";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import type {RemoteBundle, RemoteRepo} from "../../types/Types";
 import DataUtils from "../../utils/DataUtils";
 
@@ -54,7 +54,7 @@ export default class Helper{
     if(mode === 'detail'){
       return "attachment";
     } else {
-      return MiscUtils.frameworkImage(framework || 'docker');
+      return Utils.frameworkImage(framework || 'docker');
     }
   }
 

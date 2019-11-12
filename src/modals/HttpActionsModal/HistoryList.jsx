@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
 import s from "./HistoryList.sass";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 export default class HistoryList extends React.Component {
 
@@ -108,8 +108,8 @@ class HistoryRow extends React.Component {
 
     host = host.replace("http://", "");
     const Td = (p) => <td className={s.row}>{p.children}</td>;
-    const statCol = MiscUtils.statusCodeColors(status);
-    const verbCol = MiscUtils.httpVerbColors(verb);
+    const statCol = Utils.statusCodeColors(status);
+    const verbCol = Utils.httpVerbColors(verb);
     const callback = () => this.props.callback(back);
     verb = this.shortenVerb(verb);
 

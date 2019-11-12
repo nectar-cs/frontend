@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import PropTypes from 'prop-types'
 import s from './DestinationPane.sass'
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import {Types} from "../../types/CommonTypes";
 
 const HTTP_VERBS = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'];
@@ -31,7 +31,7 @@ export default class DestinationPane extends React.Component {
             className={s.verbSelect}
             value={this.props.verb}
             onChange={(e) => this.broadcastChange('verb', e)}>
-            { MiscUtils.arrayOptions(HTTP_VERBS) }
+            { Utils.arrayOptions(HTTP_VERBS) }
           </select>
         </div>
       </Fragment>
@@ -54,7 +54,7 @@ export default class DestinationPane extends React.Component {
 
     const combined = [...serviceOptions, ...podOptions];
     const cleaned = combined.filter(e => e);
-    return MiscUtils.arrayOfHashesOptions(cleaned);
+    return Utils.arrayOfHashesOptions(cleaned);
   }
 
   static makeSvcHost(name, domain, port){

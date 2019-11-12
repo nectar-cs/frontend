@@ -2,7 +2,7 @@
 import React from 'react'
 import Layout from "../../assets/layouts";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import {Types} from "../../types/CommonTypes";
 import HowToAnnotate from "./HowToAnnotate";
@@ -43,7 +43,7 @@ export default class LastCommitModal extends React.Component {
     const { deployment, matching } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.msImage(deployment, matching)}
+        graphicName={Utils.msImage(deployment, matching)}
         title={defaults.header.title(deployment.name)}
         subtitle={defaults.header.subtitle}
       />
@@ -132,7 +132,7 @@ export default class LastCommitModal extends React.Component {
 
   commitAddr(){
     const { deployment, matching } = this.props;
-    return MiscUtils.commitGHPath(deployment.commit, matching);
+    return Utils.commitGHPath(deployment.commit, matching);
   }
 
   isFetching(){ return this.state.isFetching; }

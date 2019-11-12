@@ -4,14 +4,14 @@ import defaults from "./defaults";
 import Layout from './../../assets/layouts'
 import Text from './../../assets/text-combos'
 import Button from './../../assets/buttons'
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 export default function CopyWizard(props){
 
   const ref = useRef(null);
 
   const apply = ()=> {
-    MiscUtils.mp("Port Forward Copy", {});
+    Utils.mp("Port Forward Copy", {});
     // noinspection JSIgnoredPromiseFromCall
     navigator.clipboard.writeText(props.command);
   };

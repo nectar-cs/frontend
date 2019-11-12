@@ -5,7 +5,6 @@ import Helper from "./Helper";
 import S from './DeploymentShowStyles'
 import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
-import Layout from "../../../assets/layouts";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 
 class DeploymentShowClass extends React.Component{

@@ -9,7 +9,7 @@ import Kapi from "../../utils/Kapi";
 import CodeEditor from "./CodeEditor";
 import {defaultBody, defaultHeaders} from "./defaults";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response";
 import HistoryList from "./HistoryList";
 import Backend from "../../utils/Backend";
@@ -69,7 +69,7 @@ export default class HttpActionsModal extends React.Component {
 
   componentDidMount(){
 
-    MiscUtils.mp("HTTP Operations Start", {});
+    Utils.mp("HTTP Operations Start", {});
 
     Kapi.fetch('/api/cluster/namespaces', (resp) => {
       if(this._isMounted)
@@ -97,8 +97,8 @@ export default class HttpActionsModal extends React.Component {
     const { deployment } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.modalImage(this, "http")}
-        graphicType={MiscUtils.modalGraphicType(this)}
+        graphicName={Utils.modalImage(this, "http")}
+        graphicType={Utils.modalGraphicType(this)}
         title={`${deployment.name} / http ops`}
         subtitle='Send HTTP requests to this deployment'
       />
@@ -265,7 +265,7 @@ export default class HttpActionsModal extends React.Component {
     const { namespace } = this.state.source;
     let payload = { verb, url: `${host}${path}`, namespace };
 
-    MiscUtils.mp('HTTP Operations Send', {verb, path});
+    Utils.mp('HTTP Operations Send', {verb, path});
 
     Kapi.post(
       "/api/run/curl",

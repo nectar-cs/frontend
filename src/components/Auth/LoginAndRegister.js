@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import {Redirect} from "react-router";
 import Backend from "../../utils/Backend";
 import Layout from "../../assets/layouts";
@@ -133,7 +133,7 @@ export default class LoginAndRegister extends React.Component{
   }
 
   static defaultCredentials(){
-    if(MiscUtils.isNonDev()){
+    if(Utils.isNonDev()){
       return({email: '', password: '', confirm: ''})
     } else {
       return({

@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import FormComponent from "../../hocs/FormComponent";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 
 class PortForwardFormClass extends React.Component{
@@ -13,7 +13,7 @@ class PortForwardFormClass extends React.Component{
   }
 
   componentDidMount(){
-    MiscUtils.mp("Port Forward Start", {});
+    Utils.mp("Port Forward Start", {});
   }
 
   render(){
@@ -31,7 +31,7 @@ class PortForwardFormClass extends React.Component{
     return this.makeSelect(
       "Resource Type",
       "resType",
-      MiscUtils.arrayOptions(this.props.resTypeOptions)
+      Utils.arrayOptions(this.props.resTypeOptions)
     )
   }
 
@@ -39,7 +39,7 @@ class PortForwardFormClass extends React.Component{
     return this.makeSelect(
       "Resource",
       "resName",
-      MiscUtils.arrayOptions(this.props.resNameOptions)
+      Utils.arrayOptions(this.props.resNameOptions)
     )
   }
 

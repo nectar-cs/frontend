@@ -9,11 +9,12 @@ import Layout from "../../assets/layouts";
 import Kapi from "../../utils/Kapi";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import Backend from "../../utils/Backend";
 import type {RevisionStatus} from "../../types/Types";
 import ExplanationBlock from "./ExplanationBlock";
 import Table from "./Table";
+import Helper from './Helper'
 
 export default class SoftwareUpdateModal extends React.Component<Props, State> {
 
@@ -31,7 +32,7 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
 
   async componentDidMount(){
     const { wasPrompted } = this.props;
-    MiscUtils.mp("Software Update Start", {wasPrompted});
+    Utils.mp("Software Update Start", {wasPrompted});
     this.fetchStatuses();
   }
 
@@ -150,17 +151,17 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
   }
 
   async fetchStatuses(){
-    const frontend = MiscUtils.REVISION || '';
+    const frontend = Utils.REVISION || '';
     const kapi = (await Kapi.bFetch('/api/status/revision'))['sha'];
     const payload = { currentVersions: { frontend, kapi } };
-    let statuses = await Backend.bPost('/revisions/compare', payload);
-    statuses = massageStatuses(statuses);
-    const checks = this.computeDefaultChecks(statuses);
+    const answer = await Backend.bPost('/revisions/compare', payload);
+    const statuses = Helper.massageStatuses(answer);
+    const checks = Helper.computeDefaultChecks(statuses);
     this.setState(s => ({...s, isFetching: false, statuses, checks}));
   }
 
   async submit(){
-    MiscUtils.mp("Software Update Submit", {});
+    Utils.mp("Software Update Submit", {});
     this.setState(s => ({...s, isSubmitting: true}));
     const ep = '/api/status/restart';
     const deployments = this.targetDepNames();
@@ -173,12 +174,6 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
     return Object.keys(checks).filter(k => checks[k]);
   }
   
-  computeDefaultChecks(versions){
-    return Object.keys(versions).reduce((h, k) => (
-      { ...h, [versions[k].appName]: versions[k].updateNecessary }
-    ), {});
-  }
-
   changeCheck(which){
     this.setState(s => ({...s,
       checks: { ...s.checks, [which]: !s.checks[which] }
@@ -186,37 +181,9 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
   }
 }
 
-
-function massageStatuses(statuses){
-  if(isResultOk(statuses)){
-    return statuses;
-  } else {
-    MiscUtils.senTrack("Bad statuses for revision")
-  }
-}
-
-function genFallbackStatuses(){
-  return APPS.map(appName => (
-    { appName: appName, updateNecessary: false }
-  ));
-}
-
-function isResultOk(statuses){
-  try{
-    const appNames = statuses.map(s => s.appName);
-    return APPS.every(e => appNames.includes(e));
-  } catch(e) {
-    return false;
-  }
-}
-
-type Props = {
-  wasPrompted: boolean
-}
+type Props = { wasPrompted: boolean };
 
 type State = {
   statuses: RevisionStatus[],
   isFetching: boolean
-}
-
-const APPS = ['frontend', 'kapi'];
+};

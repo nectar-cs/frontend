@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {S} from './IntegrationSectionStyles'
 import AddNew from "../../widgets/AddNew/AddNew";
 import defaults from "./defaults";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import {CenteredSpinner} from "../../assets/loading-spinner";
 import IntegrationList from "./IntegrationList";
 import Backend from "../../utils/Backend";
@@ -26,7 +26,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   componentDidMount(){
-    MiscUtils.mp("Integrations Start", {});
+    Utils.mp("Integrations Start", {});
     this.props.setReloadPerformer(this.fetchIntegrations);
     this.fetchIntegrations();
     this.fetchAuthUrls();
@@ -49,7 +49,7 @@ export default class IntegrationSection extends React.PureComponent {
     if (window.confirm(defaults.confirmDelete)) {
       this.setState(s => ({...s, isSubmitting: true}));
       this.performDelete(id, () => {
-        MiscUtils.mp('Integration Delete', {type, entity});
+        Utils.mp('Integration Delete', {type, entity});
         this.setState(s => ({...s, isSubmitting: false}));
         this.fetchIntegrations();
       });
@@ -102,7 +102,7 @@ export default class IntegrationSection extends React.PureComponent {
         key={vendor.name}
         onClick={make(vendor.name)}
         sel={vendor.name === this.props.vendor}
-        src={MiscUtils.frameworkImage(...vendor.image)}
+        src={Utils.frameworkImage(...vendor.image)}
       />
     ));
 

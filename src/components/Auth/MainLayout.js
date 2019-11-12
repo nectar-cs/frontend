@@ -1,4 +1,4 @@
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import Text from "../../assets/text-combos";
 import Layout from "../../assets/layouts";
 import S from "./Styles";
@@ -8,7 +8,7 @@ import React from "react";
 const humanizeString = require('humanize-string');
 
 export default function MainLayout({children, errors, type}){
-  const image = MiscUtils.image('nectar_mark_light.png');
+  const image = Utils.image('nectar_mark_light.png');
   const Errors = () => errors.map((e) => (
     <li key={e}>
       <Text.P raw emotion='warn'>{e}</Text.P>

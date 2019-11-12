@@ -1,7 +1,7 @@
 //@flow
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import {stacks} from "../../misc/stacks";
 import FormComponent from "../../hocs/FormComponent";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
@@ -32,7 +32,7 @@ class MatchFormClass extends React.Component<Props> {
     return this.props.makeSelect(
       'Git Remote',
       'gitRemoteName',
-      MiscUtils.arrayOptions(gitRemoteChoices)
+      Utils.arrayOptions(gitRemoteChoices)
     );
   }
 
@@ -43,7 +43,7 @@ class MatchFormClass extends React.Component<Props> {
     return this.props.makeSelect(
       'Git Repository',
       'gitRepoName',
-      MiscUtils.arrayOptions(gitRepoChoices)
+      Utils.arrayOptions(gitRepoChoices)
     );
   }
 
@@ -53,7 +53,7 @@ class MatchFormClass extends React.Component<Props> {
     return this.props.makeSelect(
       'Dockerfile Path',
       'dockerfilePath',
-      MiscUtils.arrayOptions(dfPathChoices)
+      Utils.arrayOptions(dfPathChoices)
     );
   }
 
@@ -71,7 +71,7 @@ class MatchFormClass extends React.Component<Props> {
     return this.props.makeSelect(
       'Docker Registry',
       'imgRemoteName',
-      MiscUtils.arrayOptions(imgRemoteChoices)
+      Utils.arrayOptions(imgRemoteChoices)
     );
   }
 
@@ -82,7 +82,7 @@ class MatchFormClass extends React.Component<Props> {
     return this.props.makeSelect(
       'Docker Repository',
       'imgRepoName',
-      MiscUtils.arrayOptions(imgRepoChoices)
+      Utils.arrayOptions(imgRepoChoices)
     );
   }
 
@@ -91,7 +91,7 @@ class MatchFormClass extends React.Component<Props> {
     return this.props.makeSelect(
       'Framework or Language',
       'framework',
-      MiscUtils.arrayOptions(stacks.sort())
+      Utils.arrayOptions(stacks.sort())
     );
   }
 

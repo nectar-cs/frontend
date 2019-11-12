@@ -11,7 +11,7 @@ import Layout from "../../../assets/layouts";
 import ConfigurationSide from "./ConfigurationSide";
 import Helper from "./Helper";
 import type {Deployment, Workspace} from "../../../types/Types";
-import MiscUtils from "../../../utils/MiscUtils";
+import Utils from "../../../utils/Utils";
 
 class WorkspaceEditClass extends React.Component<State, Props> {
 
@@ -157,7 +157,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
 
   mpTrack(){
     const verb = this.id() ? "Update" : "Create";
-    MiscUtils.mp("Workspace Save", { verb });
+    Utils.mp("Workspace Save", { verb });
   }
 
   id() {

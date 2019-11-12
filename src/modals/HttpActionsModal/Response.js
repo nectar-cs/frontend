@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import s from './Response.sass'
 
 export class BodyResponseView extends React.Component {
 
   render() {
-    if(MiscUtils.isJson(this.props.body)){
+    if(Utils.isJson(this.props.body)){
       const hash = JSON.parse(this.props.body);
       return(
         <div className={s.holder}>

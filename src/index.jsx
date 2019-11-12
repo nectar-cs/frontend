@@ -5,15 +5,15 @@ import { store, history } from './store/store';
 import Root from "./containers/Root";
 import * as Sentry from "@sentry/browser";
 import mixpanel from 'mixpanel-browser';
-import MiscUtils from "./utils/MiscUtils";
+import Utils from "./utils/Utils";
 import Backend from "./utils/Backend";
 
-if(MiscUtils.hasSentry())
-  Sentry.init({dsn: MiscUtils.SENTRY_DSN});
+if(Utils.hasSentry())
+  Sentry.init({dsn: Utils.SENTRY_DSN});
 
-if(MiscUtils.hasMixPanel()) {
+if(Utils.hasMixPanel()) {
   try{
-    mixpanel.init(MiscUtils.MP_TOKEN);
+    mixpanel.init(Utils.MP_TOKEN);
     mixpanel.identify(Backend.kvGet('uid'));
     mixpanel.people.set({"$email": Backend.kvGet('email')});
   } catch(e) {

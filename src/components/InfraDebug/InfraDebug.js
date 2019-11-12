@@ -11,7 +11,7 @@ import Loader from "../../assets/loading-spinner";
 import TerminalStep from "./TerminalStep";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
 import UpdateCheckComposer from "../../hocs/UpdateCheckComposer";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 class InfraDebugClass extends React.Component {
 
@@ -38,7 +38,7 @@ class InfraDebugClass extends React.Component {
 
   componentDidMount(){
     document.title = `Infra Debugging`;
-    MiscUtils.mp("Network Debug Start", {});
+    Utils.mp("Network Debug Start", {});
     Helper.fetchDeployment(this);
     Helper.fetchMatching(this);
   }
@@ -172,7 +172,7 @@ class InfraDebugClass extends React.Component {
     const crtStep = this.state.steps[pointer.id()];
     pointer.outcome = crtStep.result;
     const newPointer = pointer.childForOutcome();
-    MiscUtils.mp("Network Debug Step", {stepId: pointer.id()});
+    Utils.mp("Network Debug Step", {stepId: pointer.id()});
     this.update('crtNodePointer', newPointer);
   }
 

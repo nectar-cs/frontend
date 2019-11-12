@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import Layout from './../../assets/layouts'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import PortForwardForm from "./PortForwardForm";
@@ -35,8 +35,8 @@ export default class PortForwardModal extends React.Component{
     const { deployment, mode } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.modalImage(this, "arrow_upward")}
-        graphicType={MiscUtils.modalGraphicType(this)}
+        graphicName={Utils.modalImage(this, "arrow_upward")}
+        graphicType={Utils.modalGraphicType(this)}
         title={defaults.header.title(deployment.name, mode)}
         subtitle={defaults.header.subtitle}
       />

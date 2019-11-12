@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import s from './SourcePane.sass'
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import ReactTags from "react-tag-autocomplete";
 import ss from "../../assets/react-tags.sass";
 import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
@@ -60,7 +60,7 @@ export default class SourcePane extends React.Component {
           className={s.typeSelect}
           value={this.props.namespace}
           onChange={(e) => this.broadcastChange('namespace', e)}>
-          { MiscUtils.arrayOptions(this.props.namespaces) }
+          { Utils.arrayOptions(this.props.namespaces) }
         </select>
       </div>
     )
@@ -92,7 +92,7 @@ export default class SourcePane extends React.Component {
   }
 
   static typeOptions(){
-    return MiscUtils.hashOptions({
+    return Utils.hashOptions({
       'test-pod': "A one time pod we create inside your cluster",
       'web': "One of our servers on the web",
       'mimic-pod': "A one time pod we create inside your cluster that mimics a deployment"

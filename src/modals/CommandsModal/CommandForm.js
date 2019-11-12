@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import FormComponent from "../../hocs/FormComponent";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 class CommandFormClass extends React.Component {
   render(){
@@ -18,7 +18,7 @@ class CommandFormClass extends React.Component {
     return this.props.makeSelect(
       "Target Pod",
       "podName",
-      MiscUtils.arrayOptions(podNames)
+      Utils.arrayOptions(podNames)
     );
   }
 

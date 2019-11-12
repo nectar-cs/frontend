@@ -2,7 +2,7 @@ import Kapi from "./Kapi";
 import Backend from "./Backend";
 import moment from "moment";
 import Cookies from "js-cookie";
-import MiscUtils from "./MiscUtils";
+import Utils from "./Utils";
 import type {RevisionStatus} from "../types/Types";
 
 const KEY = "last_revision_check";
@@ -19,7 +19,7 @@ export default class UpdateChecker {
   }
 
   async fetchVerdict(){
-    const frontend = MiscUtils.REVISION;
+    const frontend = Utils.REVISION;
     const kapi = await this.fetchKapiVersion();
     const currentVersions = { frontend, kapi };
     const payload = { currentVersions };
@@ -35,7 +35,7 @@ export default class UpdateChecker {
   }
 
   shouldPerform(){
-    const nonDev = MiscUtils.isNonDev();
+    const nonDev = Utils.isNonDev();
     const lastCheckOutdated = this.wasLastCheckLongAgo();
     return nonDev && lastCheckOutdated;
   }

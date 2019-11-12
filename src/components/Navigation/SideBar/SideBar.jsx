@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import S from './SideBarStyles'
 import { connect } from "react-redux";
-import MiscUtils from '../../../utils/MiscUtils';
+import Utils from '../../../utils/Utils';
 import sections from './sections'
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Micon from "../../../widgets/Micon/Micon";
@@ -143,7 +143,7 @@ function Sections (props) {
 }
 
 function SideBarClass(props) {
-  const image = MiscUtils.image('nectar_mark_light.png');
+  const image = Utils.image('nectar_mark_light.png');
   return(
     <S.Sidebar>
       <S.LogoBox>

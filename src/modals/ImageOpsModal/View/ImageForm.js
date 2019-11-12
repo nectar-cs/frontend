@@ -2,7 +2,7 @@ import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import In from "../../../assets/input-combos";
 import { S } from './ImageFormStyles'
-import MiscUtils from "../../../utils/MiscUtils";
+import Utils from "../../../utils/Utils";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 import {defaults} from "./defaults";
 import IntegrationsModal from "../../IntegrationsModal/IntegrationsModal";
@@ -68,7 +68,7 @@ export default class ImageForm extends React.Component {
           as='select'
           value={this.props.scaleTo}
           onChange={(e) => this.onAssignment('scaleTo', e)}>
-          { MiscUtils.arrayOfHashesOptions(this.scaleOptions()) }
+          { Utils.arrayOfHashesOptions(this.scaleOptions()) }
         </In.LineInput>
       </In.InputLine>
     )
@@ -85,7 +85,7 @@ export default class ImageForm extends React.Component {
           as='select'
           value={this.props.imageTag}
           onChange={(e) => this.onAssignment('imageTag', e)}>
-          { MiscUtils.arrayOptions(this.props.availableTags) }
+          { Utils.arrayOptions(this.props.availableTags) }
         </In.LineInput>
       </In.InputLine>
     )
@@ -102,7 +102,7 @@ export default class ImageForm extends React.Component {
           as='select'
           value={this.props.gitBranch}
           onChange={(e) => this.onAssignment('gitBranch', e)}>
-          { MiscUtils.arrayOptions(this.props.availableBranches) }
+          { Utils.arrayOptions(this.props.availableBranches) }
         </In.LineInput>
       </In.InputLine>
     )
@@ -119,7 +119,7 @@ export default class ImageForm extends React.Component {
           as='select'
           value={this.props.gitCommit}
           onChange={(e) => this.onAssignment('gitCommit', e)}>
-          { MiscUtils.arrayOfHashesOptions(this.commitOptions()) }
+          { Utils.arrayOfHashesOptions(this.commitOptions()) }
         </In.LineInput>
       </In.InputLine>
     )
@@ -178,7 +178,7 @@ export default class ImageForm extends React.Component {
   }
 
   static operationTypeOptions(){
-    return MiscUtils.hashOptions({
+    return Utils.hashOptions({
       reload: "Force pull & apply an image with the same name",
       change: "Supply a new image name",
       scale: "Scale the number of pods",

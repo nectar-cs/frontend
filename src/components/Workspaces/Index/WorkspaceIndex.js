@@ -13,7 +13,7 @@ import Button from "../../../assets/buttons";
 import Text from './../../../assets/text-combos'
 import Layout from './../../../assets/layouts'
 import {Link, Redirect} from "react-router-dom";
-import MiscUtils from "../../../utils/MiscUtils";
+import Utils from "../../../utils/Utils";
 
 class WorkspaceIndexClass extends React.Component{
 
@@ -127,7 +127,7 @@ function WorkspaceRow(props) {
   const onDelete = () => {
     if(window.confirm("Are you sure?")){
       const ep = `/workspaces/${props.id}`;
-      MiscUtils.mp("Workspace Delete", {});
+      Utils.mp("Workspace Delete", {});
       Backend.raisingDelete(ep, () => {
         window.location = bundle.index.path;
       });

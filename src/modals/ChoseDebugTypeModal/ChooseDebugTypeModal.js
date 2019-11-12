@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import FlexibleModal from "../../hocs/FlexibleModal";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import PropTypes from "prop-types";
 import S from './DebugModalStyles'
@@ -112,10 +112,10 @@ export default class ChooseDebugTypeModal extends React.Component {
     const { mode, deployment } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.modalImage(this, "bug_report")}
+        graphicName={Utils.modalImage(this, "bug_report")}
         title={defaults.header.title(deployment.name, mode)}
         subtitle={defaults.header.subtitle}
-        graphicType={MiscUtils.modalGraphicType(this)}
+        graphicType={Utils.modalGraphicType(this)}
       />
     )
   }

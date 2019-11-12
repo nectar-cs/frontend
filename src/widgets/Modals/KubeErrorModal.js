@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import s from './KubeErrorModal.sass'
 import LeftHeader from "../LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import ModalButton from "../Buttons/ModalButton";
 import Kapi from "../../utils/Kapi";
 import {KapiErrorContent, kapiErrorTitle} from "../../misc/KubeErrorContent";
@@ -33,7 +33,7 @@ export default class KubeErrorModal extends React.Component{
           title={kapiErrorTitle(this.bundle())}
           subtitle={"Mo' k8s, mo' problems, right?"}
           graphicType='image'
-          graphicName={MiscUtils.image('k8s_style_light.png')}
+          graphicName={Utils.image('k8s_style_light.png')}
         />
 
         { this.renderCenterContent() }

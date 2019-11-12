@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import FormComponent from "../../hocs/FormComponent";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import defaults from "./defaults";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 
 class DebugOptionsForm extends React.Component {
@@ -49,7 +49,7 @@ class NetworkDebugOptionsClass extends DebugOptionsForm {
     return super.makeSelect(
       'Strategy (stub - coming soon)',
       'strategy',
-      MiscUtils.hashOptions(choices)
+      Utils.hashOptions(choices)
     )
   }
 
@@ -57,7 +57,7 @@ class NetworkDebugOptionsClass extends DebugOptionsForm {
     return super.makeSelect(
       'Service to Debug',
       'service',
-      MiscUtils.hashOptions(this.props.serviceChoices)
+      Utils.hashOptions(this.props.serviceChoices)
     )
   }
 
@@ -65,7 +65,7 @@ class NetworkDebugOptionsClass extends DebugOptionsForm {
     return super.makeSelect(
       'For Port Mapping',
       'port',
-      MiscUtils.hashOptions(this.props.portChoices)
+      Utils.hashOptions(this.props.portChoices)
     )
   }
 

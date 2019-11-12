@@ -4,7 +4,7 @@ import s from './DeploymentList.sass'
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import type {Matching, WideDeployment} from "../../types/Types";
 import Micon from "../../widgets/Micon/Micon";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 function ListHeader() {
   return(
@@ -50,7 +50,7 @@ export default function DeploymentList(props: ListProps) {
         index={i}
         isSelected={i === props.selectedIndex}
         deployment={deployment}
-        matching={MiscUtils.depMatching(deployment.name, props.matchings)}
+        matching={Utils.depMatching(deployment.name, props.matchings)}
         callback={props.callback}
       />
     ))

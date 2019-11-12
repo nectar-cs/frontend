@@ -1,7 +1,7 @@
 import React from 'react'
 import FlexibleModal from "./FlexibleModal";
 import LeftHeader from "../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../utils/MiscUtils";
+import Utils from "../utils/Utils";
 
 export default class Modal extends React.Component{
   render(){
@@ -18,8 +18,8 @@ export default class Modal extends React.Component{
     const defaults = this.defaults();
     return(
       <LeftHeader
-        graphicName={MiscUtils.modalImage(this, defaults.header.icon)}
-        graphicType={MiscUtils.modalGraphicType(this)}
+        graphicName={Utils.modalImage(this, defaults.header.icon)}
+        graphicType={Utils.modalGraphicType(this)}
         title={defaults.header.title(mode, deployment.name)}
         subtitle={defaults.header.subtitle}
       />

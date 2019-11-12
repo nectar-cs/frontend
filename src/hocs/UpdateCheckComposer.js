@@ -1,6 +1,6 @@
 import React from 'react'
 import UpdateChecker from "../utils/UpdateChecker";
-import SoftwareUpdateModal from "../modals/UpdateSelf/SoftwareUpdateModal";
+import SoftwareUpdateModal from "../modals/SoftwareUpdateModal/SoftwareUpdateModal";
 
 export default class UpdateCheckComposer {
   static compose(Component){

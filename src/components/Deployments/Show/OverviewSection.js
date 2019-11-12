@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import Section from "./Section";
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../../utils/MiscUtils";
+import Utils from "../../../utils/Utils";
 import SS from './OverviewSectionStyles'
 import OverviewModal from "../../../modals/OverviewModal/OverviewModal";
 import Layout from "../../../assets/layouts";
@@ -67,9 +67,9 @@ class OverviewSectionClass extends Section {
 
     return(
       <LeftHeader
-        graphicName={MiscUtils.msImage(deployment, matching)}
+        graphicName={Utils.msImage(deployment, matching)}
         title={`${deployment.namespace} / ${deployment.name}`}
-        subtitle={MiscUtils.gitSummary(matching, true)}
+        subtitle={Utils.gitSummary(matching, true)}
       />
     )
   }
@@ -82,7 +82,7 @@ class OverviewSectionClass extends Section {
 
   renderServiceLine(service){
     const locality = service.externalIp ? "publicly"  : "locally";
-    const portsStr = MiscUtils.portMappingsStr(service.ports);
+    const portsStr = Utils.portMappingsStr(service.ports);
     return(
       <Layout.TextLine low={1.4} key={service.name}>
         <p>Exposed</p>
@@ -99,7 +99,7 @@ class OverviewSectionClass extends Section {
 
   renderDockerLine(){
     const { deployment } = this.props;
-    const timestamp = MiscUtils.latestPodTs(deployment.pods);
+    const timestamp = Utils.latestPodTs(deployment.pods);
     return(
       <Layout.TextLine low={1.4}>
         <p>Running</p>

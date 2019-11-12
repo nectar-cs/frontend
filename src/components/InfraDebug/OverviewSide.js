@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import {Types} from "../../types/CommonTypes";
 import DecisionTree from "./DecisionTree";
@@ -57,7 +57,7 @@ export default class OverviewSide extends React.Component {
     const { deployment, matching } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.msImage(deployment, matching)}
+        graphicName={Utils.msImage(deployment, matching)}
         title={this.config().header.title(deployment.name)}
         subtitle={this.config().header.subtitle}
       />

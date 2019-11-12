@@ -5,7 +5,7 @@ import s from './WorkspaceForm.sass'
 import ReactTags from 'react-tag-autocomplete';
 import ss from './../../../assets/react-tags.sass'
 import FormComponent from "../../../hocs/FormComponent";
-import MiscUtils from "../../../utils/MiscUtils";
+import Utils from "../../../utils/Utils";
 import type {Workspace} from "../../../types/Types";
 
 class WorkspaceFormClass extends React.Component<Props> {
@@ -126,12 +126,12 @@ type Props = {
   labelChoices: string[]
 }
 
-const YES_NO_OPTIONS = MiscUtils.hashOptions({
+const YES_NO_OPTIONS = Utils.hashOptions({
   true: "Yes",
   false: "No"
 });
 
-const FILTER_TYPE_OPTIONS = MiscUtils.hashOptions({
+const FILTER_TYPE_OPTIONS = Utils.hashOptions({
   whitelist: "Whitelist",
   blacklist: "Blacklist"
 });

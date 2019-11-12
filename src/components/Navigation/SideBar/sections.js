@@ -1,5 +1,5 @@
 import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
-import SoftwareUpdateModal from "../../../modals/UpdateSelf/SoftwareUpdateModal";
+import SoftwareUpdateModal from "../../../modals/SoftwareUpdateModal/SoftwareUpdateModal";
 
 const workbench = {
   title: 'Workbench',

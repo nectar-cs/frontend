@@ -1,6 +1,6 @@
 import React from "react";
 import defaults from "./defaults";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 
 export default class Helper {
   static imgName(name){
@@ -9,6 +9,6 @@ export default class Helper {
     const superList = imgVendors.concat(gitVendors);
     const nm = superList.find(v => v.name === name);
     const args = nm ? nm.image : [];
-    return MiscUtils.frameworkImage(...args);
+    return Utils.frameworkImage(...args);
   }
 }

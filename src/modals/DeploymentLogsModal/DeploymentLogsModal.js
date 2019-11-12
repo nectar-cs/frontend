@@ -2,7 +2,7 @@ import React from 'react'
 import FlexibleModal from "../../hocs/FlexibleModal";
 import type {Deployment} from "../../types/Types";
 import ResourceLogs from "../../widgets/ResourceLogs/ResourceLogs";
-import MiscUtils from "../../utils/MiscUtils";
+import Utils from "../../utils/Utils";
 import LogsForm from "./LogsForm";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import defaults from "./defaults";
@@ -21,7 +21,7 @@ export default class DeploymentLogsModal extends React.Component<Props> {
   }
 
   componentDidMount(){
-    MiscUtils.mp("Read Logs", {});
+    Utils.mp("Read Logs", {});
   }
 
   render(){
@@ -38,10 +38,10 @@ export default class DeploymentLogsModal extends React.Component<Props> {
     const { deployment, mode } = this.props;
     return(
       <LeftHeader
-        graphicName={MiscUtils.modalImage(this, 'format_list_bulleted')}
+        graphicName={Utils.modalImage(this, 'format_list_bulleted')}
         title={defaults.header.title(deployment.name, mode)}
         subtitle={defaults.header.subtitle}
-        graphicType={MiscUtils.modalGraphicType(this)}
+        graphicType={Utils.modalGraphicType(this)}
       />
     )
   }
@@ -79,7 +79,7 @@ export default class DeploymentLogsModal extends React.Component<Props> {
 }
 
 function defaultPodName(props){
-  return MiscUtils.tor((() => props.deployment.pods[0].name), '');
+  return Utils.tor((() => props.deployment.pods[0].name), '');
 }
 
 type Props = {
