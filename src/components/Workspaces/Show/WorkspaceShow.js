@@ -50,6 +50,7 @@ class WorkspaceShowClass extends React.Component{
     if(this.state.deployments === null){
       if(nextProps.workspace){
         Helper.fetchDeployments(this, true, nextProps);
+        document.title = `Workspace - ${nextProps.workspace.name}`;
         this.fetchStuntTrash();
       }
     }

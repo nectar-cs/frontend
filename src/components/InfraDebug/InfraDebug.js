@@ -37,6 +37,7 @@ class InfraDebugClass extends React.Component {
   }
 
   componentDidMount(){
+    document.title = `Infra Debugging`;
     MiscUtils.mp("Network Debug Start", {});
     Helper.fetchDeployment(this);
     Helper.fetchMatching(this);

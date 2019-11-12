@@ -7,7 +7,6 @@ import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Layout from "../../../assets/layouts";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
-import OverviewSection from "./OverviewSection";
 
 class DeploymentShowClass extends React.Component{
 
@@ -31,6 +30,8 @@ class DeploymentShowClass extends React.Component{
 
   componentDidMount(){
     this.reloadLoop();
+    const { ns, id: name } = this.props.match.params;
+    document.title = `${ns}/${name}`;
   }
 
   render(){
