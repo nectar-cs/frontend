@@ -2,17 +2,14 @@ import Text from "../../assets/text-combos";
 import type {RevisionStatus} from "../../types/Types";
 import React from "react";
 
+const P = Text.BoldStatus;
+
 function AppRow(props: RowProps){
   const { isChecked, status, callback } = props;
-
-  const emo = (which) => status.updateNecessary ?
-    (which ? 'failure' : 'warnSoft') : 'success';
-  const fmt = (which) => (which || 'N/A').substring(0, 7);
-  const line = (which) => (
-    <Text.BoldStatus raw emotion={emo(which)}>
-      { fmt(which) }
-    </Text.BoldStatus>
-  );
+  const hot = status.updateNecessary;
+  const emo = which => which ? (hot ? 'failure' : 'success') : 'warn';
+  const fmt = which => (which || 'N/A').substring(0, 7);
+  const line = which => <P raw emotion={emo(which)}>{ fmt(which) }</P>;
 
   return(
     <tr>

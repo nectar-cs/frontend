@@ -24,8 +24,9 @@ export default class UpdateChecker {
     const currentVersions = { frontend, kapi };
     const payload = { currentVersions };
     const ep = '/revisions/compare';
-    const verdict: RevisionStatus[] = await Backend.bPost(ep, payload);
-    return verdict.filter(v => v.updateNecessary).length > 0;
+    const statuses: RevisionStatus[] = await Backend.bPost(ep, payload);
+    const needingUpdate = statuses.filter(v => v.updateNecessary);
+    return needingUpdate.length > 0;
   }
 
   async fetchKapiVersion(){
@@ -35,7 +36,7 @@ export default class UpdateChecker {
 
   shouldPerform(){
     const nonDev = this.isNonDevEnvironment();
-    const lastCheckOutdated = this.wasLastCheckAgesAgo();
+    const lastCheckOutdated = this.wasLastCheckLongAgo();
     return nonDev && lastCheckOutdated;
   }
 
@@ -53,7 +54,7 @@ export default class UpdateChecker {
     return moment().subtract(THRESHOLD);
   }
 
-  wasLastCheckAgesAgo(){
+  wasLastCheckLongAgo(){
     return this.lastCheckTime() < this.furthestBackAcceptableCheckTime();
   }
 
