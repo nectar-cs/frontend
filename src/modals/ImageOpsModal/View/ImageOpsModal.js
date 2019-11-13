@@ -12,7 +12,7 @@ import FlexibleModal from "../../../hocs/FlexibleModal";
 import TermSection from "../../../widgets/TermSection/TermSection";
 import Checklist from "./Checklist";
 import Conclusion from "./Conclusion";
-import mixpanel from "mixpanel-browser";
+import Loader from "../../../assets/loading-spinner";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
@@ -28,11 +28,15 @@ export default class ImageOpsModal extends React.Component {
       remotes: ImageOpsModal.initialRemotes(),
       phase: PHASE_CONFIG,
       progressItems: [],
-      conclusion: null
+      conclusion: null,
+      isBranchFetching: false,
+      isCommitFetching: false,
+      isTagFetching: false,
     };
     this.submit = this.submit.bind(this);
     this.notifyUpdated = this.notifyUpdated.bind(this);
     this.notifyFinished = this.notifyFinished.bind(this);
+    this.notifyFetchChanged = this.notifyFetchChanged.bind(this);
   }
 
   componentDidMount(){
@@ -48,6 +52,7 @@ export default class ImageOpsModal extends React.Component {
         { this.renderLoader() }
         { this.renderConfigForm() }
         { this.renderGamePlan() }
+        { this.renderTopLoader() }
         { this.renderChecklist() }
         { this.renderConclusion() }
         { this.renderTerminalOutput() }
@@ -72,6 +77,17 @@ export default class ImageOpsModal extends React.Component {
   renderLoader(){
     if(this.isSubmitting())
       return <CenterLoader/>;
+    else return null;
+  }
+
+  renderTopLoader(){
+    const {
+      isBranchFetching,
+      isCommitFetching,
+      isTagFetching,
+    } = this.state;
+    if(isBranchFetching || isCommitFetching || isTagFetching)
+      return <Loader.TopRightSpinner/>;
     else return null;
   }
 
@@ -218,6 +234,10 @@ export default class ImageOpsModal extends React.Component {
   broadcastUpstream(){
     const broadcast = this.props.refreshCallback;
     if(broadcast) broadcast();
+  }
+
+  notifyFetchChanged(assignment){
+    this.setState(s => ({...s, ...assignment}));
   }
 
   isSubmitting(){ return this.state.phase === PHASE_SUBMITTING }
