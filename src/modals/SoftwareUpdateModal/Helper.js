@@ -8,7 +8,7 @@ export default class Helper {
       return statuses;
     } else {
       Utils.senTrack("Bad statuses for revision");
-      return this.genFallbackStatuses
+      return this.genFallbackStatuses();
     }
   }
 

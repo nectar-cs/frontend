@@ -81,7 +81,9 @@ class DfPathDictSetter extends Setter {
     const newDict = this._value;
     const { gitRemoteName, gitRepoName } = bundle;
     const pathList = newDict[`${gitRemoteName}_${gitRepoName}`];
-    return { dockerfilePath: pathList[0] };
+    if(pathList && pathList.length > 0)
+      return { dockerfilePath: pathList[0] };
+    else return {};
   }
 }
 
