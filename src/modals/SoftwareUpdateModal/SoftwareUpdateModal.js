@@ -21,7 +21,7 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      isFetching: true,
+      isFetching: false,
       statuses: [],
       isSubmitting: false,
       isDone: false,
@@ -143,14 +143,15 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
     return(
       <CenterAnnouncement
         iconName='av_timer'
-        text='Reload the app in 20 sec. Click here to close.'
-        contentType='action'
-        action={this.props.closeModal}
-      />
+        contentType='children'>
+        <Text.P>In 15 seconds, <b>hard-reload</b> the page</Text.P>
+        <Text.P>That's <b>CTRL + SHIFT + R</b> on Chrome/FireFox</Text.P>
+      </CenterAnnouncement>
     )
   }
 
   async fetchStatuses(){
+    this.setState(s => ({...s, isFetching: true}));
     const frontend = Utils.REVISION || '';
     const kapi = (await Kapi.bFetch('/api/status/revision'))['sha'];
     const payload = { currentVersions: { frontend, kapi } };
