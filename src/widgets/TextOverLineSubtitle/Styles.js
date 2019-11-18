@@ -37,7 +37,7 @@ const Toggle = styled.i`
   font-size: 30px;
   color: ${p => p.theme.colors.primaryColor};
   background: ${p => p.theme.colors.itemBackgroundColor};
-  ${p => p.there ? 'inline-block' : 'none'};
+  display: ${p => p.there ? 'inline-block' : 'none'};
   &:hover{
     cursor: pointer;
   }

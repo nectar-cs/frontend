@@ -5,16 +5,24 @@ export const defaults ={
   previewCommands: {
     reload: ({dep, ns, orig}) => [
       `kubectl scale deploy ${dep} --replicas=0 -n ${ns}`,
-      `kubectl scale deploy ${dep} --replicas=${orig} -n ${ns}`
+      `kubectl scale deploy ${dep} --replicas=${orig} -n ${ns}`,
+      '----- or with K8Kat',
+      `K8Kat.deps('${ns}').find('${dep}').restart_pods()`
     ],
     change: ({dep, ns, cont, img}) => [
       `kubectl set image deploy/${dep} ${cont}=${img} -n ${ns}`,
+      '----- or with K8Kat',
+      `K8Kat.deps('${ns}').find('${dep}').apply_image('${img}')`
     ],
     scale:  ({dep, ns, scaleTo}) => [
       `kubectl scale deploy ${dep} --replicas=${scaleTo} -n ${ns}`,
+      '----- or with K8Kat',
+      `K8Kat.deps('${ns}').find(${dep}).scale(to=${scaleTo})`
     ],
     docker: ({dep, ns, dImg, cont}) => [
-      `kubectl set image deploy/${dep} ${cont}=${dImg} -n ${ns}`
+      `kubectl set image deploy/${dep} ${cont}=${dImg} -n ${ns}`,
+      '----- or with K8Kat',
+      `K8Kat.deps('${ns}').find('${dep}').apply_image('${dImg}')`
     ],
     git: ({gRem, gRep, bPath, sha, dep, ns, dImg, dPath, cont}) => gRem && [
       `git clone git@github.com:${gRem}/${gRep}.git`,
