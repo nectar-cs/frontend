@@ -63,7 +63,10 @@ export default class HttpActionsModal extends React.Component {
       if(props.deployment.services[0]){
         const {name, shortDns, fromPort} = props.deployment.services[0];
         return DestinationPane.makeSvcHost(name, shortDns, fromPort).value;
-      } else return null;
+      } if(props.deployment.pods[0]) {
+        const {name, ip} = props.deployment.pods[0];
+        return DestinationPane.makePodHost(name, ip).value;
+      }
     }
   }
 

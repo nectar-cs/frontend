@@ -1,6 +1,9 @@
+import React, {Fragment} from 'react'
 import Kapi from "../../utils/Kapi";
 import type {LabelMatrix} from "../../types/Types";
 import type {MatrixBundle} from "./LabelsSection";
+import Text from "../../assets/text-combos";
+import S from "./Styles";
 
 export default class Helper {
 
@@ -22,4 +25,27 @@ export default class Helper {
     return await Kapi.bFetch(`${ep}?${args}`);
   }
 
+  static labelDictToHtml(titles, labels, hint){
+    const lbsOffset = titles.length;
+    const t = (n) => Array.from(Array(n).keys()).map(_ => (
+      <Fragment>&nbsp;</Fragment>
+    ));
+
+    const lbs = Object.keys(labels).map(l => (
+      <Text.Code raw>{t(lbsOffset)}{l}: {labels[l]}</Text.Code>
+    ));
+
+    const tits = titles.map((title, i) => (
+      <Text.Code raw>{t(i)}{title}:</Text.Code>
+    ));
+
+    return(
+      <Fragment>
+        <Text.Code raw>#{hint}</Text.Code>
+        <Text.Code raw>...</Text.Code>
+        { tits }
+        { lbs }
+      </Fragment>
+    )
+  }
 }

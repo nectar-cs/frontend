@@ -31,7 +31,9 @@ export type Deployment = {
   replicas: number,
   imageName: string,
   containerName: string,
-  labels: {  [string]: string }
+  labels: {  [string]: string },
+  templateLabels: {  [string]: string },
+  selectorLabels: {  [string]: string }
   imagePullPolicy: ('Always' | 'Never')
 };
 

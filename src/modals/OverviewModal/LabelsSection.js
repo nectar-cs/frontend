@@ -6,6 +6,8 @@ import Text from "../../assets/text-combos";
 import Helper from "./Helper";
 import Tables from "../../assets/table-combos";
 import Micon from "../../widgets/Micon/Micon";
+import S from './Styles'
+import defaults from "./defaults";
 
 export default class LabelsSection extends React.Component<Props, State>{
 
@@ -23,19 +25,11 @@ export default class LabelsSection extends React.Component<Props, State>{
   }
 
   render(){
-    const { labelMatrices } = this.state;
-    if(labelMatrices.length < 1) return null;
-
-    const Tables = () => labelMatrices.map(m => this.renderTable(m));
-
     return(
       <Fragment>
-        <TextOverLineSubtitle text='Selectors Vs Actual Pod Labels'/>
-        <Text.P>
-          Deployments and services use selectors to find the pods they care about.
-          The tables below summarizes the label interplay.
-        </Text.P>
-        <Tables/>
+        <TextOverLineSubtitle text='Everything Labels'/>
+        { this.renderDiffTables() }
+        { this.renderCompTables() }
       </Fragment>
     )
   }
@@ -45,7 +39,47 @@ export default class LabelsSection extends React.Component<Props, State>{
     return colNames.map(label => rowNames.includes(label));
   }
 
-  renderTable(bundle: MatrixBundle){
+  renderDiffTables(){
+    const { labels, templateLabels, selectorLabels } = this.props.deployment;
+    return(
+      <Fragment>
+        <Text.P low={1.7}>A deployment defines <b>three sets</b> of labels:</Text.P>
+        <S.Editors>
+          { this.renderNanoLabels('labels', labels) }
+          { this.renderNanoLabels('selectors', selectorLabels) }
+          { this.renderNanoLabels('template', templateLabels) }
+        </S.Editors>
+      </Fragment>
+    )
+  }
+
+  renderNanoLabels(key, actual){
+    const bundle = defaults.labelsSection[key];
+    const { title, hint } = bundle;
+    return(
+      <S.Editor>
+        { Helper.labelDictToHtml(title, actual, hint) }
+      </S.Editor>
+    )
+  }
+
+  renderCompTables(){
+    const { labelMatrices } = this.state;
+    if(labelMatrices.length < 1) return null;
+
+    const CompTables = () => labelMatrices.map(m => this.renderCompTable(m));
+    return(
+      <Fragment>
+        <Text.P low={1.7}>
+          <b>The following tables</b> show the difference between the dep/svc selectors
+          and the labels that the pods they've matched <b>actually</b> have.
+        </Text.P>
+        <CompTables/>
+      </Fragment>
+    )
+  }
+
+  renderCompTable(bundle: MatrixBundle){
     const { rowValues, colNames } = bundle.matrix;
 
     const statuses = this.genStatuses(bundle);
@@ -57,7 +91,7 @@ export default class LabelsSection extends React.Component<Props, State>{
 
     return(
       <Fragment key={bundle.name}>
-        <Tables.Table low={2.3}>
+        <Tables.Table low={1.0}>
           <tbody>
           <TableHeader prefix={prefix} colNames={colNames} statuses={statuses}/>
           <TableRows/>
