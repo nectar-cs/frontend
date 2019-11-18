@@ -9,7 +9,7 @@ export default class PodModal extends React.Component {
 
   render(){
     return(
-      <FlexibleModal mode='modal'>
+      <FlexibleModal mode={this.props.mode}>
         { this.renderHeader() }
         { this.renderTabs() }
       </FlexibleModal>

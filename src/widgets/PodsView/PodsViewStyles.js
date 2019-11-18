@@ -19,6 +19,11 @@ const PodCircle = styled.div`
     margin-left: 0;
   }
   background: ${p => colored(p.emotion)};
+  &:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+  }
+
 `;
 
 const S = { Container, PodCircle };

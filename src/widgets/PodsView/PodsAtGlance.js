@@ -7,7 +7,7 @@ function PodsAtGlanceClass({deployment, matching, openModal, action}){
   const { pods } = deployment;
 
   const defAction = (pod) => openModal(PodModal, {pod, deployment, matching});
-  action = (p) => action ? () => action(p) : defAction;
+  action = action  || defAction;
 
   const PodViews = () => pods.map(pod => (
     <S.PodCircle

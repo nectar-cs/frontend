@@ -63,6 +63,7 @@ class DeploymentShowClass extends React.Component{
         defaultDetailSetter={this.setDefaultDetailFn}
         onClicked={this.onSectionToggled}
         refreshCallback={this.reload}
+        overrideDetail={this.overrideDetail}
       />
     ));
     return <S.LeftPanel><Sections/></S.LeftPanel>;
@@ -70,7 +71,7 @@ class DeploymentShowClass extends React.Component{
 
   renderRightSideModal(){
     const { deployment, matching, detailOverride } = this.state;
-    const { overrideDetail } = this;
+    const overrideDetail = this.overrideDetail;
     const { focusedSection } = this.state;
     const detailComp = this.defDetailFns[focusedSection];
     const bundle = { deployment, matching, overrideDetail };
@@ -84,17 +85,13 @@ class DeploymentShowClass extends React.Component{
   }
 
   renderRightSideOverride(){
-    const { detailOverride: Override } = this.state;
-    if(!Override) return null;
-    return <S.RightPanel><Override/></S.RightPanel>;
+    const { detailOverride } = this.state;
+    if(!detailOverride) return null;
+    return <S.RightPanel>{detailOverride}</S.RightPanel>;
   }
 
   setDefaultDetailFn(name, defaultFn){
     this.defDetailFns[name] = defaultFn;
-  }
-
-  overrideDetail(detailOverride){
-    this.setState(s => ({...s, detailOverride}));
   }
 
   onSectionToggled(focusedSection){
@@ -126,6 +123,7 @@ class DeploymentShowClass extends React.Component{
   update(assignments){ this.setState(s => ({...s, ...assignments})); }
   isInitialFetching(){ return this.state.isInitialFetching; }
   componentWillUnmount(): * { this._willUnmount = true; }
+  overrideDetail(detailOverride){ this.update({detailOverride}); }
   async pollWait() {return new Promise(r => setTimeout(r, 5000));}
 }
 

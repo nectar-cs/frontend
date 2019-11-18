@@ -16,6 +16,7 @@ import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsMod
 import MatchingSection from "./MatchingSection";
 import LastCommitModal from "../../../modals/LastCommitModal/LastCommitModal";
 import PodModal from "../../../modals/PodModal/PodModal";
+import PropTypes from 'prop-types'
 
 function T(props){
   return <Text.P raw pushed {...props}>{props.children}</Text.P>
@@ -174,18 +175,18 @@ class OverviewSectionClass extends Section {
   }
 
   renderPods(){
-    const { deployment, matching } = this.props;
+    const { deployment, matching, overrideDetail } = this.props;
 
-    const callback = (pod) => (
-      this.props.overrideDetail(
-        () => <PodModal
+    const callback = (pod) => {
+      overrideDetail(
+        <PodModal
           deployment={deployment}
           matching={matching}
           mode='fragment'
           pod={pod}
         />
       )
-    );
+    };
 
     return(
       <PodsAtGlance
@@ -226,7 +227,8 @@ class OverviewSectionClass extends Section {
   static propTypes = {
     remotes: Types.GlobalRemotes.isRequired,
     deployment: Types.Deployment,
-    matching: Types.Matching
+    matching: Types.Matching,
+    overrideDetail: PropTypes.func
   };
 
   _className() { return OverviewSectionClass._className() }
