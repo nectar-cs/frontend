@@ -95,7 +95,8 @@ class DeploymentShowClass extends React.Component{
   }
 
   onSectionToggled(focusedSection){
-    if(focusedSection === this.state.focusedSection) return;
+    const { focusedSection: oldFocus, detailOverride } = this.state;
+    if(focusedSection === oldFocus && !detailOverride) return;
     this.setState(s => ({ ...s, focusedSection, detailOverride: null }));
   }
 

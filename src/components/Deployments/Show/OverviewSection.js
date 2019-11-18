@@ -1,3 +1,5 @@
+//@flow
+
 import React, {Fragment} from 'react'
 import Section from "./Section";
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
@@ -35,6 +37,7 @@ class OverviewSectionClass extends Section {
     this.goToMatching = this.goToMatching.bind(this);
     this.openCommitModal = this.openCommitModal.bind(this);
     this.openIntegrationsModal = this.openIntegrationsModal.bind(this);
+    this.invokePodViewOverride = this.invokePodViewOverride.bind(this);
   }
 
   render(){
@@ -175,37 +178,27 @@ class OverviewSectionClass extends Section {
   }
 
   renderPods(){
-    const { deployment, matching, overrideDetail } = this.props;
-
-    const callback = (pod) => {
-      overrideDetail(
-        <PodModal
-          deployment={deployment}
-          matching={matching}
-          mode='fragment'
-          pod={pod}
-        />
-      )
-    };
-
+    const { deployment, matching } = this.props;
     return(
       <PodsAtGlance
         deployment={deployment}
         matching={matching}
-        action={callback}
+        action={this.invokePodViewOverride}
       />
     )
   }
 
   _renderActivityModal(key, source) {
     source = source || this.props;
-    return(
-      <OverviewModal
-        deployment={source.deployment}
-        matching={source.matching}
-        mode='fragment'
-      />
-    )
+    if(!Utils.tor(() => source.deployment.pods[0])){
+      return(
+        <OverviewModal
+          deployment={source.deployment}
+          matching={source.matching}
+          mode='fragment'
+        />
+      )
+    } else return this.renderDetailPodView(source.deployment.pods[0]);
   }
 
   openCommitModal(){
@@ -214,6 +207,23 @@ class OverviewSectionClass extends Section {
       LastCommitModal,
       { deployment, matching }
     )
+  }
+
+  renderDetailPodView(pod){
+    const { deployment, matching } = this.props;
+    return(
+      <PodModal
+        deployment={deployment}
+        matching={matching}
+        mode='fragment'
+        pod={pod}
+      />
+    )
+  }
+
+  invokePodViewOverride(pod){
+    const { overrideDetail } = this.props;
+    overrideDetail(this.renderDetailPodView(pod));
   }
 
   openIntegrationsModal(){

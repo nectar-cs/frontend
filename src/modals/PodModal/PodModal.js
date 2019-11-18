@@ -4,6 +4,7 @@ import {Types} from "../../types/CommonTypes";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../utils/Utils";
 import Tabs from "../../widgets/Tabs/Tabs";
+import defaults from "./defaults";
 
 export default class PodModal extends React.Component {
 
@@ -21,11 +22,12 @@ export default class PodModal extends React.Component {
   }
 
   renderHeader(){
-    const { pod, deployment } = this.props;
+    const { mode, pod, deployment } = this.props;
+    const { namespace: ns, name } = pod;
     return(
       <LeftHeader
-        graphicName='radio_button_checked'
-        title={`${deployment.namespace} / ${pod.name}`}
+        graphicName='child_friendly'
+        title={defaults.header.title(mode, ns, name)}
         subtitle={`One of ${deployment.name}'s pods.`}
         graphicType='icon'
       />
