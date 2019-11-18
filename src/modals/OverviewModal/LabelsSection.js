@@ -1,14 +1,13 @@
 //@flow
 import type {Deployment, LabelMatrix} from "../../types/Types";
 import React, {Fragment} from "react";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import Text from "../../assets/text-combos";
 import Helper from "./Helper";
 import Tables from "../../assets/table-combos";
 import Micon from "../../widgets/Micon/Micon";
 import S from './Styles'
 import defaults from "./defaults";
-import Loader from "../../assets/loading-spinner";
+import VertSection from "../../widgets/VertSection/VertSection";
 
 export default class LabelsSection extends React.Component<Props, State>{
 
@@ -27,13 +26,13 @@ export default class LabelsSection extends React.Component<Props, State>{
   }
 
   render(){
+    // noinspection RequiredAttributes
     return(
-      <Fragment>
-        <TextOverLineSubtitle text='Everything Labels'/>
+      <VertSection title='All things Labels'>
         { this.renderDiffTables() }
         { this.renderLabelChecks() }
         { this.renderCompTables() }
-      </Fragment>
+      </VertSection>
     )
   }
 
