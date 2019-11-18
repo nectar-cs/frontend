@@ -7,12 +7,12 @@ export default class Helper {
   static async fetchLabelMatrices(dep): Array<MatrixBundle> {
     const fetcher = this.fetchLabelMatrix;
     const depMatrix = await fetcher('deployment', dep.namespace, dep.name);
-    const svcMatrices = dep.services.map(async service => {
-      const matrix = await fetcher('deployment', dep.namespace, dep.name);
-      return { type: "Service", name: service.name, matrix };
-    });
+    const svcMatrices = await Promise.all(dep.services.map(async service => {
+      const matrix = await fetcher('service', dep.namespace, dep.name);
+      return { type: "Svc", name: service.name, matrix };
+    }));
 
-    const depMatrixWrap = { type: "Deployment", name: dep.name, matrix: depMatrix };
+    const depMatrixWrap = { type: "Dep", name: dep.name, matrix: depMatrix };
     return [depMatrixWrap, ...svcMatrices];
   }
 

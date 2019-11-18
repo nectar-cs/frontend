@@ -31,6 +31,10 @@ export default class LabelsSection extends React.Component<Props, State>{
     return(
       <Fragment>
         <TextOverLineSubtitle text='Selectors Vs Actual Pod Labels'/>
+        <Text.P>
+          Deployments and services use selectors to find the pods they care about.
+          The tables below summarizes the label interplay.
+        </Text.P>
         <Tables/>
       </Fragment>
     )
@@ -45,6 +49,7 @@ export default class LabelsSection extends React.Component<Props, State>{
     const { rowValues, colNames } = bundle.matrix;
 
     const statuses = this.genStatuses(bundle);
+    const prefix = `${bundle.type} ${bundle.name}'s`;
 
     const TableRows = () => rowValues.map(rv =>
       <TableRow key={rv[0]} rowValues={rv}/>
@@ -52,10 +57,9 @@ export default class LabelsSection extends React.Component<Props, State>{
 
     return(
       <Fragment key={bundle.name}>
-        <Text.P>{bundle.type}: {bundle.name}</Text.P>
-        <Tables.Table>
+        <Tables.Table low={2.3}>
           <tbody>
-          <TableHeader colNames={colNames} statuses={statuses}/>
+          <TableHeader prefix={prefix} colNames={colNames} statuses={statuses}/>
           <TableRows/>
           </tbody>
         </Tables.Table>
@@ -77,19 +81,20 @@ function decide(i, value, emotion){
   else return <Label value={value} emotion={emotion}/>
 }
 
-function TableHeader({colNames, statuses}){
-  colNames = ['Label Selectors / Pod Labels', ...colNames];
+function TableHeader({colNames, statuses, prefix}){
+  colNames = ['Selectors / Pod Labels', ...colNames];
   const emo = i => i > 0 ? (statuses[i - 1] ? null : 'warn') : null;
+  const pre = (i, str) => i === 0 ? `${prefix} ${str}` : str;
   const Cells = () => colNames.map((colName, i) =>
-    (<th>{ decide(i, colName, emo(i)) }</th>)
+    (<th>{ decide(i, pre(i, colName), emo(i)) }</th>)
   );
   return <Tables.ModestHeader><Cells/></Tables.ModestHeader>
 }
 
 function TableRow({rowValues}){
   const match = (isMatch) => {
-    if(isMatch) return <Micon n='check'/>;
-    else return <Micon n='close'/>;
+    const iconName = isMatch ? 'check' : 'close';
+    return <Micon n={iconName} e={{marginLeft: '22px'}}/>;
   };
 
   const Cells = () => rowValues.map((rowValue, i) => {
