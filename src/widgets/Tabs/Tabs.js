@@ -7,18 +7,19 @@ export default class Tabs extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedInd: props.selectedInd
+      selectedInd: props.defaultIndex
     };
   }
 
   render(){
+    const { selectedInd } = this.state;
     return(
       <Fragment>
         <TabsLayout>
           { this.props.tabs.map((t, i) => this.renderTab(t, i)) }
         </TabsLayout>
         <Separator/>
-        { this.props.children[this.state.selectedInd] }
+        { this.props.children[selectedInd] }
         <br/>
       </Fragment>
     )
@@ -42,7 +43,7 @@ export default class Tabs extends React.Component {
 
   static propTypes = {
     tabs: PropTypes.arrayOf(PropTypes.string).isRequired,
-    selectedInd: PropTypes.number,
+    defaultIndex: PropTypes.number,
     onTabChanged: PropTypes.func
   }
 }

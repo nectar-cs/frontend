@@ -17,7 +17,7 @@ function animator(props){
 export const Tab = styled.p`
   animation: ${ props => animator(props) };
   display: inline-block;
-  width: 90px;
+  width: 100px;
   padding: 10px 14px 10px 14px;
   border-style: solid;
   border-width: 0 0 3px 0;
