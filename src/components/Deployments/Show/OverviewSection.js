@@ -15,6 +15,7 @@ import moment from "moment";
 import IntegrationsModal from "../../../modals/IntegrationsModal/IntegrationsModal";
 import MatchingSection from "./MatchingSection";
 import LastCommitModal from "../../../modals/LastCommitModal/LastCommitModal";
+import PodModal from "../../../modals/PodModal/PodModal";
 
 function T(props){
   return <Text.P raw pushed {...props}>{props.children}</Text.P>
@@ -174,7 +175,25 @@ class OverviewSectionClass extends Section {
 
   renderPods(){
     const { deployment, matching } = this.props;
-    return <PodsAtGlance deployment={deployment} matching={matching}/>;
+
+    const callback = (pod) => (
+      this.props.overrideDetail(
+        () => <PodModal
+          deployment={deployment}
+          matching={matching}
+          mode='fragment'
+          pod={pod}
+        />
+      )
+    );
+
+    return(
+      <PodsAtGlance
+        deployment={deployment}
+        matching={matching}
+        action={callback}
+      />
+    )
   }
 
   _renderActivityModal(key, source) {

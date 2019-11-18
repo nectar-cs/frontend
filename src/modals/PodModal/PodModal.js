@@ -21,12 +21,13 @@ export default class PodModal extends React.Component {
   }
 
   renderHeader(){
-    const { pod, deployment, matching } = this.props;
+    const { pod, deployment } = this.props;
     return(
       <LeftHeader
-        graphicName={Utils.msImage(deployment, matching)}
+        graphicName='radio_button_checked'
         title={`${deployment.namespace} / ${pod.name}`}
         subtitle={`One of ${deployment.name}'s pods.`}
+        graphicType='icon'
       />
     )
   }

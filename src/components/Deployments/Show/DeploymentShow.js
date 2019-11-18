@@ -11,18 +11,19 @@ class DeploymentShowClass extends React.Component{
 
   constructor(props){
     super(props);
-    const focusedSection = Helper.defaultSection;
-
     this.state = {
       deployment: null,
       matching: null,
       commit: null,
       isInitialFetching: true,
-      focusedSection
+      focusedSection: Helper.defaultSection,
+      detailOverride: null,
+      matchingBackOff: 0
     };
 
     this.setDefaultDetailFn = this.setDefaultDetailFn.bind(this);
     this.onSectionToggled = this.onSectionToggled.bind(this);
+    this.overrideDetail = this.overrideDetail.bind(this);
     this.reload = this.reload.bind(this);
     this.defDetailFns = {};
   }
@@ -39,6 +40,7 @@ class DeploymentShowClass extends React.Component{
         { this.renderInitialFetching() }
         { this.renderSections() }
         { this.renderRightSideModal() }
+        { this.renderRightSideOverride() }
       </Fragment>
     )
   }
@@ -67,26 +69,37 @@ class DeploymentShowClass extends React.Component{
   }
 
   renderRightSideModal(){
-    const { deployment, matching } = this.state;
+    const { deployment, matching, detailOverride } = this.state;
+    const { overrideDetail } = this;
     const { focusedSection } = this.state;
-    const detailFunc = this.defDetailFns[focusedSection];
-    const bundle = { deployment, matching };
-    if(!(deployment && detailFunc)) return null;
+    const detailComp = this.defDetailFns[focusedSection];
+    const bundle = { deployment, matching, overrideDetail };
+    if(detailOverride || !(deployment && detailComp)) return null;
 
     return(
       <S.RightPanel>
-        { detailFunc(bundle) }
+        { detailComp(bundle) }
       </S.RightPanel>
     )
+  }
+
+  renderRightSideOverride(){
+    const { detailOverride: Override } = this.state;
+    if(!Override) return null;
+    return <S.RightPanel><Override/></S.RightPanel>;
   }
 
   setDefaultDetailFn(name, defaultFn){
     this.defDetailFns[name] = defaultFn;
   }
 
+  overrideDetail(detailOverride){
+    this.setState(s => ({...s, detailOverride}));
+  }
+
   onSectionToggled(focusedSection){
     if(focusedSection === this.state.focusedSection) return;
-    this.setState(s => ({ ...s, focusedSection }));
+    this.setState(s => ({ ...s, focusedSection, detailOverride: null }));
   }
 
   async reloadLoop(){
@@ -97,11 +110,17 @@ class DeploymentShowClass extends React.Component{
   }
 
   async reload(){
+    let { matching, matchingBackOff } = this.state;
     const { ns, id: name } = this.props.match.params;
     const deployment = await Helper.fetchDeployment(ns, name);
     this.update({deployment, isInitialFetching: false});
-    const matching = await Helper.fetchMatching(name);
-    this.update({matching});
+
+    if(matchingBackOff < 1) {
+      matching = await Helper.fetchMatching(name);
+      matchingBackOff = matching ? 5 : 20;
+    } else matchingBackOff -= 1;
+
+    this.update({matching, matchingBackOff});
   }
 
   update(assignments){ this.setState(s => ({...s, ...assignments})); }
