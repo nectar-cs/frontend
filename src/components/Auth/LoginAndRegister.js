@@ -16,7 +16,7 @@ export default class LoginAndRegister extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      authenticated: false,
+      isAuthenticated: false,
       errors: [],
       isLoading: false,
       ...LoginAndRegister.defaultCredentials()
@@ -77,7 +77,7 @@ export default class LoginAndRegister extends React.Component{
   }
 
   renderAuthenticated(){
-    if(!this.state.authenticated) return null;
+    if(!this.state.isAuthenticated) return null;
     return <Redirect to='/' />;
   }
 
@@ -108,7 +108,7 @@ export default class LoginAndRegister extends React.Component{
     Backend.kvSet('accessToken', data['accessToken']);
     Backend.kvSet('uid', data['id']);
     Backend.kvSet('email', data['email']);
-    this.setState((s) => ({...s, isLoading: false, authenticated: true}));
+    this.setState((s) => ({...s, isLoading: false, isAuthenticated: true}));
   }
 
   onAuthFailure(data){

@@ -62,3 +62,8 @@ export type RevisionStatus = {
   latestRevision: ?string
 }
 
+export type LabelMatrix = {
+  colNames: string[],
+  rowNames: Array<string>,
+  rowValues: Array<string[]>,
+}

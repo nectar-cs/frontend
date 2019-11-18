@@ -1,8 +1,6 @@
 import React from 'react'
-import {ImageName, Container, Title, Table} from "./PodTableStyles";
-import PropTypes from 'prop-types'
-import {ModestHeader} from "../../../assets/table-combos";
-import {Separator} from "../../../widgets/Tabs/TabStyles";
+import {Container, Table} from "./PodTableStyles";
+import Tables from "../../../assets/table-combos";
 import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 
@@ -52,8 +50,8 @@ function HeaderRow(props){
   ));
 
   return(
-    <ModestHeader>
+    <Tables.ModestHeader>
       { fields }
-    </ModestHeader>
+    </Tables.ModestHeader>
   )
 }

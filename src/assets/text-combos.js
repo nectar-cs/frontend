@@ -16,6 +16,7 @@ const P = styled.p`
   margin-right: ${p => p.push ? "3px" : '0'};
   margin-left: ${p => p.pushed ? "3px" : '0'};
   color: ${p => colored(p.emotion || 'primaryFont')};
+  font-weight: ${p => p.weight || 'normal'};
 `;
 
 const A = styled.a`
