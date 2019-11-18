@@ -11,6 +11,6 @@ export default function ComingSoonSection({text, imageOne, size}){
 }
 
 ComingSoonSection.defaultProps = {
-  imageOne: 'https://storage.googleapis.com/nectar-mosaic-public/images/coming-soon.jpg',
+  imageOne: 'https://storage.googleapis.com/nectar-mosaic-public/images/simpsons-join-lolz.gif',
   size: 'large'
 };

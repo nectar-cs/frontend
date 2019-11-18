@@ -47,7 +47,7 @@ export default class Helper {
   }
 
   static async fetchDeployments(workspace){
-    const ep = '/api/deployments/filtered';
+    const ep = '/api/deployments';
     const args = Kapi.workspaceToFilterUrlParams(workspace);
     console.log("ARGS --- " + args );
     const url = `${ep}?${args}`;

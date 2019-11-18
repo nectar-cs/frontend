@@ -126,8 +126,9 @@ class InfraDebugClass extends React.Component {
   }
 
   renderLoader(){
-    if(this.isDataReady()) return null;
-    return <CenterLoader/>;
+    // if(this.isDataReady()) return null;
+    // return <CenterLoader/>;
+    return null;
   }
 
   isDataReady(){

@@ -30,7 +30,7 @@ export default class Kapi {
 
   static filterFetch(endpoint, ws, callback, errorCallback=null){
     const args = this.workspaceToFilterUrlParams(ws);
-    endpoint = `${endpoint}?${args}&full=true`;
+    endpoint = `${endpoint}?${args}&pods=true&svcs=true`;
     this.fetch(endpoint, callback, errorCallback);
   }
 
