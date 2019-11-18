@@ -7,7 +7,7 @@ export default class Tabs extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedInd: props.defaultIndex
+      selectedInd: props.defaultIndex || 0
     };
   }
 

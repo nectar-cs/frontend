@@ -4,7 +4,7 @@ const defaults = {
       if(mode === 'fragment') return `pods / ${name}`;
       else return `${ns}/${name}`;
     },
-    subtitle: (depName) => `One of ${depName}'s ducklings.`
+    subtitle: (depName) => `One of ${depName}'s little ducklings.`
   },
   tabs: [
     "Overview",
