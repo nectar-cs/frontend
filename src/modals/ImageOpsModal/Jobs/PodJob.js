@@ -19,7 +19,7 @@ export default class PodJob extends Job {
     this.initial = await this.fetchPods();
     const ep = `/api/run/${this.kapiVerb()}`;
     const payload = this.toKapiPayload();
-    await Kapi.blockingPost(ep, payload);
+    await Kapi.bPost(ep, payload);
   }
 
   toKapiPayload(){

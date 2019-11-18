@@ -8,6 +8,7 @@ import Tables from "../../assets/table-combos";
 import Micon from "../../widgets/Micon/Micon";
 import S from './Styles'
 import defaults from "./defaults";
+import Loader from "../../assets/loading-spinner";
 
 export default class LabelsSection extends React.Component<Props, State>{
 
@@ -20,7 +21,8 @@ export default class LabelsSection extends React.Component<Props, State>{
     const { deployment } = this.props;
     if(deployment){
       const labelMatrices = await Helper.fetchLabelMatrices(deployment);
-      this.setState(s => ({...s, labelMatrices}));
+      const labelChecks = await Helper.fetchLabelChecks(deployment);
+      this.setState(s => ({...s, labelMatrices, labelChecks}));
     }
   }
 
@@ -29,6 +31,7 @@ export default class LabelsSection extends React.Component<Props, State>{
       <Fragment>
         <TextOverLineSubtitle text='Everything Labels'/>
         { this.renderDiffTables() }
+        { this.renderLabelChecks() }
         { this.renderCompTables() }
       </Fragment>
     )
@@ -37,6 +40,26 @@ export default class LabelsSection extends React.Component<Props, State>{
   genStatuses(bundle: MatrixBundle){
     const { rowNames, colNames } = bundle.matrix;
     return colNames.map(label => rowNames.includes(label));
+  }
+
+  renderLabelChecks(){
+    const { labelChecks } = this.state;
+    if(!labelChecks) return null;
+
+    const CheckRows = () => Object.keys(labelChecks).map(checkKey => (
+      <LabelCheckRow
+        key={checkKey}
+        checkName={checkKey}
+        outcome={labelChecks[checkKey]}
+      />
+    ));
+    return(
+      <Tables.Table low={1.4}>
+        <tbody>
+        <CheckRows/>
+        </tbody>
+      </Tables.Table>
+    )
   }
 
   renderDiffTables(){
@@ -70,10 +93,6 @@ export default class LabelsSection extends React.Component<Props, State>{
     const CompTables = () => labelMatrices.map(m => this.renderCompTable(m));
     return(
       <Fragment>
-        <Text.P low={1.7}>
-          <b>The following tables</b> show the difference between the dep/svc selectors
-          and the labels that the pods they've matched <b>actually</b> have.
-        </Text.P>
         <CompTables/>
       </Fragment>
     )
@@ -100,6 +119,17 @@ export default class LabelsSection extends React.Component<Props, State>{
       </Fragment>
     )
   }
+}
+
+function LabelCheckRow({checkName, outcome}){
+  const outCon = <Micon n={outcome ? 'check' : 'close'}/>;
+  const pretty = (defaults.labelChecks[checkName] || {}).title;
+  return(
+    <tr>
+      <td><p>{pretty}</p></td>
+      <td>{outCon}</td>
+    </tr>
+  )
 }
 
 function Label({value, emotion}) {

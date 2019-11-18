@@ -11,7 +11,7 @@ export default class DockerJob extends Job {
 
   async initiateWork() {
     const { jobId: id, jobType: type } = DataUtils.obj2Camel(
-      await Kapi.blockingPost(
+      await Kapi.bPost(
         this.initiatePath(),
         this.initiatePayload()
       )

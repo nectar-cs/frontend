@@ -17,6 +17,24 @@ const defaults = {
       title: ['spec', 'template', 'metadata', 'labels'],
       hint: "how my pods are born"
     }
+  },
+
+  labelChecks: {
+    labelsUnique: {
+      title: "No other deps in this namespace have the same labels?"
+    },
+    templateCovers: {
+      title: "Selector labels subset of template labels?",
+    },
+    noSpill: {
+      title: "Selector doesn't match other deps' pods?",
+    },
+    noEavesdrop: {
+      title: "My pods selectable by no other deps?",
+    },
+    podsSameNs: {
+      title: "Pod Template specifies same namespace?",
+    }
   }
 
 };

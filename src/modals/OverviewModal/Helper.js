@@ -3,7 +3,6 @@ import Kapi from "../../utils/Kapi";
 import type {LabelMatrix} from "../../types/Types";
 import type {MatrixBundle} from "./LabelsSection";
 import Text from "../../assets/text-combos";
-import S from "./Styles";
 
 export default class Helper {
 
@@ -23,6 +22,11 @@ export default class Helper {
     const ep = "/api/cluster/label_matrix";
     const args = `matcher_type=${type}&matcher_ns=${ns}&matcher_name=${name}`;
     return await Kapi.bFetch(`${ep}?${args}`);
+  }
+
+  static async fetchLabelChecks(dep){
+    const ep = `/api/deployments/${dep.namespace}/${dep.name}/validate_labels`;
+    return await Kapi.bPost(ep, {})
   }
 
   static labelDictToHtml(titles, labels, hint){

@@ -3,7 +3,7 @@ import Layout from "../../assets/layouts";
 
 const Editor = styled(Layout.BigCodeViewer)`
   margin-top: 0;
-  width: 28.8%;
+  width: calc(33.3% - 30px);
   padding-top: 12px;
   padding-bottom: 12px;
 `;

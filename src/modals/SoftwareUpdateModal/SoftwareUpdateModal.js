@@ -166,7 +166,7 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
     this.setState(s => ({...s, isSubmitting: true}));
     const ep = '/api/status/restart';
     const deployments = this.targetDepNames();
-    await Kapi.blockingPost(ep, { deployments });
+    await Kapi.bPost(ep, { deployments });
     this.setState(s => ({...s, isSubmitting: false, isDone: true}));
   }
 

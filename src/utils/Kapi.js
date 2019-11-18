@@ -63,7 +63,7 @@ export default class Kapi {
     } else return null;
   }
 
-  static async blockingPost(endpoint, payload){
+  static async bPost(endpoint, payload){
     payload = DataUtils.obj2Snake(payload);
     return await this.blockingRequest('POST', endpoint, payload)
   }

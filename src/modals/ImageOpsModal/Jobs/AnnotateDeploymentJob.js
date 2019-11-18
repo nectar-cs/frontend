@@ -19,7 +19,7 @@ export default class AnnotateDeploymentJob extends Job {
       message: this.commitMessage,
       branch: this.commitBranch
     };
-    this.result = await Kapi.blockingPost(ep, payload);
+    this.result = await Kapi.bPost(ep, payload);
   }
 
   async perform() {
