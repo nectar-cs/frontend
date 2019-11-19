@@ -1,7 +1,7 @@
 const upcoming = {
 
   playground: {
-    featureName: "Playground - Ultrafast K8s Experimentation",
+    featureName: "Playground - Fastest Cloud Native Experimentation on Earth",
     info: [
       "Choose from list of Dockerfile x YAML x App Source combos, " +
       "edit them, run them in the cluster, and click to cleanup.",
