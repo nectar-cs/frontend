@@ -190,15 +190,13 @@ class OverviewSectionClass extends Section {
 
   _renderActivityModal(key, source) {
     source = source || this.props;
-    if(!Utils.tor(() => source.deployment.pods[0])){
-      return(
-        <OverviewModal
-          deployment={source.deployment}
-          matching={source.matching}
-          mode='fragment'
-        />
-      )
-    } else return this.renderDetailPodView(source.deployment.pods[0]);
+    return(
+      <OverviewModal
+        deployment={source.deployment}
+        matching={source.matching}
+        mode='fragment'
+      />
+    )
   }
 
   openCommitModal(){

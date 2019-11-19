@@ -11,6 +11,7 @@ import TerminalStep from "./TerminalStep";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
 import UpdateCheckComposer from "../../hocs/UpdateCheckComposer";
 import Utils from "../../utils/Utils";
+import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 
 class InfraDebugClass extends React.Component {
 
@@ -45,8 +46,8 @@ class InfraDebugClass extends React.Component {
   render(){
     return(
       <Fragment>
-        { this.renderTopLoader() }
         { this.renderLoader() }
+        { this.renderNoServices() }
         { this.renderOverviewSide() }
         { this.renderDebugStep() }
         { this.renderTerminalStep() }
@@ -54,9 +55,23 @@ class InfraDebugClass extends React.Component {
     )
   }
 
+  renderNoServices(){
+    const { deployment } = this.state;
+    if(!deployment || deployment.services.length > 0)
+      return null;
+
+    return(
+      <Layout.FullWidthPanel>
+        <CenterAnnouncement
+          iconName='person'
+          text='No services found for deployment. Cannot do debugging'
+        />
+      </Layout.FullWidthPanel>
+    )
+  }
+
   renderOverviewSide(){
     if(!this.isDataReady()) return null;
-
     const { deployment, matching, options } = this.state;
     const { semanticTree, crtNodePointer } = this.state;
     const { isConfigDone } = this.state;
@@ -77,10 +92,6 @@ class InfraDebugClass extends React.Component {
         />
       </Layout.LeftPanel>
     )
-  }
-
-  renderTopLoader(){
-    return <Loader.TopRightSpinner/>;
   }
 
   renderDebugStep(){
@@ -131,8 +142,8 @@ class InfraDebugClass extends React.Component {
   }
 
   isDataReady(){
-    const { deployment, semanticTree } = this.state;
-    return !!deployment && !!semanticTree;
+    const { deployment: dep, semanticTree } = this.state;
+    return !!dep && dep.services.length > 0 && !!semanticTree;
   }
 
   update(key, value){

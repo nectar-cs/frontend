@@ -5,16 +5,19 @@ class DeploymentSetter extends Setter {
   sideEffects(bundle) {
     bundle.inst.fetchTree();
     const firstService = this._value.services[0];
-    return { service: firstService.name };
+    const service = firstService && firstService.name;
+    if(service) return { service };
   }
 }
 
 class ServiceSetter extends Setter {
   sideEffects(bundle) {
     const { services } = bundle.deployment;
-    const service = services.find(s => s.name === this._value);
-    const firstPort = service.ports[0].fromPort;
-    return { port: firstPort }
+    if(services.length > 0){
+      const service = services.find(s => s.name === this._value);
+      const firstPort = service.ports[0].fromPort;
+      return { port: firstPort }
+    }
   }
 }
 

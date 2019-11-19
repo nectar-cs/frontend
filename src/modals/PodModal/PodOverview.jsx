@@ -25,8 +25,8 @@ export default class PodOverview extends React.Component<Props, State>{
     return(
       <Fragment>
         { this.renderLoader() }
-        { this.renderStatus() }
         { this.renderTimeline() }
+        { this.renderStatus() }
       </Fragment>
     )
   }

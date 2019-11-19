@@ -71,7 +71,7 @@ class NetworkDebugOptionsClass extends DebugOptionsForm {
 
   static propTypes = {
     service: PropTypes.string,
-    port: PropTypes.string,
+    port: PropTypes.number,
     serviceChoices: PropTypes.object.isRequired,
     portChoices: PropTypes.object.isRequired,
     submitCallback: PropTypes.func.isRequired
