@@ -174,7 +174,7 @@ export default class DeploymentCard extends React.Component {
   openPodModal(pod){
     console.log("ASdasdad");
     const { deployment, matching } = this.props;
-    const bundle = { deployment, matching, pod };
+    const bundle = { deployment, matching, pod, mode: 'modal' };
     this.props.openModal(PodModal, bundle);
   }
 

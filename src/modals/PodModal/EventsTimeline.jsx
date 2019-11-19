@@ -1,27 +1,59 @@
 //@flow
-import React from 'react'
+import React, {Fragment} from 'react'
 import { Timeline, TimelineItem }  from 'vertical-timeline-component-for-react';
-import type {ResEvent} from "../../types/Types";
+import type {LightPod, ResEvent} from "../../types/Types";
 import S from './EventStyles'
 import Layout from "../../assets/layouts";
 import Text from "../../assets/text-combos";
 import {colored, theme} from "../../assets/constants";
 import moment from "moment";
+import defaults from "./defaults";
+import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 
-const lineColor = theme.colors.primaryColor;
+const lineColor = theme.colors.contentBackgroundColor;
+const CLI = Layout.BigCodeViewer;
 
 export default function EventsTimeline(props: TimelineProps){
-
   const Items = () => props.events.map((event, i) => (
-    <TimelineEvent key={i} {...event} nth={i}/>
+    <TimelineEvent key={i} {...event} nth={i} mode={props.mode}/>
   ));
 
-  return(
-    <S.EventsTimeline>
+  const { namespace: ns, name } = props.pod;
+  const planCode = defaults.events.gamePlan({ns, name});
+
+  const PlanLines = () => planCode.map(line => (
+    <Text.Code key={line}>{line}</Text.Code>
+  ));
+  const GamePlan = () => {
+    if(props.events.length < 1) return null;
+    return <CLI><PlanLines/></CLI>;
+  };
+
+  const EmptyView = () => {
+    if(props.events.length > 0) return null;
+    return <CenterAnnouncement
+      text='Pod has 0 events.'
+      iconName='sentiment_dissatisfied'
+    />
+  };
+
+  const TheTimeline = () => {
+    if(props.events.length < 1) return null;
+    return(
       <Timeline lineColor={lineColor} animate={false}>
         <Items/>
       </Timeline>
-    </S.EventsTimeline>
+    )
+  };
+
+  return(
+    <Fragment>
+      <S.EventsTimeline>
+        <EmptyView/>
+        <TheTimeline/>
+      </S.EventsTimeline>
+      <GamePlan/>
+    </Fragment>
   )
 }
 
@@ -87,14 +119,17 @@ class TimelineEvent extends React.Component<ResEvent> {
   }
 
   renderTimestamp(){
-    const { occurredAt } = this.props;
+    const { occurredAt, mode } = this.props;
     const parsed = moment(occurredAt).calendar();
-    return <DateComp str={parsed}/>;
+    const far = mode === 'fragment';
+    return <DateComp str={parsed} far={far}/>;
   }
 }
 
-const DateComp = ({str}) => <S.DateContainer>{str}</S.DateContainer>;
+const DateComp = ({far, str}) => <S.DateContainer far={far}>{str}</S.DateContainer>;
 
 type TimelineProps = {
+  pod: LightPod,
   events: Array<ResEvent>,
+  mode: string
 }

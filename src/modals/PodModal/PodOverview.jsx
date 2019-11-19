@@ -13,7 +13,7 @@ export default class PodOverview extends React.Component<Props, State>{
     super(props);
     this.state = {
       isFetching: false,
-      events: []
+      events: null
     }
   }
 
@@ -38,9 +38,16 @@ export default class PodOverview extends React.Component<Props, State>{
 
   renderTimeline(){
     const { events } = this.state;
+    const { pod, mode } = this.props;
+    if(events == null) return null;
+
     return(
       <VertSection title='Events Timeline'>
-        <EventsTimeline events={events}/>
+        <EventsTimeline
+          pod={pod}
+          events={events}
+          mode={mode}
+        />
       </VertSection>
     )
   }
@@ -65,7 +72,8 @@ export default class PodOverview extends React.Component<Props, State>{
 }
 
 type Props = {
-  pod: LightPod
+  pod: LightPod,
+  mode: string
 }
 
 type State = {

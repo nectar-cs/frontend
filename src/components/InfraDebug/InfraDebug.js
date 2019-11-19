@@ -2,7 +2,6 @@ import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../hocs/AuthenticatedComponent";
 import Layout from "../../assets/layouts";
 import OverviewSide from "./OverviewSide";
-import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Helper from './Helper'
 import Node from "./Node";
 import DebugStep from "./DebugStep";

@@ -17,7 +17,7 @@ const defaults = {
       )
     },
     podDebug: {
-      title: "Pods not Running",
+      title: "Pods not Creating",
       iconName: "pause_circle_outline",
       demo: "Pod y u always say pending?"
     },

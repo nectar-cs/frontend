@@ -37,11 +37,11 @@ export default class PodModal extends React.Component {
   }
 
   renderTabs(){
-    const { pod } = this.props;
+    const { pod, mode } = this.props;
     const defInd = pod.state === 'Error' ? 0 : 0;
     return(
       <Tabs tabs={defaults.tabs} defaultIndex={defInd}>
-        <PodOverview pod={pod}/>
+        <PodOverview pod={pod} mode={mode}/>
         <PodProblems pod={pod}/>
         <p>Perf Iz not built yet</p>
         <p>Logs Iz not built yet</p>

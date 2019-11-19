@@ -70,6 +70,7 @@ export default class CommandsModal extends React.Component{
   }
 
   renderPreview(){
+    if(!Helper.hasPods(this)) return null;
     return(
       <Preview
         command={Helper.previewCommand(this)}
@@ -111,6 +112,7 @@ export default class CommandsModal extends React.Component{
     return(
       <CenterAnnouncement
         iconName='sentiment_dissatisfied'
+        text='Zero running pods to receive commands.'
       />
     )
   }

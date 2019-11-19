@@ -1,12 +1,9 @@
 import styled from 'styled-components'
 import Text from "../../assets/text-combos";
 
-const TimelineStyles = {
-
-};
-
 const EventsTimeline = styled.div`
-  margin: -40px 0 0 -100px
+  margin: -40px 0 0 ${p => p.far ? '-100px' :'-40px'};
+  overflow-y: scroll;
 `;
 
 const DateContainer = styled.p`
