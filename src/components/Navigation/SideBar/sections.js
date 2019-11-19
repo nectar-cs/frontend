@@ -30,9 +30,8 @@ const canteen = {
   title: 'Cost Control',
   icon: 'money_off',
   items: [
-    { title: "Policies", path: '/policies' },
-    { title: "Trend & Analysis", path: '/cost-trends' },
-    { title: "Predictions", path: '/cost-predictions' }
+    { title: "Dev Policies", path: '/cost-policies' },
+    { title: "Efficacy Analysis", path: '/cost-policy-analysis' },
   ]
 };
 

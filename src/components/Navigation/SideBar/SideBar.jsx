@@ -149,7 +149,7 @@ function SideBarClass(props) {
       <S.LogoBox>
         <Link to='/'>
           <S.TitleLogo src={image} alt={"Nectar Mosaic"}/>
-          <S.TitleText>Mosaic</S.TitleText>
+          <S.TitleText>MOSAIC</S.TitleText>
         </Link>
       </S.LogoBox>
       <S.Content>

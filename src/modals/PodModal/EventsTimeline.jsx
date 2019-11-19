@@ -112,9 +112,9 @@ class TimelineEvent extends React.Component<EventProps> {
     return(
       <Layout.TextLine low={2}>
         <Text.BoldStatus emotion='success' raw>
-          <b>MOSAIC Says: </b>
+          <b>MOSAIC: </b>
         </Text.BoldStatus>
-        <p>{meaning}</p>
+        <p> {meaning}</p>
       </Layout.TextLine>
     )
   }
