@@ -57,12 +57,17 @@ export default function EventsTimeline(props: TimelineProps){
   )
 }
 
-class TimelineEvent extends React.Component<ResEvent> {
+class TimelineEvent extends React.Component<EventProps> {
+
+  constructor(props) {
+    super(props);
+    this.state = { isExpanded: props.nth === 0 };
+    this.toggle = this.toggle.bind(this);
+  }
 
   render(){
     return(
       <TimelineItem
-        key="001"
         dateComponent={this.renderTimestamp()}
         style={{color: colored(this.emotion())}}>
         { this.renderTitle() }
@@ -76,7 +81,7 @@ class TimelineEvent extends React.Component<ResEvent> {
   emotion(){
     switch (this.props.type.toLowerCase()) {
       case "normal": return 'success';
-      case 'warning': return 'warn';
+      case 'warning': return 'fail';
       default: return "fail"
     }
   }
@@ -84,13 +89,14 @@ class TimelineEvent extends React.Component<ResEvent> {
   renderTitle(){
     const { type, reason } = this.props;
     return(
-      <S.EventTitle emotion={this.emotion()}>
+      <S.EventTitle onClick={this.toggle} emotion={this.emotion()}>
         <b>{type}: {reason}</b>
       </S.EventTitle>
     )
   }
 
   renderRawMessage(){
+    if(!this.state.isExpanded) return null;
     const { message } = this.props;
     return(
       <Text.P low={1.7}>
@@ -100,16 +106,21 @@ class TimelineEvent extends React.Component<ResEvent> {
   }
 
   renderMeaning(){
+    if(!this.state.isExpanded) return null;
     const { meaning } = this.props;
     if(!meaning) return null;
     return(
-      <Text.P low={1.7}>
-        <b>MOSAIC Says: </b>{meaning}
-      </Text.P>
+      <Layout.TextLine low={2}>
+        <Text.BoldStatus emotion='success' raw>
+          <b>MOSAIC Says: </b>
+        </Text.BoldStatus>
+        <p>{meaning}</p>
+      </Layout.TextLine>
     )
   }
 
   renderGamePlan(){
+    if(!this.state.isExpanded) return null;
     const { name, ns } = this.props;
     return(
       <Layout.BigCodeViewer>
@@ -122,14 +133,31 @@ class TimelineEvent extends React.Component<ResEvent> {
     const { occurredAt, mode } = this.props;
     const parsed = moment(occurredAt).calendar();
     const far = mode === 'fragment';
-    return <DateComp str={parsed} far={far}/>;
+    return <DateComp callback={this.toggle} str={parsed} far={far}/>;
+  }
+
+  toggle(){
+    this.setState(s => ({...s, isExpanded: !s.isExpanded}));
   }
 }
 
-const DateComp = ({far, str}) => <S.DateContainer far={far}>{str}</S.DateContainer>;
+const DateComp = ({far, str, callback}) => (
+  <S.DateContainer
+    far={far}
+    onClick={callback}
+  >
+    {str}
+  </S.DateContainer>
+);
 
 type TimelineProps = {
   pod: LightPod,
   events: Array<ResEvent>,
   mode: string
+}
+
+type EventProps = {
+  ...ResEvent,
+  defaultExpansion: boolean,
+  nth: number
 }

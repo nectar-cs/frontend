@@ -11,10 +11,16 @@ const DateContainer = styled.p`
   padding-top: 6px;
   text-align: center;
   font-weight: bold;
+  &:hover{
+    cursor: pointer;
+  }
 `;
 
 const EventTitle = styled(Text.BoldStatus)`
   padding-top: 5px;
+  &:hover{
+    cursor: pointer;
+  }
 `;
 
 const S = {
