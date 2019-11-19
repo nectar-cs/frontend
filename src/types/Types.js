@@ -69,3 +69,10 @@ export type LabelMatrix = {
   rowNames: Array<string>,
   rowValues: Array<string[]>,
 }
+
+export type ResEvent = {
+  reason: string,
+  type: string,
+  message: string,
+  explanation: string
+}

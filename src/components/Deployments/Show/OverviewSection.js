@@ -190,7 +190,7 @@ class OverviewSectionClass extends Section {
 
   _renderActivityModal(key, source) {
     source = source || this.props;
-    if(true || !Utils.tor(() => source.deployment.pods[0])){
+    if(!Utils.tor(() => source.deployment.pods[0])){
       return(
         <OverviewModal
           deployment={source.deployment}

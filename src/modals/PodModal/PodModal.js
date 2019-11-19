@@ -6,6 +6,7 @@ import Utils from "../../utils/Utils";
 import Tabs from "../../widgets/Tabs/Tabs";
 import defaults from "./defaults";
 import PodProblems from "./PodProblems";
+import PodOverview from "./PodOverview";
 
 export default class PodModal extends React.Component {
 
@@ -40,7 +41,7 @@ export default class PodModal extends React.Component {
     const defInd = pod.state === 'Error' ? 1 : 0;
     return(
       <Tabs tabs={defaults.tabs} defaultIndex={defInd}>
-        <p>Overview Iz not built yet</p>
+        <PodOverview/>
         <PodProblems pod={pod}/>
         <p>Perf Iz not built yet</p>
         <p>Logs Iz not built yet</p>
