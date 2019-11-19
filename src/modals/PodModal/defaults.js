@@ -9,7 +9,7 @@ const defaults = {
   tabs: [
     "Overview",
     "Problems",
-    "CPU, RAM, Disk",
+    "Perf / Disk",
     "Logs"
   ]
 };

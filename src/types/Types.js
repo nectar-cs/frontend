@@ -71,8 +71,19 @@ export type LabelMatrix = {
 }
 
 export type ResEvent = {
+  name: string,
+  ns: string,
   reason: string,
   type: string,
   message: string,
-  explanation: string
+  explanation: string,
+  meaning: ?string,
+  occurredAt: string
+}
+
+export type LightPod = {
+  namespace: string,
+  name: string,
+  ip: string,
+  status: string
 }

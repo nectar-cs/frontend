@@ -61,6 +61,7 @@ const Code = styled.code`
   display: block;
   margin-top: ${p => p.chill ? "6px" : "2px"};
   color: ${p => p.theme.colors.contrastFont};
+  font-size: 12px;
   &:first-child{
     margin-top: 2px;
   }

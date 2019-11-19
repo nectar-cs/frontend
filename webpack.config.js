@@ -30,6 +30,10 @@ module.exports = {
           msName: '[name].[ext]?[hash]'
         }},
       {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
         test: /\.(scss|sass|css)$/,
         exclude: [
           /node_modules/,
