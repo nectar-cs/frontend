@@ -33,16 +33,15 @@ export default class LabelsSection extends React.Component<Props, State>{
     )
   }
 
-  genMatrixCells(){
-    const { labels, templateLabels, selectorLabels } = this.props.deployment;
-    const asHash = { labels, templateLabels, selectorLabels };
-    const lengths = Object.keys(asHash).map(k => ({[k]: asHash[k].length}));
-    const longest = Math.max(Object.keys(asHash).map(k => k.length));
-    const longestBun = lengths.find(l => Object.values(l)[0] === longest);
-    const longestKey = Object.keys(longestBun)[0];
-    const x = 2;
-
-  }
+  // genMatrixCells(){
+  //   const { labels, templateLabels, selectorLabels } = this.props.deployment;
+  //   const asHash = { labels, templateLabels, selectorLabels };
+  //   const lengths = Object.keys(asHash).map(k => ({[k]: asHash[k].length}));
+  //   const longest = Math.max(Object.keys(asHash).map(k => k.length));
+  //   const longestBun = lengths.find(l => Object.values(l)[0] === longest);
+  //   const longestKey = Object.keys(longestBun)[0];
+  //   const x = 2;
+  // }
 
   renderTopLoader(){
     if(!this.state.isFetching) return null;
