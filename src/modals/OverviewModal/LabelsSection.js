@@ -7,7 +7,7 @@ import Tables from "../../assets/table-combos";
 import Micon from "../../widgets/Micon/Micon";
 import S from './Styles'
 import defaults from "./defaults";
-import VertSection from "../../widgets/VertSection/VertSection";
+import Loader from "../../assets/loading-spinner";
 
 export default class LabelsSection extends React.Component<Props, State>{
 
@@ -18,27 +18,35 @@ export default class LabelsSection extends React.Component<Props, State>{
 
   async componentDidMount(): * {
     const { deployment } = this.props;
-    if(deployment){
-      const labelMatrices = await Helper.fetchLabelMatrices(deployment);
-      const labelChecks = await Helper.fetchLabelChecks(deployment);
-      this.setState(s => ({...s, labelMatrices, labelChecks}));
-    }
+    this.setState(s => ({...s, isFetching: true}));
+    const labelChecks = await Helper.fetchLabelChecks(deployment);
+    this.setState(s => ({...s, labelChecks, isFetching: false}));
   }
 
   render(){
-    // noinspection RequiredAttributes
     return(
-      <VertSection title='All things Labels'>
+      <Fragment>
+        { this.renderTopLoader() }
         { this.renderDiffTables() }
         { this.renderLabelChecks() }
-        { this.renderCompTables() }
-      </VertSection>
+      </Fragment>
     )
   }
 
-  genStatuses(bundle: MatrixBundle){
-    const { rowNames, colNames } = bundle.matrix;
-    return colNames.map(label => rowNames.includes(label));
+  genMatrixCells(){
+    const { labels, templateLabels, selectorLabels } = this.props.deployment;
+    const asHash = { labels, templateLabels, selectorLabels };
+    const lengths = Object.keys(asHash).map(k => ({[k]: asHash[k].length}));
+    const longest = Math.max(Object.keys(asHash).map(k => k.length));
+    const longestBun = lengths.find(l => Object.values(l)[0] === longest);
+    const longestKey = Object.keys(longestBun)[0];
+    const x = 2;
+
+  }
+
+  renderTopLoader(){
+    if(!this.state.isFetching) return null;
+    return <Loader.TopRightSpinner/>;
   }
 
   renderLabelChecks(){
@@ -65,7 +73,7 @@ export default class LabelsSection extends React.Component<Props, State>{
     const { labels, templateLabels, selectorLabels } = this.props.deployment;
     return(
       <Fragment>
-        <Text.P low={1.7}>A deployment defines <b>three sets</b> of labels:</Text.P>
+        <Text.P low={-0.75}>A deployment defines <b>three sets</b> of labels:</Text.P>
         <S.Editors>
           { this.renderNanoLabels('labels', labels) }
           { this.renderNanoLabels('selectors', selectorLabels) }
@@ -84,40 +92,41 @@ export default class LabelsSection extends React.Component<Props, State>{
       </S.Editor>
     )
   }
+}
 
-  renderCompTables(){
-    const { labelMatrices } = this.state;
-    if(labelMatrices.length < 1) return null;
+function LabelGrid(matrix: GridData){
+  const Rows = matrix.map(row => (
+    <GridRow row={row}/>
+  ));
+  return(
+    <Tables.Table>
+      <tbody>
+        <Rows/>
+      </tbody>
+    </Tables.Table>
+  )
+}
 
-    const CompTables = () => labelMatrices.map(m => this.renderCompTable(m));
-    return(
-      <Fragment>
-        <CompTables/>
-      </Fragment>
-    )
-  }
+function GridRow(row: Array<GridCell>){
+  const Content = () => row.map(cell => {
+    if(cell){
+      return(
+        <th key={cell.label} >
+          <Text.StatusTag emotion={cell.status}>
+            {cell.label}
+          </Text.StatusTag>
+        </th>
+      )
+    } else return <th><Micon key={cell.label} n='close'/></th>
+  });
+  return <tr><Content/></tr>;
+}
 
-  renderCompTable(bundle: MatrixBundle){
-    const { rowValues, colNames } = bundle.matrix;
+type GridData = Array<Array<GridCell>>;
 
-    const statuses = this.genStatuses(bundle);
-    const prefix = `${bundle.type} ${bundle.name}'s`;
-
-    const TableRows = () => rowValues.map(rv =>
-      <TableRow key={rv[0]} rowValues={rv}/>
-    );
-
-    return(
-      <Fragment key={bundle.name}>
-        <Tables.Table low={1.0}>
-          <tbody>
-          <TableHeader prefix={prefix} colNames={colNames} statuses={statuses}/>
-          <TableRows/>
-          </tbody>
-        </Tables.Table>
-      </Fragment>
-    )
-  }
+type GridCell = {
+  label: string,
+  status: 'good' | 'warn' | 'bad'
 }
 
 function LabelCheckRow({checkName, outcome}){
@@ -131,44 +140,6 @@ function LabelCheckRow({checkName, outcome}){
   )
 }
 
-function Label({value, emotion}) {
-  return(
-    <Text.StatusTag emotion={emotion}>
-      { value }
-    </Text.StatusTag>
-  )
-}
-
-function decide(i, value, emotion){
-  if(i === 0) return <p><b>{value}</b></p>;
-  else return <Label value={value} emotion={emotion}/>
-}
-
-function TableHeader({colNames, statuses, prefix}){
-  colNames = ['Selectors / Pod Labels', ...colNames];
-  const emo = i => i > 0 ? (statuses[i - 1] ? null : 'warn') : null;
-  const pre = (i, str) => i === 0 ? `${prefix} ${str}` : str;
-  const Cells = () => colNames.map((colName, i) =>
-    (<th>{ decide(i, pre(i, colName), emo(i)) }</th>)
-  );
-  return <Tables.ModestHeader><Cells/></Tables.ModestHeader>
-}
-
-function TableRow({rowValues}){
-  const match = (isMatch) => {
-    const iconName = isMatch ? 'check' : 'close';
-    return <Micon n={iconName} e={{marginLeft: '22px'}}/>;
-  };
-
-  const Cells = () => rowValues.map((rowValue, i) => {
-    const isRowHeader = i === 0;
-    const val = isRowHeader ? <Label value={rowValue} /> : match(rowValue);
-    return <td>{val}</td>
-  });
-
-  return <tr><Cells/></tr>
-}
-
 export type MatrixBundle = {
   type: 'deployment' | 'service',
   name: string,
@@ -180,7 +151,8 @@ type State = {
 }
 
 const defaultState = (_) => ({
-  labelMatrices: []
+  labelMatrices: [],
+  isFetching: true
 });
 
 type Props = {

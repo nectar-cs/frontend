@@ -3,6 +3,7 @@ import React, {Fragment} from 'react'
 import S from './Styles'
 import upcoming from "../../containers/upcoming";
 import DataUtils from "../../utils/DataUtils";
+import Utils from "../../utils/Utils";
 
 export default class FutureFeature extends React.Component<Props>{
 
@@ -25,22 +26,28 @@ export default class FutureFeature extends React.Component<Props>{
   }
 
   renderImages(){
-    return null;
-    // const { imageSrcs } = this.props;
-    // return imageSrcs.map(imageSrc => (
-    //   <S.PreviewImage src={imageSrc}/>
-    // ));
+    let imageIndices = [...Array(3).keys()];
+
+    return imageIndices.map(imageIndex => (
+      <S.PreviewImage
+        key={imageIndex}
+        src={this.imagePath(imageIndex + 1)}
+      />
+    ))
   }
 
-  imagesPaths(){
-
+  imagePath(index){
+    const webKey = this.webKey();
+    const dirName = `soons/${webKey}`;
+    const imageName = `${webKey}-${index}.png`;
+    return Utils.image(`${dirName}/${imageName}`);
   }
 
   webKey() {
     const snaked = DataUtils.camelStringToSnake(this.key());
     return snaked.replace('_', '-');
   }
-  baseWebPath(){ return `soons/${this.webKey()}`; }
+
   configBundle(){ return upcoming[this.key()]; }
   key() { return this.props.upcomingKey; }
 }

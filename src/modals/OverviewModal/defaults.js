@@ -4,6 +4,8 @@ const defaults = {
     subtitle: (name) => name ? `${name} and friends at a glance` : ''
   },
 
+  tabsNames: ['Network', 'Labels', 'Docker', 'Volumes', 'Data'],
+
   labelsSection: {
     labels: {
       title: ['metadata', 'labels'],

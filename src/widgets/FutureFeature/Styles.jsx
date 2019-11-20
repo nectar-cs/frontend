@@ -3,6 +3,7 @@ import styled from "styled-components";
 const Title = styled.h2`
   margin: 20px 0 15px 0;
   text-align: center;
+  font-weight: 900;
 `;
 
 const Subtitle = styled.p`
@@ -15,7 +16,8 @@ const PreviewImage = styled.img`
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;  
+  width: 80%;  
+  margin-top: 40px;
 `;
 
 const S = { Title, PreviewImage, Subtitle };

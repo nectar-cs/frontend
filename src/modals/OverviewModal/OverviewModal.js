@@ -5,7 +5,7 @@ import defaults from "./defaults";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import type {Deployment} from "../../types/Types";
 import LabelsSection from "./LabelsSection";
-import NotDoneSection from "../NotDoneSection/NotDoneSection";
+import Tabs from "../../widgets/Tabs/Tabs";
 
 export default class OverviewModal extends React.Component<Props>{
 
@@ -13,8 +13,7 @@ export default class OverviewModal extends React.Component<Props>{
     return(
       <FlexibleModal mode={this.props.mode}>
         { this.renderHeader() }
-        { this.renderLabelsSection() }
-        { this.renderComingSoonSections() }
+        { this.renderTabs() }
       </FlexibleModal>
     )
   }
@@ -23,7 +22,7 @@ export default class OverviewModal extends React.Component<Props>{
     const { deployment } = this.props || {};
     return(
       <LeftHeader
-        graphicName='assignment'
+        graphicName='group_work'
         graphicType='icon'
         title={defaults.header.title}
         subtitle={defaults.header.subtitle(deployment && deployment.name)}
@@ -31,13 +30,15 @@ export default class OverviewModal extends React.Component<Props>{
     )
   }
 
-  renderComingSoonSections(){
+  renderTabs(){
     return(
-      <Fragment>
-        <NotDoneSection title='Networking'/>
-        <NotDoneSection title='CPU and Memory'/>
-        <NotDoneSection title='Dockerfile'/>
-      </Fragment>
+      <Tabs tabs={defaults.tabsNames} defaultIndex={1}>
+        <p>Coming very soon</p>
+        { this.renderLabelsSection() }
+        <p>Coming very soon</p>
+        <p>Coming very soon</p>
+        <p>Coming very soon</p>
+      </Tabs>
     )
   }
 
