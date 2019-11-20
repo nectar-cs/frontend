@@ -62,7 +62,7 @@ function ForgotPassword({type}){
 function WhyRegister({type}){
   if(type === 'register') {
     return (
-        <Text.A low={1.4} href='https://www.codenectar.com/data'>
+        <Text.A low={1.4} href='https://github.com/nectar-cs/mosaic#backend'>
           <Text.P emotion='contrastFont'>Why am I registering?</Text.P>
         </Text.A>
     )

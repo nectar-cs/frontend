@@ -78,7 +78,9 @@ export default class LoginAndRegister extends React.Component{
 
   renderAuthenticated(){
     if(!this.state.isAuthenticated) return null;
-    return <Redirect to='/' />;
+    if(this.isLogin())
+      return <Redirect to='/' />;
+    else return <Redirect to='/bulk-matching' />;
   }
 
   renderLoading(){
