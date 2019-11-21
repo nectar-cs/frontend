@@ -50,9 +50,10 @@ function SwitchType({type}){
 }
 
 function ForgotPassword({type}){
+  const callback = () => alert("Password reset will be ready next week. Sorry.");
   if(type === 'login') {
     return (
-      <Text.PA low={1.4} emotion='contrastFont'>
+      <Text.PA onClick={callback} low={1.4} emotion='contrastFont'>
         Forgot Password
       </Text.PA>
     )

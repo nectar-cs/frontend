@@ -71,7 +71,7 @@ export default class DeploymentCard extends React.Component {
         { this.buildRow('Image', dep.imageName, this.openImageModal) }
         { this.buildRow('Source', sourceText, this.openSourceModal) }
         { this.renderDnsRow() }
-        { this.buildRow('Status', portText, () => alert("Bang!")) }
+        { this.buildRow('Status', portText, () => alert("Implemented Before 2020.")) }
       </tbody>
     </S.ContentRows>;
   }

@@ -5,7 +5,6 @@ import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../utils/Utils";
 import Tabs from "../../widgets/Tabs/Tabs";
 import defaults from "./defaults";
-import PodProblems from "./PodProblems";
 import PodOverview from "./PodOverview";
 
 export default class PodModal extends React.Component {
@@ -42,9 +41,9 @@ export default class PodModal extends React.Component {
     return(
       <Tabs tabs={defaults.tabs} defaultIndex={defInd}>
         <PodOverview pod={pod} mode={mode}/>
-        <PodProblems pod={pod}/>
-        <p>Perf Iz not built yet</p>
-        <p>Logs Iz not built yet</p>
+        <p>Not done :/</p>
+        <p>Not done :/</p>
+        <p>Not done :/</p>
       </Tabs>
     )
   }

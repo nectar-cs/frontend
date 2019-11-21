@@ -12,28 +12,23 @@ const Container = styled.div`
   margin-top: 40px;
 `;
 
-const Text = styled.p`
-  font-size: 17px;
-  font-weight: bold;
-  margin-top: 20px;
+const Words = styled.p`
+  font-size: 15px;
+  margin-top: 40px;
   text-align: center;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 `;
 
 const Icon = styled.img`
   color: pink;
   display: block;
-  margin: 40px auto 0 auto;
+  margin: 20px auto 60px auto;
   height: ${p => sizer(p)}px;
 `;
 
-const Title = styled.p`
-  width: 100%;
-  text-align: center;
-  font-size: 17px;
-  color: tomato;
-  margin-top: 60px;
-`;
-
-const S = { Container, Icon, Title, Text };
+const S = { Container, Icon, Words };
 
 export default S;

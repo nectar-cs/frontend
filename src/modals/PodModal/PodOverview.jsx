@@ -42,19 +42,17 @@ export default class PodOverview extends React.Component<Props, State>{
     if(events == null) return null;
 
     return(
-      <VertSection title='Events Timeline'>
-        <EventsTimeline
-          pod={pod}
-          events={events}
-          mode={mode}
-        />
-      </VertSection>
+      <EventsTimeline
+        pod={pod}
+        events={events}
+        mode={mode}
+      />
     )
   }
 
   renderStatus(){
     return(
-      <NotDoneSection title='Status'/>
+      null
     )
   }
 

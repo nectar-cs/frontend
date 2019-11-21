@@ -4,6 +4,7 @@ import S from './Styles'
 import upcoming from "../../containers/upcoming";
 import DataUtils from "../../utils/DataUtils";
 import Utils from "../../utils/Utils";
+import ComingSoonSection from "../ComingSoonSection/ComingSoonSection";
 
 export default class FutureFeature extends React.Component<Props>{
 
@@ -14,6 +15,8 @@ export default class FutureFeature extends React.Component<Props>{
         <S.Title>Planned Feature: {featureName}</S.Title>
         { this.renderInfo() }
         { this.renderImages() }
+        <ComingSoonSection/>
+        <br/><br/>
       </Fragment>
     )
   }

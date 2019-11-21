@@ -6,6 +6,7 @@ import FlexibleModal from "../../hocs/FlexibleModal";
 import type {Deployment} from "../../types/Types";
 import LabelsSection from "./LabelsSection";
 import Tabs from "../../widgets/Tabs/Tabs";
+import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
 
 export default class OverviewModal extends React.Component<Props>{
 
@@ -33,11 +34,11 @@ export default class OverviewModal extends React.Component<Props>{
   renderTabs(){
     return(
       <Tabs tabs={defaults.tabsNames} defaultIndex={1}>
-        <p>Coming very soon</p>
+        <ComingSoonSection/>
         { this.renderLabelsSection() }
-        <p>Coming very soon</p>
-        <p>Coming very soon</p>
-        <p>Coming very soon</p>
+        <ComingSoonSection/>
+        <ComingSoonSection/>
+        <ComingSoonSection/>
       </Tabs>
     )
   }
