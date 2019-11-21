@@ -1,3 +1,1 @@
-###Running in Docker Compose
-
-Meaningful content here shortly.
+Meaningful words here shortly.
