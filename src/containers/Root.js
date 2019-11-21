@@ -5,7 +5,6 @@ import { Route, BrowserRouter } from 'react-router-dom'
 import {ROUTES as R} from './RoutesConsts';
 import {Switch} from "react-router";
 import NotFound from "../components/NotFound/NotFound";
-import Debug from "../components/NotFound/Debug";
 import {theme} from "../assets/constants";
 import {ThemeProvider} from "styled-components";
 
@@ -28,7 +27,6 @@ export default class Root extends Component {
               { Root.renderRoute(R.workspaces.new) }
               { Root.renderRoute(R.workspaces.edit) }
               { Root.renderRoute(R.workspaces.show) }
-              <Route path='/debugz' exact component={Debug} />
               <Route path='/' exact component={R.workspaces.default.comp} />
               <Route component={NotFound}/>
             </Switch>

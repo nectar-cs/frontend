@@ -16,8 +16,6 @@ export default function Debug(){
 
   useEffect(() => {
     checker.fetchKapiVersion().then(r => {
-      console.log("HEY");
-      console.log(r);
       kapiVersion = r;
     })
   }, []);
@@ -35,7 +33,7 @@ export default function Debug(){
       <li><p>Backend: {Backend.baseUrl()}</p></li>
       <li><p>Kapi: {Kapi.baseUrl()}</p></li>
       <li><p>Non Dev: {checker.isNonDevEnvironment().toString()}</p></li>
-      <li><p>Was last check long ago: {checker.wasLastCheckLongAgo().toString()}</p></li>
+      <li><p>Was last check long ago: {checker.wasLastCheckTooLongAgo().toString()}</p></li>
       <li><p>Last Check: {checker.lastCheckTime().format()}</p></li>
       <li><p>furthestBackAcceptableCheckTime: {checker.furthestBackAcceptableCheckTime().format()}</p></li>
       <li><p>Should Perform: {checker.shouldPerform().toString()}</p></li>

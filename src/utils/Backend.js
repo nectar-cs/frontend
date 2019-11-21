@@ -50,8 +50,10 @@ export default class Backend {
   static async bPost(endpoint, payload){
     payload = DataUtils.obj2Snake(payload);
     const raw = await this.blockingRequest('POST', endpoint, payload);
-    let cleaned = DataUtils.obj2Camel(raw);
-    return cleaned['data'] ? cleaned['data'] : cleaned;
+    if(raw){
+      let cleaned = DataUtils.obj2Camel(raw);
+      return cleaned['data'] ? cleaned['data'] : cleaned;
+    } else return null;
   }
 
   static async bPatch(endpoint, payload){

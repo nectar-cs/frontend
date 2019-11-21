@@ -6,7 +6,7 @@ import Utils from "./Utils";
 import type {RevisionStatus} from "../types/Types";
 
 const KEY = "last_revision_check";
-const THRESHOLD = { minutes: 1 };
+const THRESHOLD = { minutes: 10 };
 const YEAR_2000 = "2000-01-01T00:00:00-00:00";
 
 export default class UpdateChecker {
@@ -14,8 +14,7 @@ export default class UpdateChecker {
   async perform() {
     if (!this.shouldPerform()) return null;
     this.recordCheckTimestamp();
-    const result = await this.fetchVerdict();
-    return result['updateNecessary'] ? result : null;
+    return await this.fetchVerdict();
   }
 
   async fetchVerdict(){
@@ -24,9 +23,9 @@ export default class UpdateChecker {
     const currentVersions = { frontend, kapi };
     const payload = { currentVersions };
     const ep = '/revisions/compare';
-    const statuses: RevisionStatus[] = await Backend.bPost(ep, payload);
-    const needingUpdate = statuses.filter(v => v.updateNecessary);
-    return needingUpdate.length > 0;
+    const statuses = await Backend.bPost(ep, payload);
+    const needingUpdate = (statuses || []).filter(v => v.updateNecessary);
+    return needingUpdate.length > -1;
   }
 
   async fetchKapiVersion(){
@@ -36,25 +35,27 @@ export default class UpdateChecker {
 
   shouldPerform(){
     const nonDev = Utils.isNonDev();
-    const lastCheckOutdated = this.wasLastCheckLongAgo();
+    const lastCheckOutdated = this.wasLastCheckTooLongAgo();
     return nonDev && lastCheckOutdated;
   }
 
   recordCheckTimestamp(){
-    const nowISOStr = moment().format();
+    const nowISOStr = moment().utc().format();
     Cookies.set(KEY, nowISOStr);
   }
 
   lastCheckTime(){
     const rawStamp = Cookies.get(KEY) || YEAR_2000;
-    return moment(rawStamp);
+    return moment(rawStamp).utc();
   }
 
   furthestBackAcceptableCheckTime(){
-    return moment().subtract(THRESHOLD);
+    return moment().utc().subtract(THRESHOLD).utc();
   }
 
-  wasLastCheckLongAgo(){
-    return this.lastCheckTime() < this.furthestBackAcceptableCheckTime();
+  wasLastCheckTooLongAgo(){
+    const lastTime = this.lastCheckTime();
+    const deadline = this.furthestBackAcceptableCheckTime();
+    return lastTime.isBefore(deadline);
   }
 }
