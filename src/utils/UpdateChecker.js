@@ -25,7 +25,7 @@ export default class UpdateChecker {
     const ep = '/revisions/compare';
     const statuses = await Backend.bPost(ep, payload);
     const needingUpdate = (statuses || []).filter(v => v.updateNecessary);
-    return needingUpdate.length > -1;
+    return needingUpdate.length > 0;
   }
 
   async fetchKapiVersion(){
