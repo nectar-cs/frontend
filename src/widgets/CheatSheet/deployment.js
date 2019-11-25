@@ -1,5 +1,6 @@
 function _ns(ns, withNs){
   if(withNs) return ` -n ${ns}`;
+  else return '';
 }
 
 function out(cmd, f){
@@ -31,7 +32,7 @@ const kubectlReading = [
     cmd: ({k, f, d, ns, withNs}) => {
       if(f === 'plain')
         return `${k} describe deploy/${d}${_ns(ns, withNs)}`;
-      else return out(`${k} get deploy/${d}${_ns(ns, withNs)}`);
+      else return out(`${k} get deploy/${d}${_ns(ns, withNs)}`, f);
     },
   },
   {

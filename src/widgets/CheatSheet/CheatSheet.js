@@ -5,6 +5,8 @@ import Text from "../../assets/text-combos";
 import deploymentCopy from "./deployment";
 import Interpolation from "./Interpolation";
 import Layout from "../../assets/layouts";
+import S from './Styles'
+
 
 export default class CheatSheet extends React.Component<Props> {
 
@@ -15,20 +17,34 @@ export default class CheatSheet extends React.Component<Props> {
       flavor: 'json_jq',
       execName: "kubectl",
       withNs: "true",
+      showConfig: false,
     };
     this.update = this.update.bind(this);
+    this.toggleConfig = this.toggleConfig.bind(this);
   }
 
   render() {
     return(
       <Fragment>
+        { this.renderConfigToggle() }
         { this.renderForm() }
         { this.renderSections() }
       </Fragment>
     )
   }
 
+  renderConfigToggle(){
+    return(
+      <S.ConfigIcon
+        onClick={this.toggleConfig}
+        className='material-icons'>
+        settings
+      </S.ConfigIcon>
+    )
+  }
+
   renderForm(){
+    if(!this.state.showConfig) return null;
     const { api, flavor, execName, withNs } = this.state;
     return(
       <CheatSheetForm
@@ -43,14 +59,16 @@ export default class CheatSheet extends React.Component<Props> {
 
   renderSections(){
     const { api } = this.state;
-    if(api !== 'kubectl')
-      return <Text.P low={4}>Under construction :/</Text.P>;
-
-    const Sections = () => this.resourceConfig().map(section => (
-      this.renderSection(section)
-    ));
-
-    return <Sections/>
+    if(api === 'kubectl'){
+      const Sections = () => this.resourceConfig().map(section => (
+        this.renderSection(section)
+      ));
+      return(
+        <Layout.Div top={-2.4}>
+          <Sections/>
+        </Layout.Div>
+      )
+    } else return <Text.P low={4}>Under construction :/</Text.P>;
   }
 
   renderSection(section){
@@ -63,7 +81,7 @@ export default class CheatSheet extends React.Component<Props> {
 
     return(
       <Fragment>
-        <Text.P low={3}><b>{section.name}</b></Text.P>
+        <Text.P low={0}><b>{section.name}</b></Text.P>
         <Blocks/>
       </Fragment>
     )
@@ -74,29 +92,24 @@ export default class CheatSheet extends React.Component<Props> {
     const { resource } = this.props;
 
     const substitutions = {
-      withNs,
+      withNs: withNs === 'true',
       f: flavor,
       k: execName,
       ...this.resSubstitutor()(resource)
     };
 
     const CodeBlock = ({children}) => (
-      <Layout.BigCodeViewer>{ children }</Layout.BigCodeViewer>
+      <Layout.SlimCodeViewer>{ children }</Layout.SlimCodeViewer>
     );
 
-    let code = null;
-    const out = bundle.cmd(substitutions);
-    console.log("TIME FOR " + bundle.desc);
-    console.log(substitutions);
-    console.log(out);
-    if(typeof out === 'string')
-      code = <Text.Code>{out}</Text.Code>;
-    else code = () => out.map(c => <Text.Code>{c}</Text.Code>);
+    let interp = bundle.cmd(substitutions);
+    interp = typeof interp === 'string' ? [interp] :  interp;
+    const Lines = () => interp.map(c => <Text.Code>{c}</Text.Code>);
 
     return(
       <Fragment>
         <Text.P low={1.3} suck={1.1}>{bundle.desc}</Text.P>
-        <CodeBlock>{code}</CodeBlock>
+        <CodeBlock><Lines/></CodeBlock>
       </Fragment>
     );
   }
@@ -118,6 +131,10 @@ export default class CheatSheet extends React.Component<Props> {
 
   update(key, value){
     this.setState(s => ({...s, [key]: value}));
+  }
+
+  toggleConfig(){
+    this.update('showConfig', !this.state.showConfig)
   }
 }
 

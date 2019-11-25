@@ -71,8 +71,23 @@ const BigCodeViewer = styled.div`
   background: ${p => p.theme.colors.primaryColor};
 `;
 
+const SlimCodeViewer = styled(BigCodeViewer)`
+  margin-top: 18px;
+  padding: 11px 12px;
+`;
+
+const Div = styled.div`
+  margin-top: ${p => `${(p.top || 0) * 12}px`};
+  margin-right: ${p => `${(p.right || 0) * 12}px`};
+  margin-bottom: ${p => `${(p.bottom || 0) * 12}px`};
+  margin-left: ${p => `${(p.left || 0) * 12}px`};
+
+`;
+
 const Layout = {
+  Div,
   ContentContainer,
+  SlimCodeViewer,
   LeftPanel,
   RightPanel,
   TextLine ,

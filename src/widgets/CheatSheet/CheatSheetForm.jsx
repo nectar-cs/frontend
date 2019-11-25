@@ -3,6 +3,7 @@ import React, {Fragment} from 'react'
 import FormComponent from "../../hocs/FormComponent";
 import Utils from "../../utils/Utils";
 import defaults from './defaults'
+import Layout from "../../assets/layouts";
 
 class CheatSheetFormFunc extends React.Component<Props>{
 
@@ -12,10 +13,10 @@ class CheatSheetFormFunc extends React.Component<Props>{
 
   render() {
     return (
-      <Fragment>
+      <Layout.Div top={-1} bottom={5}>
         { this.renderApiAndNs() }
         { this.renderFlavAndExec() }
-      </Fragment>
+      </Layout.Div>
     )
   }
 
