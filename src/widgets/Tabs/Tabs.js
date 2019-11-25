@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Separator, Tab, TabsLayout} from "./TabStyles";
+import S from "./TabStyles";
 
 export default class Tabs extends React.Component {
 
@@ -15,10 +15,10 @@ export default class Tabs extends React.Component {
     const { selectedInd } = this.state;
     return(
       <Fragment>
-        <TabsLayout>
+        <S.TabsLayout>
           { this.props.tabs.map((t, i) => this.renderTab(t, i)) }
-        </TabsLayout>
-        <Separator/>
+        </S.TabsLayout>
+        <S.Separator/>
         { this.props.children[selectedInd] }
         <br/>
       </Fragment>
@@ -32,12 +32,12 @@ export default class Tabs extends React.Component {
 
   renderTab(tab, index){
     return(
-      <Tab
+      <S.Tab
         selected={index === this.state.selectedInd}
         key={index}
         onClick={() => this.onTabSelected(index)}>
         {tab}
-      </Tab>
+      </S.Tab>
     )
   }
 

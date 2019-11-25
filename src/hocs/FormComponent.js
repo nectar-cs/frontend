@@ -10,6 +10,7 @@ export default class FormComponent {
         this.makeSelect = this.makeSelect.bind(this);
         this.makeInput = this.makeInput.bind(this);
         this.makeSelectItem = this.makeSelectItem.bind(this);
+        this.makeInputItem = this.makeInputItem.bind(this);
         this.makeLine = this.makeLine.bind(this);
       }
 
@@ -34,6 +35,18 @@ export default class FormComponent {
         )
       }
 
+      makeInputItem(field, placeholder){
+        const callback = (e) => { this.parentCallback(field, e.target.value); };
+        return(
+          <In.LineInput
+            as='input'
+            value={this.getValue(field)}
+            onChange={(e) => callback(e)}
+            placeholder={placeholder}
+          />
+        )
+      }
+
       makeSelect(title, field, choices){
         return(
           <In.InputLine>
@@ -44,16 +57,10 @@ export default class FormComponent {
       }
 
       makeInput(title, field, placeholder){
-        const callback = (e) => { this.parentCallback(field, e.target.value); };
         return(
           <In.InputLine>
             <In.LineLabel size='large'>{title}</In.LineLabel>
-            <In.LineInput
-              as='input'
-              value={this.getValue(field)}
-              onChange={(e) => callback(e)}
-              placeholder={placeholder}
-            />
+            { this.makeInputItem(field, placeholder) }
           </In.InputLine>
         )
       }
@@ -64,6 +71,7 @@ export default class FormComponent {
             makeSelect={this.makeSelect}
             makeInput={this.makeInput}
             makeSelectItem={this.makeSelectItem}
+            makeInputItem={this.makeInputItem}
             makeLine={this.makeLine}
             {...this.props}
           />

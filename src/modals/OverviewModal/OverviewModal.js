@@ -7,6 +7,7 @@ import type {Deployment} from "../../types/Types";
 import LabelsSection from "./LabelsSection";
 import Tabs from "../../widgets/Tabs/Tabs";
 import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
+import CheatSheet from "../../widgets/CheatSheet/CheatSheet";
 
 export default class OverviewModal extends React.Component<Props>{
 
@@ -33,10 +34,10 @@ export default class OverviewModal extends React.Component<Props>{
 
   renderTabs(){
     return(
-      <Tabs tabs={defaults.tabsNames} defaultIndex={1}>
+      <Tabs tabs={defaults.tabsNames} defaultIndex={2}>
         <ComingSoonSection/>
         { this.renderLabelsSection() }
-        <ComingSoonSection/>
+        { this.renderCheatSheetSection() }
         <ComingSoonSection/>
         <ComingSoonSection/>
       </Tabs>
@@ -47,6 +48,18 @@ export default class OverviewModal extends React.Component<Props>{
     const { deployment } = this.props;
     if(!deployment) return null;
     return <LabelsSection deployment={deployment}/>;
+  }
+
+  renderCheatSheetSection(){
+    const { deployment } = this.props;
+    if(!deployment) return null;
+
+    return(
+      <CheatSheet
+        resourceName='deployment'
+        resource={deployment}
+      />
+    )
   }
 }
 

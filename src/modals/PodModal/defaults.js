@@ -9,6 +9,7 @@ const defaults = {
   tabs: [
     "State",
     "Resource",
+    "Cheat Sheet",
     "Volumes",
     "Logs"
   ],

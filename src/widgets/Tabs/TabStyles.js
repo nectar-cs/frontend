@@ -1,20 +1,22 @@
 import styled, { keyframes } from 'styled-components';
 import { bounce } from 'react-animations';
 
-export const TabsLayout = styled.div`
+const TabsLayout = styled.div`
   margin-top: 20px;
-  width: 100%;
+  max-width: 100%;
   border-style: solid;
   border-width: 0 0 1px 0;
+  overflow-x: scroll;
+  white-space: nowrap;
 `;
 
-export const Separator = styled.div`height: 30px;`;
+const Separator = styled.div`height: 30px;`;
 
 function animator(props){
   return props.animate ? `1s ${keyframes`${bounce}`}` : 'none';
 }
 
-export const Tab = styled.p`
+const Tab = styled.p`
   animation: ${ props => animator(props) };
   display: inline-block;
   width: 100px;
@@ -33,3 +35,11 @@ export const Tab = styled.p`
     cursor: ${p => p.selected ? 'default' : 'pointer'}
   }
 `;
+
+const S = {
+  TabsLayout,
+  Separator,
+  Tab
+};
+
+export default S;

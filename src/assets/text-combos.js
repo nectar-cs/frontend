@@ -13,6 +13,7 @@ const StatusTag = styled.p`
 
 const P = styled.p`
   margin-top: ${p => p.raw ? 0 : `${(p.low || 1) * 12}px`};
+  margin-bottom: ${p => `${(p.suck || 0) * -12}px`};
   margin-right: ${p => p.push ? "3px" : '0'};
   margin-left: ${p => p.pushed ? "3px" : '0'};
   color: ${p => colored(p.emotion || 'primaryFont')};
