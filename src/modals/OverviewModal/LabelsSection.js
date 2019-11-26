@@ -33,16 +33,6 @@ export default class LabelsSection extends React.Component<Props, State>{
     )
   }
 
-  // genMatrixCells(){
-  //   const { labels, templateLabels, selectorLabels } = this.props.deployment;
-  //   const asHash = { labels, templateLabels, selectorLabels };
-  //   const lengths = Object.keys(asHash).map(k => ({[k]: asHash[k].length}));
-  //   const longest = Math.max(Object.keys(asHash).map(k => k.length));
-  //   const longestBun = lengths.find(l => Object.values(l)[0] === longest);
-  //   const longestKey = Object.keys(longestBun)[0];
-  //   const x = 2;
-  // }
-
   renderTopLoader(){
     if(!this.state.isFetching) return null;
     return <Loader.TopRightSpinner/>;
@@ -91,41 +81,6 @@ export default class LabelsSection extends React.Component<Props, State>{
       </S.Editor>
     )
   }
-}
-
-function LabelGrid(matrix: GridData){
-  const Rows = matrix.map(row => (
-    <GridRow row={row}/>
-  ));
-  return(
-    <Tables.Table>
-      <tbody>
-        <Rows/>
-      </tbody>
-    </Tables.Table>
-  )
-}
-
-function GridRow(row: Array<GridCell>){
-  const Content = () => row.map(cell => {
-    if(cell){
-      return(
-        <th key={cell.label} >
-          <Text.StatusTag emotion={cell.status}>
-            {cell.label}
-          </Text.StatusTag>
-        </th>
-      )
-    } else return <th><Micon key={cell.label} n='close'/></th>
-  });
-  return <tr><Content/></tr>;
-}
-
-type GridData = Array<Array<GridCell>>;
-
-type GridCell = {
-  label: string,
-  status: 'good' | 'warn' | 'bad'
 }
 
 function LabelCheckRow({checkName, outcome}){

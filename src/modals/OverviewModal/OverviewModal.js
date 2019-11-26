@@ -1,5 +1,5 @@
 //@flow
-import React, {Fragment} from 'react'
+import React from 'react'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import defaults from "./defaults";
 import FlexibleModal from "../../hocs/FlexibleModal";
@@ -8,6 +8,7 @@ import LabelsSection from "./LabelsSection";
 import Tabs from "../../widgets/Tabs/Tabs";
 import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
 import CheatSheet from "../../widgets/CheatSheet/CheatSheet";
+import ServicesSection from "./ServicesSection/ServicesSection";
 
 export default class OverviewModal extends React.Component<Props>{
 
@@ -34,8 +35,8 @@ export default class OverviewModal extends React.Component<Props>{
 
   renderTabs(){
     return(
-      <Tabs tabs={defaults.tabsNames} defaultIndex={2}>
-        <ComingSoonSection/>
+      <Tabs tabs={defaults.tabsNames} defaultIndex={0}>
+        { this.renderServicesSection() }
         { this.renderLabelsSection() }
         { this.renderCheatSheetSection() }
         <ComingSoonSection/>
@@ -53,11 +54,19 @@ export default class OverviewModal extends React.Component<Props>{
   renderCheatSheetSection(){
     const { deployment } = this.props;
     if(!deployment) return null;
-
     return(
       <CheatSheet
         resourceName='deployment'
         resource={deployment}
+      />
+    )
+  }
+
+  renderServicesSection(){
+    const { deployment } = this.props;
+    return(
+      <ServicesSection
+        deployment={deployment}
       />
     )
   }

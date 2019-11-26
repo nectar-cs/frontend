@@ -5,12 +5,11 @@ const defaults = {
   },
 
   tabsNames: [
-    'Network',
+    'Networking',
     'Labels',
     'Cheat Sheet++',
     'Docker',
-    'Volumes',
-    'Data'
+    'Volumes'
   ],
 
   labelsSection: {

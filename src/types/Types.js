@@ -1,5 +1,7 @@
 //@flow
 
+import PropTypes from "prop-types";
+
 export type RemoteBundle = {
   identifier: string,
   type: string,
@@ -36,6 +38,18 @@ export type Deployment = {
   selectorLabels: {  [string]: string }
   imagePullPolicy: ('Always' | 'Never')
 };
+
+export type Service = {
+  name: string,
+  namespace: string,
+  fromPort: number,
+  toPort: number,
+  internalIp: ?string,
+  externalIp: ?string,
+  shortDns: string,
+  longDns: string,
+  type: 'ClusterIP' | 'NodePort' | 'LoadBalancer'
+}
 
 export type WideDeployment = {
   name: string,
