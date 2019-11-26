@@ -4,9 +4,9 @@ import {colored} from "../../../assets/constants";
 const depBoxWidth = "40%";
 
 const InfoIcon = styled.i`
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
   color: ${p => p.theme.colors.primaryColor};
   font-size: 24px;
   &:hover{
@@ -60,6 +60,7 @@ const DepBoxSep = styled.div`
 const DepSvcArrowBox = styled.div`
   height: 80px;
   display: flex;
+  position: relative;
 `;
 
 const DepSvcArrow = styled.div`
@@ -67,6 +68,19 @@ const DepSvcArrow = styled.div`
   height: 100%;
   margin-left: calc(${depBoxWidth} / 3);
   background: ${p => p.theme.colors.primaryColor};
+`;
+
+const DepSvcArrowTitle = styled.p`
+  position:absolute;
+  width: auto;
+  background: ${p => p.theme.colors.itemBackgroundColor};
+  top: 50%;
+  left: calc(${depBoxWidth} / 3 * ${p => p.n});
+  padding: 0 11px;
+  transform: translateY(-50%) translateX(-50%);
+  font-size: 13px;
+  font-weight: 900;
+
 `;
 
 const PodsBox = styled.div`
@@ -105,6 +119,46 @@ const PodStatus = styled.div`
   background: ${p => colored(p.emotion)};
 `;
 
+const PodSvcArrowBox = styled.div`
+  width: 20%;
+  position: relative;
+`;
+
+const PodSvcArrow = styled.div`
+  height: 3px;
+  width: 100%;
+  margin-top: 25%;
+  background: ${p => p.theme.colors.primaryColor};
+`;
+
+const PodSvcArrowTitle = styled.p`
+  position:absolute;
+  width: auto;
+  background: ${p => p.theme.colors.itemBackgroundColor};
+  top: ${p => `${25 * p.n}%`};
+  margin-left: 50%;
+  padding: 0 11px;
+  transform: translateX(-50%);
+  font-size: 13px;
+  text-align: left;
+  font-weight: 900;
+`;
+
+const ServiceBox = styled.div`
+  position: relative;
+  width: 40%;
+  border-width: 2px;
+  border-color: ${p => p.theme.colors.primaryColor};
+  border-style: solid;
+  border-radius: 4px;
+  padding: 11px 0;
+  
+`;
+
+const LineTwo = styled.div`
+  display: flex;
+`;
+
 const S = {
   DepBox,
   BoxTitle,
@@ -118,6 +172,12 @@ const S = {
   PodsTop,
   PodsSep,
   PodRow,
-  PodStatus
+  PodStatus,
+  PodSvcArrowBox,
+  PodSvcArrow,
+  ServiceBox,
+  LineTwo,
+  PodSvcArrowTitle,
+  DepSvcArrowTitle
 };
 export default S;
