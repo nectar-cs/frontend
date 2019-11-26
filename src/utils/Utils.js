@@ -29,10 +29,14 @@ export default class Utils {
     ), []).join(",");
   }
 
-  static labelsToDictStr(labelDict: {[string]: string}){
+  static labelsToDictStrs(labelDict: {[string]: string}){
     return Object.keys(labelDict).reduce((whole, key) => (
       [...whole, `${key}:${labelDict[key]}`]
-    ), []).join(" ");
+    ), [])
+  }
+
+  static labelsToDictStr(labelDict: {[string]: string}){
+    return this.labelsToDictStrs(labelDict).join(' ');
   }
 
   static image(name){

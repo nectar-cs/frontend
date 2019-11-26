@@ -7,8 +7,11 @@ const StatusTag = styled.p`
   text-align: center;
   display: inline-block;
   color: ${p => p.theme.colors.contrastFont};
-  font-size: 13px;
   background: ${p => colored(p.emotion, p)};
+  margin-top: ${p => `${(p.top || 0) * 12}px`};
+  margin-right: ${p => `${(p.right || 0) * 12}px`};
+  margin-bottom: ${p => `${(p.bottom || 0) * 12}px`};
+  margin-left: ${p => `${(p.left || 0) * 12}px`};
 `;
 
 const P = styled.p`

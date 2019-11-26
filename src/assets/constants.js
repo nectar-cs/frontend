@@ -39,6 +39,7 @@ export const theme = {
     if(name === 'failed') return 'fail';
     if(name === 'unknown') return 'primaryFontMuted';
     if(name === 'idle') return 'primaryFontLess';
+    if(name === 'pleasant') return 'secondaryColor';
     if(name === 'pending') return 'secondaryColor';
     return 'primaryColor';
   },
