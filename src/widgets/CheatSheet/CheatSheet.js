@@ -81,7 +81,7 @@ export default class CheatSheet extends React.Component<Props> {
 
     return(
       <Fragment>
-        <Text.P low={0}><b>{section.name}</b></Text.P>
+        <Text.H5 top={2.2}><b>{section.name}</b></Text.H5>
         <Blocks/>
       </Fragment>
     )
@@ -104,7 +104,7 @@ export default class CheatSheet extends React.Component<Props> {
 
     let interp = bundle.cmd(substitutions);
     interp = typeof interp === 'string' ? [interp] :  interp;
-    const Lines = () => interp.map(c => <Text.Code>{c}</Text.Code>);
+    const Lines = () => interp.map(c => <Text.Code chill>{c}</Text.Code>);
 
     return(
       <Fragment>
@@ -115,6 +115,7 @@ export default class CheatSheet extends React.Component<Props> {
   }
 
   resourceConfig(){
+    // noinspection JSRedundantSwitchStatement
     switch (this.props.resourceName) {
       case "deployment": return deploymentCopy;
       default: return [];
@@ -122,6 +123,7 @@ export default class CheatSheet extends React.Component<Props> {
   }
 
   resSubstitutor(){
+    // noinspection JSRedundantSwitchStatement
     switch (this.props.resourceName) {
       case "deployment":
         return Interpolation.inflateDeployment;

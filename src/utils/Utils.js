@@ -23,6 +23,12 @@ export default class Utils {
     catch (_) { return fallback || null; }
   }
 
+  static labelsToEqStr(labelDict: {[string]: string}){
+    return Object.keys(labelDict).reduce((whole, key) => (
+      [...whole, `${key}=${labelDict[key]}`]
+    ), []).join(",");
+  }
+
   static image(name){
     return `${IMG_BASE}/${name}`;
   }

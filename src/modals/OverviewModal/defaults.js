@@ -7,7 +7,7 @@ const defaults = {
   tabsNames: [
     'Network',
     'Labels',
-    'Cheat Sheet',
+    'Cheat Sheet++',
     'Docker',
     'Volumes',
     'Data'

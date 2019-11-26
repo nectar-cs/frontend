@@ -14,15 +14,15 @@ function out(cmd, f){
 
 const kubectlAssocs = [
   {
-    desc: "My pods",
+    desc: "My pods (i.e where pod.labels >= me.matchLabels)",
     cmd: ({k, ns, withNs, sel}) => {
       return `${k} get pods -l ${sel} ${_ns(ns, withNs)}`
     }
   },
   {
     desc: "Services talking to my pods",
-    cmd: ({k, ns, withNs}) => {
-    }
+    cmd: ({k, ns, withNs}) =>
+      `I don't know a sane kubectl method :/ Use K8Kat :p`
   }
 ];
 
@@ -46,22 +46,63 @@ const kubectlReading = [
   }
 ];
 
-const kubectlUpdating = {
-  desc: "Rollout",
-  cmd: ({k, d, cont, ns, withNs}) =>{
-    return `${k} set image deploy/${d} ${cont}=IMG ${ns(ns, withNs)} `
+const kubectlContainerOps = [
+  {
+    desc: "Change image to IMG",
+    cmd: ({k, d, cont, ns, withNs}) =>
+      `${k} set image deploy/${d}${_ns(ns, withNs)} ${cont}=IMG`
+  },
+  {
+    desc: "Rollback Image Changes",
+    cmd: ({k, d, ns, withNs}) => [
+      `${k} rollout undo deploy/${d}${_ns(ns, withNs)}`,
+      `${k} rollout undo deploy/${d}${_ns(ns, withNs)} --to-revision=XYZ`
+    ]
+  },
+  {
+    desc: "Inspect Rollouts",
+    cmd: ({k, d, ns, withNs}) => [
+      `${k} rollout history deploy/${d}${_ns(ns, withNs)}`
+    ]
+  },
+];
+
+const kubectlPodOps = [
+  {
+    desc: "Scale pods to X",
+    cmd: ({k, d, ns, withNs}) =>
+      `${k} scale --replicas=X deploy/${d}${_ns(ns, withNs)}`
+  },
+  {
+    desc: "Scale pods to X *if* current count is sY",
+    cmd: ({k, d, ns, withNs}) =>
+      `${k} scale --replicas=X --current-replicas=Y deployment/${d}${_ns(ns, withNs)}`
+  },
+  {
+    desc: "Enable Autoscaling between X and Y",
+    cmd: ({k, d, ns, withNs}) =>
+      `${k} autoscale --min=X --max=Y deploy/${d}${_ns(ns, withNs)}`
   }
-};
+];
 
 const deploymentCopy = [
-  // {
-  //   name: "Associations",
-  //   apis: { kubectl: kubectlAssocs }
-  // },
   {
     name: "Inspection",
     apis: { kubectl: kubectlReading }
+  },
+  {
+    name: "Associations",
+    apis: { kubectl: kubectlAssocs }
+  },
+  {
+    name: "Containers",
+    apis: { kubectl: kubectlContainerOps }
+  },
+  {
+    name: "Pods",
+    apis: { kubectl: kubectlPodOps }
   }
+
 ];
 
 export default deploymentCopy;

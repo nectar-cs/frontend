@@ -20,6 +20,14 @@ const P = styled.p`
   font-weight: ${p => p.weight || 'normal'};
 `;
 
+const H5 = styled.h5`
+  margin-top: ${p => `${(p.top || 0) * 12}px`};
+  margin-right: ${p => `${(p.right || 0) * 12}px`};
+  margin-bottom: ${p => `${(p.bottom || 0) * 12}px`};
+  margin-left: ${p => `${(p.left || 0) * 12}px`};
+  font-size: 14px;
+`;
+
 const A = styled.a`
   text-decoration: none;
   &:hover{
@@ -80,7 +88,7 @@ const BoldRef = styled.p`
 `;
 
 const Text = {
-  P, A, PA,
+  P, A, PA, H5,
   Code,
   BoldStatus,
   CleanStatus,

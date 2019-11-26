@@ -1,5 +1,6 @@
 //@flow
 import type {Deployment} from "../../types/Types";
+import Utils from "../../utils/Utils";
 
 export default class Interpolation{
 
@@ -7,7 +8,8 @@ export default class Interpolation{
     return {
       d: deployment.name,
       ns: deployment.namespace,
-      cont: deployment.containerName
+      cont: deployment.containerName,
+      sel: Utils.labelsToEqStr(deployment.selectorLabels)
     }
   }
 
