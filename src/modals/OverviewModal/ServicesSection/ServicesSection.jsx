@@ -15,7 +15,6 @@ import HttpActionsModal from "../../HttpActionsModal/HttpActionsModal";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Kapi from "../../../utils/Kapi";
 import Loader from "../../../assets/loading-spinner";
-import {icon} from "react-syntax-highlighter/dist/cjs/languages/prism";
 
 class ServicesSectionClass extends React.Component{
   constructor(props) {
@@ -193,7 +192,7 @@ class ServiceBoxClass extends React.Component{
         </Layout.TextLine>
         <Layout.TextLine low={0.5}>
           <Micon n='close' emotion='fail' size='s'/>
-          <Text.P pushed low={0.2}>Means target is <b>not</b> a pod in this deployment</Text.P>
+          <Text.P pushed low={0.2}>Means it is <b>not</b></Text.P>
         </Layout.TextLine>
       </Fragment>
     )
@@ -209,7 +208,7 @@ class ServiceBoxClass extends React.Component{
 
     return(
       <tr>
-        <td><p>{name}</p></td>
+        <td><p>{Utils.tinyPodName(name)}</p></td>
         <td><p>{ip}</p></td>
         <td><Icon/></td>
       </tr>
@@ -238,13 +237,12 @@ class ServiceBoxClass extends React.Component{
 
   genAddresses(){
     const { internalIp, externalIp } = this.props.service;
-    const { ports, shortDns, longDns  } = this.props.service;
+    const { ports, shortDns  } = this.props.service;
 
     return ports.map(pb => {
       const { fromPort, toPort } = pb;
       return [
         { ep: shortDns, fromPort, toPort, scope: 'internal' },
-        { ep: longDns, fromPort, toPort, scope: 'internal' },
         { ep: internalIp, fromPort, toPort, scope: 'internal' },
         { ep: externalIp, fromPort, toPort, scope: 'external' },
       ];
@@ -257,7 +255,7 @@ class PodBox extends React.Component{
     const { templateLabels } = this.props.deployment;
     return(
       <S.PodsBox>
-        <S.BoxTitle>The Pods</S.BoxTitle>
+        <S.BoxTitle>Pods</S.BoxTitle>
         <Text.P low={0.2} suck={-0.5}>We're matched by</Text.P>
         <LabelTags labels={templateLabels}/>
         <S.PodsSep/>
@@ -283,9 +281,8 @@ class PodBox extends React.Component{
   }
 
   renderPodRow(pod){
-    const { deployment, service } = this.props;
+    const { service } = this.props;
     const endpoints  = service.endpoints || [];
-    const shortName = pod.name.replace(`${deployment.name}-`, '');
 
     const isCovered = endpoints.find(ep => ep.targetName === pod.name);
     const iconColor = isCovered ? 'success' : 'fail';
@@ -295,7 +292,7 @@ class PodBox extends React.Component{
     return(
       <tr>
         <td><S.PodStatus emotion={pod.state}/></td>
-        <td><p>{shortName}</p></td>
+        <td><p>{Utils.tinyPodName(pod.name)}</p></td>
         <td><a href={`http://${pod.ip}`}><p>{pod.ip}</p></a></td>
         <td><Icon/></td>
       </tr>

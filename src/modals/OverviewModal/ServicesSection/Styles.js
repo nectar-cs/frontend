@@ -18,13 +18,14 @@ const BoxTitle = styled.p`
   position: absolute;
   background: ${p => p.theme.colors.itemBackgroundColor};
   top: -9px;
-  left: 5%;
+  left: 2%;
   padding: 0 11px;
   font-size: 13px;
   text-align: left;
   font-weight: 900;
 `;
 
+// noinspection JSUnresolvedFunction
 const DepBox = styled.div`
   position: relative;
   width: ${boxWidth};
@@ -42,11 +43,13 @@ const DepBoxHalf = styled.div`
   padding: 11px 12px;
 `;
 
+// noinspection JSUnresolvedFunction
 const DepBoxLine = styled.div`
   height: 100%;
   width: 2%;
 `;
 
+// noinspection JSUnresolvedFunction
 const DepBoxSep = styled.div`
   position: absolute;
   width: 1px;
@@ -57,12 +60,14 @@ const DepBoxSep = styled.div`
   background: ${p => p.theme.colors.primaryColor}; 
 `;
 
+// noinspection JSUnresolvedFunction
 const DepSvcArrowBox = styled.div`
   height: 80px;
   display: flex;
   position: relative;
 `;
 
+// noinspection JSUnresolvedFunction
 const DepSvcArrow = styled.div`
   width: 3px;
   height: 100%;
@@ -70,6 +75,7 @@ const DepSvcArrow = styled.div`
   background: ${p => p.theme.colors.primaryColor};
 `;
 
+// noinspection JSUnresolvedFunction
 const DepSvcArrowTitle = styled.p`
   position:absolute;
   width: auto;
@@ -83,6 +89,7 @@ const DepSvcArrowTitle = styled.p`
 
 `;
 
+// noinspection JSUnresolvedFunction
 const PodsBox = styled.div`
   position: relative;
   width: ${boxWidth};
@@ -94,9 +101,7 @@ const PodsBox = styled.div`
   box-sizing: border-box;
 `;
 
-const PodsTop = styled.div`
-`;
-
+// noinspection JSUnresolvedFunction
 const PodsSep = styled.div`
   width: 100%;
   height: 1px;
@@ -104,11 +109,13 @@ const PodsSep = styled.div`
   background: ${p => p.theme.colors.primaryColor};
 `;
 
+// noinspection JSUnresolvedFunction
 const PodRow = styled.div`
   margin-top: 8px;
   display: inline-flex;  
 `;
 
+// noinspection JSUnresolvedFunction
 const PodStatus = styled.div`
   border-radius: 50%;
   width: 14px;
@@ -118,11 +125,13 @@ const PodStatus = styled.div`
   background: ${p => colored(p.emotion)};
 `;
 
+// noinspection JSUnresolvedFunction
 const PodSvcArrowBox = styled.div`
   width: 6%;
   position: relative;
 `;
 
+// noinspection JSUnresolvedFunction
 const PodSvcArrow = styled.div`
   height: 3px;
   width: 100%;
@@ -143,6 +152,7 @@ const PodSvcArrowTitle = styled.p`
   font-weight: 900;
 `;
 
+// noinspection JSUnresolvedFunction
 const ServiceBox = styled.div`
   position: relative;
   width: ${boxWidth};
@@ -171,7 +181,6 @@ const S = {
   DepSvcArrowBox,
   DepSvcArrow,
   PodsBox,
-  PodsTop,
   PodsSep,
   PodRow,
   PodStatus,

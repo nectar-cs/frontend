@@ -23,6 +23,11 @@ export default class Utils {
     catch (_) { return fallback || null; }
   }
 
+  static tinyPodName(name){
+    const parts = name.split("-");
+    return parts[parts.length - 1];
+  }
+
   static labelsToEqStr(labelDict: {[string]: string}){
     return Object.keys(labelDict).reduce((whole, key) => (
       [...whole, `${key}=${labelDict[key]}`]
