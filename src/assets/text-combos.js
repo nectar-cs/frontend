@@ -21,7 +21,14 @@ const P = styled.p`
   margin-left: ${p => p.pushed ? "3px" : '0'};
   color: ${p => colored(p.emotion || 'primaryFont')};
   font-weight: ${p => p.weight || 'normal'};
+  text-align: ${p => textAlign(p)};
 `;
+
+function textAlign(p){
+  if(p.center) return 'center';
+  if(p.right) return 'right';
+  return 'left';
+}
 
 const H5 = styled.h5`
   margin-top: ${p => `${(p.top || 0) * 12}px`};
@@ -29,6 +36,20 @@ const H5 = styled.h5`
   margin-bottom: ${p => `${(p.bottom || 0) * 12}px`};
   margin-left: ${p => `${(p.left || 0) * 12}px`};
   font-size: 14px;
+`;
+
+const AA = styled.p`
+  text-decoration: underline;
+  &:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: ${p => p.theme.colors.contrastFont};  
+  }
+
+  margin-top: ${p => `${(p.top || 0) * 12}px`};
+  margin-right: ${p => `${(p.right || 0) * 12}px`};
+  margin-bottom: ${p => `${(p.bottom || 0) * 12}px`};
+  margin-left: ${p => `${(p.left || 0) * 12}px`};
 `;
 
 const A = styled.a`
@@ -91,7 +112,7 @@ const BoldRef = styled.p`
 `;
 
 const Text = {
-  P, A, PA, H5,
+  P, A, PA, H5, AA,
   Code,
   BoldStatus,
   CleanStatus,

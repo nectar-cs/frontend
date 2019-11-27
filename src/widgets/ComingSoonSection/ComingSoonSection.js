@@ -8,7 +8,7 @@ export default function ComingSoonSection({text, imageOne, size}){
       <S.Icon size={size} src={imageOne} />
 
       <S.Words>
-        If you're a world class engineer, and want to First Five
+        If you're a world class engineer, and want to be First Five
         at the startup bringing order to orchestration, drop me a line.
       </S.Words>
 

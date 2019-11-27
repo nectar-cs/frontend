@@ -71,7 +71,6 @@ export default class HttpActionsModal extends React.Component {
   }
 
   componentDidMount(){
-
     Utils.mp("HTTP Operations Start", {});
 
     Kapi.fetch('/api/cluster/namespaces', (resp) => {

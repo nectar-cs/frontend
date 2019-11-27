@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {colored} from "../../../assets/constants";
 
-const boxWidth = "45%";
+const boxWidth = "47%";
 
 const InfoIcon = styled.i`
   position: fixed;
@@ -18,9 +18,8 @@ const BoxTitle = styled.p`
   position: absolute;
   background: ${p => p.theme.colors.itemBackgroundColor};
   top: -9px;
-  left: 50%;
+  left: 5%;
   padding: 0 11px;
-  transform: translateX(-50%);
   font-size: 13px;
   text-align: left;
   font-weight: 900;
@@ -91,12 +90,11 @@ const PodsBox = styled.div`
   border-color: ${p => p.theme.colors.primaryColor};
   border-style: solid;
   border-radius: 4px;
-  padding: 11px 0;
+  padding: 11px 12px;
+  box-sizing: border-box;
 `;
 
 const PodsTop = styled.div`
-  height: 100px;
-  padding: 0 12px;
 `;
 
 const PodsSep = styled.div`
@@ -108,7 +106,7 @@ const PodsSep = styled.div`
 
 const PodRow = styled.div`
   margin-top: 8px;
-  display: flex;  
+  display: inline-flex;  
 `;
 
 const PodStatus = styled.div`
@@ -121,7 +119,7 @@ const PodStatus = styled.div`
 `;
 
 const PodSvcArrowBox = styled.div`
-  width: 10%;
+  width: 6%;
   position: relative;
 `;
 
@@ -152,13 +150,15 @@ const ServiceBox = styled.div`
   border-color: ${p => p.theme.colors.primaryColor};
   border-style: solid;
   border-radius: 4px;
-  padding: 11px 0;
-  
+  padding: 11px 12px;
+  box-sizing: border-box;
 `;
 
 // noinspection JSUnresolvedFunction
 const LineTwo = styled.div`
   display: flex;
+  align-items: flex-start;
+  height: auto;
 `;
 
 const S = {

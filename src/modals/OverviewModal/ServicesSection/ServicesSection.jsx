@@ -9,6 +9,10 @@ import type {Deployment, Service} from "../../../types/Types";
 import Text from "../../../assets/text-combos";
 import Utils from "../../../utils/Utils";
 import LabelTags from "../../../widgets/LabelTags/LabelTags";
+import Tables from "../../../assets/table-combos";
+import Micon from "../../../widgets/Micon/Micon";
+import HttpActionsModal from "../../HttpActionsModal/HttpActionsModal";
+import ModalHostComposer from "../../../hocs/ModalHostComposer";
 
 class ServicesSectionClass extends React.Component{
   constructor(props) {
@@ -73,7 +77,7 @@ class ServiceVisual extends React.Component<ServiceVisualProps>{
         <S.LineTwo>
           <PodBox deployment={deployment}/>
           { this.renderPodSvcArrows() }
-          <ServiceBox service={service}/>
+          <ServiceBox deployment={deployment} service={service}/>
         </S.LineTwo>
         <Text.P low={1.6}>{defaults.effectsWarning}</Text.P>
       </Layout.Div>
@@ -84,7 +88,6 @@ class ServiceVisual extends React.Component<ServiceVisualProps>{
     return(
       <S.PodSvcArrowBox>
         <S.PodSvcArrow/>
-        {/*<S.PodSvcArrowTitle n={1}>Match</S.PodSvcArrowTitle>*/}
         <S.PodSvcArrow/>
       </S.PodSvcArrowBox>
     )
@@ -102,35 +105,64 @@ class ServiceVisual extends React.Component<ServiceVisualProps>{
   }
 }
 
-class ServiceBox extends React.Component{
+class ServiceBoxClass extends React.Component{
   render(){
     const { selectorLabels, type } = this.props.service;
     return(
       <S.ServiceBox>
         <S.BoxTitle>Service: {type}</S.BoxTitle>
-        <S.PodsTop>
-          <LabelTags labels={selectorLabels}/>
-          <S.PodsSep/>
-          { this.renderTable() }
-        </S.PodsTop>
+        <Text.P low={0.2} suck={-0.5}>I match pods w/</Text.P>
+        <LabelTags labels={selectorLabels}/>
+        <S.PodsSep/>
+        { this.renderAddressesTable() }
+        <S.PodsSep/>
+        { this.renderEndpointsTable() }
       </S.ServiceBox>
     )
   }
 
-  renderTable(){
+  renderEndpointsTable(){
     return(
-      <table>
-        <tbody>
-        {/*{ this.genAddresses().map(a => this.renderRow(a)) }*/}
-        </tbody>
-      </table>
+      <Fragment>
+        <Text.P low={0.4} suck={-0.5}><b>Endpoints</b> - Where K8s has me fwd traffic to</Text.P>
+        <Tables.SlimTable raw borderless>
+          <tbody>
+          { this.genAddresses().map(a => this.renderRow(a)) }
+          </tbody>
+        </Tables.SlimTable>
+      </Fragment>
+    )
+  }
+
+  renderAddressesTable(){
+    return(
+      <Fragment>
+        <Text.P low={0.5} suck={-0.5}><b>Addresses</b> - How to reach me</Text.P>
+        <Tables.SlimTable raw borderless space={0.35}>
+          <tbody>
+          { this.genAddresses().map(a => this.renderRow(a)) }
+          </tbody>
+        </Tables.SlimTable>
+      </Fragment>
     )
   }
 
   renderRow(addr){
+    const { openModal, deployment } = this.props;
+    const { ep, fromPort, toPort, scope } = addr;
+    const scopeIcon = scope === 'internal' ?
+      'settings_input_hdmi' : 'wifi_tethering';
+
+    const callbackBundle = { deployment, targetHost: ep, targetPort: fromPort };
+    const callback = () => openModal(HttpActionsModal, callbackBundle);
+
+    const Addr = (p) => addr.ep ? <Text.AA>{p.children}</Text.AA> : <p>none</p>;
     return(
-      <tr>
-        <td><p>{addr.ep}</p></td>
+      <tr onClick={callback}>
+        <td><Micon top={0.33} size='s' n={scopeIcon}/></td>
+        <td><Addr>{ep}</Addr></td>
+        <td><p>{fromPort}</p></td>
+        <td><p>{toPort}</p></td>
       </tr>
     )
   }
@@ -140,10 +172,12 @@ class ServiceBox extends React.Component{
     const { ports, shortDns, longDns  } = this.props.service;
 
     return ports.map(pb => {
+      const { fromPort, toPort } = pb;
       return [
-        { ep: `${shortDns}:${pb.toPort}` },
-        { ep: `${longDns}:${pb.toPort}` },
-        { ep: `${internalIp}:${pb.toPort}` }
+        { ep: shortDns, fromPort, toPort, scope: 'internal' },
+        { ep: longDns, fromPort, toPort, scope: 'internal' },
+        { ep: internalIp, fromPort, toPort, scope: 'internal' },
+        { ep: externalIp, fromPort, toPort, scope: 'external' },
       ];
     }).flat();
   }
@@ -155,32 +189,38 @@ class PodBox extends React.Component{
     return(
       <S.PodsBox>
         <S.BoxTitle>The Pods</S.BoxTitle>
-        <S.PodsTop>
-          <LabelTags labels={templateLabels}/>
-          <S.PodsSep/>
-          { this.renderPodRows() }
-        </S.PodsTop>
+        <Text.P low={0.2} suck={-0.5}>We're matched by</Text.P>
+        <LabelTags labels={templateLabels}/>
+        <S.PodsSep/>
+        { this.renderPodsTable() }
       </S.PodsBox>
     )
   }
 
-  renderPodRows(){
+  renderPodsTable(){
     const { pods } = this.props.deployment;
-    return pods.map(pod => {
+    const PodRows = () => pods.map(pod => {
       return this.renderPodRow(pod);
     });
+
+    return(
+      <Tables.SlimTable raw borderless>
+        <tbody>
+        <PodRows/>
+        </tbody>
+      </Tables.SlimTable>
+    )
   }
 
   renderPodRow(pod){
     const { deployment } = this.props;
     const shortName = pod.name.replace(`${deployment.name}-`, '');
     return(
-      <S.PodRow>
-        <S.PodStatus emotion={pod.state}/>
-        <p>{shortName}</p>
-        <p>&nbsp;&nbsp;@&nbsp;&nbsp;</p>
-        <a href={pod.ip}><p>{pod.ip}</p></a>
-      </S.PodRow>
+      <tr>
+        <td><S.PodStatus emotion={pod.state}/></td>
+        <td><p>{shortName}</p></td>
+        <td><a href={pod.ip}><p>{pod.ip}</p></a></td>
+      </tr>
     )
   }
 }
@@ -192,10 +232,12 @@ class DepBox extends React.Component<DepBoxProps>{
       <S.DepBox>
         <S.BoxTitle>Deployment</S.BoxTitle>
         <S.DepBoxHalf>
+          <Text.P low={0.2} center suck={-0.5}>Create pods w/</Text.P>
           <LabelTags labels={templateLabels}/>
         </S.DepBoxHalf>
         <S.DepBoxLine><S.DepBoxSep/></S.DepBoxLine>
         <S.DepBoxHalf>
+          <Text.P low={0.2} center suck={-0.5}>Match pods w/</Text.P>
           <LabelTags labels={selectorLabels}/>
         </S.DepBoxHalf>
       </S.DepBox>
@@ -215,6 +257,10 @@ type DepBoxProps = {
 
 const ServicesSection = ModalClientComposer.compose(
   ServicesSectionClass
+);
+
+const ServiceBox = ModalHostComposer.compose(
+  ServiceBoxClass
 );
 
 export default ServicesSection;
