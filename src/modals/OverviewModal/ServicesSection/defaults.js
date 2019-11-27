@@ -25,7 +25,11 @@ const defaults = {
 
   effectsWarning: <Fragment>Note that the effects of <b>Network
     Policies and Ingresses</b> are not taken into account
-    in this picture. Coming soon :p</Fragment>
+    in this picture. Coming soon :p</Fragment>,
+
+  noEndpoints: "K8s wasn't able to figure out where this service" +
+    " should forward traffic to. This is most likely a label drama. " +
+    " Run 'Debugging and Troubleshooting on the right'"
 };
 
 export default defaults;
