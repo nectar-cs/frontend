@@ -48,7 +48,13 @@ export type Service = {
   externalIp: ?string,
   shortDns: string,
   longDns: string,
-  type: 'ClusterIP' | 'NodePort' | 'LoadBalancer'
+  type: 'ClusterIP' | 'NodePort' | 'LoadBalancer',
+  endpoints: ?Array<Endpoint>
+}
+
+export type Endpoint = {
+  targetName: string,
+  targetIp: string,
 }
 
 export type WideDeployment = {

@@ -209,7 +209,7 @@ class ServiceBoxClass extends React.Component{
     return(
       <tr>
         <td><p>{Utils.tinyPodName(name)}</p></td>
-        <td><p>{ip}</p></td>
+        <td><a href={`http:${ip}`}><p>{ip}</p></a></td>
         <td><Icon/></td>
       </tr>
     )
@@ -272,7 +272,7 @@ class PodBox extends React.Component{
     });
 
     return(
-      <Tables.SlimTable raw borderless>
+      <Tables.SlimTable raw borderless space={0.8}>
         <tbody>
         <PodRows/>
         </tbody>
@@ -287,7 +287,7 @@ class PodBox extends React.Component{
     const isCovered = endpoints.find(ep => ep.targetName === pod.name);
     const iconColor = isCovered ? 'success' : 'fail';
     const iconName = isCovered ? 'check' : 'close';
-    const Icon = () => <Micon n={iconName} emotion={iconColor}/>;
+    const Icon = () => <Micon size='s' n={iconName} emotion={iconColor}/>;
 
     return(
       <tr>
@@ -309,7 +309,7 @@ class PodBox extends React.Component{
         </Layout.TextLine>
         <Layout.TextLine low={0.5}>
           <Micon n='close' emotion='fail' size='s'/>
-          <Text.P pushed low={0.2}>Means target it does <b>not</b></Text.P>
+          <Text.P pushed low={0.2}>Means it does <b>not</b></Text.P>
         </Layout.TextLine>
       </Fragment>
     )

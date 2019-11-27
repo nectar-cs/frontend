@@ -24,6 +24,7 @@ export default class Utils {
   }
 
   static tinyPodName(name){
+    if(!name) return '?';
     const parts = name.split("-");
     return parts[parts.length - 1];
   }
