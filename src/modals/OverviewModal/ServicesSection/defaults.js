@@ -18,7 +18,14 @@ const defaults = {
       </Text.P>
 
     </Fragment>
-  )
+  ),
+
+  pseudoQuery: (ns, lbs) =>
+    `svc where ns=${ns} AND selector SUBSET OF [${lbs}] `,
+
+  effectsWarning: <Fragment>Note that the effects of <b>Network
+    Policies and Ingresses</b> are not taken into account
+    in this picture. Coming soon :p</Fragment>
 };
 
 export default defaults;

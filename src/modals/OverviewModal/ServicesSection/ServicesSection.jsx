@@ -13,7 +13,7 @@ import LabelTags from "../../../widgets/LabelTags/LabelTags";
 class ServicesSectionClass extends React.Component{
   constructor(props) {
     super(props);
-    this.state = { showInfo: true }
+    this.state = { showInfo: false }
   }
 
   render(){
@@ -42,7 +42,7 @@ class ServicesSectionClass extends React.Component{
       <Layout.Div top={-1.0} bottom={5}>
         { defaults.intro }
         <Layout.SlimCodeViewer>
-          <Text.Code>svc where ns={namespace} AND selector SUBSET OF [{str}] </Text.Code>
+          <Text.Code>{defaults.pseudoQuery(namespace, str)}</Text.Code>
         </Layout.SlimCodeViewer>
       </Layout.Div>
     )
@@ -75,10 +75,7 @@ class ServiceVisual extends React.Component<ServiceVisualProps>{
           { this.renderPodSvcArrows() }
           <ServiceBox service={service}/>
         </S.LineTwo>
-        <Text.P low={1.6}>Note that the effects of <b>Network
-          Policies and Ingresses</b> are not taken into account
-          in this picture. Coming soon :p
-        </Text.P>
+        <Text.P low={1.6}>{defaults.effectsWarning}</Text.P>
       </Layout.Div>
     )
   }
@@ -87,9 +84,8 @@ class ServiceVisual extends React.Component<ServiceVisualProps>{
     return(
       <S.PodSvcArrowBox>
         <S.PodSvcArrow/>
-        <S.PodSvcArrowTitle n={1}>&lt; Match</S.PodSvcArrowTitle>
+        {/*<S.PodSvcArrowTitle n={1}>Match</S.PodSvcArrowTitle>*/}
         <S.PodSvcArrow/>
-        <S.PodSvcArrowTitle n={2.35}>&lt; HTTP</S.PodSvcArrowTitle>
       </S.PodSvcArrowBox>
     )
   }
@@ -98,9 +94,9 @@ class ServiceVisual extends React.Component<ServiceVisualProps>{
     return(
       <S.DepSvcArrowBox>
         <S.DepSvcArrow/>
-        <S.DepSvcArrowTitle n={1}>v Create</S.DepSvcArrowTitle>
+        <S.DepSvcArrowTitle n={1}>Create</S.DepSvcArrowTitle>
         <S.DepSvcArrow/>
-        <S.DepSvcArrowTitle n={2}>v Match</S.DepSvcArrowTitle>
+        <S.DepSvcArrowTitle n={2}>Match</S.DepSvcArrowTitle>
       </S.DepSvcArrowBox>
     )
   }
@@ -125,7 +121,7 @@ class ServiceBox extends React.Component{
     return(
       <table>
         <tbody>
-        { this.genAddresses().map(a => this.renderRow(a)) }
+        {/*{ this.genAddresses().map(a => this.renderRow(a)) }*/}
         </tbody>
       </table>
     )

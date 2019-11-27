@@ -11,6 +11,7 @@ export const theme = {
     contentBackgroundColor: "#e1e3e8",
     itemBackgroundColor: "white",
     lineColor: "#455D7A",
+    pleasant: "#535b77",
     success: "#326342",
     fail: "darkred",
     warn: "tomato",
@@ -39,7 +40,6 @@ export const theme = {
     if(name === 'failed') return 'fail';
     if(name === 'unknown') return 'primaryFontMuted';
     if(name === 'idle') return 'primaryFontLess';
-    if(name === 'pleasant') return 'secondaryColor';
     if(name === 'pending') return 'secondaryColor';
     return 'primaryColor';
   },

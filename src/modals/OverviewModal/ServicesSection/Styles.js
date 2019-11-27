@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {colored} from "../../../assets/constants";
 
-const depBoxWidth = "40%";
+const boxWidth = "45%";
 
 const InfoIcon = styled.i`
   position: fixed;
@@ -28,7 +28,7 @@ const BoxTitle = styled.p`
 
 const DepBox = styled.div`
   position: relative;
-  width: ${depBoxWidth};
+  width: ${boxWidth};
   border-width: 2px;
   border-color: ${p => p.theme.colors.primaryColor};
   border-style: solid;
@@ -36,6 +36,7 @@ const DepBox = styled.div`
   display: inline-flex;
 `;
 
+// noinspection JSUnresolvedFunction
 const DepBoxHalf = styled.div`
   height: 100%;
   width: 49%;
@@ -66,7 +67,7 @@ const DepSvcArrowBox = styled.div`
 const DepSvcArrow = styled.div`
   width: 3px;
   height: 100%;
-  margin-left: calc(${depBoxWidth} / 3);
+  margin-left: calc(${boxWidth} / 3);
   background: ${p => p.theme.colors.primaryColor};
 `;
 
@@ -75,7 +76,7 @@ const DepSvcArrowTitle = styled.p`
   width: auto;
   background: ${p => p.theme.colors.itemBackgroundColor};
   top: 50%;
-  left: calc(${depBoxWidth} / 3 * ${p => p.n});
+  left: calc(${boxWidth} / 3 * ${p => p.n});
   padding: 0 11px;
   transform: translateY(-50%) translateX(-50%);
   font-size: 13px;
@@ -85,7 +86,7 @@ const DepSvcArrowTitle = styled.p`
 
 const PodsBox = styled.div`
   position: relative;
-  width: ${depBoxWidth};
+  width: ${boxWidth};
   border-width: 2px;
   border-color: ${p => p.theme.colors.primaryColor};
   border-style: solid;
@@ -120,14 +121,14 @@ const PodStatus = styled.div`
 `;
 
 const PodSvcArrowBox = styled.div`
-  width: 20%;
+  width: 10%;
   position: relative;
 `;
 
 const PodSvcArrow = styled.div`
   height: 3px;
   width: 100%;
-  margin-top: 25%;
+  margin-top: 50%;
   background: ${p => p.theme.colors.primaryColor};
 `;
 
@@ -146,7 +147,7 @@ const PodSvcArrowTitle = styled.p`
 
 const ServiceBox = styled.div`
   position: relative;
-  width: 40%;
+  width: ${boxWidth};
   border-width: 2px;
   border-color: ${p => p.theme.colors.primaryColor};
   border-style: solid;
@@ -155,6 +156,7 @@ const ServiceBox = styled.div`
   
 `;
 
+// noinspection JSUnresolvedFunction
 const LineTwo = styled.div`
   display: flex;
 `;
@@ -178,6 +180,6 @@ const S = {
   ServiceBox,
   LineTwo,
   PodSvcArrowTitle,
-  DepSvcArrowTitle
+  DepSvcArrowTitle,
 };
 export default S;
