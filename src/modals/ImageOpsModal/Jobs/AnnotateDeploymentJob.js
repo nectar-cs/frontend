@@ -1,9 +1,8 @@
-import Job from "./Job";
-import Kapi from "../../../utils/Kapi";
+import Job from './Job';
+import Kapi from '../../../utils/Kapi';
 
 export default class AnnotateDeploymentJob extends Job {
-
-  prepare(bundle){
+  prepare(bundle) {
     super.prepare(bundle);
     this.deployment = bundle.deployment;
     this.commitSha = bundle.commitSha;
@@ -17,7 +16,7 @@ export default class AnnotateDeploymentJob extends Job {
     const payload = {
       sha: this.commitSha,
       message: this.commitMessage,
-      branch: this.commitBranch
+      branch: this.commitBranch,
     };
     this.result = await Kapi.bPost(ep, payload);
   }
@@ -32,12 +31,14 @@ export default class AnnotateDeploymentJob extends Job {
   progressItems() {
     return [
       this.buildProgressItem(
-        "Commit Annotations",
+        'Commit Annotations',
         this.simpleDetail(this.result ? 'Patched' : 'Patching'),
-        this.simpleStatus(this.result ? 'done' : "working")
-      )
-    ]
+        this.simpleStatus(this.result ? 'done' : 'working'),
+      ),
+    ];
   }
 
-  hasSucceeded(){ return true; }
+  hasSucceeded() {
+    return true;
+  }
 }

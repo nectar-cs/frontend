@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const HorizontalBoxWrapper = styled.div`
   position: relative;
@@ -37,8 +37,8 @@ const Toggle = styled.i`
   font-size: 30px;
   color: ${p => p.theme.colors.primaryColor};
   background: ${p => p.theme.colors.itemBackgroundColor};
-  display: ${p => p.there ? 'inline-block' : 'none'};
-  &:hover{
+  display: ${p => (p.there ? 'inline-block' : 'none')};
+  &:hover {
     cursor: pointer;
   }
 `;
@@ -47,7 +47,7 @@ const S = {
   HorizontalBoxWrapper,
   HorizontalLine,
   Title,
-  Toggle
+  Toggle,
 };
 
 export default S;

@@ -1,10 +1,10 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-const halfPanelOffset = "14px";
+const halfPanelOffset = '14px';
 
 const Dims = {
-  containerPaddingVert: "12px",
-  containerPaddingHor: "16px",
+  containerPaddingVert: '12px',
+  containerPaddingHor: '16px',
 };
 
 const ThemePage = styled.div`
@@ -27,7 +27,7 @@ const ContentContainer = styled.div`
   padding: ${Dims.containerPaddingVert} ${Dims.containerPaddingHor};
   box-sizing: border-box;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   background: ${p => p.theme.colors.contrastColor};
 `;
 
@@ -55,11 +55,11 @@ const FullWidthPanel = styled(ContentContainer)`
 `;
 
 const TextLine = styled.div`
-  margin-top: ${p => `${(p.low) * 12}px`};
+  margin-top: ${p => `${p.low * 12}px`};
   display: flex;
   justify-content: start;
   width: 100%;
-  align-items: ${p => p.center ? 'center' : 'stretch'};
+  align-items: ${p => (p.center ? 'center' : 'stretch')};
 `;
 
 const BigCodeViewer = styled.div`
@@ -89,12 +89,12 @@ const Layout = {
   SlimCodeViewer,
   LeftPanel,
   RightPanel,
-  TextLine ,
+  TextLine,
   FullWidthPanel,
   BigCodeViewer,
   ModalLayout,
   Dims,
   halfPanelOffset,
-  ThemePage
+  ThemePage,
 };
 export default Layout;

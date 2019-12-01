@@ -1,17 +1,13 @@
-import React from "react";
-import S from './MiconStyles'
-import PropTypes from 'prop-types'
+import React from 'react';
+import S from './MiconStyles';
+import PropTypes from 'prop-types';
 
-export default function Micon(props){
-  return(
-    <S.Micon
-      onClick={props.callback}
-      className='material-icons'
-      extras={props.e}
-      {...props}>
-      { props.n }
+export default function Micon(props) {
+  return (
+    <S.Micon onClick={props.callback} className="material-icons" extras={props.e} {...props}>
+      {props.n}
     </S.Micon>
-  )
+  );
 }
 
 Micon.propTypes = {
@@ -20,9 +16,9 @@ Micon.propTypes = {
   size: PropTypes.string,
   rotate: PropTypes.number,
   callback: PropTypes.func,
-  emotion: PropTypes.string
+  emotion: PropTypes.string,
 };
 
 Micon.defaultProps = {
-  e: {}
+  e: {},
 };

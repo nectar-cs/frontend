@@ -1,52 +1,52 @@
-import React, {Fragment} from 'react'
-import TextOverLineSubtitle from "../TextOverLineSubtitle/TextOverLineSubtitle";
+import React, { Fragment } from 'react';
+import TextOverLineSubtitle from '../TextOverLineSubtitle/TextOverLineSubtitle';
 
 export default class VertSection extends React.Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      isExpanded: props.startExpanded
+      isExpanded: props.startExpanded,
     };
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <Fragment>
-        { this.renderTitle() }
-        { this.renderChildren() }
+        {this.renderTitle()}
+        {this.renderChildren()}
       </Fragment>
-    )
+    );
   }
 
-  renderTitle(){
+  renderTitle() {
     const { title } = this.props;
     const { isExpanded } = this.state;
 
-    return(
+    return (
       <TextOverLineSubtitle
         text={title}
         toggleOpen={isExpanded}
         callback={() => this.toggleExpanded()}
       />
-    )
+    );
   }
 
-  renderChildren(){
+  renderChildren() {
     const { children } = this.props;
     const { isExpanded } = this.state;
     return isExpanded ? children : null;
   }
 
-  toggleExpanded(){
-    this.setState(s => ({...s, isExpanded: !s.isExpanded}));
+  toggleExpanded() {
+    this.setState(s => ({ ...s, isExpanded: !s.isExpanded }));
   }
 
   static defaultProps = {
-    startExpanded: true
-  }
+    startExpanded: true,
+  };
 }
 
 type Props = {
   title: string,
-  startExpanded: ?boolean
-}
+  startExpanded: ?boolean,
+};

@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-function sizer(p){
+function sizer(p) {
   const size = p.size || 'medium';
-  if(size === 'large') return 270;
-  if(size === 'x-large') return 400;
-  if(size === 'medium') return 200;
+  if (size === 'large') return 270;
+  if (size === 'x-large') return 400;
+  if (size === 'medium') return 200;
 }
 
 const Container = styled.div`

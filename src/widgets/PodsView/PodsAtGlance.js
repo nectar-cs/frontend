@@ -1,31 +1,24 @@
-import React from 'react'
-import S from './PodsViewStyles'
-import ModalClientComposer from "../../hocs/ModalClientComposer";
-import PodModal from "../../modals/PodModal/PodModal";
+import React from 'react';
+import S from './PodsViewStyles';
+import ModalClientComposer from '../../hocs/ModalClientComposer';
+import PodModal from '../../modals/PodModal/PodModal';
 
-function PodsAtGlanceClass({deployment, matching, openModal, action}){
+function PodsAtGlanceClass({ deployment, matching, openModal, action }) {
   const { pods } = deployment;
 
-  const defAction = (pod) => openModal(PodModal, {pod, deployment, matching});
-  action = action  || defAction;
+  const defAction = pod => openModal(PodModal, { pod, deployment, matching });
+  action = action || defAction;
 
-  const PodViews = () => pods.map(pod => (
-    <S.PodCircle
-      onClick={() => action(pod)}
-      key={pod.name}
-      emotion={pod.state}
-    />
-  ));
+  const PodViews = () =>
+    pods.map(pod => <S.PodCircle onClick={() => action(pod)} key={pod.name} emotion={pod.state} />);
 
-  return(
+  return (
     <S.Container>
-      <PodViews/>
+      <PodViews />
     </S.Container>
-  )
+  );
 }
 
-const PodsAtGlance = ModalClientComposer.compose(
-  PodsAtGlanceClass
-);
+const PodsAtGlance = ModalClientComposer.compose(PodsAtGlanceClass);
 
 export default PodsAtGlance;

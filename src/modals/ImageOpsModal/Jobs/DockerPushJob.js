@@ -1,8 +1,7 @@
-import DockerJob from "./DockerJob";
+import DockerJob from './DockerJob';
 
-export default class DockerPushJob extends DockerJob{
-
-  prepare(bundle){
+export default class DockerPushJob extends DockerJob {
+  prepare(bundle) {
     this.username = bundle.username;
     this.password = bundle.password;
     this.imageName = bundle.imageName;
@@ -13,6 +12,7 @@ export default class DockerPushJob extends DockerJob{
     return { username, password, imageName };
   }
 
-  initiatePath() { return `/api/docker/push_image`; }
+  initiatePath() {
+    return `/api/docker/push_image`;
+  }
 }
-

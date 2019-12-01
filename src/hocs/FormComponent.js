@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from 'prop-types'
-import In from "../assets/input-combos";
+import React from 'react';
+import PropTypes from 'prop-types';
+import In from '../assets/input-combos';
 
 export default class FormComponent {
-  static compose(InnerComponent)  {
-    return class extends React.Component{
-      constructor(props){
+  static compose(InnerComponent) {
+    return class extends React.Component {
+      constructor(props) {
         super(props);
         this.makeSelect = this.makeSelect.bind(this);
         this.makeInput = this.makeInput.bind(this);
@@ -14,59 +14,60 @@ export default class FormComponent {
         this.makeLine = this.makeLine.bind(this);
       }
 
-      makeLine(title, builders){
-        return(
+      makeLine(title, builders) {
+        return (
           <In.InputLine>
-            <In.LineLabel size='large'>{title}</In.LineLabel>
-            { builders.map(b => b()) }
+            <In.LineLabel size="large">{title}</In.LineLabel>
+            {builders.map(b => b())}
           </In.InputLine>
-        )
+        );
       }
 
-      makeSelectItem(field, choices){
-        const callback = (e) => { this.parentCallback(field, e.target.value); };
-        return(
-          <In.LineInput
-            as='select'
-            value={this.getValue(field)}
-            onChange={(e) => callback(e)}>
-            { choices }
+      makeSelectItem(field, choices) {
+        const callback = e => {
+          this.parentCallback(field, e.target.value);
+        };
+        return (
+          <In.LineInput as="select" value={this.getValue(field)} onChange={e => callback(e)}>
+            {choices}
           </In.LineInput>
-        )
+        );
       }
 
-      makeInputItem(field, placeholder){
-        const callback = (e) => { this.parentCallback(field, e.target.value); };
-        return(
+      makeInputItem(field, placeholder) {
+        const callback = e => {
+          this.parentCallback(field, e.target.value);
+        };
+        return (
           <In.LineInput
-            as='input'
+            as="input"
             value={this.getValue(field)}
-            onChange={(e) => callback(e)}
+            onChange={e => callback(e)}
             placeholder={placeholder}
           />
-        )
+        );
       }
 
-      makeSelect(title, field, choices){
-        return(
+      makeSelect(title, field, choices) {
+        return (
           <In.InputLine>
-            <In.LineLabel size='large'>{title}</In.LineLabel>
-            { this.makeSelectItem(field, choices) }
+            <In.LineLabel size="large">{title}</In.LineLabel>
+            {this.makeSelectItem(field, choices)}
           </In.InputLine>
-        )
+        );
       }
 
-      makeInput(title, field, placeholder){
-        return(
+      makeInput(title, field, placeholder) {
+        return (
           <In.InputLine>
-            <In.LineLabel size='large'>{title}</In.LineLabel>
-            { this.makeInputItem(field, placeholder) }
+            <In.LineLabel size="large">{title}</In.LineLabel>
+            {this.makeInputItem(field, placeholder)}
           </In.InputLine>
-        )
+        );
       }
 
-      render(){
-        return(
+      render() {
+        return (
           <InnerComponent
             makeSelect={this.makeSelect}
             makeInput={this.makeInput}
@@ -75,23 +76,23 @@ export default class FormComponent {
             makeLine={this.makeLine}
             {...this.props}
           />
-        )
+        );
       }
 
-      getValue(field){
-        if(this.props.retriever){
+      getValue(field) {
+        if (this.props.retriever) {
           return this.props.retriever(this.props, field);
         } else return this.props[field];
       }
 
       static propTypes = {
         notifyFormValueChanged: PropTypes.func.isRequired,
-        retriever: PropTypes.func
+        retriever: PropTypes.func,
       };
 
       parentCallback(field, value) {
         this.props.notifyFormValueChanged(field, value);
       }
-    }
+    };
   }
 }

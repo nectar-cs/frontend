@@ -1,48 +1,45 @@
 //@flow
-import Backend from "../../utils/Backend";
-import Utils from "../../utils/Utils";
-import type {RemoteBundle, RemoteRepo} from "../../types/Types";
-import DataUtils from "../../utils/DataUtils";
+import Backend from '../../utils/Backend';
+import Utils from '../../utils/Utils';
+import type { RemoteBundle, RemoteRepo } from '../../types/Types';
+import DataUtils from '../../utils/DataUtils';
 
-export default class Helper{
-
-  static async submit(deploymentName, bundle, callback){
-    const payload = {...bundle, deployment: deploymentName };
+export default class Helper {
+  static async submit(deploymentName, bundle, callback) {
+    const payload = { ...bundle, deployment: deploymentName };
     const matching = await Backend.bPost('/microservices', payload);
     callback(matching);
   }
 
-  static async delete(matching, callback){
+  static async delete(matching, callback) {
     await Backend.bDelete(`/microservices/${matching.id}`);
     callback(matching);
   }
 
-  static async fetchRemotes(type: 'git' | 'img', dataSet, progSet){
+  static async fetchRemotes(type: 'git' | 'img', dataSet, progSet) {
     progSet(type, true);
-    if(type === 'img') type = 'docker';
+    if (type === 'img') type = 'docker';
     const remotes = await Backend.bFetch(`/remotes/loaded?entity=${type}`);
-    if(type === 'docker') type = 'img';
+    if (type === 'docker') type = 'img';
     progSet(type, false);
     dataSet(type, remotes);
   }
 
-  static remoteOptions(remoteList: ?Array<RemoteBundle>){
+  static remoteOptions(remoteList: ?Array<RemoteBundle>) {
     return (remoteList || []).map(r => r.identifier);
   }
 
-  static repoOptions(remoteList: RemoteBundle[], remoteName: string): string[]{
+  static repoOptions(remoteList: RemoteBundle[], remoteName: string): string[] {
     const remote = remoteList.find(r => r.identifier === remoteName);
     return remote ? remote.contents.map(r => r.name) : [];
   }
 
-  static dfPathChoices(remoteName, repoName, dfPathDict){
+  static dfPathChoices(remoteName, repoName, dfPathDict) {
     return dfPathDict[`${remoteName}_${repoName}`] || [];
   }
 
-  static selectedRemote(remoteList, remoteName){
-    return remoteList.find(
-      remote => remote.identifier === remoteName
-    )
+  static selectedRemote(remoteList, remoteName) {
+    return remoteList.find(remote => remote.identifier === remoteName);
   }
 
   static selectedRepo(remoteList, remoteName, repoName): RemoteRepo {
@@ -51,24 +48,23 @@ export default class Helper{
   }
 
   static frameworkImage(mode: 'detail' | 'tutorial', framework: string): string {
-    if(mode === 'detail'){
-      return "attachment";
+    if (mode === 'detail') {
+      return 'attachment';
     } else {
       return Utils.frameworkImage(framework || 'docker');
     }
   }
 
-  static graphicType(mode: 'detail' | 'tutorial'):string {
-    return mode === 'detail' ? "icon" : 'image';
+  static graphicType(mode: 'detail' | 'tutorial'): string {
+    return mode === 'detail' ? 'icon' : 'image';
   }
 
-  static title(inst){
-    if(inst.props.mode === 'detail')
-      return "Git and Docker Matching";
+  static title(inst) {
+    if (inst.props.mode === 'detail') return 'Git and Docker Matching';
     else return inst.props.deployment.name;
   }
 
-  static async fetchDfPaths(remote, repo, hash, loadingCallback, setter){
+  static async fetchDfPaths(remote, repo, hash, loadingCallback, setter) {
     loadingCallback(true);
     const ep = `/remotes/${remote}/${repo}/dockerfile_paths`;
     const newDfPaths = await Backend.bFetch(ep);
@@ -77,13 +73,12 @@ export default class Helper{
     loadingCallback(false);
   }
 
-  static isLoading(state){
+  static isLoading(state) {
     const { isSubmitting, isPathsFetching, isGitFetching, isImgFetching } = state;
     return isSubmitting || isPathsFetching || isGitFetching || isImgFetching;
   }
 
-  static isNewMatching(original, updated){
+  static isNewMatching(original, updated) {
     return DataUtils.deepEqual(original, updated);
   }
 }
-

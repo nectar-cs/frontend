@@ -1,8 +1,7 @@
-import PodJob from "./PodJob";
+import PodJob from './PodJob';
 
 export default class ScalePodsJob extends PodJob {
-
-  prepare(bundle){
+  prepare(bundle) {
     super.prepare(bundle);
     this.scaleTo = bundle.scaleTo;
   }
@@ -10,64 +9,64 @@ export default class ScalePodsJob extends PodJob {
   toKapiPayload() {
     return {
       ...super.toKapiPayload(),
-      scaleTo: this.scaleTo
-    }
+      scaleTo: this.scaleTo,
+    };
   }
 
   recomputeState() {
     const runCountGood = this.runningPods().length === this.scaleTo;
 
-    if(this.isUpScale()){
-      if(this.crashedPods().length > 0) {
-        this.conclude(false, "Pod Failures in New Pods");
+    if (this.isUpScale()) {
+      if (this.crashedPods().length > 0) {
+        this.conclude(false, 'Pod Failures in New Pods');
       } else {
-        if(runCountGood)
-          this.conclude(true);
+        if (runCountGood) this.conclude(true);
       }
     } else {
-      if(runCountGood){
-        if(this.deadPods().length === -this.deltaCount())
-          this.conclude(true);
+      if (runCountGood) {
+        if (this.deadPods().length === -this.deltaCount()) this.conclude(true);
       }
     }
   }
 
-  deltaCount(){
+  deltaCount() {
     return this.scaleTo - this.initial.length;
   }
 
-  isUpScale(){
+  isUpScale() {
     return this.deltaCount() > 0;
   }
 
-  progressItems(){
+  progressItems() {
     const deadCount = this.deadPods().length;
     const newPods = this.newPods();
     const running = this.runningPods(newPods);
 
-    if(this.isUpScale()){
+    if (this.isUpScale()) {
       return [
         this.buildProgressItem(
-          "New pods created",
+          'New pods created',
           `${newPods.length}/${this.deltaCount()}`,
-          this.simpleStatus(newPods.length === this.deltaCount())
+          this.simpleStatus(newPods.length === this.deltaCount()),
         ),
         this.buildProgressItem(
-          "New pods running",
+          'New pods running',
           `${running.length}/${this.deltaCount()}`,
-          this.simpleStatus(running.length === this.deltaCount())
-        )
-      ]
+          this.simpleStatus(running.length === this.deltaCount()),
+        ),
+      ];
     } else {
       return [
         this.buildProgressItem(
-          "Unwanted pods killed",
+          'Unwanted pods killed',
           `${deadCount}/${-this.deltaCount()}`,
-          this.simpleStatus(deadCount === -this.deltaCount())
-        )
-      ]
+          this.simpleStatus(deadCount === -this.deltaCount()),
+        ),
+      ];
     }
   }
 
-  kapiVerb() { return "scale_replicas"; }
+  kapiVerb() {
+    return 'scale_replicas';
+  }
 }

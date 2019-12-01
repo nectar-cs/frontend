@@ -1,14 +1,14 @@
 import React from 'react';
-import {S} from "./TopBarStyles";
+import { S } from './TopBarStyles';
 
-function SearchInput(){
-  return <S.Search/>;
+function SearchInput() {
+  return <S.Search />;
 }
 
 export default function TopBar() {
-  return(
+  return (
     <S.Container>
-      <SearchInput/>
+      <SearchInput />
     </S.Container>
-  )
+  );
 }

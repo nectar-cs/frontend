@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Title = styled.h2`
   margin: 20px 0 15px 0;
@@ -16,7 +16,7 @@ const PreviewImage = styled.img`
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;  
+  width: 80%;
   margin-top: 40px;
 `;
 

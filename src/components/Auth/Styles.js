@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import Layout from "../../assets/layouts";
+import styled from 'styled-components';
+import Layout from '../../assets/layouts';
 
 const Content = styled.div`
   height: 200px;
@@ -17,7 +17,7 @@ const TitleBox = styled.div`
 const TitleText = styled.h1`
   font-size: 50px;
   display: inline-block;
-  letter-spacing: 2.0px;
+  letter-spacing: 2px;
   margin-left: 8px;
   color: ${p => p.theme.colors.contrastFont};
   text-transform: uppercase;
@@ -44,7 +44,7 @@ const S = {
   TitleText,
   FormBox,
   Options,
-  TitleLogo
+  TitleLogo,
 };
 
 export default S;

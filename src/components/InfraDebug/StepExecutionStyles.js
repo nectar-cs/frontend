@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import Layout from "../../assets/layouts";
-import Button from "../../assets/buttons";
+import styled from 'styled-components';
+import Layout from '../../assets/layouts';
+import Button from '../../assets/buttons';
 
 const Explanation = styled.ol`
   margin-top: 12px;

@@ -1,56 +1,55 @@
-import React from 'react'
-import FlexibleModal from "../../hocs/FlexibleModal";
-import {Types} from "../../types/CommonTypes";
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import Utils from "../../utils/Utils";
-import Tabs from "../../widgets/Tabs/Tabs";
-import defaults from "./defaults";
-import PodOverview from "./PodOverview";
+import React from 'react';
+import FlexibleModal from '../../hocs/FlexibleModal';
+import { Types } from '../../types/CommonTypes';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
+import Utils from '../../utils/Utils';
+import Tabs from '../../widgets/Tabs/Tabs';
+import defaults from './defaults';
+import PodOverview from './PodOverview';
 
 export default class PodModal extends React.Component {
-
-  render(){
-    return(
+  render() {
+    return (
       <FlexibleModal mode={this.props.mode}>
-        { this.renderHeader() }
-        { this.renderTabs() }
+        {this.renderHeader()}
+        {this.renderTabs()}
       </FlexibleModal>
-    )
+    );
   }
 
-  componentDidMount(){
-    Utils.mp("Pod Modal Start", {});
+  componentDidMount() {
+    Utils.mp('Pod Modal Start', {});
   }
 
-  renderHeader(){
+  renderHeader() {
     const { mode, pod, deployment } = this.props;
     const { namespace: ns, name } = pod;
-    return(
+    return (
       <LeftHeader
-        graphicName='child_friendly'
+        graphicName="child_friendly"
         title={defaults.header.title(mode, ns, name)}
         subtitle={defaults.header.subtitle(deployment.name)}
-        graphicType='icon'
+        graphicType="icon"
       />
-    )
+    );
   }
 
-  renderTabs(){
+  renderTabs() {
     const { pod, mode } = this.props;
     const defInd = pod.state === 'Error' ? 0 : 0;
-    return(
+    return (
       <Tabs tabs={defaults.tabs} defaultIndex={defInd}>
-        <PodOverview pod={pod} mode={mode}/>
+        <PodOverview pod={pod} mode={mode} />
         <p>Not done :/</p>
         <p>Not done :/</p>
         <p>Not done :/</p>
       </Tabs>
-    )
+    );
   }
 
   static propTypes = {
     pod: Types.LightPod,
     deployment: Types.Deployment,
-    matching: Types.Matching
-  }
+    matching: Types.Matching,
+  };
 }

@@ -1,77 +1,67 @@
 //@flow
-import React from 'react'
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import defaults from "./defaults";
-import FlexibleModal from "../../hocs/FlexibleModal";
-import type {Deployment} from "../../types/Types";
-import LabelsSection from "./LabelsSection";
-import Tabs from "../../widgets/Tabs/Tabs";
-import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
-import CheatSheet from "../../widgets/CheatSheet/CheatSheet";
-import ServicesSection from "./ServicesSection/ServicesSection";
+import React from 'react';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
+import defaults from './defaults';
+import FlexibleModal from '../../hocs/FlexibleModal';
+import type { Deployment } from '../../types/Types';
+import LabelsSection from './LabelsSection';
+import Tabs from '../../widgets/Tabs/Tabs';
+import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
+import CheatSheet from '../../widgets/CheatSheet/CheatSheet';
+import ServicesSection from './ServicesSection/ServicesSection';
 
-export default class OverviewModal extends React.Component<Props>{
-
-  render(){
-    return(
+export default class OverviewModal extends React.Component<Props> {
+  render() {
+    return (
       <FlexibleModal mode={this.props.mode}>
-        { this.renderHeader() }
-        { this.renderTabs() }
+        {this.renderHeader()}
+        {this.renderTabs()}
       </FlexibleModal>
-    )
+    );
   }
 
-  renderHeader(){
+  renderHeader() {
     const { deployment } = this.props || {};
-    return(
+    return (
       <LeftHeader
-        graphicName='group_work'
-        graphicType='icon'
+        graphicName="group_work"
+        graphicType="icon"
         title={defaults.header.title}
         subtitle={defaults.header.subtitle(deployment && deployment.name)}
       />
-    )
+    );
   }
 
-  renderTabs(){
-    return(
+  renderTabs() {
+    return (
       <Tabs tabs={defaults.tabsNames} defaultIndex={0}>
-        { this.renderServicesSection() }
-        { this.renderLabelsSection() }
-        { this.renderCheatSheetSection() }
-        <ComingSoonSection/>
-        <ComingSoonSection/>
+        {this.renderServicesSection()}
+        {this.renderLabelsSection()}
+        {this.renderCheatSheetSection()}
+        <ComingSoonSection />
+        <ComingSoonSection />
       </Tabs>
-    )
+    );
   }
 
-  renderLabelsSection(){
+  renderLabelsSection() {
     const { deployment } = this.props;
-    if(!deployment) return null;
-    return <LabelsSection deployment={deployment}/>;
+    if (!deployment) return null;
+    return <LabelsSection deployment={deployment} />;
   }
 
-  renderCheatSheetSection(){
+  renderCheatSheetSection() {
     const { deployment } = this.props;
-    if(!deployment) return null;
-    return(
-      <CheatSheet
-        resourceName='deployment'
-        resource={deployment}
-      />
-    )
+    if (!deployment) return null;
+    return <CheatSheet resourceName="deployment" resource={deployment} />;
   }
 
-  renderServicesSection(){
+  renderServicesSection() {
     const { deployment } = this.props;
-    return(
-      <ServicesSection
-        deployment={deployment}
-      />
-    )
+    return <ServicesSection deployment={deployment} />;
   }
 }
 
 type Props = {
   deployment: Deployment,
-}
+};

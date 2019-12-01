@@ -1,9 +1,8 @@
-import DataUtils from "../../../utils/DataUtils";
-import Kapi from "../../../utils/Kapi";
-import Job from "./Job";
+import DataUtils from '../../../utils/DataUtils';
+import Kapi from '../../../utils/Kapi';
+import Job from './Job';
 
 export default class DockerJob extends Job {
-
   constructor(args) {
     super(args);
     this.job = { id: null, type: null, logs: [], status: '' };
@@ -11,10 +10,7 @@ export default class DockerJob extends Job {
 
   async initiateWork() {
     const { jobId: id, jobType: type } = DataUtils.obj2Camel(
-      await Kapi.bPost(
-        this.initiatePath(),
-        this.initiatePayload()
-      )
+      await Kapi.bPost(this.initiatePath(), this.initiatePayload()),
     );
     this.job = { ...this.job, id, type };
   }
@@ -24,15 +20,15 @@ export default class DockerJob extends Job {
     this.requestCleanup();
   }
 
-  recomputeState(){
+  recomputeState() {
     const endStates = DockerJob.END_STATES;
-    if(endStates.includes(this.status())){
+    if (endStates.includes(this.status())) {
       const win = this.status() === DockerJob.KAPI_STATUS_PASS;
-      this.conclude(win, "IDK");
+      this.conclude(win, 'IDK');
     }
   }
 
-  async reloadData(){
+  async reloadData() {
     const { type, id } = this.job;
     const ep = `/api/docker/${type}/${id}/job_info`;
     const result = await Kapi.bFetch(ep);
@@ -40,21 +36,22 @@ export default class DockerJob extends Job {
     this.job = { ...this.job, logs, status };
   }
 
-  requestCleanup(){
+  requestCleanup() {
     const { type, id } = this.job;
     const ep = `/api/docker/${type}/${id}/clear_job`;
     Kapi.post(ep, {}, null);
   }
 
-  status() { return this.job.status.toLowerCase() }
-  logs(){ return this.job.logs || [] }
-  initiatePayload(){}
-  initiatePath(){}
+  status() {
+    return this.job.status.toLowerCase();
+  }
+  logs() {
+    return this.job.logs || [];
+  }
+  initiatePayload() {}
+  initiatePath() {}
 
-  static KAPI_STATUS_FAIL = "failed";
-  static KAPI_STATUS_PASS = "succeeded";
-  static END_STATES = [
-    DockerJob.KAPI_STATUS_FAIL,
-    DockerJob.KAPI_STATUS_PASS
-  ];
+  static KAPI_STATUS_FAIL = 'failed';
+  static KAPI_STATUS_PASS = 'succeeded';
+  static END_STATES = [DockerJob.KAPI_STATUS_FAIL, DockerJob.KAPI_STATUS_PASS];
 }

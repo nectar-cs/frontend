@@ -1,11 +1,11 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const Table = styled.table`
   margin-top: -18px;
 `;
 
 const Row = styled.tr`
-  &:hover{
+  &:hover {
     background: ${p => p.theme.colors.contentBackgroundColor};
     cursor: pointer;
   }

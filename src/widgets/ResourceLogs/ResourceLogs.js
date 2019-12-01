@@ -1,10 +1,10 @@
 //@flow
-import React, {Fragment} from 'react'
-import {LogsView} from "./Styles";
-import Text from "../../assets/text-combos";
-import Kapi from "../../utils/Kapi";
-import Loader from "../../assets/loading-spinner";
-import CenterAnnouncement from "../CenterAnnouncement/CenterAnnouncement";
+import React, { Fragment } from 'react';
+import { LogsView } from './Styles';
+import Text from '../../assets/text-combos';
+import Kapi from '../../utils/Kapi';
+import Loader from '../../assets/loading-spinner';
+import CenterAnnouncement from '../CenterAnnouncement/CenterAnnouncement';
 
 const POLL_RATE = 2500;
 
@@ -21,51 +21,47 @@ export default class ResourceLogs extends React.Component<Props> {
     this.fetchLogsRepeatWrapper();
   }
 
-  componentWillReceiveProps(){
-    if(!this.isLoopRunning)
-      this.fetchLogsRepeatWrapper();
+  componentWillReceiveProps() {
+    if (!this.isLoopRunning) this.fetchLogsRepeatWrapper();
   }
 
-  renderLogLines(){
+  renderLogLines() {
     return this.state.logs.map((log, i) => (
-      <Text.Code key={`${log}-${i}`} chill>{log}</Text.Code>
-    ))
+      <Text.Code key={`${log}-${i}`} chill>
+        {log}
+      </Text.Code>
+    ));
   }
 
-  render(){
+  render() {
     const { isFetching } = this.state;
-    return(
+    return (
       <Fragment>
-        <Loader.TopRightSpinner there={isFetching}/>
-        { this.renderNoPod() }
-        { this.renderMainContent() }
+        <Loader.TopRightSpinner there={isFetching} />
+        {this.renderNoPod()}
+        {this.renderMainContent()}
       </Fragment>
-    )
+    );
   }
 
-  renderNoPod(){
-    if(this.amReady()) return null;
-    return(
-      <CenterAnnouncement
-        iconName='search'
-        text='No pods to read logs from.'
-      />
-    )
+  renderNoPod() {
+    if (this.amReady()) return null;
+    return <CenterAnnouncement iconName="search" text="No pods to read logs from." />;
   }
 
-  renderMainContent(){
-    if(!this.amReady()) return null;
+  renderMainContent() {
+    if (!this.amReady()) return null;
 
-    return(
+    return (
       <LogsView>
-        { this.renderLogLines() }
+        {this.renderLogLines()}
         <div ref={this.lineEndRef} />
       </LogsView>
-    )
+    );
   }
 
-  async fetchLogsRepeatWrapper(){
-    if(!this._willUnmount && this.amReady()){
+  async fetchLogsRepeatWrapper() {
+    if (!this._willUnmount && this.amReady()) {
       await this.fetchLogs();
       setTimeout(this.fetchLogsRepeatWrapper, POLL_RATE);
     } else {
@@ -73,30 +69,32 @@ export default class ResourceLogs extends React.Component<Props> {
     }
   }
 
-  async fetchLogs(){
-    this.setState(s => ({...s, isFetching: true}));
+  async fetchLogs() {
+    this.setState(s => ({ ...s, isFetching: true }));
     const logs = await Kapi.bFetch(this.genUrl());
-    if((logs || []).length > 0) this.setState(s => ({...s, logs}));
-    this.setState(s => ({...s, isFetching: false}));
-    this.lineEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if ((logs || []).length > 0) this.setState(s => ({ ...s, logs }));
+    this.setState(s => ({ ...s, isFetching: false }));
+    this.lineEndRef.current.scrollIntoView({ behavior: 'smooth' });
   }
 
-  genUrl(){
+  genUrl() {
     const { namespace, podName, sinceMinutes, sinceSeconds } = this.props;
     const secondsOffset = sinceMinutes * 60 + sinceSeconds;
     return `/api/pods/${namespace}/${podName}/logs?since_seconds=${secondsOffset}`;
   }
 
-  amReady(){
+  amReady() {
     return !!this.props.podName;
   }
 
-  componentWillUnmount(): * { this._willUnmount = true; }
+  componentWillUnmount(): * {
+    this._willUnmount = true;
+  }
 }
 
 type Props = {
   namespace: string,
   podName: string,
   sinceMinutes: string,
-  sinceSeconds: string
+  sinceSeconds: string,
 };

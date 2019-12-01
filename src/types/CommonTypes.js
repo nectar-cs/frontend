@@ -1,27 +1,27 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const POD_STATES = ['Running', 'Error', 'Pending', 'Unknown', 'Failed'];
 
 const GitTarBundle = PropTypes.shape({
   dockerfilePath: PropTypes.string.isRequired,
-  tarballUrl: PropTypes.string.isRequired
+  tarballUrl: PropTypes.string.isRequired,
 });
 
 const Remote = PropTypes.shape({
   id: PropTypes.number.isRequired,
   entity: PropTypes.oneOf(['git', 'docker']),
   type: PropTypes.string.isRequired,
-  identifier: PropTypes.string.isRequired
+  identifier: PropTypes.string.isRequired,
 });
 
 const GlobalRemotes = PropTypes.shape({
   git: PropTypes.arrayOf(Remote),
-  docker: PropTypes.arrayOf(Remote)
+  docker: PropTypes.arrayOf(Remote),
 });
 
 const ServicePort = PropTypes.shape({
   fromPort: PropTypes.number.isRequired,
-  toPort: PropTypes.number.isRequired
+  toPort: PropTypes.number.isRequired,
 });
 
 const Service = PropTypes.shape({
@@ -34,20 +34,20 @@ const Service = PropTypes.shape({
   shortDns: PropTypes.string.isRequired,
   longDns: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['ClusterIP', 'NodePort', 'LoadBalancer']),
-  ports: PropTypes.arrayOf(ServicePort)
+  ports: PropTypes.arrayOf(ServicePort),
 });
 
 const LightPod = PropTypes.shape({
   name: PropTypes.string.isRequired,
   state: PropTypes.oneOf(POD_STATES),
-  updatedAt: PropTypes.string
+  updatedAt: PropTypes.string,
 });
 
 const Commit = PropTypes.shape({
   sha: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
-  timestamp: PropTypes.string.isRequired
+  timestamp: PropTypes.string.isRequired,
 });
 
 const AnnotatedCommit = PropTypes.shape({
@@ -71,7 +71,7 @@ const DetailedCommit = PropTypes.shape({
   timestamp: PropTypes.string.isRequired,
   authorAvatar: PropTypes.string,
   authorUrl: PropTypes.string,
-  changes: PropTypes.arrayOf(CommitChange)
+  changes: PropTypes.arrayOf(CommitChange),
 });
 
 const Deployment = PropTypes.shape({
@@ -83,7 +83,7 @@ const Deployment = PropTypes.shape({
   imagePullPolicy: PropTypes.string.isRequired,
   pods: PropTypes.arrayOf(LightPod).isRequired,
   services: PropTypes.arrayOf(Service).isRequired,
-  commit: AnnotatedCommit
+  commit: AnnotatedCommit,
 });
 
 const Matching = PropTypes.shape({
@@ -94,7 +94,7 @@ const Matching = PropTypes.shape({
   imgRepoName: PropTypes.string,
   gitRemoteId: PropTypes.number,
   imgRemoteId: PropTypes.number,
-  dockerfilePath: PropTypes.string
+  dockerfilePath: PropTypes.string,
 });
 
 export const Types = {
@@ -107,5 +107,5 @@ export const Types = {
   Remote,
   GlobalRemotes,
   LightPod,
-  GitTarBundle
+  GitTarBundle,
 };

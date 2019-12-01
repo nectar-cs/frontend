@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import {theme} from "../../assets/constants";
-import {leaf} from "react-syntax-highlighter/dist/cjs/languages/hljs";
+import styled from 'styled-components';
+import { theme } from '../../assets/constants';
+import { leaf } from 'react-syntax-highlighter/dist/cjs/languages/hljs';
 
 const Container = styled.div`
   position: relative;
@@ -22,22 +22,14 @@ const LegendContainer = styled.div`
 `;
 
 const nodeSide = 27;
-const boxDiag = Math.sqrt((nodeSide ** 2) * 2);
+const boxDiag = Math.sqrt(nodeSide ** 2 * 2);
 
-function makeNodeShape(color=theme.colors.contrastColor){
-  return({...nodeShape,
-    shapeProps: { ...nodeShape.shapeProps,
-      fill: color
-    }
-  })
+function makeNodeShape(color = theme.colors.contrastColor) {
+  return { ...nodeShape, shapeProps: { ...nodeShape.shapeProps, fill: color } };
 }
 
-function makeLeafShape(color=theme.colors.contrastColor){
-  return({...leafShape,
-    shapeProps: {...leafShape.shapeProps,
-      fill: color
-    }
-  })
+function makeLeafShape(color = theme.colors.contrastColor) {
+  return { ...leafShape, shapeProps: { ...leafShape.shapeProps, fill: color } };
 }
 
 const nodeShape = {
@@ -48,39 +40,38 @@ const nodeShape = {
     fill: theme.colors.contrastColor,
     stroke: theme.colors.primaryColor,
     strokeWidth: 3,
-    transform: "rotate(-45 0 0)",
+    transform: 'rotate(-45 0 0)',
     x: nodeSide / -2,
     y: nodeSide / -2,
-  }
+  },
 };
 
-const leafShape = {...nodeShape,
-  shape: "circle",
-  shapeProps: {...nodeShape.shapeProps,
-    r: boxDiag / 2.1 - 1,
-  }
+const leafShape = {
+  ...nodeShape,
+  shape: 'circle',
+  shapeProps: { ...nodeShape.shapeProps, r: boxDiag / 2.1 - 1 },
 };
 
 const textBase = {
-  font: "normal 15px lato",
+  font: 'normal 15px lato',
   strokeWidth: 0,
   fill: theme.colors.primaryFont,
-  x: 100
+  x: 100,
 };
 
 const treeStyles = {
   links: {
     stroke: theme.colors.secondaryColor,
-    strokeWidth: 3
+    strokeWidth: 3,
   },
   nodes: {
     node: {
-      name: textBase
+      name: textBase,
     },
     leafNode: {
-      name: textBase
-    }
-  }
+      name: textBase,
+    },
+  },
 };
 
 const S = {
@@ -93,7 +84,7 @@ const S = {
   LegendContainer,
   Container,
   makeNodeShape,
-  makeLeafShape
+  makeLeafShape,
 };
 
 export default S;

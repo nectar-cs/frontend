@@ -1,4 +1,4 @@
-import styled, {keyframes} from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 const rotate = keyframes`
   0% {
@@ -13,42 +13,43 @@ export const LoadingSpinner = styled.div`
   display: inline-block;
   width: 64px;
   height: 64px;
-  &::after{
-    content: " ";
+  &::after {
+    content: ' ';
     display: block;
     width: 26px;
     height: 26px;
     margin: 1px;
     border-radius: 50%;
     border: 5px solid ${p => p.theme.colors.primaryColor};
-    border-color: ${p => p.theme.colors.primaryColor} transparent ${p => p.theme.colors.primaryColor} transparent;
+    border-color: ${p => p.theme.colors.primaryColor} transparent
+      ${p => p.theme.colors.primaryColor} transparent;
     animation: ${rotate} 1.6s linear infinite;
   }
 `;
 
-function size(p, def='medium'){
-  if(!p || !p.size) p = def;
-  if(p.size === 'x-small') return "12px";
-  if(p.size === 'small') return "19px";
-  if(p.size === 'medium') return "26px";
-  if(p.size === 'large') return "40px";
+function size(p, def = 'medium') {
+  if (!p || !p.size) p = def;
+  if (p.size === 'x-small') return '12px';
+  if (p.size === 'small') return '19px';
+  if (p.size === 'medium') return '26px';
+  if (p.size === 'large') return '40px';
 }
 
 export const ModSpinner = styled(LoadingSpinner)`
   width: ${p => size(p)};
   height: ${p => size(p)};
-  &:after{
+  &:after {
     width: ${p => size(p)};
     height: ${p => size(p)};
     border-width: 2px;
-  }    
+  }
 `;
 
 const TopRightSpinner = styled(ModSpinner)`
   position: absolute;
   top: 12px;
   right: -14px;
-  display: ${p => (p.there || p.there === undefined) ? 'block' : 'none'};
+  display: ${p => (p.there || p.there === undefined ? 'block' : 'none')};
 `;
 
 export const CenteredSpinner = styled(ModSpinner)`
@@ -62,7 +63,7 @@ const Loader = {
   ModSpinner,
   CenteredSpinner,
   LoadingSpinner,
-  TopRightSpinner
+  TopRightSpinner,
 };
 
 export default Loader;

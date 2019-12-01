@@ -1,9 +1,9 @@
-import React from "react";
-import defaults from "./defaults";
-import Utils from "../../utils/Utils";
+import React from 'react';
+import defaults from './defaults';
+import Utils from '../../utils/Utils';
 
 export default class Helper {
-  static imgName(name){
+  static imgName(name) {
     const imgVendors = defaults.imageRegistryVendors;
     const gitVendors = defaults.gitRemoteVendors;
     const superList = imgVendors.concat(gitVendors);

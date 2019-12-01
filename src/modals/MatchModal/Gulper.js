@@ -1,7 +1,7 @@
 //@flow
-import Setter from "../../utils/StateGulp";
-import type {RemoteBundle, RemoteRepo} from "../../types/Types";
-import Helper from "./Helper";
+import Setter from '../../utils/StateGulp';
+import type { RemoteBundle, RemoteRepo } from '../../types/Types';
+import Helper from './Helper';
 
 const StringSimilarity = require('string-similarity');
 
@@ -12,8 +12,8 @@ class DeploymentNameSetter extends Setter {
   }
 }
 
-class GitAndImgSetter extends Setter{
-  constructor(type: 'git' | 'img', ...defaultArgs){
+class GitAndImgSetter extends Setter {
+  constructor(type: 'git' | 'img', ...defaultArgs) {
     super(...defaultArgs);
     this.type = type;
   }
@@ -27,15 +27,14 @@ class GitRemoteListSetter extends GitAndImgSetter {
   sideEffects(bundle) {
     const remoteList: Array<RemoteBundle> = this._value;
     const firstRemote: RemoteBundle = remoteList[0];
-    if(firstRemote)
-      return {[`${this.type}RemoteName`]: firstRemote.identifier};
+    if (firstRemote) return { [`${this.type}RemoteName`]: firstRemote.identifier };
     else return {};
   }
 }
 
 class RemoteNameSetter extends GitAndImgSetter {
-  guessRepo(target: string, options: string[]){
-    if(target && options.length > 0){
+  guessRepo(target: string, options: string[]) {
+    if (target && options.length > 0) {
       const sorting = StringSimilarity.findBestMatch(target, options);
       return options[sorting.bestMatchIndex];
     } else return null;
@@ -51,7 +50,7 @@ class RemoteNameSetter extends GitAndImgSetter {
 }
 
 class RepoNameSetter extends GitAndImgSetter {
-  repoObject(bundle): RemoteRepo{
+  repoObject(bundle): RemoteRepo {
     const { gitRepoName, gitRemoteList, gitRemoteName } = bundle;
     return Helper.selectedRepo(gitRemoteList, gitRemoteName, gitRepoName);
   }
@@ -59,16 +58,16 @@ class RepoNameSetter extends GitAndImgSetter {
   firstDockerfilePath(bundle): ?string {
     const key = `${bundle.gitRemoteName}_${this._value}`;
     const paths = bundle.dfPathDict[key];
-    if(paths != null) {
+    if (paths != null) {
       return paths[0];
-    } else if(bundle.gitRemoteName && this._value){
+    } else if (bundle.gitRemoteName && this._value) {
       bundle.fetchDfPaths(bundle.gitRemoteName, this._value);
       return null;
     }
   }
 
   sideEffects(bundle) {
-    if(this.type === 'git'){
+    if (this.type === 'git') {
       const framework = (this.repoObject(bundle) || {}).framework || '';
       const dockerfilePath = this.firstDockerfilePath(bundle) || '';
       return { framework, dockerfilePath };
@@ -81,8 +80,7 @@ class DfPathDictSetter extends Setter {
     const newDict = this._value;
     const { gitRemoteName, gitRepoName } = bundle;
     const pathList = newDict[`${gitRemoteName}_${gitRepoName}`];
-    if(pathList && pathList.length > 0)
-      return { dockerfilePath: pathList[0] };
+    if (pathList && pathList.length > 0) return { dockerfilePath: pathList[0] };
     else return {};
   }
 }
@@ -90,27 +88,28 @@ class DfPathDictSetter extends Setter {
 class DfPathSetter extends Setter {
   sideEffects(bundle) {
     const { dockerfilePath } = bundle;
-    const dockerBuildPath = (dockerfilePath || '').replace("Dockerfile", "");
-    return { dockerBuildPath }
+    const dockerBuildPath = (dockerfilePath || '').replace('Dockerfile', '');
+    return { dockerBuildPath };
   }
 }
 
-export default class Gulper{
-  constructor(){
+export default class Gulper {
+  constructor() {
     this.consumable = {};
     const dockerfilePath = new DfPathSetter();
-    const dfPathDict = new DfPathDictSetter({dockerfilePath});
+    const dfPathDict = new DfPathDictSetter({ dockerfilePath });
 
     const gitRepoName = new RepoNameSetter('git');
-    const gitRemoteName = new RemoteNameSetter('git', {gitRepoName});
-    const gitRemoteList = new GitRemoteListSetter('git', {gitRemoteName});
+    const gitRemoteName = new RemoteNameSetter('git', { gitRepoName });
+    const gitRemoteList = new GitRemoteListSetter('git', { gitRemoteName });
 
     const imgRepoName = new RepoNameSetter('img');
-    const imgRemoteName = new RemoteNameSetter('img', {imgRepoName});
-    const imgRemoteList = new GitRemoteListSetter('img', {imgRemoteName});
+    const imgRemoteName = new RemoteNameSetter('img', { imgRepoName });
+    const imgRemoteList = new GitRemoteListSetter('img', { imgRemoteName });
 
     const deploymentName = new DeploymentNameSetter({
-      gitRemoteList, imgRemoteList
+      gitRemoteList,
+      imgRemoteList,
     });
 
     this.master = new Setter({
@@ -122,23 +121,28 @@ export default class Gulper{
       imgRemoteName,
       imgRepoName,
       dfPathDict,
-      dockerfilePath
+      dockerfilePath,
     });
   }
 
-  setConsumableMatching(matching){
-    if(matching){
+  setConsumableMatching(matching) {
+    if (matching) {
       const { gitRemoteName, gitRepoName } = matching;
       const { imgRemoteName, imgRepoName } = matching;
       const { dockerfilePath, dockerBuildPath, framework } = matching;
       this.consumable = {
-        gitRemoteName, gitRepoName, imgRemoteName, imgRepoName,
-        dockerfilePath, dockerBuildPath, framework
+        gitRemoteName,
+        gitRepoName,
+        imgRemoteName,
+        imgRepoName,
+        dockerfilePath,
+        dockerBuildPath,
+        framework,
       };
     } else this.consumable = {};
   }
 
-  assign(key, value, bundle){
+  assign(key, value, bundle) {
     this.master.update(key, value, bundle, this.consumable);
     return this.master.produce();
   }

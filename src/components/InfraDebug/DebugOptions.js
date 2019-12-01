@@ -1,72 +1,61 @@
-import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
-import FormComponent from "../../hocs/FormComponent";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import defaults from "./defaults";
-import Utils from "../../utils/Utils";
-import ModalButton from "../../widgets/Buttons/ModalButton";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import FormComponent from '../../hocs/FormComponent';
+import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import defaults from './defaults';
+import Utils from '../../utils/Utils';
+import ModalButton from '../../widgets/Buttons/ModalButton';
 
 class DebugOptionsForm extends React.Component {
-
-  render(){
-    return(
+  render() {
+    return (
       <Fragment>
         <TextOverLineSubtitle text={defaults.options.title} />
-        { this.renderForm() }
-        { this.renderButton() }
+        {this.renderForm()}
+        {this.renderButton()}
       </Fragment>
-    )
+    );
   }
 
-  makeSelect(title, field, choices){
+  makeSelect(title, field, choices) {
     return this.props.makeSelect(title, field, choices);
   }
 
-  renderButton(){
-    return(
-      <ModalButton
-        callback={this.props.submitCallback}
-        title={defaults.options.submit}
-      />
-    )
+  renderButton() {
+    return <ModalButton callback={this.props.submitCallback} title={defaults.options.submit} />;
   }
 }
 
 class NetworkDebugOptionsClass extends DebugOptionsForm {
-
-  renderForm(){
-    return(
+  renderForm() {
+    return (
       <Fragment>
-        { this.renderServiceSelect() }
-        { this.renderPortsSelect() }
-        { this.renderStrategySelect() }
+        {this.renderServiceSelect()}
+        {this.renderPortsSelect()}
+        {this.renderStrategySelect()}
       </Fragment>
-    )
+    );
   }
 
-  renderStrategySelect(){
+  renderStrategySelect() {
     const choices = defaults.options.strategies.network;
     return super.makeSelect(
       'Strategy (stub - coming soon)',
       'strategy',
-      Utils.hashOptions(choices)
-    )
+      Utils.hashOptions(choices),
+    );
   }
 
-  renderServiceSelect(){
+  renderServiceSelect() {
     return super.makeSelect(
       'Service to Debug',
       'service',
-      Utils.hashOptions(this.props.serviceChoices)
-    )
+      Utils.hashOptions(this.props.serviceChoices),
+    );
   }
 
-  renderPortsSelect(){
-    return super.makeSelect(
-      'For Port Mapping',
-      'port',
-      Utils.hashOptions(this.props.portChoices)
-    )
+  renderPortsSelect() {
+    return super.makeSelect('For Port Mapping', 'port', Utils.hashOptions(this.props.portChoices));
   }
 
   static propTypes = {
@@ -74,14 +63,12 @@ class NetworkDebugOptionsClass extends DebugOptionsForm {
     port: PropTypes.number,
     serviceChoices: PropTypes.object.isRequired,
     portChoices: PropTypes.object.isRequired,
-    submitCallback: PropTypes.func.isRequired
+    submitCallback: PropTypes.func.isRequired,
   };
 
   static defaultProps = { service: '', port: '' };
 }
 
-const NetworkDebugForm = FormComponent.compose(
-  NetworkDebugOptionsClass
-);
+const NetworkDebugForm = FormComponent.compose(NetworkDebugOptionsClass);
 
 export default NetworkDebugForm;
