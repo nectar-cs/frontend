@@ -1,19 +1,21 @@
-export const defaultHeaders = [
-  "Content-Type: application/json"
-].join("\n");
+export const defaultHeaders = ['Content-Type: application/json'].join('\n');
 
-export const defaultBody = JSON.stringify({
-  data: {
-    type: 'test payload'
-  }
-}, null, 2);
+export const defaultBody = JSON.stringify(
+  {
+    data: {
+      type: 'test payload',
+    },
+  },
+  null,
+  2,
+);
 
 const defaults = {
-  previewCommands: ({ns, curl}) => [
+  previewCommands: ({ ns, curl }) => [
     `kubectl run curler --image=nectar/curler --namespace=${ns}`,
     `cmd="${curl}"`,
-    `kubectl exec $cmd curler --namespace=${ns}`
-  ]
+    `kubectl exec $cmd curler --namespace=${ns}`,
+  ],
 };
 
 export default defaults;

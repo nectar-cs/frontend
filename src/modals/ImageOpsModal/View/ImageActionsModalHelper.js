@@ -1,154 +1,149 @@
-import DataUtils from "../../../utils/DataUtils";
-import React from "react";
-import ForceImagePullOperator from "../ImageOperators/ForceImagePullOperator";
-import ChangeImageTagOperator from "../ImageOperators/ChangeImageTagOperator";
-import ScalePodsOperator from "../ImageOperators/ScalePodsOperator";
-import Backend from "../../../utils/Backend";
-import moment from "moment";
-import {defaults} from "./defaults";
-import BuildPushRunOperation from "../ImageOperators/BuildPushRunOperation";
+import DataUtils from '../../../utils/DataUtils';
+import React from 'react';
+import ForceImagePullOperator from '../ImageOperators/ForceImagePullOperator';
+import ChangeImageTagOperator from '../ImageOperators/ChangeImageTagOperator';
+import ScalePodsOperator from '../ImageOperators/ScalePodsOperator';
+import Backend from '../../../utils/Backend';
+import moment from 'moment';
+import { defaults } from './defaults';
+import BuildPushRunOperation from '../ImageOperators/BuildPushRunOperation';
 
 export class ImageActionsModalHelper {
-
-  static selectedBranchBundle(remotes, branchName){
+  static selectedBranchBundle(remotes, branchName) {
     const { gitBranches } = remotes;
-    if(!gitBranches) return null;
+    if (!gitBranches) return null;
     return gitBranches[branchName];
   }
 
-  static selectedCommitBundle(remotes, branchName, sha){
+  static selectedCommitBundle(remotes, branchName, sha) {
     const branchBundle = this.selectedBranchBundle(remotes, branchName);
     return branchBundle.find(commit => commit.sha === sha);
   }
 
-  static defaultOpType(props){
+  static defaultOpType(props) {
     const { matching } = props;
-    if(matching && matching.imgRemoteId){
-      return props.operationType || "git";
+    if (matching && matching.imgRemoteId) {
+      return props.operationType || 'git';
     } else {
-      return props.operationType || "change";
+      return props.operationType || 'change';
     }
   }
 
-  static fetchImgTags(inst){
-    let {imgRemoteId, imgRepoName} = inst.props.matching || {};
+  static fetchImgTags(inst) {
+    let { imgRemoteId, imgRepoName } = inst.props.matching || {};
 
-    if(!(imgRemoteId && imgRepoName)) {
+    if (!(imgRemoteId && imgRepoName)) {
       const imageTags = null;
-      inst.setState(s => ({...s, remotes: { ...s.remotes, imageTags }}));
+      inst.setState(s => ({ ...s, remotes: { ...s.remotes, imageTags } }));
       return;
     }
 
     const ep = `/remotes/${imgRemoteId}/${imgRepoName}/branches`;
-    inst.notifyFetchChanged({isTagFetching: true});
+    inst.notifyFetchChanged({ isTagFetching: true });
 
     Backend.raisingFetch(ep, resp => {
       let imageTags = DataUtils.obj2Camel(resp)['data'];
       imageTags = imageTags.map(t => this.fullImgTag(inst, t));
       const imageTag = imageTags[0];
-      inst.setState(s => ({...s, remotes: { ...s.remotes, imageTags }}));
-      inst.setState(s => ({...s, choices: { ...s.choices, imageTag }}));
-      inst.notifyFetchChanged({isTagFetching: false});
-    })
+      inst.setState(s => ({ ...s, remotes: { ...s.remotes, imageTags } }));
+      inst.setState(s => ({ ...s, choices: { ...s.choices, imageTag } }));
+      inst.notifyFetchChanged({ isTagFetching: false });
+    });
   }
 
-  static fetchGitBranches(inst){
-    let {gitRemoteId, gitRepoName} = inst.props.matching || {};
-    if(!gitRemoteId || !gitRepoName) {
+  static fetchGitBranches(inst) {
+    let { gitRemoteId, gitRepoName } = inst.props.matching || {};
+    if (!gitRemoteId || !gitRepoName) {
       const gitBranches = null;
-      inst.setState(s => ({...s, remotes: { ...s.remotes, gitBranches }}));
+      inst.setState(s => ({ ...s, remotes: { ...s.remotes, gitBranches } }));
       return;
     }
 
     const ep = `/remotes/${gitRemoteId}/${gitRepoName}/branches`;
-    inst.notifyFetchChanged({isBranchFetching: true});
+    inst.notifyFetchChanged({ isBranchFetching: true });
 
     Backend.raisingFetch(ep, resp => {
-      const gitBranches = DataUtils.aToO(
-        DataUtils.obj2Camel(resp)['data']
-      );
-      inst.setState(s => ({...s, remotes: {...s.remotes, gitBranches}}));
+      const gitBranches = DataUtils.aToO(DataUtils.obj2Camel(resp)['data']);
+      inst.setState(s => ({ ...s, remotes: { ...s.remotes, gitBranches } }));
       this.setBranch(inst, Object.keys(gitBranches)[0]);
-      inst.notifyFetchChanged({isBranchFetching: false});
-    })
+      inst.notifyFetchChanged({ isBranchFetching: false });
+    });
   }
 
-  static fetchBranchCommits(inst, gitBranch){
-    let {gitRemoteId, gitRepoName} = inst.props.matching;
+  static fetchBranchCommits(inst, gitBranch) {
+    let { gitRemoteId, gitRepoName } = inst.props.matching;
     let ep = `/remotes/${gitRemoteId}/${gitRepoName}/`;
     ep += `${gitBranch}/commits`;
 
-    inst.setState(s => ({...s, isFetching: true}));
-    inst.notifyFetchChanged({isCommitFetching: true});
+    inst.setState(s => ({ ...s, isFetching: true }));
+    inst.notifyFetchChanged({ isCommitFetching: true });
     Backend.raisingFetch(ep, resp => {
       const commits = DataUtils.obj2Camel(resp)['data'];
-      inst.notifyFetchChanged({isCommitFetching: false});
+      inst.notifyFetchChanged({ isCommitFetching: false });
       inst.setState(s => {
-        const branches = {...s.remotes.gitBranches, [gitBranch]: commits };
+        const branches = { ...s.remotes.gitBranches, [gitBranch]: commits };
         const remotes = { ...s.remotes, gitBranches: branches };
         const choices = { ...s.choices, gitCommit: commits[0].sha };
-        return({...s, isFetching: false, remotes, choices})
+        return { ...s, isFetching: false, remotes, choices };
       });
     });
   }
 
-  static sideEffect(inst, field, value){
-    if(field === 'gitBranch') {
+  static sideEffect(inst, field, value) {
+    if (field === 'gitBranch') {
       this.setBranch(inst, value);
       return true;
     }
     return false;
   }
 
-  static setBranch(inst, gitBranch){
-    inst.setState(s => ({...s, choices: {...s.choices, gitBranch}}));
-    if(inst.state.remotes.gitBranches[gitBranch] === null){
+  static setBranch(inst, gitBranch) {
+    inst.setState(s => ({ ...s, choices: { ...s.choices, gitBranch } }));
+    if (inst.state.remotes.gitBranches[gitBranch] === null) {
       this.fetchBranchCommits(inst, gitBranch);
     }
   }
 
-  static fullImgTag(inst, imageTag){
-    const {imgRemoteName, imgRepoName} = inst.props.matching;
+  static fullImgTag(inst, imageTag) {
+    const { imgRemoteName, imgRepoName } = inst.props.matching;
     return `${imgRemoteName}/${imgRepoName}:${imageTag}`;
   }
 
-  static opHelper(operationType){
+  static opHelper(operationType) {
     switch (operationType) {
-      case "reload":
+      case 'reload':
         return ForceImagePullOperator;
-      case "change":
-      case "choose":
-      case "docker":
+      case 'change':
+      case 'choose':
+      case 'docker':
         return ChangeImageTagOperator;
-      case "scale":
+      case 'scale':
         return ScalePodsOperator;
-      case "git":
+      case 'git':
         return BuildPushRunOperation;
       default:
         throw `No helper for op type ${operationType}`;
     }
   }
 
-  static defOutImageName(props){
+  static defOutImageName(props) {
     const { matching, deployment } = props;
-    if(matching)
-      return `${matching.imgRemoteName}/${matching.imgRepoName}:latest`;
-    else if(deployment)
-      return deployment.imageName;
-    else return "";
+    if (matching) return `${matching.imgRemoteName}/${matching.imgRepoName}:latest`;
+    else if (deployment) return deployment.imageName;
+    else return '';
   }
 
-  static commitToS(commit){
+  static commitToS(commit) {
     const at = moment(commit.timestamp).fromNow();
     return `"${commit.message}" by ${commit.author} from ${at}`;
   }
 
-  static previewCommands(inst){
+  static previewCommands(inst) {
     const type = inst.state.choices.operationType;
-    const { name, namespace, replicas, containerName} = inst.props.deployment;
+    const { name, namespace, replicas, containerName } = inst.props.deployment;
     const { scaleTo, imageName, outImageName } = inst.state.choices;
     const { gitCommit } = inst.state.choices;
-    const { gitRemoteName, gitRepoName} = inst.props.matching || {};
+    const { gitRemoteName, gitRepoName } = inst.props.matching || {};
     const { dockerfilePath, dockerBuildPath } = inst.props.matching || {};
     let bPath = dockerBuildPath;
     bPath = bPath === '/' ? '.' : bPath;
@@ -165,22 +160,25 @@ export class ImageActionsModalHelper {
       cont: containerName,
       dPath: dockerfilePath || '',
       bPath,
-      scaleTo
+      scaleTo,
     };
     return defaults.previewCommands[type](interp) || [];
   }
 
-  static imagePullPolicyWorks(inst){
+  static imagePullPolicyWorks(inst) {
     const { imagePullPolicy } = inst.props.deployment;
-    if(imagePullPolicy !== 'Always') return false;
+    if (imagePullPolicy !== 'Always') return false;
   }
 
-  static isInputValid(inst){
+  static isInputValid(inst) {
     const { operationType, imageName, outImageName } = inst.state.choices;
-    switch(operationType){
-      case 'change': return !!imageName;
-      case 'git': return !!outImageName;
-      default: return true;
+    switch (operationType) {
+      case 'change':
+        return !!imageName;
+      case 'git':
+        return !!outImageName;
+      default:
+        return true;
     }
   }
 }

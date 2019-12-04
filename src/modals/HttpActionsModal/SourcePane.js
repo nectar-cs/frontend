@@ -1,102 +1,100 @@
-import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
-import s from './SourcePane.sass'
-import Utils from "../../utils/Utils";
-import ReactTags from "react-tag-autocomplete";
-import ss from "../../assets/react-tags.sass";
-import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import s from './SourcePane.sass';
+import Utils from '../../utils/Utils';
+import ReactTags from 'react-tag-autocomplete';
+import ss from '../../assets/react-tags.sass';
+import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
 
 const AUTO_COMPLETE_STYLES = {
   root: s.labelTags,
   selected: ss.reactTagsSelected,
   selectedTag: ss.reactTagsSelectedTag,
   search: ss.reactTagsSearch,
-  suggestions: ss.reactTagsSuggestions
+  suggestions: ss.reactTagsSuggestions,
 };
 
 export default class SourcePane extends React.Component {
-
-  render(){
-    return(
+  render() {
+    return (
       <Fragment>
-        <p><i>Where</i> your request comes from matters in some cases.
-          Network Policies, Ingress, and service meshes
-          can modulate requests based on their origin.</p>
+        <p>
+          <i>Where</i> your request comes from matters in some cases. Network Policies, Ingress, and
+          service meshes can modulate requests based on their origin.
+        </p>
         <div className={s.inputLine}>
           <p className={s.label}>Source Type</p>
           <select
             className={s.typeSelect}
             value={this.props.type}
-            onChange={(e) => this.broadcastChange('type', e)}>
+            onChange={e => this.broadcastChange('type', e)}
+          >
             {SourcePane.typeOptions()}
           </select>
         </div>
 
-        { this.renderConditionalFields() }
+        {this.renderConditionalFields()}
       </Fragment>
-    )
+    );
   }
 
-  renderConditionalFields(){
-    if(this.props.type === 'test-pod')    {
-      return(
+  renderConditionalFields() {
+    if (this.props.type === 'test-pod') {
+      return (
         <Fragment>
-          { this.renderNamespaceSelector() }
-          { this.renderLabelsInput() }
+          {this.renderNamespaceSelector()}
+          {this.renderLabelsInput()}
         </Fragment>
-      )
+      );
     } else {
-      return(
-        <ComingSoonSection size='medium'/>
-      )
+      return <ComingSoonSection size="medium" />;
     }
   }
 
-  renderNamespaceSelector(){
-    return(
+  renderNamespaceSelector() {
+    return (
       <div className={s.inputLine}>
         <p className={s.label}>Pod Namespace</p>
         <select
           className={s.typeSelect}
           value={this.props.namespace}
-          onChange={(e) => this.broadcastChange('namespace', e)}>
-          { Utils.arrayOptions(this.props.namespaces) }
+          onChange={e => this.broadcastChange('namespace', e)}
+        >
+          {Utils.arrayOptions(this.props.namespaces)}
         </select>
       </div>
-    )
+    );
   }
 
-  renderLabelsInput(){
-    return(
+  renderLabelsInput() {
+    return (
       <div className={s.inputLine}>
         <p className={s.label}>Pod Labels</p>
         <ReactTags
           classNames={AUTO_COMPLETE_STYLES}
           suggestions={this.rinseTags(this.props.labelCombos)}
-          handleAddition={() => console.log("lol")}
-          handleDelete={() => console.log("ita")}
+          handleAddition={() => console.log('lol')}
+          handleDelete={() => console.log('ita')}
         />
       </div>
-    )
+    );
   }
 
-  rinseTags(tags){
-    return tags.map((t) => (
-      { id: t, name: t }
-    ));
+  rinseTags(tags) {
+    return tags.map(t => ({ id: t, name: t }));
   }
 
-  broadcastChange(field, event){
+  broadcastChange(field, event) {
     const assignment = { [field]: event.target.value };
-    this.props.onFieldChanged(assignment)
+    this.props.onFieldChanged(assignment);
   }
 
-  static typeOptions(){
+  static typeOptions() {
     return Utils.hashOptions({
-      'test-pod': "A one time pod we create inside your cluster",
-      'web': "One of our servers on the web",
-      'mimic-pod': "A one time pod we create inside your cluster that mimics a deployment"
-    })
+      'test-pod': 'A one time pod we create inside your cluster',
+      web: 'One of our servers on the web',
+      'mimic-pod': 'A one time pod we create inside your cluster that mimics a deployment',
+    });
   }
 
   static propTypes = {
@@ -105,7 +103,6 @@ export default class SourcePane extends React.Component {
     namespace: PropTypes.string,
     labelCombos: PropTypes.arrayOf(PropTypes.string),
     labels: PropTypes.arrayOf(PropTypes.string),
-    onFieldChanged: PropTypes.func.isRequired
-  }
-
+    onFieldChanged: PropTypes.func.isRequired,
+  };
 }

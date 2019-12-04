@@ -1,52 +1,54 @@
-import PodJob from "./PodJob";
+import PodJob from './PodJob';
 
 export default class ChangeImageTagJob extends PodJob {
-  prepare(bundle){
+  prepare(bundle) {
     super.prepare(bundle);
     this.imageName = bundle.imageName;
   }
 
   recomputeState() {
-    if(this.crashedPods().length > 0){
-      this.conclude(false, "Pod Failures in New Pods");
+    if (this.crashedPods().length > 0) {
+      this.conclude(false, 'Pod Failures in New Pods');
     } else {
       const patched = this.readyPods();
-      if(patched.length === this.initial.length){
-        if(this.deadPods().length === this.initial.length){
+      if (patched.length === this.initial.length) {
+        if (this.deadPods().length === this.initial.length) {
           this.conclude(true);
         }
       }
     }
   }
 
-  readyPods(){
+  readyPods() {
     const patched = this.podsWithImage(this.updated, this.imageName);
     return this.runningPods(patched);
   }
 
-  progressItems(){
+  progressItems() {
     const patched = this.readyPods();
     const dead = this.deadPods();
     return [
       this.buildProgressItem(
-        "Pods running new image",
+        'Pods running new image',
         this.simpleDetail(`${patched.length}/${this.initial.length}`),
-        this.simpleStatus(patched.length === this.initial.length)
+        this.simpleStatus(patched.length === this.initial.length),
       ),
       this.buildProgressItem(
-        "Old Pods Gone",
+        'Old Pods Gone',
         this.simpleDetail(`${dead.length}/${this.initial.length}`),
-        this.simpleStatus(dead.length === this.initial.length)
-      )
-    ]
+        this.simpleStatus(dead.length === this.initial.length),
+      ),
+    ];
   }
 
-  kapiVerb() { return "new_image"; }
+  kapiVerb() {
+    return 'new_image';
+  }
 
   toKapiPayload() {
     return {
       ...super.toKapiPayload(),
-      targetName: this.imageName
-    }
+      targetName: this.imageName,
+    };
   }
 }

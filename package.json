@@ -10,7 +10,8 @@
     "one": "./node_modules/.bin/webpack-dev-server --hot --progress --colors --host 0.0.0.0 --port 9000",
     "two": "./node_modules/.bin/webpack-dev-server --mode development --hot --progress --colors --host 0.0.0.0 --port 9000",
     "three": "./node_modules/.bin/webpack-dev-server --mode development --config ./webpack.config.js --colors --host 0.0.0.0 --port 9000",
-    "four": "./node_modules/.bin/webpack-dev-server --hot --progress --colors --host 0.0.0.0 --port 9000"
+    "four": "./node_modules/.bin/webpack-dev-server --hot --progress --colors --host 0.0.0.0 --port 9000",
+    "format": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|css|md)\""
   },
   "license": "Apache-2.0",
   "licenses": [
@@ -38,6 +39,7 @@
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.1",
     "node-sass": "^4.9.1",
+    "prettier": "^1.19.1",
     "sass-loader": "^7.0.3",
     "style-loader": "^1.0.0",
     "webpack": "^4.12.0",

@@ -1,53 +1,45 @@
-import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
-import FormComponent from "../../hocs/FormComponent";
-import Utils from "../../utils/Utils";
-import defaults from "./defaults";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import FormComponent from '../../hocs/FormComponent';
+import Utils from '../../utils/Utils';
+import defaults from './defaults';
 
-class PortForwardFormClass extends React.Component{
-
-  constructor(props){
+class PortForwardFormClass extends React.Component {
+  constructor(props) {
     super(props);
     this.makeSelect = props.makeSelect;
     this.makeInput = props.makeInput;
   }
 
-  componentDidMount(){
-    Utils.mp("Port Forward Start", {});
+  componentDidMount() {
+    Utils.mp('Port Forward Start', {});
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <Fragment>
         <p>{defaults.sectionOne.intro}</p>
-        { this.renderResTypeSelect() }
-        { this.renderResNameSelect() }
-        { this.renderFromPortInput() }
+        {this.renderResTypeSelect()}
+        {this.renderResNameSelect()}
+        {this.renderFromPortInput()}
       </Fragment>
-    )
+    );
   }
 
-  renderResTypeSelect(){
+  renderResTypeSelect() {
     return this.makeSelect(
-      "Resource Type",
-      "resType",
-      Utils.arrayOptions(this.props.resTypeOptions)
-    )
+      'Resource Type',
+      'resType',
+      Utils.arrayOptions(this.props.resTypeOptions),
+    );
   }
 
-  renderResNameSelect(){
-    return this.makeSelect(
-      "Resource",
-      "resName",
-      Utils.arrayOptions(this.props.resNameOptions)
-    )
+  renderResNameSelect() {
+    return this.makeSelect('Resource', 'resName', Utils.arrayOptions(this.props.resNameOptions));
   }
 
-  renderFromPortInput(){
-    return this.makeInput(
-      "From Port",
-      "fromPort"
-    )
+  renderFromPortInput() {
+    return this.makeInput('From Port', 'fromPort');
   }
 
   static propTypes = {
@@ -55,8 +47,8 @@ class PortForwardFormClass extends React.Component{
     resTypeOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
     resName: PropTypes.string,
     resNameOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-    fromPort: PropTypes.string
-  }
+    fromPort: PropTypes.string,
+  };
 }
 
 const PortForwardForm = FormComponent.compose(PortForwardFormClass);

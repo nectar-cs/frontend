@@ -1,9 +1,7 @@
 //@flow
 
-import React from 'react'
+import React from 'react';
 
-export default class DotStatusTag extends React.Component{
-  render(){
-
-  }
+export default class DotStatusTag extends React.Component {
+  render() {}
 }

@@ -1,8 +1,7 @@
-import DockerJob from "./DockerJob";
+import DockerJob from './DockerJob';
 
 export default class DockerBuildJob extends DockerJob {
-
-  prepare(bundle){
+  prepare(bundle) {
     this.tarballUrl = bundle.tarballUrl;
     this.dockerfilePath = bundle.dockerfilePath;
     this.dockerBuildPath = bundle.dockerBuildPath;
@@ -14,9 +13,11 @@ export default class DockerBuildJob extends DockerJob {
       repoTarUrl: this.tarballUrl,
       dockerfilePath: this.dockerfilePath,
       dockerBuildPath: this.dockerBuildPath,
-      outputImg: this.outImageName
+      outputImg: this.outImageName,
     };
   }
 
-  initiatePath() { return `/api/docker/build_image`; }
+  initiatePath() {
+    return `/api/docker/build_image`;
+  }
 }

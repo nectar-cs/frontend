@@ -1,11 +1,11 @@
-import styled from 'styled-components'
-import { colored } from './../../../assets/constants'
-import Layout from './../../../assets/layouts'
+import styled from 'styled-components';
+import { colored } from './../../../assets/constants';
+import Layout from './../../../assets/layouts';
 
-const podSize = "14px";
+const podSize = '14px';
 const mult = 1.04;
-const headerSize = "42px";
-const headerLeft = "15px";
+const headerSize = '42px';
+const headerLeft = '15px';
 
 const Card = styled(Layout.ContentContainer)`
   position: relative;
@@ -22,7 +22,6 @@ const Header = styled.div`
   width: 100%;
   position: relative;
   margin-bottom: 14px;
-
 `;
 
 const HeaderImage = styled.img`
@@ -43,14 +42,14 @@ const HeaderTitle = styled(HeaderText)`
   font-size: 16px;
   font-weight: 100;
   margin-top: 1px;
-  &:hover{
+  &:hover {
     text-decoration: underline;
     cursor: pointer;
   }
 `;
 
 const HeaderSubtitle = styled(HeaderText)`
-  bottom: 1px
+  bottom: 1px;
 `;
 
 const PodStatusesBox = styled.div`
@@ -59,9 +58,8 @@ const PodStatusesBox = styled.div`
   left: -2px;
   right: -2px;
   display: flex;
-  padding: 12px 0 12px 4px;`
-;
-
+  padding: 12px 0 12px 4px;
+`;
 const AdditionalControlsBox = styled.div`
   position: absolute;
   bottom: -4px;
@@ -75,8 +73,8 @@ const ControlIcon = styled.i`
   font-size: 19px;
   margin-left: 7px;
   color: ${p => p.theme.colors.contrastLessFont};
-  &:hover{
-    color: ${p => p.theme.colors.primaryColor};  
+  &:hover {
+    color: ${p => p.theme.colors.primaryColor};
     cursor: pointer;
   }
 `;
@@ -86,15 +84,13 @@ const PodCircle = styled.div`
   height: ${podSize};
   border-radius: 50%;
   margin-left: 6px;
-  background: ${p => colored(p.emotion)}; 
-  &:hover{
+  background: ${p => colored(p.emotion)};
+  &:hover {
     cursor: pointer;
   }
 `;
 
-const
-
-  ContentRows = styled.table`
+const ContentRows = styled.table`
   margin-top: 18px;
 `;
 
@@ -108,7 +104,7 @@ const S = {
   HeaderSubtitle,
   ContentRows,
   AdditionalControlsBox,
-  ControlIcon
+  ControlIcon,
 };
 
 export { S };

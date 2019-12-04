@@ -1,57 +1,42 @@
-import React from 'react'
-import {Container, Table} from "./PodTableStyles";
-import Tables from "../../../assets/table-combos";
-import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-
+import React from 'react';
+import { Container, Table } from './PodTableStyles';
+import Tables from '../../../assets/table-combos';
+import TextOverLineSubtitle from '../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
 
 export default class PodTable extends React.Component {
-  render(){
-    return(
+  render() {
+    return (
       <Container>
-        <TextOverLineSubtitle text='Current Pods'/>
+        <TextOverLineSubtitle text="Current Pods" />
         <Table>
           <tbody>
-          <HeaderRow fields={this.props.fields}/>
-          { this.renderList() }
+            <HeaderRow fields={this.props.fields} />
+            {this.renderList()}
           </tbody>
         </Table>
       </Container>
-    )
+    );
   }
 
-  renderList(){
+  renderList() {
     return this.props.pods.map(pod => {
-      return(
-        <PodRow
-          key={pod.name}
-          pod={pod}
-          mappers={this.props.mappers}
-        />
-      )
-    })
+      return <PodRow key={pod.name} pod={pod} mappers={this.props.mappers} />;
+    });
   }
 }
 
-function PodRow(props){
-  const fields = props.mappers.map((mapper, i) => (
-    <td key={i}>{mapper(props.pod)}</td>
-  ));
+function PodRow(props) {
+  const fields = props.mappers.map((mapper, i) => <td key={i}>{mapper(props.pod)}</td>);
 
-  return(
-    <tr>
-      { fields }
-    </tr>
-  )
+  return <tr>{fields}</tr>;
 }
 
-function HeaderRow(props){
+function HeaderRow(props) {
   const fields = props.fields.map(f => (
-    <th key={f}><p>{f}</p></th>
+    <th key={f}>
+      <p>{f}</p>
+    </th>
   ));
 
-  return(
-    <Tables.ModestHeader>
-      { fields }
-    </Tables.ModestHeader>
-  )
+  return <Tables.ModestHeader>{fields}</Tables.ModestHeader>;
 }

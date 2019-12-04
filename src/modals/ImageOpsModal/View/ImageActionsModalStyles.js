@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-import Layout from '../../../assets/layouts.js'
+import styled from 'styled-components';
+import Layout from '../../../assets/layouts.js';
 
-export const Container = styled(Layout.ModalLayout)`
-  
-`;
+export const Container = styled(Layout.ModalLayout)``;
 
 export const Intro = styled.p`
   margin-top: 18px;

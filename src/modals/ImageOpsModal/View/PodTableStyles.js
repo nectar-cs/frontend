@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin-top: 48px
+  margin-top: 48px;
 `;
 
 export const Table = styled.table`
@@ -9,6 +9,5 @@ export const Table = styled.table`
 `;
 
 export const ImageName = styled.p`
-  width: 80px
+  width: 80px;
 `;
-

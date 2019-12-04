@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import Layout from "../../../assets/layouts";
+import styled from 'styled-components';
+import Layout from '../../../assets/layouts';
 
 const RightPanel = styled(Layout.RightPanel)`
   box-shadow: none;

@@ -1,102 +1,102 @@
 //@flow
-import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
-import Utils from "../../utils/Utils";
-import {stacks} from "../../misc/stacks";
-import FormComponent from "../../hocs/FormComponent";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import Utils from '../../utils/Utils';
+import { stacks } from '../../misc/stacks';
+import FormComponent from '../../hocs/FormComponent';
+import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
 
 class MatchFormClass extends React.Component<Props> {
-
-  render(){
-    return(
+  render() {
+    return (
       <Fragment>
-        <TextOverLineSubtitle text={'Git Remote'}/>
-        { this.renderGitRemoteInput() }
-        { this.renderGitRepoSelect() }
-        <TextOverLineSubtitle text={'Docker Remote'}/>
-        { this.renderImgRemoteSelect() }
-        { this.renderImgRepoSelect() }
-        <TextOverLineSubtitle text={'Application'}/>
-        { this.renderDfPathSelect() }
-        { this.renderBuildCtxInput() }
-        { this.renderFrameworkSelect() }
+        <TextOverLineSubtitle text={'Git Remote'} />
+        {this.renderGitRemoteInput()}
+        {this.renderGitRepoSelect()}
+        <TextOverLineSubtitle text={'Docker Remote'} />
+        {this.renderImgRemoteSelect()}
+        {this.renderImgRepoSelect()}
+        <TextOverLineSubtitle text={'Application'} />
+        {this.renderDfPathSelect()}
+        {this.renderBuildCtxInput()}
+        {this.renderFrameworkSelect()}
       </Fragment>
-    )
+    );
   }
 
-  renderGitRemoteInput(){
-    if(!this.hasGitRemote()) return null;
+  renderGitRemoteInput() {
+    if (!this.hasGitRemote()) return null;
     const { gitRemoteChoices } = this.props;
 
     return this.props.makeSelect(
       'Git Remote',
       'gitRemoteName',
-      Utils.arrayOptions(gitRemoteChoices)
+      Utils.arrayOptions(gitRemoteChoices),
     );
   }
 
-  renderGitRepoSelect(){
-    if(!this.hasGitRemote()) return null;
+  renderGitRepoSelect() {
+    if (!this.hasGitRemote()) return null;
     const { gitRepoChoices } = this.props;
 
     return this.props.makeSelect(
       'Git Repository',
       'gitRepoName',
-      Utils.arrayOptions(gitRepoChoices)
+      Utils.arrayOptions(gitRepoChoices),
     );
   }
 
-  renderDfPathSelect(){
-    if(!this.hasGitRemote()) return null;
+  renderDfPathSelect() {
+    if (!this.hasGitRemote()) return null;
     const { dfPathChoices } = this.props;
     return this.props.makeSelect(
       'Dockerfile Path',
       'dockerfilePath',
-      Utils.arrayOptions(dfPathChoices)
+      Utils.arrayOptions(dfPathChoices),
     );
   }
 
-  renderBuildCtxInput(){
-    if(!this.hasGitRemote()) return null;
-    return this.props.makeInput(
-      "Build Context Path",
-      "dockerBuildPath",
-    )
+  renderBuildCtxInput() {
+    if (!this.hasGitRemote()) return null;
+    return this.props.makeInput('Build Context Path', 'dockerBuildPath');
   }
 
-  renderImgRemoteSelect(){
-    if(!this.hasImgRemote()) return null;
+  renderImgRemoteSelect() {
+    if (!this.hasImgRemote()) return null;
     const { imgRemoteChoices } = this.props;
     return this.props.makeSelect(
       'Docker Registry',
       'imgRemoteName',
-      Utils.arrayOptions(imgRemoteChoices)
+      Utils.arrayOptions(imgRemoteChoices),
     );
   }
 
-  renderImgRepoSelect(){
-    if(!this.hasImgRemote()) return null;
+  renderImgRepoSelect() {
+    if (!this.hasImgRemote()) return null;
     const { imgRepoChoices } = this.props;
 
     return this.props.makeSelect(
       'Docker Repository',
       'imgRepoName',
-      Utils.arrayOptions(imgRepoChoices)
+      Utils.arrayOptions(imgRepoChoices),
     );
   }
 
-  renderFrameworkSelect(){
-    if(!this.hasGitRemote()) return null;
+  renderFrameworkSelect() {
+    if (!this.hasGitRemote()) return null;
     return this.props.makeSelect(
       'Framework or Language',
       'framework',
-      Utils.arrayOptions(stacks.sort())
+      Utils.arrayOptions(stacks.sort()),
     );
   }
 
-  hasGitRemote(){ return this.props.gitRemoteChoices.length > 0; }
-  hasImgRemote(){ return this.props.imgRemoteChoices.length > 0; }
+  hasGitRemote() {
+    return this.props.gitRemoteChoices.length > 0;
+  }
+  hasImgRemote() {
+    return this.props.imgRemoteChoices.length > 0;
+  }
 
   static propTypes = {
     gitRemoteChoices: PropTypes.array,
@@ -129,10 +129,8 @@ type Props = {
   imgRepoName: PropTypes.string,
   dockerfilePath: string,
   framework: PropTypes.string,
-}
+};
 
-const MatchForm = FormComponent.compose(
-  MatchFormClass
-);
+const MatchForm = FormComponent.compose(MatchFormClass);
 
 export default MatchForm;

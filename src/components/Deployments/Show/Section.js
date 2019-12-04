@@ -1,84 +1,83 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {Types} from "../../../types/CommonTypes";
-import S from './SectionStyles'
-import defaults from "./defaults";
-import Helper from "./Helper";
-
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Types } from '../../../types/CommonTypes';
+import S from './SectionStyles';
+import defaults from './defaults';
+import Helper from './Helper';
 
 export default class Section extends React.Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.onClicked = this.onClicked.bind(this);
     this.renderActivityModal = this.renderActivityModal.bind(this);
-    this.props.defaultDetailSetter(
-      this._className(),
-      this.renderActivityModal
-    );
+    this.props.defaultDetailSetter(this._className(), this.renderActivityModal);
   }
 
-  render(){
-    const {isChosen} = this.props;
-    return(
+  render() {
+    const { isChosen } = this.props;
+    return (
       <S.Collapsed onClick={this.onClicked} chosen={isChosen}>
-        { this.renderTitleBox() }
-        { this.renderContent() }
+        {this.renderTitleBox()}
+        {this.renderContent()}
       </S.Collapsed>
     );
   }
 
-  renderTitleBox(){
-    return(
+  renderTitleBox() {
+    return (
       <S.LeftBox>
-        { this.renderIcon() }
-        { this.renderTitle() }
+        {this.renderIcon()}
+        {this.renderTitle()}
       </S.LeftBox>
-    )
-  }
-
-  renderContent(){
-    const {isChosen, deployment} = this.props;
-    if(!(isChosen && deployment)) return null;
-    return this.renderDetail();
-  }
-
-  renderDetail(){
-    return null;
-  }
-
-  onClicked(){
-    this.props.onClicked(this._className());
-  }
-
-  renderTitle(){
-    return <S.CollapsedTitle>{this.title()}</S.CollapsedTitle>;
-  }
-
-  renderIcon(){
-    return(
-      <S.CollapsedIcon className='material-icons'>
-        { this.iconName() }
-      </S.CollapsedIcon>
     );
   }
 
-  renderActivityModal(source){
+  renderContent() {
+    const { isChosen, deployment } = this.props;
+    if (!(isChosen && deployment)) return null;
+    return this.renderDetail();
+  }
+
+  renderDetail() {
+    return null;
+  }
+
+  onClicked() {
+    this.props.onClicked(this._className());
+  }
+
+  renderTitle() {
+    return <S.CollapsedTitle>{this.title()}</S.CollapsedTitle>;
+  }
+
+  renderIcon() {
+    return <S.CollapsedIcon className="material-icons">{this.iconName()}</S.CollapsedIcon>;
+  }
+
+  renderActivityModal(source) {
     return this._renderActivityModal(source);
   }
 
-  _renderActivityModal(source){
+  _renderActivityModal(source) {
     return <p>Unimplemented ({this._className()})</p>;
   }
 
-  key(){
+  key() {
     return Helper.classNameToKey(this._className());
   }
 
-  _className(){ throw "Unimplemented!" }
-  config() { return defaults.sections[this.key()] }
-  iconName(){ return this.config().iconName }
-  title(){ return this.config().title  }
+  _className() {
+    throw 'Unimplemented!';
+  }
+  config() {
+    return defaults.sections[this.key()];
+  }
+  iconName() {
+    return this.config().iconName;
+  }
+  title() {
+    return this.config().title;
+  }
 
   static propTypes = {
     isChosen: PropTypes.bool.isRequired,
@@ -86,6 +85,6 @@ export default class Section extends React.Component {
     deployment: Types.Deployment,
     matching: Types.Matching,
     onClicked: PropTypes.func.isRequired,
-    refreshCallback: PropTypes.func.isRequired
-  }
+    refreshCallback: PropTypes.func.isRequired,
+  };
 }

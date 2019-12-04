@@ -1,42 +1,41 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import s from './KubeErrorModal.sass'
-import LeftHeader from "../LeftHeader/LeftHeader";
-import Utils from "../../utils/Utils";
-import ModalButton from "../Buttons/ModalButton";
-import Kapi from "../../utils/Kapi";
-import {KapiErrorContent, kapiErrorTitle} from "../../misc/KubeErrorContent";
-import CenterLoader from "../CenterLoader/CenterLoader";
+import React from 'react';
+import PropTypes from 'prop-types';
+import s from './KubeErrorModal.sass';
+import LeftHeader from '../LeftHeader/LeftHeader';
+import Utils from '../../utils/Utils';
+import ModalButton from '../Buttons/ModalButton';
+import Kapi from '../../utils/Kapi';
+import { KapiErrorContent, kapiErrorTitle } from '../../misc/KubeErrorContent';
+import CenterLoader from '../CenterLoader/CenterLoader';
 
-export default class KubeErrorModal extends React.Component{
-
-  constructor(props){
+export default class KubeErrorModal extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       isSubmitting: false,
       didConnect: false,
-      bundle: null
+      bundle: null,
     };
     this.submitRetry = this.submitRetry.bind(this);
     this.onConnectSuccess = this.onConnectSuccess.bind(this);
     this.onConnectFailed = this.onConnectFailed.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
-    this.setState(s => ({...s, bundle: nextProps.bundle}));
+  componentWillReceiveProps(nextProps) {
+    this.setState(s => ({ ...s, bundle: nextProps.bundle }));
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <div className={s.modal}>
         <LeftHeader
           title={kapiErrorTitle(this.bundle())}
           subtitle={"Mo' k8s, mo' problems, right?"}
-          graphicType='image'
+          graphicType="image"
           graphicName={Utils.image('k8s_style_light.png')}
         />
 
-        { this.renderCenterContent() }
+        {this.renderCenterContent()}
 
         <ModalButton
           title={'Try Reconnecting'}
@@ -47,47 +46,43 @@ export default class KubeErrorModal extends React.Component{
     );
   }
 
-  renderCenterContent(){
-    if(!this.state.isSubmitting){
-      return(
+  renderCenterContent() {
+    if (!this.state.isSubmitting) {
+      return (
         <div className={s.content}>
           <KapiErrorContent {...this.bundle()} />
         </div>
-      )
+      );
     } else {
-      return <CenterLoader/>
+      return <CenterLoader />;
     }
   }
 
-  onConnectSuccess(){
-    console.log("SUCCESS");
-    this.setState(s => ({...s, isSubmitting: false, didConnect: true}));
+  onConnectSuccess() {
+    console.log('SUCCESS');
+    this.setState(s => ({ ...s, isSubmitting: false, didConnect: true }));
     this.props.timedClose();
   }
 
-  onConnectFailed(bundle){
-    console.log("FAILURE");
-    this.setState((s) => ({...s, bundle, isSubmitting: false}));
+  onConnectFailed(bundle) {
+    console.log('FAILURE');
+    this.setState(s => ({ ...s, bundle, isSubmitting: false }));
   }
 
-  submitRetry(){
-    this.setState((s) => ({...s, isSubmitting: true}));
+  submitRetry() {
+    this.setState(s => ({ ...s, isSubmitting: true }));
     const endpoint = `/api/status/connect`;
-    Kapi.fetch(
-      endpoint,
-      this.onConnectSuccess,
-      this.onConnectFailed
-    )
+    Kapi.fetch(endpoint, this.onConnectSuccess, this.onConnectFailed);
   }
 
-  bundle(){
+  bundle() {
     return this.state.bundle || this.props.bundle;
   }
 
   static propTypes = {
     bundle: PropTypes.shape({
       kind: PropTypes.oneOf(['soft', 'hard']).isRequired,
-      error: PropTypes.object.isRequired
-    }).isRequired
-  }
+      error: PropTypes.object.isRequired,
+    }).isRequired,
+  };
 }

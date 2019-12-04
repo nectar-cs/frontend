@@ -1,9 +1,8 @@
 export default class BaseOperator {
-
-  constructor(bundle){
+  constructor(bundle) {
     this.conclusion = null;
-    this.notifyUpdated = (x) => bundle.notifyUpdated(x);
-    this.notifyFinished = (x) => bundle.notifyFinished(x);
+    this.notifyUpdated = x => bundle.notifyUpdated(x);
+    this.notifyFinished = x => bundle.notifyFinished(x);
 
     this.deployment = bundle.deployment;
     this.matching = bundle.matching;
@@ -12,8 +11,8 @@ export default class BaseOperator {
     this.jobs = jobClasses.map(c => this.initializeJob(c));
   }
 
-  async perform(){
-    for (const job of this.jobs){
+  async perform() {
+    for (const job of this.jobs) {
       this.prepareJob(job);
       await job.perform();
       this.broadcastProgress();
@@ -25,71 +24,69 @@ export default class BaseOperator {
     this.conclude(true);
   }
 
-  jobLogs(){
-    return this.runningOrFinishedJobs().reduce((all, job) => (
-      [...all, ...job.logs()]
-    ), []);
+  jobLogs() {
+    return this.runningOrFinishedJobs().reduce((all, job) => [...all, ...job.logs()], []);
   }
 
-  runningOrFinishedJobs(){
-    return this.jobs.filter(job =>
-      job.hasStarted() || job.hasConcluded()
-    )
+  runningOrFinishedJobs() {
+    return this.jobs.filter(job => job.hasStarted() || job.hasConcluded());
   }
 
-  getJob(klass){
-    return this.jobs.find(job => (
-      job.constructor.name === klass.name
-    ))
+  getJob(klass) {
+    return this.jobs.find(job => job.constructor.name === klass.name);
   }
 
   progressItems() {
-    return this.jobs.reduce((all, crt) => (
-      [...all, ...crt.progressItems()]
-    ), []);
+    return this.jobs.reduce((all, crt) => [...all, ...crt.progressItems()], []);
   }
 
-  broadcastProgress(){
-    this.notifyUpdated(this.progressItems())
+  broadcastProgress() {
+    this.notifyUpdated(this.progressItems());
   }
 
-  progressItemStatus(status){
-    if(status === 'failed') return 'failed';
-    if(this.conclusion != null)
-      return this.conclusion ? 'done' : 'failed';
+  progressItemStatus(status) {
+    if (status === 'failed') return 'failed';
+    if (this.conclusion != null) return this.conclusion ? 'done' : 'failed';
     else return status;
   }
 
-  buildProgressItem(title, detail, status){
-    return({
+  buildProgressItem(title, detail, status) {
+    return {
       name: title,
       detail: detail,
-      status: this.progressItemStatus(status)
-    })
+      status: this.progressItemStatus(status),
+    };
   }
 
-  conclusionMessage(){
-    if(this.conclusion)
-      return this.successMessage();
+  conclusionMessage() {
+    if (this.conclusion) return this.successMessage();
     else return this.failureMessage();
   }
 
-  conclude(success, reason = null){
+  conclude(success, reason = null) {
     this.conclusion = success;
     this.failureReason = reason;
     this.notifyFinished(success);
   }
 
-  initializeJob(JobClass){
+  initializeJob(JobClass) {
     return new JobClass({
-      progressCallback: (...x) =>  this.broadcastProgress(...x),
-      buildProgressItem: (...x) => this.buildProgressItem(...x)
-    })
+      progressCallback: (...x) => this.broadcastProgress(...x),
+      buildProgressItem: (...x) => this.buildProgressItem(...x),
+    });
   }
 
-  supportsLogging() { return false; }
-  prepareJob(instance){}
-  failureMessage() { return this.failureReason; }
-  successMessage(){ throw `Method successMessage not implemented!`; }
-  jobClasses() { return []; }
+  supportsLogging() {
+    return false;
+  }
+  prepareJob(instance) {}
+  failureMessage() {
+    return this.failureReason;
+  }
+  successMessage() {
+    throw `Method successMessage not implemented!`;
+  }
+  jobClasses() {
+    return [];
+  }
 }

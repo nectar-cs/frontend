@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const CheatSheet = styled.div`
   position: relative;
@@ -10,7 +10,7 @@ const ConfigIcon = styled.i`
   font-size: 22px;
   margin: -8px 0 -26px 0;
   text-align: right;
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 `;

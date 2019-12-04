@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import {colored} from "./constants";
+import styled from 'styled-components';
+import { colored } from './constants';
 
-function marg(pure){
+function marg(pure) {
   return pure ? '17px' : '40px';
 }
 
@@ -69,7 +69,7 @@ const SpicyButton = styled.button`
   width: 60%;
   background: ${p => p.theme.colors.warn};
   color: ${p => p.theme.colors.contrastColor};
-  &:disabled{
+  &:disabled {
     background: ${p => p.theme.colors.disabled};
   }
 `;
@@ -81,7 +81,7 @@ const Button = {
   BigBottomButtons,
   BigButton,
   SmallClearButton,
-  SpicyButton
+  SpicyButton,
 };
 
 export default Button;

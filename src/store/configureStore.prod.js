@@ -11,7 +11,7 @@ const history = createHashHistory();
 
 const reducer = combineReducers({
   router: connectRouter(history),
-  mainReducer
+  mainReducer,
 });
 
 const router = routerMiddleware(history);
@@ -19,4 +19,3 @@ const enhancer = applyMiddleware(thunk, router);
 const store = createStore(reducer, enhancer);
 
 export default { store, history };
-

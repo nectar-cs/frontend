@@ -1,23 +1,19 @@
-import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
-import Layout from "../assets/layouts";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import Layout from '../assets/layouts';
 
-export default function FlexibleModal({mode, children}){
-  if(mode === 'modal'){
-    return(
-      <Layout.ModalLayout>{ children }</Layout.ModalLayout>
-    )
+export default function FlexibleModal({ mode, children }) {
+  if (mode === 'modal') {
+    return <Layout.ModalLayout>{children}</Layout.ModalLayout>;
   } else {
-    return(
-      <Fragment>{ children }</Fragment>
-    )
+    return <Fragment>{children}</Fragment>;
   }
 }
 
 FlexibleModal.propTypes = {
-  mode: PropTypes.oneOf(['modal', 'fragment'])
+  mode: PropTypes.oneOf(['modal', 'fragment']),
 };
 
 FlexibleModal.defaultProps = {
-  mode: 'modal'
+  mode: 'modal',
 };

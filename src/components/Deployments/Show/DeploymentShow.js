@@ -1,15 +1,14 @@
-import React, {Fragment} from 'react'
-import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
-import ErrComponent from "../../../hocs/ErrComponent";
-import Helper from "./Helper";
-import S from './DeploymentShowStyles'
-import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
-import ModalHostComposer from "../../../hocs/ModalHostComposer";
-import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
+import React, { Fragment } from 'react';
+import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
+import ErrComponent from '../../../hocs/ErrComponent';
+import Helper from './Helper';
+import S from './DeploymentShowStyles';
+import UpdateCheckComposer from '../../../hocs/UpdateCheckComposer';
+import ModalHostComposer from '../../../hocs/ModalHostComposer';
+import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
 
-class DeploymentShowClass extends React.Component{
-
-  constructor(props){
+class DeploymentShowClass extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       deployment: null,
@@ -18,7 +17,7 @@ class DeploymentShowClass extends React.Component{
       isInitialFetching: true,
       focusedSection: Helper.defaultSection,
       detailOverride: null,
-      matchingBackOff: 0
+      matchingBackOff: 0,
     };
 
     this.setDefaultDetailFn = this.setDefaultDetailFn.bind(this);
@@ -28,114 +27,119 @@ class DeploymentShowClass extends React.Component{
     this.defDetailFns = {};
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.reloadLoop();
     const { ns, id: name } = this.props.match.params;
     document.title = `${ns}/${name}`;
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <Fragment>
-        { this.renderInitialFetching() }
-        { this.renderSections() }
-        { this.renderRightSideModal() }
-        { this.renderRightSideOverride() }
+        {this.renderInitialFetching()}
+        {this.renderSections()}
+        {this.renderRightSideModal()}
+        {this.renderRightSideOverride()}
       </Fragment>
-    )
+    );
   }
 
-  renderInitialFetching(){
-    if(!this.isInitialFetching()) return null;
-    return <CenterLoader/>;
+  renderInitialFetching() {
+    if (!this.isInitialFetching()) return null;
+    return <CenterLoader />;
   }
 
-  renderSections(){
-    if(this.isInitialFetching()) return null;
-    const { deployment, matching  } = this.state;
+  renderSections() {
+    if (this.isInitialFetching()) return null;
+    const { deployment, matching } = this.state;
     const { focusedSection } = this.state;
-    const Sections = () => Helper.sectionClasses.map(Section => (
-      <Section
-        key={Section._className()}
-        deployment={deployment}
-        matching={matching}
-        isChosen={Section._className() === focusedSection}
-        defaultDetailSetter={this.setDefaultDetailFn}
-        onClicked={this.onSectionToggled}
-        refreshCallback={this.reload}
-        overrideDetail={this.overrideDetail}
-      />
-    ));
-    return <S.LeftPanel><Sections/></S.LeftPanel>;
+    const Sections = () =>
+      Helper.sectionClasses.map(Section => (
+        <Section
+          key={Section._className()}
+          deployment={deployment}
+          matching={matching}
+          isChosen={Section._className() === focusedSection}
+          defaultDetailSetter={this.setDefaultDetailFn}
+          onClicked={this.onSectionToggled}
+          refreshCallback={this.reload}
+          overrideDetail={this.overrideDetail}
+        />
+      ));
+    return (
+      <S.LeftPanel>
+        <Sections />
+      </S.LeftPanel>
+    );
   }
 
-  renderRightSideModal(){
+  renderRightSideModal() {
     const { deployment, matching, detailOverride } = this.state;
     const overrideDetail = this.overrideDetail;
     const { focusedSection } = this.state;
     const detailComp = this.defDetailFns[focusedSection];
     const bundle = { deployment, matching, overrideDetail };
-    if(detailOverride || !(deployment && detailComp)) return null;
+    if (detailOverride || !(deployment && detailComp)) return null;
 
-    return(
-      <S.RightPanel>
-        { detailComp(bundle) }
-      </S.RightPanel>
-    )
+    return <S.RightPanel>{detailComp(bundle)}</S.RightPanel>;
   }
 
-  renderRightSideOverride(){
+  renderRightSideOverride() {
     const { detailOverride } = this.state;
-    if(!detailOverride) return null;
+    if (!detailOverride) return null;
     return <S.RightPanel>{detailOverride}</S.RightPanel>;
   }
 
-  setDefaultDetailFn(name, defaultFn){
+  setDefaultDetailFn(name, defaultFn) {
     this.defDetailFns[name] = defaultFn;
   }
 
-  onSectionToggled(focusedSection){
+  onSectionToggled(focusedSection) {
     const { focusedSection: oldFocus, detailOverride } = this.state;
-    if(focusedSection === oldFocus && !detailOverride) return;
+    if (focusedSection === oldFocus && !detailOverride) return;
     this.setState(s => ({ ...s, focusedSection, detailOverride: null }));
   }
 
-  async reloadLoop(){
-    while(!this._willUnmount){
+  async reloadLoop() {
+    while (!this._willUnmount) {
       await this.reload();
       await this.pollWait();
     }
   }
 
-  async reload(){
+  async reload() {
     let { matching, matchingBackOff } = this.state;
     const { ns, id: name } = this.props.match.params;
     const deployment = await Helper.fetchDeployment(ns, name);
-    this.update({deployment, isInitialFetching: false});
+    this.update({ deployment, isInitialFetching: false });
 
-    if(matchingBackOff < 1) {
+    if (matchingBackOff < 1) {
       matching = await Helper.fetchMatching(name);
       matchingBackOff = matching ? 5 : 20;
     } else matchingBackOff -= 1;
 
-    this.update({matching, matchingBackOff});
+    this.update({ matching, matchingBackOff });
   }
 
-  update(assignments){ this.setState(s => ({...s, ...assignments})); }
-  isInitialFetching(){ return this.state.isInitialFetching; }
-  componentWillUnmount(): * { this._willUnmount = true; }
-  overrideDetail(detailOverride){ this.update({detailOverride}); }
-  async pollWait() {return new Promise(r => setTimeout(r, 5000));}
+  update(assignments) {
+    this.setState(s => ({ ...s, ...assignments }));
+  }
+  isInitialFetching() {
+    return this.state.isInitialFetching;
+  }
+  componentWillUnmount(): * {
+    this._willUnmount = true;
+  }
+  overrideDetail(detailOverride) {
+    this.update({ detailOverride });
+  }
+  async pollWait() {
+    return new Promise(r => setTimeout(r, 5000));
+  }
 }
 
 const DeploymentShow = AuthenticatedComponent.compose(
-  ModalHostComposer.compose(
-    UpdateCheckComposer.compose(
-      ErrComponent.compose(
-        DeploymentShowClass
-      )
-    )
-  )
+  ModalHostComposer.compose(UpdateCheckComposer.compose(ErrComponent.compose(DeploymentShowClass))),
 );
 
 export default DeploymentShow;

@@ -1,5 +1,5 @@
-export default class Node{
-  constructor(data, depth, parent){
+export default class Node {
+  constructor(data, depth, parent) {
     this._depth = depth;
     this._id = data.id;
     this._title = data.friendly;
@@ -7,40 +7,53 @@ export default class Node{
     this.outcome = null;
   }
 
-  id() { return this._id }
-  depth() { return this._depth; }
-  title() { return this._title; }
-  isLeaf() { return !this.positive && !this.negative; }
-  isRoot() { return !this.parent; }
-  wasProcessed(){ return !!this.outcome; }
-  isCurrent(current){ // noinspection EqualityComparisonWithCoercionJS
+  id() {
+    return this._id;
+  }
+  depth() {
+    return this._depth;
+  }
+  title() {
+    return this._title;
+  }
+  isLeaf() {
+    return !this.positive && !this.negative;
+  }
+  isRoot() {
+    return !this.parent;
+  }
+  wasProcessed() {
+    return !!this.outcome;
+  }
+  isCurrent(current) {
+    // noinspection EqualityComparisonWithCoercionJS
     return this == current;
   }
 
-  find(id){
-    if(this.id() === id) return this;
+  find(id) {
+    if (this.id() === id) return this;
     const negResult = this.negative && this.negative.find(id);
     const posResult = this.positive && this.positive.find(id);
-    if(negResult || posResult) return negResult || posResult;
+    if (negResult || posResult) return negResult || posResult;
     else return null;
   }
 
-  wasPositive(){
+  wasPositive() {
     return this.outcome === 'positive';
   }
 
-  wasNegative(){
+  wasNegative() {
     return this.outcome === 'negative';
   }
 
-  childForOutcome(){
+  childForOutcome() {
     const outcome = this.outcome;
-    if(outcome === 'positive') return this.positive;
-    if(outcome === 'negative') return this.negative;
+    if (outcome === 'positive') return this.positive;
+    if (outcome === 'negative') return this.negative;
   }
 
-  static gulp(rawNode, i=0, parent=null){
-    if(!rawNode) return null;
+  static gulp(rawNode, i = 0, parent = null) {
+    if (!rawNode) return null;
 
     const node = new Node(rawNode, i, parent);
     node.positive = this.gulp(rawNode.positive, i + 1, node);

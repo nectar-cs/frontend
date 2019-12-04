@@ -1,40 +1,37 @@
-import React from 'react'
-import FlexibleModal from "../../hocs/FlexibleModal";
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import Utils from "../../utils/Utils";
-import defaults from './defaults'
-import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
+import React from 'react';
+import FlexibleModal from '../../hocs/FlexibleModal';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
+import Utils from '../../utils/Utils';
+import defaults from './defaults';
+import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
 
-export default class HotReloadModal extends React.Component{
-
-  render(){
-    return(
+export default class HotReloadModal extends React.Component {
+  render() {
+    return (
       <FlexibleModal mode={this.props.mode}>
-        { this.renderHeader() }
-        { this.renderComingSoon() }
+        {this.renderHeader()}
+        {this.renderComingSoon()}
       </FlexibleModal>
-    )
+    );
   }
 
-  componentDidMount(){
-    Utils.mp("Live Sync Start", {});
+  componentDidMount() {
+    Utils.mp('Live Sync Start', {});
   }
 
-  renderHeader(){
+  renderHeader() {
     const { deployment } = this.props;
-    return(
+    return (
       <LeftHeader
         graphicName={Utils.modalImage(this, 'import_export')}
         graphicType={Utils.modalGraphicType(this)}
         title={defaults.header.title(deployment.name)}
         subtitle={defaults.header.subtitle}
       />
-    )
+    );
   }
 
-  renderComingSoon(){
-    return(
-      <ComingSoonSection/>
-    )
+  renderComingSoon() {
+    return <ComingSoonSection />;
   }
 }

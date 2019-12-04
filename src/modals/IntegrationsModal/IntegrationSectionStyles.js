@@ -1,11 +1,10 @@
-import styled from "styled-components";
-import Button from "../../assets/buttons";
+import styled from 'styled-components';
+import Button from '../../assets/buttons';
 
-const less = (p) => p.theme.colors.contrastLessFont;
-const secondary = (p) => p.theme.colors.secondaryColor;
+const less = p => p.theme.colors.contrastLessFont;
+const secondary = p => p.theme.colors.secondaryColor;
 
 export const S = {
-
   RegistriesRow: styled.div`
     margin-top: 18px;
     display: flex;
@@ -32,9 +31,9 @@ export const S = {
     border-width: 2.2px;
     border-style: solid;
     padding: 4px;
-    border-color: ${p => p.sel ? secondary(p) : 'transparent'};
+    border-color: ${p => (p.sel ? secondary(p) : 'transparent')};
     &:not(:first-child) {
-     margin-left: 10px;
+      margin-left: 10px;
     }
     &:hover {
       cursor: pointer;
@@ -56,15 +55,14 @@ export const S = {
   `,
 
   OkButton: styled(Button.SmallButton)`
-    margin: 0
+    margin: 0;
   `,
 
   Apology: styled.p`
-    margin-top: 18px
+    margin-top: 18px;
   `,
 
   FwdNotice: styled.p`
-    margin-top: 18px
-  `
+    margin-top: 18px;
+  `,
 };
-

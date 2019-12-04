@@ -1,45 +1,34 @@
-import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
-import FormComponent from "../../hocs/FormComponent";
-import Utils from "../../utils/Utils";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import FormComponent from '../../hocs/FormComponent';
+import Utils from '../../utils/Utils';
 
 class CommandFormClass extends React.Component {
-  render(){
-    return(
+  render() {
+    return (
       <Fragment>
-        { this.renderPodSelect() }
-        { this.renderCommandInput() }
+        {this.renderPodSelect()}
+        {this.renderCommandInput()}
       </Fragment>
-    )
+    );
   }
 
-  renderPodSelect(){
+  renderPodSelect() {
     const podNames = this.props.podNameOptions;
-    return this.props.makeSelect(
-      "Target Pod",
-      "podName",
-      Utils.arrayOptions(podNames)
-    );
+    return this.props.makeSelect('Target Pod', 'podName', Utils.arrayOptions(podNames));
   }
 
-  renderCommandInput(){
-    return this.props.makeInput(
-      "Command",
-      "command",
-      "e.g python manage.py"
-    );
+  renderCommandInput() {
+    return this.props.makeInput('Command', 'command', 'e.g python manage.py');
   }
 
   static propTypes = {
     podName: PropTypes.string,
     command: PropTypes.string,
     podNameOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }
+  };
 }
 
-
-const CommandForm = FormComponent.compose(
-  CommandFormClass
-);
+const CommandForm = FormComponent.compose(CommandFormClass);
 
 export default CommandForm;

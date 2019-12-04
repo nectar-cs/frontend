@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import Layout from "../../assets/layouts";
+import styled from 'styled-components';
+import Layout from '../../assets/layouts';
 
 const Editor = styled(Layout.BigCodeViewer)`
   margin-top: 0;
@@ -15,6 +15,6 @@ const Editors = styled.div`
   justify-content: space-between;
 `;
 
-const S = {Editors, Editor};
+const S = { Editors, Editor };
 
 export default S;

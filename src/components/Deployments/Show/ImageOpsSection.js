@@ -1,14 +1,13 @@
-import React from 'react'
-import Section from "./Section";
-import ImageOpsModal from "../../../modals/ImageOpsModal/View/ImageOpsModal";
+import React from 'react';
+import Section from './Section';
+import ImageOpsModal from '../../../modals/ImageOpsModal/View/ImageOpsModal';
 
 export default class ImageOpsSection extends Section {
-
-  _renderActivityModal(source){
+  _renderActivityModal(source) {
     const { deployment, matching } = source || this.props;
-    return(
+    return (
       <ImageOpsModal
-        mode='fragment'
+        mode="fragment"
         deployment={deployment}
         matching={matching}
         refreshCallback={this.props.refreshCallback}
@@ -16,6 +15,10 @@ export default class ImageOpsSection extends Section {
     );
   }
 
-  static _className(){ return "ImageOpsSection"; }
-  _className() { return ImageOpsSection._className() }
+  static _className() {
+    return 'ImageOpsSection';
+  }
+  _className() {
+    return ImageOpsSection._className();
+  }
 }

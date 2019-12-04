@@ -1,30 +1,29 @@
 //@flow
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import MatchForm from './MatchForm';
-import Button from "../../assets/buttons";
-import Loader from "../../assets/loading-spinner";
-import defaults from './defaults'
-import Helper from "./Helper";
-import type {Deployment, Matching, RemoteBundle} from "../../types/Types";
-import Gulper from "./Gulper";
-import Text from "../../assets/text-combos";
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
-import ModalClientComposer from "../../hocs/ModalClientComposer";
-import DataUtils from "../../utils/DataUtils";
-import Utils from "../../utils/Utils";
+import Button from '../../assets/buttons';
+import Loader from '../../assets/loading-spinner';
+import defaults from './defaults';
+import Helper from './Helper';
+import type { Deployment, Matching, RemoteBundle } from '../../types/Types';
+import Gulper from './Gulper';
+import Text from '../../assets/text-combos';
+import CenterAnnouncement from '../../widgets/CenterAnnouncement/CenterAnnouncement';
+import IntegrationsModal from '../IntegrationsModal/IntegrationsModal';
+import ModalClientComposer from '../../hocs/ModalClientComposer';
+import DataUtils from '../../utils/DataUtils';
+import Utils from '../../utils/Utils';
 
 class MatchModalClass extends React.Component<Props, State> {
-  constructor(props){
-
+  constructor(props) {
     super(props);
     this.state = {
       choices: MatchModal.defaultChoices(props),
       isGitFetching: false,
       isImgFetching: false,
       isSubmitting: false,
-      isPathsFetching: false
+      isPathsFetching: false,
     };
 
     this.update = this.update.bind(this);
@@ -38,13 +37,13 @@ class MatchModalClass extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    Utils.mp("Matching Start", {});
+    Utils.mp('Matching Start', {});
     this.gulper = new Gulper();
     this.gulper.setConsumableMatching(this.props.matching);
     this.reloadRemotes();
   }
 
-  componentWillReceiveProps(nextProps:Props): * {
+  componentWillReceiveProps(nextProps: Props): * {
     const oldMatching = this.props.matching;
     const newMatching = nextProps.matching;
     const matchChanged = !DataUtils.deepEqual(oldMatching, newMatching);
@@ -53,67 +52,63 @@ class MatchModalClass extends React.Component<Props, State> {
     const newDepName = nextProps.deployment.name;
     const depChanged = oldDepName !== newDepName;
 
-    if(matchChanged)
-      this.gulper.setConsumableMatching(nextProps.matching);
+    if (matchChanged) this.gulper.setConsumableMatching(nextProps.matching);
 
-    if(depChanged)
-      this.update('deploymentName', nextProps.deployment.name);
+    if (depChanged) this.update('deploymentName', nextProps.deployment.name);
   }
 
   componentWillUnmount(): * {
     this.gulper = null;
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <Fragment>
-        { this.renderHeader() }
-        { this.renderTopRightLoader() }
-        { this.renderForm() }
-        { this.renderNoRemotesPrompt() }
-        { this.renderButtons() }
+        {this.renderHeader()}
+        {this.renderTopRightLoader()}
+        {this.renderForm()}
+        {this.renderNoRemotesPrompt()}
+        {this.renderButtons()}
       </Fragment>
-    )
+    );
   }
 
-  renderNoRemotesPrompt(){
-    if(Helper.isLoading(this.state)) return null;
-    if(this.hasAnyRemotes()) return null;
-    return(
+  renderNoRemotesPrompt() {
+    if (Helper.isLoading(this.state)) return null;
+    if (this.hasAnyRemotes()) return null;
+    return (
       <CenterAnnouncement
-        iconName='extension'
+        iconName="extension"
         text="Matching only works with Git/Docker. Click to connect."
         action={() => this.openIntegrationsModal()}
         light={true}
       />
-    )
+    );
   }
 
-  renderHeader(){
+  renderHeader() {
     let { mode, deployment } = this.props;
     const { framework } = this.state.choices;
-    return(
+    return (
       <LeftHeader
         graphicName={Helper.frameworkImage(mode, framework)}
         graphicType={Helper.graphicType(mode)}
         title={defaults.header.title(mode, deployment)}
         subtitle={defaults.header.subtitle}
       />
-    )
+    );
   }
 
-  renderForm(){
-    if(!this.hasAnyRemotes()) return null;
+  renderForm() {
+    if (!this.hasAnyRemotes()) return null;
 
     const { choices } = this.state;
     const { gitRemoteList, gitRemoteName, gitRepoName } = choices;
     const { imgRemoteList, imgRemoteName, imgRepoName } = choices;
     const { dfPathDict } = choices;
-    const dfPaths = Helper.dfPathChoices(
-      gitRemoteName, gitRepoName, dfPathDict
-    );
+    const dfPaths = Helper.dfPathChoices(gitRemoteName, gitRepoName, dfPathDict);
 
-    return(
+    return (
       <MatchForm
         gitRemoteChoices={Helper.remoteOptions(choices.gitRemoteList)}
         imgRemoteChoices={Helper.remoteOptions(choices.imgRemoteList)}
@@ -129,69 +124,69 @@ class MatchModalClass extends React.Component<Props, State> {
         framework={choices.framework}
         notifyFormValueChanged={this.update}
       />
-    )
+    );
   }
 
-  renderTopRightLoader(){
-    if(!Helper.isLoading(this.state)) return null;
-    return <Loader.TopRightSpinner/>;
+  renderTopRightLoader() {
+    if (!Helper.isLoading(this.state)) return null;
+    return <Loader.TopRightSpinner />;
   }
 
-  renderButtons(){
-    if(Helper.isLoading(this.state)) return null;
-    if(!this.hasAnyRemotes()) return null;
+  renderButtons() {
+    if (Helper.isLoading(this.state)) return null;
+    if (!this.hasAnyRemotes()) return null;
 
-    return(
+    return (
       <Button.BigBottomButtons>
-        { this.renderDeleteButton() }
-        { this.renderSubmitButton() }
-        { this.renderSkipButton() }
+        {this.renderDeleteButton()}
+        {this.renderSubmitButton()}
+        {this.renderSkipButton()}
       </Button.BigBottomButtons>
     );
   }
 
-  renderSubmitButton(){
-    const copy = `Save ${!this.amInDetailMode() ? "and to the Next" : ''}`;
-    return(
-      <Button.BigButton onClick={this.submit}>
-        { copy }
-      </Button.BigButton>
-    )
+  renderSubmitButton() {
+    const copy = `Save ${!this.amInDetailMode() ? 'and to the Next' : ''}`;
+    return <Button.BigButton onClick={this.submit}>{copy}</Button.BigButton>;
   }
 
-  renderDeleteButton(){
-    if(!this.props.matching) return null;
-    return(
-      <Button.BigButton onClick={this.delete} emotion='idle'>
-        { "Un-Match" }
+  renderDeleteButton() {
+    if (!this.props.matching) return null;
+    return (
+      <Button.BigButton onClick={this.delete} emotion="idle">
+        {'Un-Match'}
       </Button.BigButton>
-    )
+    );
   }
 
-  renderSkipButton(){
-    if(this.amInDetailMode()) return null;
+  renderSkipButton() {
+    if (this.amInDetailMode()) return null;
     const { callback } = this.props;
-    return <Text.PA low={4.6} onClick={callback}>Or Skip This One</Text.PA>;
+    return (
+      <Text.PA low={4.6} onClick={callback}>
+        Or Skip This One
+      </Text.PA>
+    );
   }
 
-  submit(){
+  submit() {
     const { deployment, callback } = this.props;
     this.mixTrack();
     Helper.submit(deployment.name, this.state.choices, callback);
   }
 
-  mixTrack(){
-    try{
+  mixTrack() {
+    try {
       const { gitRemoteName, imgRemoteName } = this.state.choices;
       const [withGit, withDocker] = [!!gitRemoteName, !!imgRemoteName];
       const { mode } = this.props;
-      Utils.mp('Matching Create', {withGit, withDocker, mode});
-    } catch (e){
+      Utils.mp('Matching Create', { withGit, withDocker, mode });
+    } catch (e) {
       Utils.senTrack(e);
     }
   }
 
-  delete(){
+  delete() {
     const { matching, callback } = this.props;
     Helper.delete(matching, callback);
   }
@@ -199,37 +194,37 @@ class MatchModalClass extends React.Component<Props, State> {
   update(field: string, value: any): void {
     const bundle = this.createPassDownBundle();
     const assignment = this.gulper.assign(field, value, bundle);
-    const choices = {...this.state.choices, ...assignment};
-    this.setState(s => ({...s, choices}));
+    const choices = { ...this.state.choices, ...assignment };
+    this.setState(s => ({ ...s, choices }));
   }
 
-  createPassDownBundle(){
+  createPassDownBundle() {
     const { choices } = this.state;
     const fetchDfPaths = this.fetchDfPaths;
     return { ...choices, fetchDfPaths };
   }
 
-  fetchDfPaths(remoteName: string, repoName: string){
+  fetchDfPaths(remoteName: string, repoName: string) {
     const { dfPathDict } = this.state.choices;
     Helper.fetchDfPaths(
       remoteName,
       repoName,
       dfPathDict,
-      (isPathsFetching) => this.setState(s => ({...s, isPathsFetching})),
-      (dfPathDict) => this.updateAssign({dfPathDict})
-    )
+      isPathsFetching => this.setState(s => ({ ...s, isPathsFetching })),
+      dfPathDict => this.updateAssign({ dfPathDict }),
+    );
   }
 
-  reloadRemotes(){
+  reloadRemotes() {
     Helper.fetchRemotes('git', this.updateRemotesList, this.updateFetchProg);
     Helper.fetchRemotes('img', this.updateRemotesList, this.updateFetchProg);
   }
 
   updateRemotesList(type, remoteList: Array<RemoteBundle>): void {
-    this.update(`${type}RemoteList`, remoteList)
+    this.update(`${type}RemoteList`, remoteList);
   }
 
-  updateAssign(assignment:{string: any}): void{
+  updateAssign(assignment: { string: any }): void {
     Object.keys(assignment).forEach(key => {
       this.update(key, assignment[key]);
     });
@@ -237,31 +232,36 @@ class MatchModalClass extends React.Component<Props, State> {
 
   updateFetchProg(type, status) {
     const key = `is${type[0].toUpperCase() + type.slice(1)}Fetching`;
-    this.setState(s => ({ ...s, [key]: status }))
+    this.setState(s => ({ ...s, [key]: status }));
   }
 
-  static defaultChoices(props){
-    return({
+  static defaultChoices(props) {
+    return {
       deploymentName: props.deployment.name,
-      gitRemoteList: [], imgRemoteList: [], dfPathDict: {},
-      gitRemoteName: '', imgRemoteName: '',
-      gitRepoName: '', imgRepoName: '',
-      dockerfilePath: '', framework: '', dockerBuildPath: ''
-    });
+      gitRemoteList: [],
+      imgRemoteList: [],
+      dfPathDict: {},
+      gitRemoteName: '',
+      imgRemoteName: '',
+      gitRepoName: '',
+      imgRepoName: '',
+      dockerfilePath: '',
+      framework: '',
+      dockerBuildPath: '',
+    };
   }
 
-  hasAnyRemotes(){
+  hasAnyRemotes() {
     const { gitRemoteList, imgRemoteList } = this.state.choices;
     return gitRemoteList.length + imgRemoteList.length > 0;
   }
 
-  amInDetailMode(){ return this.props.mode === 'detail'; }
+  amInDetailMode() {
+    return this.props.mode === 'detail';
+  }
 
-  openIntegrationsModal(){
-    this.props.openModal(
-      IntegrationsModal,
-      { onDataChanged: this.reloadRemotes }
-    );
+  openIntegrationsModal() {
+    this.props.openModal(IntegrationsModal, { onDataChanged: this.reloadRemotes });
   }
 }
 
@@ -276,19 +276,17 @@ type State = {
     imgRemoteName: string,
     gitRepoName: string,
     imgRepoName: string,
-    deploymentName: string
-  }
-}
+    deploymentName: string,
+  },
+};
 
 type Props = {
   mode: 'detail' | 'tutorial',
   deployment: Deployment,
   matching: Matching,
   callback: () => void,
-}
+};
 
-const MatchModal = ModalClientComposer.compose(
-  MatchModalClass
-);
+const MatchModal = ModalClientComposer.compose(MatchModalClass);
 
 export default MatchModal;

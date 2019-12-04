@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-
+import styled from 'styled-components';
 
 const CardGrid = styled.div`
   display: flex;
@@ -7,6 +6,6 @@ const CardGrid = styled.div`
   align-items: start;
 `;
 
-const S = {CardGrid};
+const S = { CardGrid };
 
 export { S };

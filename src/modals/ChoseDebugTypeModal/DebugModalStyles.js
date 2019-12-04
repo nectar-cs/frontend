@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-function activityColor(p){
+function activityColor(p) {
   const colors = p.theme.colors;
-  return p.isChosen ? colors.primaryColor : "transparent";
+  return p.isChosen ? colors.primaryColor : 'transparent';
 }
 
 const ActivitiesContainer = styled.div`
@@ -20,9 +20,9 @@ const ActivityContainer = styled.div`
   border-width: 1.5px;
   margin: 12px 0 0 20px;
   padding: 12px 0 10px 0;
-  &:hover{
+  &:hover {
     border-color: ${p => p.theme.colors.primaryColor};
-    cursor: pointer;  
+    cursor: pointer;
   }
 `;
 
@@ -41,6 +41,6 @@ const S = {
   ActivitiesContainer,
   ActivityContainer,
   ActivityTitle,
-  ActivityIcon
+  ActivityIcon,
 };
 export default S;
