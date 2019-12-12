@@ -94,7 +94,7 @@ export default class LoginAndRegister extends React.Component {
     this.setState(s => ({ ...s, isLoading: true }));
     const ep = `/auth/${this.authType()}`;
     const receivers = [this.onAuthSuccess, this.onAuthFailure];
-    Backend.raisingPost(ep, payload, ...receivers);
+    Backend.post(ep, payload, ...receivers);
   }
 
   update(key, value) {

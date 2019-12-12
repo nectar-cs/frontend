@@ -41,8 +41,7 @@ const settings = {
   items: [
     { title: 'Git & Docker', modal: IntegrationsModal },
     { title: 'Bulk Matching', path: '/bulk-matching' },
-    { title: 'Software Update', modal: SoftwareUpdateModal },
-    { title: 'Log out of Session', path: '/auth/logout' },
+    { title: 'Software Update', modal: SoftwareUpdateModal }
   ],
 };
 

@@ -10,11 +10,12 @@ function size(size) {
 const Micon = styled.i`
   font-size: ${p => size(p.size)};
   transform: ${p => (p.rotate ? `rotate(${p.rotate}deg)` : 'none')};
-  color: ${p => colored(p.emotion)} ${p => p.extras};
+  color: ${p => colored(p.emotion)};
   margin-top: ${p => `${(p.top || 0) * 12}px`};
   margin-right: ${p => `${(p.right || 0) * 12}px`};
   margin-bottom: ${p => `${(p.bottom || 0) * 12}px`};
   margin-left: ${p => `${(p.left || 0) * 12}px`};
+  ${p => p.extras};
 `;
 
 const S = { Micon };

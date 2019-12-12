@@ -133,7 +133,11 @@ function SideBarSection(props) {
 
 function Sections(props) {
   return sections.map(section => (
-    <SideBarSection key={section.title} openModal={props.openModal} {...section} />
+    <SideBarSection
+      key={section.title}
+      openModal={props.openModal}
+      {...section}
+    />
   ));
 }
 

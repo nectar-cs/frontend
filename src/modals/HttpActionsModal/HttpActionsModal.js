@@ -282,7 +282,7 @@ export default class HttpActionsModal extends React.Component {
       status: status,
     };
 
-    Backend.raisingPost(
+    Backend.post(
       `/dep_attachments?${args}`,
       { extras: backendPayload },
       this.historyCallback,

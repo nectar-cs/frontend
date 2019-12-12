@@ -105,7 +105,7 @@ export default class Helper {
 
   static fetchMatching(inst) {
     const ep = `/microservices/${this.depName(inst)}`;
-    Backend.raisingFetch(
+    Backend.fetch(
       ep,
       resp => {
         const matching = DataUtils.obj2Camel(resp)['data'];

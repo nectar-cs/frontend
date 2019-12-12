@@ -17,6 +17,7 @@ export default class Utils {
   static hasMixPanel() {
     return !!this.MP_TOKEN;
   }
+
   static hasSentry() {
     return !!this.SENTRY_DSN;
   }

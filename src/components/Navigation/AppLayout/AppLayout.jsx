@@ -24,10 +24,10 @@ class AppLayoutClass extends React.Component<Props> {
 
   componentDidMount() {
     if (this.props.skipSetup) return;
-    Backend.raisingFetch(`/workspaces`, resp => {
+    Backend.fetch(`/workspaces`, resp => {
       this.props.setWorkspaces(DataUtils.obj2Camel(resp['data']));
     });
-    Backend.raisingFetch(`/remotes/connected`, resp => {
+    Backend.fetch(`/remotes/connected`, resp => {
       this.props.setRemotes(DataUtils.obj2Camel(resp['data']));
     });
   }

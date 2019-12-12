@@ -41,7 +41,7 @@ export class ImageActionsModalHelper {
     const ep = `/remotes/${imgRemoteId}/${imgRepoName}/branches`;
     inst.notifyFetchChanged({ isTagFetching: true });
 
-    Backend.raisingFetch(ep, resp => {
+    Backend.fetch(ep, resp => {
       let imageTags = DataUtils.obj2Camel(resp)['data'];
       imageTags = imageTags.map(t => this.fullImgTag(inst, t));
       const imageTag = imageTags[0];
@@ -62,7 +62,7 @@ export class ImageActionsModalHelper {
     const ep = `/remotes/${gitRemoteId}/${gitRepoName}/branches`;
     inst.notifyFetchChanged({ isBranchFetching: true });
 
-    Backend.raisingFetch(ep, resp => {
+    Backend.fetch(ep, resp => {
       const gitBranches = DataUtils.aToO(DataUtils.obj2Camel(resp)['data']);
       inst.setState(s => ({ ...s, remotes: { ...s.remotes, gitBranches } }));
       this.setBranch(inst, Object.keys(gitBranches)[0]);
@@ -77,7 +77,7 @@ export class ImageActionsModalHelper {
 
     inst.setState(s => ({ ...s, isFetching: true }));
     inst.notifyFetchChanged({ isCommitFetching: true });
-    Backend.raisingFetch(ep, resp => {
+    Backend.fetch(ep, resp => {
       const commits = DataUtils.obj2Camel(resp)['data'];
       inst.notifyFetchChanged({ isCommitFetching: false });
       inst.setState(s => {
