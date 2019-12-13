@@ -5,6 +5,8 @@ import { S } from './IntegrationSectionStyles';
 import defaults from './defaults';
 import Backend from '../../utils/Backend';
 import Utils from '../../utils/Utils';
+import Text from "../../assets/text-combos";
+import Layout from "../../assets/layouts";
 
 export default class DockerHubForm extends React.Component {
   constructor(props) {
@@ -34,7 +36,7 @@ export default class DockerHubForm extends React.Component {
     const { username, password } = this.state;
     const payload = { identifier: username, secret: password };
     Utils.mp('Integration Create', { type: 'DockerHub', entity: 'docker' });
-    Backend.post(endpoint, payload, this.props.notifySubmitted);
+    Backend.aPost(endpoint, payload, this.props.notifySubmitted);
   }
 
   renderFormInputs() {
@@ -53,7 +55,7 @@ export default class DockerHubForm extends React.Component {
         <In.LineInput
           value={this.state.password}
           onChange={e => make(e, 'password')}
-          placeholder="DockerHub Password"
+          placeholder="Access Token"
           type={'password'}
         />
       </In.InputLine>
@@ -62,9 +64,12 @@ export default class DockerHubForm extends React.Component {
 
   renderApology() {
     return (
-      <S.Apology>
-        <i>{defaults.dockerApology}</i>
-      </S.Apology>
+      <Layout.TextLine low={2}>
+        <p>
+          { defaults.dockerCallToAction }
+          <a href={defaults.dockerSecUrl} target='_blank'>DockerHub Account</a>
+        </p>
+      </Layout.TextLine>
     );
   }
 

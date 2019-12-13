@@ -28,7 +28,7 @@ class WorkspaceIndexClass extends React.Component {
   componentDidMount() {
     document.title = `Workspaces`;
     this.setState(s => ({ ...s, isLoading: true }));
-    Backend.fetch(
+    Backend.aFetch(
       '/workspaces',
       payload => {
         const workspaces = payload['data'];

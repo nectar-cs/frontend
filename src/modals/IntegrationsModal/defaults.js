@@ -1,6 +1,6 @@
 const defaults = {
   intro: 'Mosaic is a lot more useful when it talks to your image' + ' and source repos.',
-  dockerApology: "Password auth, I know... Unfortunately that's how" + ' DockerHub rolls ;( ',
+  dockerApology: "",
   imgVendorQuestion: 'What image registry do you want to add?',
   gitVendorQuestion: 'What git remote do you want to add?',
   addNewImageReg: 'Add an image registry',
@@ -22,6 +22,9 @@ const defaults = {
     'Clicking "Connect" will take you to GitHub\'s' + ' third party authorization page.',
 
   confirmDelete: 'Are you sure you want to delete this integration?',
+
+  dockerCallToAction: "Create an Access Token for MOSAIC from your ",
+  dockerSecUrl: "https://hub.docker.com/settings/security"
 };
 
 export default defaults;

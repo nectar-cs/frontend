@@ -32,6 +32,6 @@ export default class Kapi extends ForeignApi{
   static filterFetch(endpoint, ws, callback, errorCallback = null) {
     const args = this.workspaceToFilterUrlParams(ws);
     endpoint = `${endpoint}?${args}&pods=true&svcs=true`;
-    this.fetch(endpoint, callback, errorCallback);
+    this.aFetch(endpoint, callback, errorCallback);
   }
 }

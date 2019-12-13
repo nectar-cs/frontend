@@ -38,12 +38,16 @@ export default class ForeignApi{
     return cleaned['data'] ? cleaned['data'] : cleaned;
   }
 
-  static fetch(endpoint, callback, errorCallback = null) {
+  static aFetch(endpoint, callback, errorCallback = null) {
     this.asyncRequest('GET', endpoint, null, callback, errorCallback);
   }
 
-  static post(endpoint, body, callback, errorCallback = null) {
+  static aPost(endpoint, body, callback, errorCallback = null) {
     this.asyncRequest('POST', endpoint, body, callback, errorCallback);
+  }
+
+  static aDelete(endpoint, callback, errorCallback = null) {
+    this.asyncRequest('DELETE', endpoint, null, callback, errorCallback);
   }
 
   static async blockingRequest(method, endpoint, body) {

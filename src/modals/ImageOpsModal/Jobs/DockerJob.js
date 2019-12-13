@@ -39,7 +39,7 @@ export default class DockerJob extends Job {
   requestCleanup() {
     const { type, id } = this.job;
     const ep = `/api/docker/${type}/${id}/clear_job`;
-    Kapi.post(ep, {}, null);
+    Kapi.aPost(ep, {}, null);
   }
 
   status() {

@@ -10,7 +10,7 @@ export default class Helper {
   }
 
   static reloadHistory(inst, whenDone) {
-    Backend.fetch(this.baseEp(inst), resp => {
+    Backend.aFetch(this.baseEp(inst), resp => {
       whenDone(DataUtils.obj2Camel(resp['data']));
     });
   }
@@ -18,13 +18,13 @@ export default class Helper {
   static recordCommand(inst, whenDone) {
     const { command } = inst.state.choices;
     const payload = { command, status: 1 };
-    Backend.post(this.baseEp(inst), { extras: payload }, resp =>
+    Backend.aPost(this.baseEp(inst), { extras: payload }, resp =>
       whenDone(DataUtils.obj2Camel(resp['data'])),
     );
   }
 
   static deleteCommand(inst, id, whenDone) {
-    Backend.delete(`/dep_attachments/${id}`, () => {
+    Backend.aDelete(`/dep_attachments/${id}`, () => {
       whenDone();
     });
   }
@@ -34,7 +34,7 @@ export default class Helper {
     const { podName, command } = inst.state.choices;
     let payload = { podNamespace, podName, command };
     payload = DataUtils.obj2Snake(payload);
-    Kapi.post('/api/run/cmd', payload, whenDone, whenFailed);
+    Kapi.aPost('/api/run/cmd', payload, whenDone, whenFailed);
   }
 
   static previewCommand(inst) {

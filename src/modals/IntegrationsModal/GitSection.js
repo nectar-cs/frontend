@@ -8,14 +8,14 @@ import Utils from '../../utils/Utils';
 
 export default class GitSection extends IntegrationSection {
   performFetch(whenDone) {
-    Backend.fetch('/remotes?entity=git', resp => {
+    Backend.aFetch('/remotes?entity=git', resp => {
       whenDone(DataUtils.obj2Camel(resp['data']));
     });
   }
 
   performAuthUrlsFetch(whenDone) {
     const endpoint = `/remotes/auth_url?type=github`;
-    Backend.fetch(endpoint, resp => {
+    Backend.aFetch(endpoint, resp => {
       whenDone({ github: resp['auth_url'] });
     });
   }

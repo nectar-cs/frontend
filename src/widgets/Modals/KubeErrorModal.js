@@ -72,7 +72,7 @@ export default class KubeErrorModal extends React.Component {
   submitRetry() {
     this.setState(s => ({ ...s, isSubmitting: true }));
     const endpoint = `/api/status/connect`;
-    Kapi.fetch(endpoint, this.onConnectSuccess, this.onConnectFailed);
+    Kapi.aFetch(endpoint, this.onConnectSuccess, this.onConnectFailed);
   }
 
   bundle() {

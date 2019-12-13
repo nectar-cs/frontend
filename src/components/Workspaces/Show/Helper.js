@@ -23,7 +23,7 @@ export default class Helper {
   }
 
   static fetchMatchings(inst) {
-    Backend.fetch(
+    Backend.aFetch(
       `/microservices`,
       resp => {
         const matchings = DataUtils.obj2Camel(resp).data;
@@ -34,7 +34,7 @@ export default class Helper {
   }
 
   static checkStuntTrash(callback) {
-    Kapi.fetch(`/api/cluster/stunt_pods`, resp => {
+    Kapi.aFetch(`/api/cluster/stunt_pods`, resp => {
       callback(DataUtils.obj2Camel(resp['data']));
     });
   }

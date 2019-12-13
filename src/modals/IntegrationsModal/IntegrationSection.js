@@ -161,14 +161,14 @@ export default class IntegrationSection extends React.PureComponent {
 
   performConnectionCheck(id, whenDone) {
     const ep = `/remotes/${id}/check_connection`;
-    Backend.fetch(ep, resp => {
+    Backend.aFetch(ep, resp => {
       whenDone(resp['data']['connected']);
     });
   }
 
   performDelete(id, whenDone) {
     const endpoint = `/remotes/${id}`;
-    Backend.delete(endpoint, whenDone);
+    Backend.aDelete(endpoint, whenDone);
   }
 
   startConnectionCheck(id) {

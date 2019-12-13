@@ -73,11 +73,11 @@ export default class HttpActionsModal extends React.Component {
   componentDidMount() {
     Utils.mp('HTTP Operations Start', {});
 
-    Kapi.fetch('/api/cluster/namespaces', resp => {
+    Kapi.aFetch('/api/cluster/namespaces', resp => {
       if (this._isMounted) this.setState(s => ({ ...s, namespaces: resp['data'] }));
     });
 
-    Kapi.fetch('/api/cluster/label_combinations', resp => {
+    Kapi.aFetch('/api/cluster/label_combinations', resp => {
       if (this._isMounted) this.setState(s => ({ ...s, labelCombos: resp['data'] }));
     });
   }
@@ -266,7 +266,7 @@ export default class HttpActionsModal extends React.Component {
 
     Utils.mp('HTTP Operations Send', { verb, path });
 
-    Kapi.post('/api/run/curl', payload, this.onSubmitted, this.onSubmitFailed);
+    Kapi.aPost('/api/run/curl', payload, this.onSubmitted, this.onSubmitFailed);
   }
 
   saveToHistory(status) {
@@ -282,7 +282,7 @@ export default class HttpActionsModal extends React.Component {
       status: status,
     };
 
-    Backend.post(
+    Backend.aPost(
       `/dep_attachments?${args}`,
       { extras: backendPayload },
       this.historyCallback,

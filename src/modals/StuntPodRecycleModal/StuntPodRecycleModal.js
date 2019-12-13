@@ -113,7 +113,7 @@ export default class StuntPodRecycleModal extends React.Component {
 
   submit() {
     this.setState(s => ({ ...s, isSubmitting: true }));
-    Kapi.post(`/api/cluster/kill_stunt_pods`, {}, () => {
+    Kapi.aPost(`/api/cluster/kill_stunt_pods`, {}, () => {
       this.setState(s => ({ ...s, isSubmitting: false, isDone: true }));
     });
   }
