@@ -210,7 +210,7 @@ class ServiceBoxClass extends React.Component {
     const Icon = () => <Micon size="s" n={iconName} emotion={iconColor} />;
 
     return (
-      <tr>
+      <tr key={ip}>
         <td>
           <p>{Utils.tinyPodName(name)}</p>
         </td>
@@ -236,7 +236,7 @@ class ServiceBoxClass extends React.Component {
 
     const Addr = p => (addr.ep ? <Text.AA>{p.children}</Text.AA> : <p>none</p>);
     return (
-      <tr onClick={callback}>
+      <tr onClick={callback} key={ep}>
         <td>
           <Micon top={0.33} size="s" n={scopeIcon} />
         </td>
@@ -313,7 +313,7 @@ class PodBox extends React.Component {
     const Icon = () => <Micon size="s" n={iconName} emotion={iconColor} />;
 
     return (
-      <tr>
+      <tr key={pod.name}>
         <td>
           <S.PodStatus emotion={pod.state} />
         </td>

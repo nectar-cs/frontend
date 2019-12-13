@@ -126,7 +126,7 @@ export default class ImageOpsModal extends React.Component {
         onAssignment={a => this.onAssignment(a)}
         operationType={choices.operationType}
         scaleTo={choices.scaleTo}
-        imageTag={choices.imgSource}
+        imageTag={choices.imageTag}
         gitBranch={choices.gitBranch}
         gitCommit={choices.gitCommit}
         availableTags={remotes.imageTags}
@@ -234,7 +234,8 @@ export default class ImageOpsModal extends React.Component {
     const key = Object.keys(assignment)[0];
     const value = Object.values(assignment)[0];
 
-    if (!Helper.sideEffect(this, key, value)) this.setState(s => ({ ...s, choices: merged }));
+    if (!Helper.sideEffect(this, key, value))
+      this.setState(s => ({ ...s, choices: merged }));
   }
 
   static propTypes = {
@@ -250,9 +251,9 @@ export default class ImageOpsModal extends React.Component {
       imageName: '',
       outImageName: Helper.defOutImageName(props),
       scaleTo: (props.deployment.replicas + 1).toString(),
-      imgSource: '',
       gitBranch: '',
       gitCommit: '',
+      imageTag: ''
     };
   }
 

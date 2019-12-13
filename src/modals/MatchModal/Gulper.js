@@ -24,11 +24,16 @@ class GitAndImgSetter extends Setter {
 }
 
 class GitRemoteListSetter extends GitAndImgSetter {
+
+  remoteIdentifier(firstRemote){
+    const key = `${this.type}RemoteName`;
+    return { [key]: firstRemote.identifier };
+  }
+
   sideEffects(bundle) {
-    const remoteList: Array<RemoteBundle> = this._value;
+    const remoteList: Array<RemoteBundle> = this._value || [];
     const firstRemote: RemoteBundle = remoteList[0];
-    if (firstRemote) return { [`${this.type}RemoteName`]: firstRemote.identifier };
-    else return {};
+    return firstRemote && this.remoteIdentifier(firstRemote);
   }
 }
 

@@ -70,6 +70,12 @@ export const defaults = {
   },
 
   els: {
+    noTags: "Couldn't find any tags. If you authenticated DockerHub via an access\n" +
+      "token, that's why. For some reason, DockerHub limits\n" +
+      "API functionality with access tokens. To fix this, use a password \n" +
+      "instead. Otherwise, you're warmly encouraged to email DockerHub and\n" +
+      "ask WTF :)\n",
+
     blockedConn: (action, thing) => (
       <Fragment>
         Make sure you <a onClick={action}>connect</a> to {thing}.

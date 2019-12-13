@@ -11,6 +11,7 @@ import { ImageActionsModalHelper } from './ImageActionsModalHelper';
 import TextOverLineSubtitle from '../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
 import ModalClientComposer from '../../../hocs/ModalClientComposer';
 import { ROUTES } from '../../../containers/RoutesConsts';
+import Text from "../../../assets/text-combos";
 
 export default class ImageForm extends React.Component {
   render() {
@@ -21,6 +22,7 @@ export default class ImageForm extends React.Component {
         {this.renderImageNameLine()}
         {this.renderScaleSelector()}
         {this.renderImgTagsSelector()}
+        {this.renderNoTagsForm()}
         {this.renderGitBranchSelector()}
         {this.renderGitCommitSelector()}
         {this.renderOutImageNameLine()}
@@ -144,6 +146,13 @@ export default class ImageForm extends React.Component {
         />
       </In.InputLine>
     );
+  }
+
+  renderNoTagsForm(){
+    const { availableTags, operationType } = this.props;
+    if(operationType !== 'docker') return null;
+    if(availableTags == null || availableTags.length > 0) return null;
+    return <Text.P>{ defaults.els.noTags }</Text.P>;
   }
 
   renderDockBlock() {

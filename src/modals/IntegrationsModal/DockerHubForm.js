@@ -55,7 +55,7 @@ export default class DockerHubForm extends React.Component {
         <In.LineInput
           value={this.state.password}
           onChange={e => make(e, 'password')}
-          placeholder="Access Token"
+          placeholder="Password or Access Token"
           type={'password'}
         />
       </In.InputLine>
@@ -64,12 +64,14 @@ export default class DockerHubForm extends React.Component {
 
   renderApology() {
     return (
-      <Layout.TextLine low={2}>
-        <p>
-          { defaults.dockerCallToAction }
+      <Fragment>
+        <Text.P>{ defaults.dockerHubWarn1 }</Text.P>
+        <Text.P>{ defaults.dockerHubWarn2 }</Text.P>
+        <Text.P>{ defaults.dockerCallToAction }
           <a href={defaults.dockerSecUrl} target='_blank'>DockerHub Account</a>
-        </p>
-      </Layout.TextLine>
+        </Text.P>
+        <Text.P>{ defaults.dockerHubComplain }</Text.P>
+      </Fragment>
     );
   }
 

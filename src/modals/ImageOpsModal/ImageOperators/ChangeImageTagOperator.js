@@ -4,7 +4,7 @@ import ChangeImageTagJob from '../Jobs/ChangeImageTagJob';
 export default class ChangeImageTagOperator extends BaseOperator {
   constructor(props) {
     super(props);
-    this.imageName = props.imageName;
+    this.imageName = props.imageName || props.imageTag;
   }
 
   successMessage() {

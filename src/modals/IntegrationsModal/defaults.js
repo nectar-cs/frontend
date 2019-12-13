@@ -23,8 +23,11 @@ const defaults = {
 
   confirmDelete: 'Are you sure you want to delete this integration?',
 
-  dockerCallToAction: "Create an Access Token for MOSAIC from your ",
-  dockerSecUrl: "https://hub.docker.com/settings/security"
+  dockerHubWarn1: "Password is less safe but everything will work",
+  dockerHubWarn2: "With access tokens, part of the API is blocked, e.g we can't list repo tags",
+  dockerCallToAction: "You can create an Access Token for MOSAIC from your ",
+  dockerSecUrl: "https://hub.docker.com/settings/security",
+  dockerHubComplain: "You're encouraged to write a WTF email to DockerHub :)",
 };
 
 export default defaults;
