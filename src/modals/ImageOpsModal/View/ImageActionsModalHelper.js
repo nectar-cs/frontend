@@ -1,12 +1,11 @@
-import DataUtils from '../../../utils/DataUtils';
-import React from 'react';
-import ForceImagePullOperator from '../ImageOperators/ForceImagePullOperator';
-import ChangeImageTagOperator from '../ImageOperators/ChangeImageTagOperator';
-import ScalePodsOperator from '../ImageOperators/ScalePodsOperator';
-import Backend from '../../../utils/Backend';
 import moment from 'moment';
-import { defaults } from './defaults';
+import Backend from '../../../utils/Backend';
+import DataUtils from '../../../utils/DataUtils';
 import BuildPushRunOperation from '../ImageOperators/BuildPushRunOperation';
+import ChangeImageTagOperator from '../ImageOperators/ChangeImageTagOperator';
+import ForceImagePullOperator from '../ImageOperators/ForceImagePullOperator';
+import ScalePodsOperator from '../ImageOperators/ScalePodsOperator';
+import { defaults } from './defaults';
 
 export class ImageActionsModalHelper {
   static selectedBranchBundle(remotes, branchName) {
@@ -24,13 +23,12 @@ export class ImageActionsModalHelper {
     const { matching } = props;
     if (matching && matching.imgRemoteId) {
       return props.operationType || 'git';
-    } else {
-      return props.operationType || 'change';
     }
+    return props.operationType || 'change';
   }
 
   static fetchImgTags(inst) {
-    let { imgRemoteId, imgRepoName } = inst.props.matching || {};
+    const { imgRemoteId, imgRepoName } = inst.props.matching || {};
 
     if (!(imgRemoteId && imgRepoName)) {
       const imageTags = null;
@@ -52,7 +50,7 @@ export class ImageActionsModalHelper {
   }
 
   static fetchGitBranches(inst) {
-    let { gitRemoteId, gitRepoName } = inst.props.matching || {};
+    const { gitRemoteId, gitRepoName } = inst.props.matching || {};
     if (!gitRemoteId || !gitRepoName) {
       const gitBranches = null;
       inst.setState(s => ({ ...s, remotes: { ...s.remotes, gitBranches } }));
@@ -71,7 +69,7 @@ export class ImageActionsModalHelper {
   }
 
   static fetchBranchCommits(inst, gitBranch) {
-    let { gitRemoteId, gitRepoName } = inst.props.matching;
+    const { gitRemoteId, gitRepoName } = inst.props.matching;
     let ep = `/remotes/${gitRemoteId}/${gitRepoName}/`;
     ep += `${gitBranch}/commits`;
 
@@ -122,6 +120,7 @@ export class ImageActionsModalHelper {
       case 'git':
         return BuildPushRunOperation;
       default:
+        // eslint-disable-next-line no-throw-literal
         throw `No helper for op type ${operationType}`;
     }
   }
@@ -129,8 +128,8 @@ export class ImageActionsModalHelper {
   static defOutImageName(props) {
     const { matching, deployment } = props;
     if (matching) return `${matching.imgRemoteName}/${matching.imgRepoName}:latest`;
-    else if (deployment) return deployment.imageName;
-    else return '';
+    if (deployment) return deployment.imageName;
+    return '';
   }
 
   static commitToS(commit) {

@@ -10,23 +10,30 @@ export default class Node {
   id() {
     return this._id;
   }
+
   depth() {
     return this._depth;
   }
+
   title() {
     return this._title;
   }
+
   isLeaf() {
     return !this.positive && !this.negative;
   }
+
   isRoot() {
     return !this.parent;
   }
+
   wasProcessed() {
     return !!this.outcome;
   }
+
   isCurrent(current) {
     // noinspection EqualityComparisonWithCoercionJS
+    // eslint-disable-next-line eqeqeq
     return this == current;
   }
 
@@ -35,7 +42,7 @@ export default class Node {
     const negResult = this.negative && this.negative.find(id);
     const posResult = this.positive && this.positive.find(id);
     if (negResult || posResult) return negResult || posResult;
-    else return null;
+    return null;
   }
 
   wasPositive() {

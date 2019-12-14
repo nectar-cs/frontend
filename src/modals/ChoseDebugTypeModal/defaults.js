@@ -1,10 +1,10 @@
-import { makeRoute, ROUTES } from '../../containers/RoutesConsts';
+import { makeRoute } from '../../containers/RoutesConsts';
 
 const defaults = {
   header: {
     title: (name, mode) => {
       if (mode === 'modal') return `${name} / infra debugging`;
-      else return `Infra Debugging`;
+      return `Infra Debugging`;
     },
     subtitle: `Starting point for debugging a deployment`,
   },

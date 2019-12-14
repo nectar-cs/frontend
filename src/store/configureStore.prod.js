@@ -1,10 +1,7 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createHashHistory } from 'history';
-import { routerMiddleware } from 'connected-react-router';
-
-import { combineReducers } from 'redux';
-import { connectRouter } from 'connected-react-router';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import mainReducer from '../reducers/reducer';
 
 const history = createHashHistory();

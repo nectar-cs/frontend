@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { S } from './IntegrationSectionStyles';
+import React, { Fragment } from 'react';
+import { CenteredSpinner } from '../../assets/loading-spinner';
+import Backend from '../../utils/Backend';
+import Utils from '../../utils/Utils';
 import AddNew from '../../widgets/AddNew/AddNew';
 import defaults from './defaults';
-import Utils from '../../utils/Utils';
-import { CenteredSpinner } from '../../assets/loading-spinner';
 import IntegrationList from './IntegrationList';
-import Backend from '../../utils/Backend';
+import { S } from './IntegrationSectionStyles';
 
 export default class IntegrationSection extends React.PureComponent {
   constructor(props) {
@@ -45,6 +45,7 @@ export default class IntegrationSection extends React.PureComponent {
   }
 
   deleteItem({ id, type, entity }) {
+    // eslint-disable-next-line no-alert
     if (window.confirm(defaults.confirmDelete)) {
       this.setState(s => ({ ...s, isSubmitting: true }));
       this.performDelete(id, () => {
@@ -114,13 +115,16 @@ export default class IntegrationSection extends React.PureComponent {
     if (this.state.isSubmitting) return null;
 
     const extras = {
-      setSubmitPerformer: func => (this.formSubmit = func),
+      setSubmitPerformer: func => {
+        this.formSubmit = func;
+      },
       notifySubmitted: this.onSubmitted,
     };
 
     if (this.props.formShowing && this.props.vendor) {
       return this.formRenderer(extras);
-    } else return null;
+    }
+    return null;
   }
 
   renderFormButtons() {
@@ -176,7 +180,8 @@ export default class IntegrationSection extends React.PureComponent {
       const news = this.state.registries.map(r => {
         if (r.id.toString() === id.toString()) {
           return { ...r, connected: result };
-        } else return r;
+        }
+        return r;
       });
       this.setState(s => ({ ...s, registries: news }));
     });

@@ -6,11 +6,6 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 
 export default class CodeEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { code: `console.log();` };
-  }
-
   render() {
     return (
       <Editor

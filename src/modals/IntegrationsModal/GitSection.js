@@ -1,10 +1,10 @@
 import React from 'react';
-import defaults from './defaults';
-import IntegrationSection from './IntegrationSection';
 import Backend from '../../utils/Backend';
 import DataUtils from '../../utils/DataUtils';
-import { S } from './IntegrationSectionStyles';
 import Utils from '../../utils/Utils';
+import defaults from './defaults';
+import IntegrationSection from './IntegrationSection';
+import { S } from './IntegrationSectionStyles';
 
 export default class GitSection extends IntegrationSection {
   performFetch(whenDone) {
@@ -29,15 +29,17 @@ export default class GitSection extends IntegrationSection {
     };
 
     if (this.props.vendor === 'github') return <S.FwdNotice>{defaults.gitFwdNotice}</S.FwdNotice>;
-    else return <S.Apology>Coming soon!</S.Apology>;
+    return <S.Apology>Coming soon!</S.Apology>;
   }
 
   vendorQuestion() {
     return defaults.gitVendorQuestion;
   }
+
   vendorList() {
     return defaults.gitRemoteVendors;
   }
+
   newEntryCopy() {
     return defaults.addNewGitRemote;
   }

@@ -1,6 +1,6 @@
-import Kapi from '../../../utils/Kapi';
-import DataUtils from '../../../utils/DataUtils';
 import Backend from '../../../utils/Backend';
+import DataUtils from '../../../utils/DataUtils';
+import Kapi from '../../../utils/Kapi';
 import type { Workspace } from '../../../types/Types';
 
 export default class Helper {
@@ -22,7 +22,7 @@ export default class Helper {
     const ep = `/workspaces/${workspace.id ? workspace.id : ''}`;
     const idLessPayload = DataUtils.objWithout(workspace, ['id']);
     if (workspace.id) return await Backend.bPatch(ep, idLessPayload);
-    else return await Backend.bPost(ep, idLessPayload);
+    return await Backend.bPost(ep, idLessPayload);
   }
 
   static coreWorkspace(workspace) {

@@ -1,6 +1,6 @@
 import React from 'react';
-import Section from './Section';
 import ChooseDebugTypeModal from '../../../modals/ChoseDebugTypeModal/ChooseDebugTypeModal';
+import Section from './Section';
 
 export default class InfraDebugSection extends Section {
   _renderActivityModal(source) {
@@ -11,6 +11,7 @@ export default class InfraDebugSection extends Section {
   _className() {
     return InfraDebugSection._className();
   }
+
   static _className() {
     return 'InfraDebugSection';
   }

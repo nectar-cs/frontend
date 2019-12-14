@@ -1,11 +1,11 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import S from './PreviewStyles';
+import React from 'react';
 import Text from './../../assets/text-combos';
+import S from './PreviewStyles';
 
 function Pending(props) {
   if (props.isExecuting) return <Text.Code>...</Text.Code>;
-  else return null;
+  return null;
 }
 
 function Output(props) {
@@ -16,7 +16,7 @@ function Output(props) {
         => {props.output}
       </Text.Code>
     );
-  else return null;
+  return null;
 }
 
 export default function Preview(props) {

@@ -1,9 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon as Ic, Identifier, Status } from './IntegrationListStyles';
+import React from 'react';
+import { ModSpinner } from '../../assets/loading-spinner';
 import Icon from './../../assets/icons';
 import Helper from './Helper';
-import { ModSpinner } from '../../assets/loading-spinner';
+import { Icon as Ic, Identifier, Status } from './IntegrationListStyles';
 
 function IntegrationItem(props) {
   const delCol = (
@@ -23,6 +23,9 @@ function IntegrationItem(props) {
       break;
     case false:
       statusWidget = <Status emotion="fail">Disconnected</Status>;
+      break;
+    default:
+      statusWidget = <ModSpinner size="x-small" />;
   }
 
   return (

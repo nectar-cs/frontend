@@ -3,9 +3,10 @@ import s from './KubeErrorContent.sass';
 
 export function kapiErrorTitle(props) {
   if (props.kind === 'hard') return 'K8s companion unreachable';
-  else if (props.kind === 'soft') {
+  if (props.kind === 'soft') {
     return 'K8s API unreachable';
-  } else return 'Unknown Error';
+  }
+  return 'Unknown Error';
 }
 
 export function KapiErrorContent(props) {

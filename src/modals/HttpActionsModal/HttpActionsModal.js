@@ -1,24 +1,24 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
+import Layout from '../../assets/layouts';
+import FlexibleModal from '../../hocs/FlexibleModal';
 import { Types } from '../../types/CommonTypes';
-import ModalButton from '../../widgets/Buttons/ModalButton';
-import Tabs from '../../widgets/Tabs/Tabs';
-import DestinationPane from './DestinationPane';
-import SourcePane from './SourcePane';
+import Backend from '../../utils/Backend';
 import Kapi from '../../utils/Kapi';
+import Utils from '../../utils/Utils';
+import ModalButton from '../../widgets/Buttons/ModalButton';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
+import Tabs from '../../widgets/Tabs/Tabs';
+import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import Checklist from '../ImageOpsModal/View/Checklist';
+import Text from './../../assets/text-combos';
 import CodeEditor from './CodeEditor';
 import { defaultBody, defaultHeaders } from './defaults';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
-import Utils from '../../utils/Utils';
-import { BodyResponseView, HeadersResponseView, RawResponseView } from './Response';
-import HistoryList from './HistoryList';
-import Backend from '../../utils/Backend';
-import FlexibleModal from '../../hocs/FlexibleModal';
-import Layout from '../../assets/layouts';
-import Text from './../../assets/text-combos';
-import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import DestinationPane from './DestinationPane';
 import Helper from './Helper';
-import Checklist from '../ImageOpsModal/View/Checklist';
+import HistoryList from './HistoryList';
+import { BodyResponseView, HeadersResponseView, RawResponseView } from './Response';
+import SourcePane from './SourcePane';
 
 const REQUEST_TAB_NAMES = ['Destination', 'Source', 'Headers', 'Body'];
 
@@ -58,15 +58,14 @@ export default class HttpActionsModal extends React.Component {
   static defaultHost(props) {
     if (props.targetHost) {
       return DestinationPane.makeSvcHost(props.targetHost, props.port);
-    } else {
-      if (props.deployment.services[0]) {
-        const { name, shortDns, fromPort } = props.deployment.services[0];
-        return DestinationPane.makeSvcHost(name, shortDns, fromPort).value;
-      }
-      if (props.deployment.pods[0]) {
-        const { name, ip } = props.deployment.pods[0];
-        return DestinationPane.makePodHost(name, ip).value;
-      }
+    }
+    if (props.deployment.services[0]) {
+      const { name, shortDns, fromPort } = props.deployment.services[0];
+      return DestinationPane.makeSvcHost(name, shortDns, fromPort).value;
+    }
+    if (props.deployment.pods[0]) {
+      const { name, ip } = props.deployment.pods[0];
+      return DestinationPane.makePodHost(name, ip).value;
     }
   }
 
@@ -174,7 +173,8 @@ export default class HttpActionsModal extends React.Component {
           historyCallbackSetter={historyCallbackSetter}
         />
       );
-    } else return null;
+    }
+    return null;
   }
 
   renderResponseTabs() {
@@ -238,7 +238,8 @@ export default class HttpActionsModal extends React.Component {
         blanksPresent = blanksPresent || !v;
       });
       return !blanksPresent;
-    } else return true;
+    }
+    return true;
   }
 
   onSubmitted(response) {
@@ -262,7 +263,7 @@ export default class HttpActionsModal extends React.Component {
     this.setState(s => ({ ...s, phase: 'submitting' }));
     const { verb, path, host } = this.state.destination;
     const { namespace } = this.state.source;
-    let payload = { verb, url: `${host}${path}`, namespace };
+    const payload = { verb, url: `${host}${path}`, namespace };
 
     Utils.mp('HTTP Operations Send', { verb, path });
 
@@ -279,7 +280,7 @@ export default class HttpActionsModal extends React.Component {
       destination,
       headerText,
       bodyText,
-      status: status,
+      status,
     };
 
     Backend.raisingPost(

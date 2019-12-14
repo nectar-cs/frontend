@@ -5,7 +5,7 @@ import Kapi from '../../utils/Kapi';
 export default class Helper {
   static baseEp(inst) {
     const { name, namespace } = inst.props.deployment;
-    let args = `dep_name=${name}&dep_namespace=${namespace}`;
+    const args = `dep_name=${name}&dep_namespace=${namespace}`;
     return `/dep_attachments?${args}&kind=commands`;
   }
 

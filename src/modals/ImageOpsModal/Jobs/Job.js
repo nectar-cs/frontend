@@ -14,9 +14,11 @@ export default class Job {
     this.broadcastProgress();
 
     do {
+      // eslint-disable-next-line no-await-in-loop
       await this.reloadData();
       this.recomputeState();
       this.broadcastProgress();
+      // eslint-disable-next-line no-await-in-loop
       await this.pollWait(this.hasConcluded());
     } while (!this.hasConcluded());
   }
@@ -38,45 +40,58 @@ export default class Job {
   simpleStatus(predicate) {
     if (!this.hasStarted()) return null;
     if (predicate) return 'done';
-    else return 'working';
+    return 'working';
   }
 
   simpleDetail(detail) {
     if (this.hasStarted()) return detail;
-    else return '';
+    return '';
   }
 
   logs() {
     return [];
   }
+
   hasStarted() {
     return this.started;
   }
+
   hasConcluded() {
     return this.success != null;
   }
+
   hasSucceeded() {
     return this.hasConcluded() && this.success;
   }
+
   hasFailed() {
     return this.hasConcluded() && !this.success;
   }
+
   getReason() {
     return this.reason;
   }
+
   recomputeState() {}
+
   commence() {
     this.started = true;
   }
+
   progressItems() {
     return [];
   }
+
   async initiateWork() {
+    // eslint-disable-next-line no-throw-literal
     throw 'Unimplemented!';
   }
+
   reloadData() {
+    // eslint-disable-next-line no-throw-literal
     throw 'Unimplemented!';
   }
+
   prepare() {}
 
   static POLL_RATE = 1200;

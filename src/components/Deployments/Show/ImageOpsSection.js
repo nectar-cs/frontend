@@ -1,6 +1,6 @@
 import React from 'react';
-import Section from './Section';
 import ImageOpsModal from '../../../modals/ImageOpsModal/View/ImageOpsModal';
+import Section from './Section';
 
 export default class ImageOpsSection extends Section {
   _renderActivityModal(source) {
@@ -18,6 +18,7 @@ export default class ImageOpsSection extends Section {
   static _className() {
     return 'ImageOpsSection';
   }
+
   _className() {
     return ImageOpsSection._className();
   }

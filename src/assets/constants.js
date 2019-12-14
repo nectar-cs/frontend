@@ -50,5 +50,6 @@ export function colored(name) {
     if (theme.colors[name]) return theme.colors[name];
     const color = theme.ali(name);
     return theme.colors[color];
-  } else return theme.colors.primaryColor;
+  } 
+   return theme.colors.primaryColor;
 }

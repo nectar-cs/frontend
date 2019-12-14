@@ -14,9 +14,10 @@ function partitionRemotes(remotes) {
 
 export default function mainReducer(s = initialState, action) {
   switch (action.type) {
-    case actionKeys.SetRemotes:
+    case actionKeys.SetRemotes: {
       const { remotes } = action;
       return { ...s, remotes: partitionRemotes(remotes) };
+    }
     case actionKeys.SimpleSet:
       return { ...s, ...action.data };
     default:

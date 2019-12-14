@@ -1,9 +1,9 @@
-import Utils from '../../utils/Utils';
-import Text from '../../assets/text-combos';
-import Layout from '../../assets/layouts';
-import S from './Styles';
-import ModestLink from '../../widgets/ModestLink/ModestLink';
 import React from 'react';
+import Layout from '../../assets/layouts';
+import Text from '../../assets/text-combos';
+import Utils from '../../utils/Utils';
+import ModestLink from '../../widgets/ModestLink/ModestLink';
+import S from './Styles';
 
 const humanizeString = require('humanize-string');
 
@@ -53,6 +53,7 @@ function SwitchType({ type }) {
 }
 
 function ForgotPassword({ type }) {
+  // eslint-disable-next-line no-alert
   const callback = () => alert('Password reset will be ready next week. Sorry.');
   if (type === 'login') {
     return (
@@ -60,7 +61,8 @@ function ForgotPassword({ type }) {
         Forgot Password
       </Text.PA>
     );
-  } else return <div />;
+  }
+  return <div />;
 }
 
 function WhyRegister({ type }) {
@@ -70,5 +72,6 @@ function WhyRegister({ type }) {
         <Text.P emotion="contrastFont">Why am I registering?</Text.P>
       </Text.A>
     );
-  } else return <div />;
+  }
+  return <div />;
 }

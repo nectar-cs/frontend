@@ -1,16 +1,16 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import In from '../../../assets/input-combos';
-import { S } from './ImageFormStyles';
+import { ROUTES } from '../../../containers/RoutesConsts';
+import ModalClientComposer from '../../../hocs/ModalClientComposer';
+import { Types } from '../../../types/CommonTypes';
 import Utils from '../../../utils/Utils';
 import CenterAnnouncement from '../../../widgets/CenterAnnouncement/CenterAnnouncement';
-import { defaults } from './defaults';
-import IntegrationsModal from '../../IntegrationsModal/IntegrationsModal';
-import { Types } from '../../../types/CommonTypes';
-import { ImageActionsModalHelper } from './ImageActionsModalHelper';
 import TextOverLineSubtitle from '../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
-import ModalClientComposer from '../../../hocs/ModalClientComposer';
-import { ROUTES } from '../../../containers/RoutesConsts';
+import IntegrationsModal from '../../IntegrationsModal/IntegrationsModal';
+import { defaults } from './defaults';
+import { ImageActionsModalHelper } from './ImageActionsModalHelper';
+import { S } from './ImageFormStyles';
 
 export default class ImageForm extends React.Component {
   render() {
@@ -160,7 +160,8 @@ export default class ImageForm extends React.Component {
 
       const args = { remoteType: 'Git & Docker', remoteEntity: 'repo and a registry' };
       return <BlockPrompt openSection={this.props.openSection} {...args} />;
-    } else return null;
+    }
+    return null;
   }
 
   onAssignment(name, event) {

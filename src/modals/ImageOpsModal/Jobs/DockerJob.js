@@ -45,13 +45,18 @@ export default class DockerJob extends Job {
   status() {
     return this.job.status.toLowerCase();
   }
+
   logs() {
     return this.job.logs || [];
   }
+
   initiatePayload() {}
+
   initiatePath() {}
 
   static KAPI_STATUS_FAIL = 'failed';
+
   static KAPI_STATUS_PASS = 'succeeded';
+
   static END_STATES = [DockerJob.KAPI_STATUS_FAIL, DockerJob.KAPI_STATUS_PASS];
 }

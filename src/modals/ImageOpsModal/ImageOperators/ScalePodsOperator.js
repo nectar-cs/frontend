@@ -1,9 +1,10 @@
-import BaseOperator from './BaseOperator';
 import ScalePodsJob from '../Jobs/ScalePodsJob';
+import BaseOperator from './BaseOperator';
 
 export default class ScalePodsOperator extends BaseOperator {
   constructor(bundle) {
     super(bundle);
+    // eslint-disable-next-line radix
     this.scaleTo = parseInt(bundle.scaleTo);
   }
 

@@ -19,13 +19,9 @@ export default class ScalePodsJob extends PodJob {
     if (this.isUpScale()) {
       if (this.crashedPods().length > 0) {
         this.conclude(false, 'Pod Failures in New Pods');
-      } else {
-        if (runCountGood) this.conclude(true);
-      }
-    } else {
-      if (runCountGood) {
-        if (this.deadPods().length === -this.deltaCount()) this.conclude(true);
-      }
+      } else if (runCountGood) this.conclude(true);
+    } else if (runCountGood) {
+      if (this.deadPods().length === -this.deltaCount()) this.conclude(true);
     }
   }
 
@@ -55,15 +51,14 @@ export default class ScalePodsJob extends PodJob {
           this.simpleStatus(running.length === this.deltaCount()),
         ),
       ];
-    } else {
-      return [
-        this.buildProgressItem(
-          'Unwanted pods killed',
-          `${deadCount}/${-this.deltaCount()}`,
-          this.simpleStatus(deadCount === -this.deltaCount()),
-        ),
-      ];
     }
+    return [
+      this.buildProgressItem(
+        'Unwanted pods killed',
+        `${deadCount}/${-this.deltaCount()}`,
+        this.simpleStatus(deadCount === -this.deltaCount()),
+      ),
+    ];
   }
 
   kapiVerb() {

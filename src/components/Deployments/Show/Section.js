@@ -1,9 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Types } from '../../../types/CommonTypes';
-import S from './SectionStyles';
 import defaults from './defaults';
 import Helper from './Helper';
+import S from './SectionStyles';
 
 export default class Section extends React.Component {
   constructor(props) {
@@ -67,14 +67,18 @@ export default class Section extends React.Component {
   }
 
   _className() {
+    // eslint-disable-next-line no-throw-literal
     throw 'Unimplemented!';
   }
+
   config() {
     return defaults.sections[this.key()];
   }
+
   iconName() {
     return this.config().iconName;
   }
+
   title() {
     return this.config().title;
   }

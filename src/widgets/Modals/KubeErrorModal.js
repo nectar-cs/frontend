@@ -1,12 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import s from './KubeErrorModal.sass';
-import LeftHeader from '../LeftHeader/LeftHeader';
+import React from 'react';
+import { KapiErrorContent, kapiErrorTitle } from '../../misc/KubeErrorContent';
+import Kapi from '../../utils/Kapi';
 import Utils from '../../utils/Utils';
 import ModalButton from '../Buttons/ModalButton';
-import Kapi from '../../utils/Kapi';
-import { KapiErrorContent, kapiErrorTitle } from '../../misc/KubeErrorContent';
 import CenterLoader from '../CenterLoader/CenterLoader';
+import LeftHeader from '../LeftHeader/LeftHeader';
+import s from './KubeErrorModal.sass';
 
 export default class KubeErrorModal extends React.Component {
   constructor(props) {
@@ -53,9 +53,8 @@ export default class KubeErrorModal extends React.Component {
           <KapiErrorContent {...this.bundle()} />
         </div>
       );
-    } else {
-      return <CenterLoader />;
     }
+    return <CenterLoader />;
   }
 
   onConnectSuccess() {

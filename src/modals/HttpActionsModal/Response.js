@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import Utils from '../../utils/Utils';
 import s from './Response.sass';
 
@@ -12,9 +12,8 @@ export class BodyResponseView extends React.Component {
           <code className={`${s.code} language-json`}>{JSON.stringify(hash, null, 2)}</code>
         </div>
       );
-    } else {
-      return <iframe className={s.holder} srcDoc={this.props.body} />;
     }
+    return <iframe className={s.holder} srcDoc={this.props.body} title="BodyResponseView-Iframe" />;
   }
 
   static propTypes = {

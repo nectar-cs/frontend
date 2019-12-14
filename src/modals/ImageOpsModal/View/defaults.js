@@ -1,3 +1,7 @@
+/* eslint-disable no-useless-concat */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Fragment } from 'react';
 
 export const defaults = {
@@ -43,7 +47,7 @@ export const defaults = {
   header: {
     title: (name, mode) => {
       if (mode === 'modal') return `${name} / image ops`;
-      else return 'Image Operations';
+      return 'Image Operations';
     },
     subtitle: "Manipulate this deployment's images and pods",
   },

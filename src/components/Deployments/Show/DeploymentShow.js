@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
 import ErrComponent from '../../../hocs/ErrComponent';
-import Helper from './Helper';
-import S from './DeploymentShowStyles';
-import UpdateCheckComposer from '../../../hocs/UpdateCheckComposer';
 import ModalHostComposer from '../../../hocs/ModalHostComposer';
+import UpdateCheckComposer from '../../../hocs/UpdateCheckComposer';
 import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
+import S from './DeploymentShowStyles';
+import Helper from './Helper';
 
 class DeploymentShowClass extends React.Component {
   constructor(props) {
@@ -102,7 +102,9 @@ class DeploymentShowClass extends React.Component {
 
   async reloadLoop() {
     while (!this._willUnmount) {
+      // eslint-disable-next-line no-await-in-loop
       await this.reload();
+      // eslint-disable-next-line no-await-in-loop
       await this.pollWait();
     }
   }
@@ -124,15 +126,19 @@ class DeploymentShowClass extends React.Component {
   update(assignments) {
     this.setState(s => ({ ...s, ...assignments }));
   }
+
   isInitialFetching() {
     return this.state.isInitialFetching;
   }
+
   componentWillUnmount(): * {
     this._willUnmount = true;
   }
+
   overrideDetail(detailOverride) {
     this.update({ detailOverride });
   }
+
   async pollWait() {
     return new Promise(r => setTimeout(r, 5000));
   }

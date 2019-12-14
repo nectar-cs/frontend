@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
-import ModalHelper from '../utils/ModalHelper';
 import Modal from 'react-modal';
-import { setModalOps } from '../actions/action';
 import { connect } from 'react-redux';
+import { setModalOps } from '../actions/action';
+import ModalHelper from '../utils/ModalHelper';
 Modal.defaultStyles.overlay.backgroundColor = 'rgba(49, 54, 72, 0.8)';
 
 function d2P(dispatch) {
@@ -89,13 +89,10 @@ export default class ModalHostComposer {
       }
 
       timedClose() {
-        let anchor = this;
-        setTimeout(
-          function() {
-            anchor.closeModal();
-          }.bind(this),
-          500,
-        );
+        const anchor = this;
+        setTimeout(() => {
+          anchor.closeModal();
+        }, 500);
       }
 
       escFunction(event) {

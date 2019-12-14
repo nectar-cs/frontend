@@ -1,12 +1,13 @@
+import React from 'react';
 import Text from '../../assets/text-combos';
 import type { RevisionStatus } from '../../types/Types';
-import React from 'react';
 
 const P = Text.BoldStatus;
 
 function AppRow(props: RowProps) {
   const { isChecked, status, callback } = props;
   const hot = status.updateNecessary;
+  // eslint-disable-next-line no-nested-ternary
   const emo = which => (which ? (hot ? 'failure' : 'success') : 'warn');
   const fmt = which => (which || 'N/A').substring(0, 7);
   const line = which => (

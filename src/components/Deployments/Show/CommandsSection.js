@@ -1,6 +1,6 @@
 import React from 'react';
-import Section from './Section';
 import CommandsModal from '../../../modals/CommandsModal/CommandsModal';
+import Section from './Section';
 
 export default class CommandsSection extends Section {
   _renderActivityModal(source) {
@@ -11,6 +11,7 @@ export default class CommandsSection extends Section {
   _className() {
     return CommandsSection._className();
   }
+
   static _className() {
     return 'CommandsSection';
   }

@@ -1,7 +1,7 @@
 //@flow
 import Setter from '../../utils/StateGulp';
-import type { RemoteBundle, RemoteRepo } from '../../types/Types';
 import Helper from './Helper';
+import type { RemoteBundle, RemoteRepo } from '../../types/Types';
 
 const StringSimilarity = require('string-similarity');
 
@@ -28,7 +28,7 @@ class GitRemoteListSetter extends GitAndImgSetter {
     const remoteList: Array<RemoteBundle> = this._value;
     const firstRemote: RemoteBundle = remoteList[0];
     if (firstRemote) return { [`${this.type}RemoteName`]: firstRemote.identifier };
-    else return {};
+    return {};
   }
 }
 
@@ -37,7 +37,8 @@ class RemoteNameSetter extends GitAndImgSetter {
     if (target && options.length > 0) {
       const sorting = StringSimilarity.findBestMatch(target, options);
       return options[sorting.bestMatchIndex];
-    } else return null;
+    }
+    return null;
   }
 
   sideEffects(bundle) {
@@ -60,7 +61,8 @@ class RepoNameSetter extends GitAndImgSetter {
     const paths = bundle.dfPathDict[key];
     if (paths != null) {
       return paths[0];
-    } else if (bundle.gitRemoteName && this._value) {
+    }
+    if (bundle.gitRemoteName && this._value) {
       bundle.fetchDfPaths(bundle.gitRemoteName, this._value);
       return null;
     }
@@ -71,7 +73,8 @@ class RepoNameSetter extends GitAndImgSetter {
       const framework = (this.repoObject(bundle) || {}).framework || '';
       const dockerfilePath = this.firstDockerfilePath(bundle) || '';
       return { framework, dockerfilePath };
-    } else return {};
+    }
+    return {};
   }
 }
 
@@ -81,7 +84,7 @@ class DfPathDictSetter extends Setter {
     const { gitRemoteName, gitRepoName } = bundle;
     const pathList = newDict[`${gitRemoteName}_${gitRepoName}`];
     if (pathList && pathList.length > 0) return { dockerfilePath: pathList[0] };
-    else return {};
+    return {};
   }
 }
 

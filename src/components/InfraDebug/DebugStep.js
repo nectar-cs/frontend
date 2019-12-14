@@ -1,21 +1,16 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
-import defaults from './defaults';
-import CenterAnnouncement from '../../widgets/CenterAnnouncement/CenterAnnouncement';
-import Text from '../../assets/text-combos';
-import Loader from '../../assets/loading-spinner';
-import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import React, { Fragment } from 'react';
 import Layout from '../../assets/layouts';
-import S from './StepExecutionStyles';
-import Helper from './Helper';
+import Text from '../../assets/text-combos';
 import ModalButton from '../../widgets/Buttons/ModalButton';
+import CenterAnnouncement from '../../widgets/CenterAnnouncement/CenterAnnouncement';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
+import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import defaults from './defaults';
+import Helper from './Helper';
+import S from './StepExecutionStyles';
 
 export default class DebugStep extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Fragment>

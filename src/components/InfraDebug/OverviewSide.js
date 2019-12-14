@@ -1,22 +1,13 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
-import Utils from '../../utils/Utils';
-import defaults from './defaults';
+import React, { Fragment } from 'react';
 import { Types } from '../../types/CommonTypes';
-import DecisionTree from './DecisionTree';
+import Utils from '../../utils/Utils';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import NetworkDebugForm from './DebugOptions';
+import DecisionTree from './DecisionTree';
+import defaults from './defaults';
 
 export default class OverviewSide extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      current: null,
-      execution: null,
-      history: {},
-    };
-  }
-
   render() {
     return (
       <Fragment>
@@ -61,6 +52,7 @@ export default class OverviewSide extends React.Component {
   config() {
     return defaults.debuggers[this.type()];
   }
+
   type() {
     return this.props.type;
   }
