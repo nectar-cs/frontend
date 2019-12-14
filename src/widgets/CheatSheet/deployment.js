@@ -1,12 +1,12 @@
 function _ns(ns, withNs) {
   if (withNs) return ` -n ${ns}`;
-  else return '';
+  return '';
 }
 
 function out(cmd, f) {
   if (f === 'json_jq') return `${cmd} -o json | jq`;
-  else if (f === 'json') return `${cmd} -o json`;
-  else if (f === 'yaml') return `${cmd} -o yaml`;
+  if (f === 'json') return `${cmd} -o json`;
+  if (f === 'yaml') return `${cmd} -o yaml`;
 }
 
 const kubectlAssocs = [
@@ -27,7 +27,7 @@ const kubectlReading = [
     desc: 'Full Resource',
     cmd: ({ k, f, d, ns, withNs }) => {
       if (f === 'plain') return `${k} describe deploy/${d}${_ns(ns, withNs)}`;
-      else return out(`${k} get deploy/${d}${_ns(ns, withNs)}`, f);
+      return out(`${k} get deploy/${d}${_ns(ns, withNs)}`, f);
     },
   },
   {

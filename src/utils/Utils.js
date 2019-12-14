@@ -1,22 +1,25 @@
 //@flow
-import React, { Fragment } from 'react';
-import textCombos from './../assets/text-combos.sass';
-import Text from './../assets/text-combos';
-import moment from 'moment';
-import type { Matching } from '../types/Types';
 import * as Sentry from '@sentry/browser';
+import mixpanel from 'mixpanel-browser';
+import moment from 'moment';
+import React, { Fragment } from 'react';
+import Text from './../assets/text-combos';
+import textCombos from './../assets/text-combos.sass';
+import type { Matching } from '../types/Types';
 const GCP_BASE = 'https://storage.googleapis.com/';
 const IMG_BASE = GCP_BASE + 'nectar-mosaic-public/images';
-import mixpanel from 'mixpanel-browser';
 
 export default class Utils {
   static MP_TOKEN = Utils.tor(() => MIXPANEL_TOKEN);
+
   static SENTRY_DSN = Utils.tor(() => SENTRY_DSN);
+
   static REVISION = Utils.tor(() => REVISION);
 
   static hasMixPanel() {
     return !!this.MP_TOKEN;
   }
+
   static hasSentry() {
     return !!this.SENTRY_DSN;
   }
@@ -75,7 +78,8 @@ export default class Utils {
     if (branch && message) {
       const commitPart = `"${message.substring(0, 10)}..."`;
       return `${commitPart} on ${branch}`;
-    } else return 'Not annotated :(';
+    }
+    return 'Not annotated :(';
   }
 
   static portMappingsStr(bundles) {
@@ -101,7 +105,8 @@ export default class Utils {
     const { deployment, matching, mode } = inst.props;
     if (!mode || mode === 'modal') {
       return this.msImage(deployment, matching);
-    } else return icon;
+    }
+    return icon;
   }
 
   static modalGraphicType(inst) {
@@ -170,16 +175,16 @@ export default class Utils {
 
   static statusCodeColors(code) {
     if (code < 300) return textCombos.statusTagSuccess;
-    else if (code < 500) return textCombos.statusTagWarn;
-    else if (code < 600) return textCombos.statusTagFailure;
-    else return null;
+    if (code < 500) return textCombos.statusTagWarn;
+    if (code < 600) return textCombos.statusTagFailure;
+    return null;
   }
 
   static httpVerbColors(verb) {
     verb = verb.toLowerCase();
     if (verb === 'get') return textCombos.statusTagGood;
-    else if (['post', 'patch', 'put'].includes(verb)) return textCombos.statusTagReady;
-    else return textCombos.statusTagWarn;
+    if (['post', 'patch', 'put'].includes(verb)) return textCombos.statusTagReady;
+    return textCombos.statusTagWarn;
   }
 
   static senTrack(e) {

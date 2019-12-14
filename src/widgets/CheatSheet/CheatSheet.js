@@ -1,10 +1,10 @@
 //@flow
 import React, { Fragment } from 'react';
-import CheatSheetForm from './CheatSheetForm';
+import Layout from '../../assets/layouts';
 import Text from '../../assets/text-combos';
+import CheatSheetForm from './CheatSheetForm';
 import deploymentCopy from './deployment';
 import Interpolation from './Interpolation';
-import Layout from '../../assets/layouts';
 import S from './Styles';
 
 export default class CheatSheet extends React.Component<Props> {
@@ -62,7 +62,8 @@ export default class CheatSheet extends React.Component<Props> {
           <Sections />
         </Layout.Div>
       );
-    } else return <Text.P low={4}>Under construction :/</Text.P>;
+    }
+    return <Text.P low={4}>Under construction :/</Text.P>;
   }
 
   renderSection(section) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import ts from './../../assets/text-combos.sass';
+import ts from '../../assets/text-combos.sass';
 
 export default function ColoredLabelList(props: Props) {
   const { labelType, labels } = props;

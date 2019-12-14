@@ -8,6 +8,7 @@ class ApiSetter extends Setter {
         flavor: 'json_jq',
         execName: 'kubectl',
       };
-    } else return null;
+    }
+    return null;
   }
 }

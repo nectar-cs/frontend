@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* PrismJS 1.16.0
 https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+clike+javascript+ruby+jsx */
 var _self =
