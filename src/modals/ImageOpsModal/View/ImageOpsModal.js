@@ -1,18 +1,18 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import LeftHeader from '../../../widgets/LeftHeader/LeftHeader';
-import Utils from '../../../utils/Utils';
-import { Types } from '../../../types/CommonTypes';
-import ModalButton from '../../../widgets/Buttons/ModalButton';
-import ImageForm from './ImageForm';
-import { ImageActionsModalHelper as Helper } from './ImageActionsModalHelper';
-import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
-import { defaults } from './defaults';
+import React from 'react';
+import Loader from '../../../assets/loading-spinner';
 import FlexibleModal from '../../../hocs/FlexibleModal';
+import { Types } from '../../../types/CommonTypes';
+import Utils from '../../../utils/Utils';
+import ModalButton from '../../../widgets/Buttons/ModalButton';
+import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
+import LeftHeader from '../../../widgets/LeftHeader/LeftHeader';
 import TermSection from '../../../widgets/TermSection/TermSection';
 import Checklist from './Checklist';
 import Conclusion from './Conclusion';
-import Loader from '../../../assets/loading-spinner';
+import { defaults } from './defaults';
+import { ImageActionsModalHelper as Helper } from './ImageActionsModalHelper';
+import ImageForm from './ImageForm';
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';
@@ -75,20 +75,21 @@ export default class ImageOpsModal extends React.Component {
 
   renderLoader() {
     if (this.isSubmitting()) return <CenterLoader />;
-    else return null;
+    return null;
   }
 
   renderTopLoader() {
     const { isBranchFetching, isCommitFetching, isTagFetching } = this.state;
     if (isBranchFetching || isCommitFetching || isTagFetching) return <Loader.TopRightSpinner />;
-    else return null;
+    return null;
   }
 
   renderChecklist() {
     if (this.isWorking() || this.isConcluded()) {
       const { progressItems } = this.state;
       return <Checklist items={progressItems} />;
-    } else return null;
+    }
+    return null;
   }
 
   renderTerminalOutput() {
@@ -219,12 +220,15 @@ export default class ImageOpsModal extends React.Component {
   isSubmitting() {
     return this.state.phase === PHASE_SUBMITTING;
   }
+
   isConfiguring() {
     return this.state.phase === PHASE_CONFIG;
   }
+
   isConcluded() {
     return this.state.phase === PHASE_CONCLUDED;
   }
+
   isWorking() {
     return this.state.phase === PHASE_PERFORMING;
   }

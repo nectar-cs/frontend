@@ -1,8 +1,8 @@
 //@flow
 import Backend from '../../utils/Backend';
+import DataUtils from '../../utils/DataUtils';
 import Utils from '../../utils/Utils';
 import type { RemoteBundle, RemoteRepo } from '../../types/Types';
-import DataUtils from '../../utils/DataUtils';
 
 export default class Helper {
   static async submit(deploymentName, bundle, callback) {
@@ -50,9 +50,8 @@ export default class Helper {
   static frameworkImage(mode: 'detail' | 'tutorial', framework: string): string {
     if (mode === 'detail') {
       return 'attachment';
-    } else {
-      return Utils.frameworkImage(framework || 'docker');
     }
+    return Utils.frameworkImage(framework || 'docker');
   }
 
   static graphicType(mode: 'detail' | 'tutorial'): string {
@@ -61,7 +60,7 @@ export default class Helper {
 
   static title(inst) {
     if (inst.props.mode === 'detail') return 'Git and Docker Matching';
-    else return inst.props.deployment.name;
+    return inst.props.deployment.name;
   }
 
   static async fetchDfPaths(remote, repo, hash, loadingCallback, setter) {

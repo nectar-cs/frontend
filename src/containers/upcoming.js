@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-concat */
 const upcoming = {
   playground: {
     featureName: 'Playground - Fastest Cloud Native Experimentation on Earth',

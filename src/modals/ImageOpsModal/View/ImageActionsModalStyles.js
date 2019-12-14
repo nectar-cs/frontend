@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Layout from '../../../assets/layouts.js';
+import Layout from '../../../assets/layouts';
 
 export const Container = styled(Layout.ModalLayout)``;
 

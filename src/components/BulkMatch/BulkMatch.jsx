@@ -1,21 +1,21 @@
 //@flow
 import React, { Fragment } from 'react';
-import AuthenticatedComponent from '../../hocs/AuthenticatedComponent';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
-import DeploymentList from './DeploymentList';
-import MatchModal from '../../modals/MatchModal/MatchModal';
-import IntegrationsPrompt from './IntegrationsPrompt';
-import ErrComponent from '../../hocs/ErrComponent';
-import ModalHostComposer from '../../hocs/ModalHostComposer';
-import CenterAnnouncement from '../../widgets/CenterAnnouncement/CenterAnnouncement';
+import { Redirect } from 'react-router';
 import Layout from '../../assets/layouts';
 import Loader from '../../assets/loading-spinner';
-import defaults from './defaults';
-import Helper from './Helper';
-import type { Matching, WideDeployment } from '../../types/Types';
-import { Redirect } from 'react-router';
-import CenterLoader from '../../widgets/CenterLoader/CenterLoader';
+import AuthenticatedComponent from '../../hocs/AuthenticatedComponent';
+import ErrComponent from '../../hocs/ErrComponent';
+import ModalHostComposer from '../../hocs/ModalHostComposer';
+import MatchModal from '../../modals/MatchModal/MatchModal';
 import Utils from '../../utils/Utils';
+import CenterAnnouncement from '../../widgets/CenterAnnouncement/CenterAnnouncement';
+import CenterLoader from '../../widgets/CenterLoader/CenterLoader';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
+import defaults from './defaults';
+import DeploymentList from './DeploymentList';
+import Helper from './Helper';
+import IntegrationsPrompt from './IntegrationsPrompt';
+import type { Matching, WideDeployment } from '../../types/Types';
 
 class BulkMatchingClass extends React.Component<Props, State> {
   constructor(props) {
@@ -184,15 +184,19 @@ class BulkMatchingClass extends React.Component<Props, State> {
   update(assignment) {
     this.setState(s => ({ ...s, ...assignment }));
   }
+
   reloadMatchings() {
     Helper.fetchMatchings(this.update);
   }
+
   hasPassedIntCheck() {
     return !!this.state.isIntegrated;
   }
+
   isIntChecking() {
     return !!this.state.isCheckingIntegration;
   }
+
   isClusterTrivial() {
     return this.state.deployments.length === 0;
   }

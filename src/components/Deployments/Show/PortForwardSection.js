@@ -1,6 +1,6 @@
 import React from 'react';
-import Section from './Section';
 import PortForwardModal from '../../../modals/PortForwardModal/PortForwardModal';
+import Section from './Section';
 
 export default class PortForwardSection extends Section {
   _renderActivityModal(source) {
@@ -11,6 +11,7 @@ export default class PortForwardSection extends Section {
   _className() {
     return PortForwardSection._className();
   }
+
   static _className() {
     return 'PortForwardSection';
   }

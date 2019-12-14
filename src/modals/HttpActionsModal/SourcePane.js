@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import s from './SourcePane.sass';
-import Utils from '../../utils/Utils';
+import React, { Fragment } from 'react';
 import ReactTags from 'react-tag-autocomplete';
 import ss from '../../assets/react-tags.sass';
+import Utils from '../../utils/Utils';
 import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
+import s from './SourcePane.sass';
 
 const AUTO_COMPLETE_STYLES = {
   root: s.labelTags,
@@ -46,9 +46,8 @@ export default class SourcePane extends React.Component {
           {this.renderLabelsInput()}
         </Fragment>
       );
-    } else {
-      return <ComingSoonSection size="medium" />;
     }
+    return <ComingSoonSection size="medium" />;
   }
 
   renderNamespaceSelector() {

@@ -12,8 +12,10 @@ export default class BaseOperator {
   }
 
   async perform() {
+    // eslint-disable-next-line no-restricted-syntax
     for (const job of this.jobs) {
       this.prepareJob(job);
+      // eslint-disable-next-line no-await-in-loop
       await job.perform();
       this.broadcastProgress();
       if (!job.hasSucceeded()) {
@@ -47,20 +49,20 @@ export default class BaseOperator {
   progressItemStatus(status) {
     if (status === 'failed') return 'failed';
     if (this.conclusion != null) return this.conclusion ? 'done' : 'failed';
-    else return status;
+    return status;
   }
 
   buildProgressItem(title, detail, status) {
     return {
       name: title,
-      detail: detail,
+      detail,
       status: this.progressItemStatus(status),
     };
   }
 
   conclusionMessage() {
     if (this.conclusion) return this.successMessage();
-    else return this.failureMessage();
+    return this.failureMessage();
   }
 
   conclude(success, reason = null) {
@@ -79,13 +81,18 @@ export default class BaseOperator {
   supportsLogging() {
     return false;
   }
+
   prepareJob(instance) {}
+
   failureMessage() {
     return this.failureReason;
   }
+
   successMessage() {
+    // eslint-disable-next-line no-throw-literal
     throw `Method successMessage not implemented!`;
   }
+
   jobClasses() {
     return [];
   }

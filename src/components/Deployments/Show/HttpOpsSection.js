@@ -1,6 +1,6 @@
 import React from 'react';
-import Section from './Section';
 import HttpActionsModal from '../../../modals/HttpActionsModal/HttpActionsModal';
+import Section from './Section';
 
 export default class HttpOpsSection extends Section {
   _renderActivityModal(source) {
@@ -11,6 +11,7 @@ export default class HttpOpsSection extends Section {
   _className() {
     return HttpOpsSection._className();
   }
+
   static _className() {
     return 'HttpOpsSection';
   }

@@ -1,5 +1,5 @@
-import Setter from '../../utils/StateGulp';
 import DataUtils from '../../utils/DataUtils';
+import Setter from '../../utils/StateGulp';
 
 class DeploymentSetter extends Setter {
   sideEffects(bundle) {
@@ -59,7 +59,7 @@ class NetworkGulper {
     const { services } = inst.state.deployment;
     return DataUtils.aToH(
       services.map(s => {
-        let summary = `${s.type}: ${s.name} - ${s.internalIp} `;
+        const summary = `${s.type}: ${s.name} - ${s.internalIp} `;
         return { [s.name]: summary };
       }),
     );

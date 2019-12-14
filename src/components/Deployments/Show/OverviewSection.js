@@ -1,24 +1,24 @@
 //@flow
 
+import moment from 'moment';
+import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import Section from './Section';
-import LeftHeader from '../../../widgets/LeftHeader/LeftHeader';
-import Utils from '../../../utils/Utils';
-import SS from './OverviewSectionStyles';
-import OverviewModal from '../../../modals/OverviewModal/OverviewModal';
+import { connect } from 'react-redux';
 import Layout from '../../../assets/layouts';
 import Text from '../../../assets/text-combos';
-import { connect } from 'react-redux';
+import IntegrationsModal from '../../../modals/IntegrationsModal/IntegrationsModal';
+import LastCommitModal from '../../../modals/LastCommitModal/LastCommitModal';
+import OverviewModal from '../../../modals/OverviewModal/OverviewModal';
+import PodModal from '../../../modals/PodModal/PodModal';
 import { Types } from '../../../types/CommonTypes';
-import ImageOpsSection from './ImageOpsSection';
+import Utils from '../../../utils/Utils';
+import LeftHeader from '../../../widgets/LeftHeader/LeftHeader';
 import PodsAtGlance from '../../../widgets/PodsView/PodsAtGlance';
 import HttpOpsSection from './HttpOpsSection';
-import moment from 'moment';
-import IntegrationsModal from '../../../modals/IntegrationsModal/IntegrationsModal';
+import ImageOpsSection from './ImageOpsSection';
 import MatchingSection from './MatchingSection';
-import LastCommitModal from '../../../modals/LastCommitModal/LastCommitModal';
-import PodModal from '../../../modals/PodModal/PodModal';
-import PropTypes from 'prop-types';
+import SS from './OverviewSectionStyles';
+import Section from './Section';
 
 function T(props) {
   return (
@@ -242,9 +242,11 @@ class OverviewSectionClass extends Section {
   goToDocker() {
     this.props.onClicked(ImageOpsSection.name);
   }
+
   goToHttp() {
     this.props.onClicked(HttpOpsSection.name);
   }
+
   goToMatching() {
     this.props.onClicked(MatchingSection.name);
   }
@@ -259,6 +261,7 @@ class OverviewSectionClass extends Section {
   _className() {
     return OverviewSectionClass._className();
   }
+
   static _className() {
     return 'OverviewSection';
   }
@@ -277,6 +280,7 @@ export default class OverviewSection extends React.Component {
   render() {
     return <Hack {...this.props} />;
   }
+
   static _className() {
     return 'OverviewSection';
   }

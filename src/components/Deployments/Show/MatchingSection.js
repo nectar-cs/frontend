@@ -1,6 +1,6 @@
 import React from 'react';
-import Section from './Section';
 import MatchModal from '../../../modals/MatchModal/MatchModal';
+import Section from './Section';
 
 export default class MatchingSection extends Section {
   _renderActivityModal(source) {
@@ -22,6 +22,7 @@ export default class MatchingSection extends Section {
   _className() {
     return MatchingSection._className();
   }
+
   static _className() {
     return 'MatchingSection';
   }

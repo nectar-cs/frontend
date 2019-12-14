@@ -1,9 +1,9 @@
 import React from 'react';
-import IntegrationSection from './IntegrationSection';
 import Backend from '../../utils/Backend';
 import DataUtils from '../../utils/DataUtils';
 import defaults from './defaults';
 import DockerHubForm from './DockerHubForm';
+import IntegrationSection from './IntegrationSection';
 import { S } from './IntegrationSectionStyles';
 
 export default class DockerSection extends IntegrationSection {
@@ -19,15 +19,17 @@ export default class DockerSection extends IntegrationSection {
 
   formRenderer(extras) {
     if (this.props.vendor === 'dockerhub') return <DockerHubForm {...extras} />;
-    else return <S.Apology>Coming soon!</S.Apology>;
+    return <S.Apology>Coming soon!</S.Apology>;
   }
 
   vendorQuestion() {
     return defaults.imgVendorQuestion;
   }
+
   vendorList() {
     return defaults.imageRegistryVendors;
   }
+
   newEntryCopy() {
     return defaults.addNewImageReg;
   }

@@ -1,8 +1,9 @@
 import Backend from '../../utils/Backend';
 import Kapi from '../../utils/Kapi';
+
 export default class Helper {
   static async fetchDeployments(setter) {
-    let ep = '/api/deployments/across_namespaces';
+    const ep = '/api/deployments/across_namespaces';
     const deployments = await Kapi.bFetch(ep);
     setter({ deployments });
   }

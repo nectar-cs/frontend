@@ -1,11 +1,11 @@
 //@flow
 
 import React, { Fragment } from 'react';
-import s from './WorkspaceForm.sass';
 import ReactTags from 'react-tag-autocomplete';
-import ss from './../../../assets/react-tags.sass';
 import FormComponent from '../../../hocs/FormComponent';
 import Utils from '../../../utils/Utils';
+import ss from './../../../assets/react-tags.sass';
+import s from './WorkspaceForm.sass';
 import type { Workspace } from '../../../types/Types';
 
 class WorkspaceFormClass extends React.Component<Props> {
@@ -94,6 +94,7 @@ class WorkspaceFormClass extends React.Component<Props> {
   tags(which) {
     return this.formatTags(this.props[which]);
   }
+
   formatTags(tags) {
     return tags.map(t => ({ id: t, name: t }));
   }

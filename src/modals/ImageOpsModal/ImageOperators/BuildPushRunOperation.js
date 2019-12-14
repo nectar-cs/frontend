@@ -1,10 +1,10 @@
-import BaseOperator from './BaseOperator';
-import TarballJob from '../Jobs/TarballJob';
+import AnnotateDeploymentJob from '../Jobs/AnnotateDeploymentJob';
+import ChangeImageTagJob from '../Jobs/ChangeImageTagJob';
 import DockerBuildJob from '../Jobs/DockerBuildJob';
 import DockerPushJob from '../Jobs/DockerPushJob';
 import ForceImagePullJob from '../Jobs/ForceImagePullJob';
-import ChangeImageTagJob from '../Jobs/ChangeImageTagJob';
-import AnnotateDeploymentJob from '../Jobs/AnnotateDeploymentJob';
+import TarballJob from '../Jobs/TarballJob';
+import BaseOperator from './BaseOperator';
 
 export default class BuildPushRunOperation extends BaseOperator {
   constructor(bundle) {
@@ -110,14 +110,14 @@ export default class BuildPushRunOperation extends BaseOperator {
     if (build.hasStarted()) {
       if (push.hasStarted()) {
         if (push.hasSucceeded()) return 'Pushed';
-        else if (push.hasFailed()) return 'Push Failed';
-        else return 'Pushing';
-      } else {
-        if (build.hasSucceeded()) return 'Built';
-        else if (build.hasFailed()) return 'Build Failed';
-        else return 'Building';
+        if (push.hasFailed()) return 'Push Failed';
+        return 'Pushing';
       }
-    } else return 'N/A';
+      if (build.hasSucceeded()) return 'Built';
+      if (build.hasFailed()) return 'Build Failed';
+      return 'Building';
+    }
+    return 'N/A';
   }
 
   successMessage() {

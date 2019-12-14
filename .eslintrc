@@ -1,5 +1,6 @@
 {
   "parser": "babel-eslint",
+  "plugins": ["flowtype"],
   "parserOptions": {
     "sourceType": "module",
     "allowImportExportEverywhere": false,
@@ -44,6 +45,11 @@
     "import/order": "off",
     "spaced-comment": "off",
     "dot-notation": "off",
-    "prefer-template": "off"
+    "prefer-template": "off",
+    "import/no-useless-path-segments": "off", // todo - warn later
+    "import/newline-after-import": "off", // todo - warn later
+    "no-return-await": "off", // todo - warn later
+    "react/jsx-boolean-value": "off",
+    "import/no-cycle": "off" // todo - warn later
   }
 }

@@ -5,9 +5,8 @@ export default class Backend {
   static baseUrl() {
     if (process.env.NODE_ENV === 'development') {
       return 'http://localhost:3000';
-    } else {
-      return BACKEND_URL;
     }
+    return BACKEND_URL;
   }
 
   static raisingFetch(endpoint, callback, errorCallback = null) {
@@ -41,30 +40,32 @@ export default class Backend {
   static async bFetch(endpoint) {
     const raw = await this.blockingRequest('GET', endpoint, null);
     if (raw) {
-      let cleaned = DataUtils.obj2Camel(raw);
+      const cleaned = DataUtils.obj2Camel(raw);
       return cleaned['data'] ? cleaned['data'] : cleaned;
-    } else return null;
+    }
+    return null;
   }
 
   static async bPost(endpoint, payload) {
     payload = DataUtils.obj2Snake(payload);
     const raw = await this.blockingRequest('POST', endpoint, payload);
     if (raw) {
-      let cleaned = DataUtils.obj2Camel(raw);
+      const cleaned = DataUtils.obj2Camel(raw);
       return cleaned['data'] ? cleaned['data'] : cleaned;
-    } else return null;
+    }
+    return null;
   }
 
   static async bPatch(endpoint, payload) {
     payload = DataUtils.obj2Snake(payload);
     const raw = await this.blockingRequest('PATCH', endpoint, payload);
-    let cleaned = DataUtils.obj2Camel(raw);
+    const cleaned = DataUtils.obj2Camel(raw);
     return cleaned['data'] ? cleaned['data'] : cleaned;
   }
 
   static async bDelete(endpoint) {
     const raw = await this.blockingRequest('DELETE', endpoint);
-    let cleaned = DataUtils.obj2Camel(raw);
+    const cleaned = DataUtils.obj2Camel(raw);
     return cleaned['data'] ? cleaned['data'] : cleaned;
   }
 
@@ -80,15 +81,13 @@ export default class Backend {
           if (response.ok) {
             if (callback) callback(data);
             else return data;
-          } else {
-            if (errorCallback) {
-              errorCallback &&
-                errorCallback({
-                  kind: 'soft',
-                  error: data,
-                  status: response.status,
-                });
-            }
+          } else if (errorCallback) {
+            errorCallback &&
+              errorCallback({
+                kind: 'soft',
+                error: data,
+                status: response.status,
+              });
           }
         }),
       error => {

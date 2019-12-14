@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
-import Text from '../../assets/text-combos';
-import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import React, { Fragment } from 'react';
 import Layout from '../../assets/layouts';
+import Text from '../../assets/text-combos';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
+import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
 
 export default class TerminalStep extends React.Component {
   render() {
@@ -88,7 +88,7 @@ export default class TerminalStep extends React.Component {
     const Refs = () =>
       terminal.resources.map(r => (
         <li key={r.name}>
-          <a href={r.url} target="_blank">
+          <a href={r.url} target="_blank" rel="noopener noreferrer">
             <p>{r.name}</p>
           </a>
         </li>

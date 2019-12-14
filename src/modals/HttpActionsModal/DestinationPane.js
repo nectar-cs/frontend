@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import s from './DestinationPane.sass';
-import Utils from '../../utils/Utils';
+import React, { Fragment } from 'react';
 import { Types } from '../../types/CommonTypes';
+import Utils from '../../utils/Utils';
+import s from './DestinationPane.sass';
 
 const HTTP_VERBS = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'];
 
@@ -62,14 +62,16 @@ export default class DestinationPane extends React.Component {
     if (domain && port) {
       const key = `http://${domain}:${port}`;
       return { value: key, show: `${key} (Service ${name})` };
-    } else return null;
+    }
+    return null;
   }
 
   static makePodHost(name, domain) {
     if (domain) {
       const key = `http://${domain}`;
       return { value: key, show: `${key} (Pod ${name})` };
-    } else return null;
+    }
+    return null;
   }
 
   broadcastChange(field, event) {

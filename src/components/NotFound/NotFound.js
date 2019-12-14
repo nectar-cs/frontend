@@ -1,9 +1,9 @@
 import React from 'react';
-import AuthenticatedComponent from '../../hocs/AuthenticatedComponent';
-import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
 import upcoming from '../../containers/upcoming';
-import FutureFeature from '../../widgets/FutureFeature/FutureFeature';
+import AuthenticatedComponent from '../../hocs/AuthenticatedComponent';
 import DataUtils from '../../utils/DataUtils';
+import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
+import FutureFeature from '../../widgets/FutureFeature/FutureFeature';
 
 class NotFoundClass extends React.Component {
   render() {
@@ -13,9 +13,8 @@ class NotFoundClass extends React.Component {
 
     if (upcoming[path]) {
       return <FutureFeature upcomingKey={path} />;
-    } else {
-      return <ComingSoonSection size="x-large" />;
     }
+    return <ComingSoonSection size="x-large" />;
   }
 }
 

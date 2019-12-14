@@ -6,9 +6,8 @@ export default class Kapi {
   static baseUrl() {
     if (process.env.NODE_ENV === 'development') {
       return 'http://localhost:5000';
-    } else {
-      return 'http://localhost:5000';
     }
+    return 'http://localhost:5000';
   }
 
   static workspaceToFilterUrlParams(w: Workspace): string {
@@ -59,9 +58,10 @@ export default class Kapi {
   static async bFetch(endpoint) {
     const raw = await this.blockingRequest('GET', endpoint, null);
     if (raw) {
-      let cleaned = DataUtils.obj2Camel(raw);
+      const cleaned = DataUtils.obj2Camel(raw);
       return cleaned['data'] ? cleaned['data'] : cleaned;
-    } else return null;
+    }
+    return null;
   }
 
   static async bPost(endpoint, payload) {
@@ -81,15 +81,13 @@ export default class Kapi {
           if (response.ok) {
             if (callback) callback(data);
             else return data;
-          } else {
-            if (errorCallback) {
-              errorCallback &&
-                errorCallback({
-                  kind: 'soft',
-                  error: data,
-                  status: response.status,
-                });
-            }
+          } else if (errorCallback) {
+            errorCallback &&
+              errorCallback({
+                kind: 'soft',
+                error: data,
+                status: response.status,
+              });
           }
         }),
       error => {

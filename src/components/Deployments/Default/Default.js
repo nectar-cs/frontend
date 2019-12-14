@@ -1,7 +1,7 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import Backend from '../../../utils/Backend';
 import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
-import { Redirect } from 'react-router';
 import AppLayout from '../../Navigation/AppLayout/AppLayout';
 
 export default class DefaultWorkspace extends React.Component {
@@ -19,12 +19,11 @@ export default class DefaultWorkspace extends React.Component {
   render() {
     const { goTo } = this.state;
     if (goTo) return <Redirect to={goTo} />;
-    else {
-      return (
-        <AppLayout skipSetup={true}>
-          <CenterLoader />
-        </AppLayout>
-      );
-    }
+
+    return (
+      <AppLayout skipSetup={true}>
+        <CenterLoader />
+      </AppLayout>
+    );
   }
 }

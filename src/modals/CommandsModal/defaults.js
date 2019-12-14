@@ -2,7 +2,7 @@ const defaults = {
   header: {
     title: (name, mode) => {
       if (mode === 'modal') return `${name} / command`;
-      else return 'Command Execution';
+      return 'Command Execution';
     },
     subtitle: "Send commands to the deployment's pods",
   },

@@ -60,7 +60,8 @@ export default class Setter {
       const overrideValue = this._defaults[key];
       delete this._defaults[key];
       return overrideValue || value;
-    } else return value;
+    }
+    return value;
   }
 
   sideEffects(bundle: { [string]: * }): { [string]: * } {

@@ -4,7 +4,7 @@ const defaults = {
   header: {
     title: (name, mode) => {
       if (mode === 'modal') return `${name} / port forward`;
-      else return 'Port Forward';
+      return 'Port Forward';
     },
     subtitle: 'Port Forwarding Wizard',
   },
@@ -23,7 +23,7 @@ const defaults = {
       `Your computer's port ${fromPort} will forward to your cluster's port ${toPort}`,
       <Fragment>
         Get{' '}
-        <a href={link} target="_blank">
+        <a href={link} target="_blank" rel="noopener noreferrer">
           Mosaic Desktop
         </a>{' '}
         to do this in one shot.

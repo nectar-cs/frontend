@@ -4,9 +4,7 @@ export default class ForceImagePullJob extends PodJob {
   recomputeState() {
     if (this.crashedPods().length > 0) {
       this.conclude(false, 'Pod Failures in New Pods');
-    } else {
-      if (this.areNewPodsRunning() && this.areOldPodsGone()) this.conclude(true);
-    }
+    } else if (this.areNewPodsRunning() && this.areOldPodsGone()) this.conclude(true);
   }
 
   progressItems() {

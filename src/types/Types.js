@@ -1,12 +1,10 @@
 //@flow
 
-import PropTypes from "prop-types";
-
 export type RemoteBundle = {
   identifier: string,
   type: string,
-  contents: Array<RemoteRepo>
-}
+  contents: Array<RemoteRepo>,
+};
 
 export type RemoteRepo = {
   id: number,
@@ -24,7 +22,7 @@ export type Matching = {
   imgRepoName: ?string,
   gitRemoteId: ?number,
   imgRemoteId: ?number,
-  dockerfilePath: ?string
+  dockerfilePath: ?string,
 };
 
 export type Deployment = {
@@ -33,10 +31,10 @@ export type Deployment = {
   replicas: number,
   imageName: string,
   containerName: string,
-  labels: {  [string]: string },
-  templateLabels: {  [string]: string },
-  selectorLabels: {  [string]: string }
-  imagePullPolicy: ('Always' | 'Never')
+  labels: { [string]: string },
+  templateLabels: { [string]: string },
+  selectorLabels: { [string]: string },
+  imagePullPolicy: 'Always' | 'Never',
 };
 
 export type Service = {
@@ -49,23 +47,23 @@ export type Service = {
   shortDns: string,
   longDns: string,
   type: 'ClusterIP' | 'NodePort' | 'LoadBalancer',
-  endpoints: ?Array<Endpoint>
-}
+  endpoints: ?Array<Endpoint>,
+};
 
 export type Endpoint = {
   targetName: string,
   targetIp: string,
-}
+};
 
 export type WideDeployment = {
   name: string,
-  namespaces: Array<String>
-}
+  namespaces: Array<String>,
+};
 
 export type LightUser = {
   id: number,
-  wasOnboarded: boolean
-}
+  wasOnboarded: boolean,
+};
 
 export type Workspace = {
   id: ?number,
@@ -74,21 +72,21 @@ export type Workspace = {
   nsFilters: string[],
   lbFilters: string[],
   nsFilterType: 'whitelist' | 'blacklist',
-  lbFilterType: 'whitelist' | 'blacklist'
-}
+  lbFilterType: 'whitelist' | 'blacklist',
+};
 
 export type RevisionStatus = {
   appName: string,
   updateNecessary: boolean,
   currentRevision: ?string,
-  latestRevision: ?string
-}
+  latestRevision: ?string,
+};
 
 export type LabelMatrix = {
   colNames: string[],
   rowNames: Array<string>,
   rowValues: Array<string[]>,
-}
+};
 
 export type ResEvent = {
   name: string,
@@ -98,12 +96,12 @@ export type ResEvent = {
   message: string,
   explanation: string,
   meaning: ?string,
-  occurredAt: string
-}
+  occurredAt: string,
+};
 
 export type LightPod = {
   namespace: string,
   name: string,
   ip: string,
-  status: string
-}
+  status: string,
+};

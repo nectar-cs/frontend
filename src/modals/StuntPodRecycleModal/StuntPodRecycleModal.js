@@ -1,17 +1,17 @@
-import React, { Fragment } from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
-import { Types } from '../../types/CommonTypes';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
-import defaults from './defaults';
-import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import React, { Fragment } from 'react';
 import Text from '../../assets/text-combos';
 import FlexibleModal from '../../hocs/FlexibleModal';
-import moment from 'moment';
-import ModalButton from '../../widgets/Buttons/ModalButton';
+import { Types } from '../../types/CommonTypes';
 import Kapi from '../../utils/Kapi';
-import CenterLoader from '../../widgets/CenterLoader/CenterLoader';
-import CenterAnnouncement from '../../widgets/CenterAnnouncement/CenterAnnouncement';
 import Utils from '../../utils/Utils';
+import ModalButton from '../../widgets/Buttons/ModalButton';
+import CenterAnnouncement from '../../widgets/CenterAnnouncement/CenterAnnouncement';
+import CenterLoader from '../../widgets/CenterLoader/CenterLoader';
+import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
+import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import defaults from './defaults';
 
 export default class StuntPodRecycleModal extends React.Component {
   constructor(props) {
@@ -55,7 +55,8 @@ export default class StuntPodRecycleModal extends React.Component {
   renderLoading() {
     if (this.state.isSubmitting) {
       return <CenterLoader />;
-    } else return null;
+    }
+    return null;
   }
 
   renderDone() {

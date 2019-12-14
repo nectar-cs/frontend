@@ -1,13 +1,13 @@
-import React, { Fragment } from 'react';
-import S from './CommitInfoStyles';
-import { Types } from '../../types/CommonTypes';
-import Text from './../../assets/text-combos';
-import Img from './../../assets/img-combos';
-import FileChange from './FileChange';
 import moment from 'moment';
-import defaults from './defaults';
-import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import React, { Fragment } from 'react';
+import { Types } from '../../types/CommonTypes';
 import Utils from '../../utils/Utils';
+import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import Img from './../../assets/img-combos';
+import Text from './../../assets/text-combos';
+import S from './CommitInfoStyles';
+import defaults from './defaults';
+import FileChange from './FileChange';
 
 export default class CommitInfo extends React.Component {
   render() {
@@ -28,6 +28,7 @@ export default class CommitInfo extends React.Component {
   }
 
   renderAuthorInfo() {
+    // eslint-disable-next-line prefer-const
     let { author, authorAvatar, authorUrl } = this.props.commit;
     const { url, sha, timestamp } = this.props.commit;
     authorAvatar = authorAvatar || defaults.defaultGitAvatar;
@@ -35,11 +36,11 @@ export default class CommitInfo extends React.Component {
     return (
       <S.AuthorLine>
         <Img.RoundedForRow src={authorAvatar} push={true} />
-        <a href={authorUrl} target="_blank">
+        <a href={authorUrl} target="_blank" rel="noopener noreferrer">
           <Text.BoldRef push={true}>{author}</Text.BoldRef>
         </a>
         <p>committed</p>
-        <a href={url} target="_blank">
+        <a href={url} target="_blank" rel="noopener noreferrer">
           <Text.BoldRef pushed={true} push={true}>
             {sha.substring(0, 7)}
           </Text.BoldRef>
@@ -86,7 +87,7 @@ export default class CommitInfo extends React.Component {
     return changes.map(change => <FileChange change={change} />);
   }
 
-  static PropTypes = {
+  static propTypes = {
     commit: Types.DetailedCommit,
   };
 }

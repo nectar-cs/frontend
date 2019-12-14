@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import In from '../assets/input-combos';
 
 export default class FormComponent {
@@ -82,7 +82,8 @@ export default class FormComponent {
       getValue(field) {
         if (this.props.retriever) {
           return this.props.retriever(this.props, field);
-        } else return this.props[field];
+        }
+        return this.props[field];
       }
 
       static propTypes = {

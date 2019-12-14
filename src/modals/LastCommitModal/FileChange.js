@@ -1,6 +1,6 @@
 import React from 'react';
-import Text from './../../assets/text-combos';
 import { Types } from '../../types/CommonTypes';
+import Text from './../../assets/text-combos';
 
 export default class FileChange extends React.Component {
   render() {
@@ -22,7 +22,7 @@ export default class FileChange extends React.Component {
   renderFileName() {
     const { change } = this.props;
     return (
-      <a href={change.blobUrl} target="_blank">
+      <a href={change.blobUrl} target="_blank" rel="noopener noreferrer">
         <code>{change.filename}</code>
       </a>
     );

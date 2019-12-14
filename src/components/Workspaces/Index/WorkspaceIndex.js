@@ -1,19 +1,19 @@
 import React, { Fragment } from 'react';
-import s from './WorkspaceIndex.sass';
+import { Link, Redirect } from 'react-router-dom';
+import Button from '../../../assets/buttons';
+import { makeRoute, ROUTES } from '../../../containers/RoutesConsts';
 import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
-import ModalHostComposer from '../../../hocs/ModalHostComposer';
 import ErrComponent from '../../../hocs/ErrComponent';
+import ModalHostComposer from '../../../hocs/ModalHostComposer';
+import Backend from '../../../utils/Backend';
+import Utils from '../../../utils/Utils';
 import CenterAnnouncement from '../../../widgets/CenterAnnouncement/CenterAnnouncement';
 import CenterCard from '../../../widgets/CenterCard/CenterCard';
 import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
-import Backend from '../../../utils/Backend';
-import { makeRoute, ROUTES } from '../../../containers/RoutesConsts';
 import ColoredLabelList from '../../../widgets/ColoredLabelList/ColoredLabelList';
-import Button from '../../../assets/buttons';
-import Text from './../../../assets/text-combos';
 import Layout from './../../../assets/layouts';
-import { Link, Redirect } from 'react-router-dom';
-import Utils from '../../../utils/Utils';
+import Text from './../../../assets/text-combos';
+import s from './WorkspaceIndex.sass';
 
 class WorkspaceIndexClass extends React.Component {
   constructor(props) {
@@ -136,6 +136,7 @@ function WorkspaceRow(props) {
   const editPath = makeRoute(bundle.edit.path, { id: props.id });
 
   const onDelete = () => {
+    // eslint-disable-next-line no-alert
     if (window.confirm('Are you sure?')) {
       const ep = `/workspaces/${props.id}`;
       Utils.mp('Workspace Delete', {});
@@ -169,7 +170,10 @@ function WorkspaceRow(props) {
             <p>Edit</p>
           </Link>
           <p>&nbsp;&nbsp;</p>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a>
+            {/*  eslint-disable jsx-a11y/click-events-have-key-events */}
+            {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <p onClick={onDelete}>Delete</p>
           </a>
         </Layout.TextLine>

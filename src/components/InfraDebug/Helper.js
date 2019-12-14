@@ -1,8 +1,8 @@
-import Kapi from '../../utils/Kapi';
-import DataUtils from '../../utils/DataUtils';
-import Backend from '../../utils/Backend';
-import S from './DecisionTreeStyles';
 import { theme } from '../../assets/constants';
+import Backend from '../../utils/Backend';
+import DataUtils from '../../utils/DataUtils';
+import Kapi from '../../utils/Kapi';
+import S from './DecisionTreeStyles';
 
 const mult = 120 / 17.8;
 const offset = S.boxDiag / 2 + 2;
@@ -46,8 +46,8 @@ export default class Helper {
     const boxHeight = 30;
 
     if (side === 'top') return { x: -boxWidth / 2, y: -boxHeight - 10 };
-    else if (side === 'left') return { x: -boxWidth - offset, y: -offset };
-    else if (side === 'right') return { x: offset, y: -offset };
+    if (side === 'left') return { x: -boxWidth - offset, y: -offset };
+    if (side === 'right') return { x: offset, y: -offset };
   }
 
   static decideExpanded(node, crt) {
@@ -58,13 +58,13 @@ export default class Helper {
 
   static decideNodeFill(node, crt) {
     if (node.isCurrent(crt)) return theme.colors.primaryColor;
-    else if (node.wasPositive()) return theme.colors.success;
-    else if (node.wasNegative()) return theme.colors.fail;
+    if (node.wasPositive()) return theme.colors.success;
+    if (node.wasNegative()) return theme.colors.fail;
   }
 
   static decideLeafFill(node, crt) {
     if (node.isCurrent(crt)) return theme.colors.primaryColor;
-    else if (node.wasNegative()) return theme.colors.contrastColor;
+    if (node.wasNegative()) return theme.colors.contrastColor;
   }
 
   static structToState2(node, crt, side = 'top') {
@@ -82,17 +82,16 @@ export default class Helper {
         ...common,
         nodeSvgShape: S.makeLeafShape(leafColor),
       };
-    } else {
-      return {
-        ...common,
-        _collapsed: !this.decideExpanded(node, crt),
-        nodeSvgShape: S.makeNodeShape(nodeColor),
-        children: [
-          this.structToState2(node.negative, crt, 'left'),
-          this.structToState2(node.positive, crt, 'right'),
-        ],
-      };
     }
+    return {
+      ...common,
+      _collapsed: !this.decideExpanded(node, crt),
+      nodeSvgShape: S.makeNodeShape(nodeColor),
+      children: [
+        this.structToState2(node.negative, crt, 'left'),
+        this.structToState2(node.positive, crt, 'right'),
+      ],
+    };
   }
 
   static fetchDeployment(inst) {
@@ -135,6 +134,7 @@ export default class Helper {
   static depName(inst) {
     return inst.props.match.params['id'];
   }
+
   static depNs(inst) {
     return inst.props.match.params['ns'];
   }

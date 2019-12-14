@@ -1,12 +1,12 @@
 import React from 'react';
-import Backend from '../../utils/Backend';
 import { Redirect } from 'react-router';
-import Layout from '../../assets/layouts';
-import CenterLoader from '../../widgets/CenterLoader/CenterLoader';
-import { ROUTES } from '../../containers/RoutesConsts';
-import { theme } from '../../assets/constants';
 import { ThemeProvider } from 'styled-components';
+import { theme } from '../../assets/constants';
+import Layout from '../../assets/layouts';
+import { ROUTES } from '../../containers/RoutesConsts';
+import Backend from '../../utils/Backend';
 import Utils from '../../utils/Utils';
+import CenterLoader from '../../widgets/CenterLoader/CenterLoader';
 
 export default class Logout extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ export default class Logout extends React.Component {
 
   render() {
     if (this.state.isDone) return this.renderRedirect();
-    else return this.renderLoading();
+    return this.renderLoading();
   }
 
   renderLoading() {

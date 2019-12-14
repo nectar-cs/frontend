@@ -6,14 +6,13 @@ export default class Helper {
   static massageStatuses(statuses) {
     if (this.isResultOk(statuses)) {
       return statuses;
-    } else {
-      Utils.senTrack('Bad statuses for revision');
-      return this.genFallbackStatuses();
     }
+    Utils.senTrack('Bad statuses for revision');
+    return this.genFallbackStatuses();
   }
 
   static genFallbackStatuses() {
-    return APPS.map(appName => ({ appName: appName, updateNecessary: false }));
+    return APPS.map(appName => ({ appName, updateNecessary: false }));
   }
 
   static isResultOk(statuses) {
