@@ -4,7 +4,7 @@ import DataUtils from './DataUtils';
 export default class Backend {
   static baseUrl() {
     if (process.env.NODE_ENV === 'development') {
-      return 'http://localhost:3000';
+      return 'https://mosaic-backend.herokuapp.com/';
     }
     return BACKEND_URL;
   }
