@@ -26,7 +26,7 @@ class WorkspaceIndexClass extends React.Component{
   componentDidMount(){
     document.title = `Workspaces`;
     this.setState(s => ({...s, isLoading: true}));
-    Backend.raisingFetch('/workspaces', (payload) => {
+    Backend.aFetch('/workspaces', (payload) => {
       const workspaces = payload['data'];
       // TODO have logic for begin tutorial here!
       this.setState((s) => ({...s, isLoading: false, workspaces }));
@@ -125,7 +125,7 @@ function WorkspaceRow(props) {
     if(window.confirm("Are you sure?")){
       const ep = `/workspaces/${props.id}`;
       Utils.mp("Workspace Delete", {});
-      Backend.raisingDelete(ep, () => {
+      Backend.aDelete(ep, () => {
         window.location = bundle.index.path;
       });
     }

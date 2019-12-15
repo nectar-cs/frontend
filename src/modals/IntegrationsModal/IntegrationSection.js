@@ -166,7 +166,7 @@ export default class IntegrationSection extends React.PureComponent {
 
   performConnectionCheck(id, whenDone){
     const ep = `/remotes/${id}/check_connection`;
-    Backend.raisingFetch(ep, resp => {
+    Backend.aFetch(ep, resp => {
       whenDone(resp['data']['connected']);
     })
   }

@@ -1,32 +1,39 @@
 import React from 'react';
-import s from './CenterAnnouncement.sass';
+import S from './CenterAnnouncementStyles'
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 function MainContent(props) {
-  const bkg = props.light ? s.light : null;
-  const icon = <i className={`material-icons ${s.containerIcon} ${bkg}`}>{props.iconName}</i>;
+  const icon = <S.ContainerIcon
+    light={props.light}
+    className='material-icons'>
+    {props.iconName}
+  </S.ContainerIcon>;
 
-  const text = <p className={s.containerText}>{props.text}</p>;
+  const text = <S.ContainerText>{props.text}</S.ContainerText>;
 
   if (props.contentType === 'action') {
     return (
-      <div className={s.clickableContainer} onClick={props.action}>
+      <S.ClickableContainer onClick={props.action}>
         {icon}
-        <p className={s.containerText}>{props.text}</p>
-      </div>
+        <S.ContainerText>
+          {props.text}
+        </S.ContainerText>
+      </S.ClickableContainer>
     );
   } else if (props.contentType === 'children') {
     return (
-      <div className={s.clickableContainer}>
-        {icon} {props.children}
-      </div>
+      <S.ClickableContainer>
+        {icon}
+        {props.children}
+      </S.ClickableContainer>
     );
   } else {
     return (
-      <div className={s.clickableContainer}>
-        {icon} {text}
-      </div>
+      <S.ClickableContainer>
+        {icon}
+        {text}
+      </S.ClickableContainer>
     );
   }
 }

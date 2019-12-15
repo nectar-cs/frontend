@@ -79,7 +79,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: devMode ? '[name].css' : '[name].[hash].css',
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
-    }),
+    })
   ],
   devServer: {
     contentBase: DIST_DIR,
@@ -88,4 +88,18 @@ module.exports = {
     port: 9000,
     host: '0.0.0.0',
   },
+
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        "entry1-bundle": {
+          test: /.../,
+          chunks: "all",
+          name: "entry1-bundle",
+          enforce: true,
+          priority: 0,
+        }
+      }
+    }
+  }
 };

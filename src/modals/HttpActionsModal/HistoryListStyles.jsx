@@ -22,7 +22,7 @@ const Expand = styled.i`
 
 const WholeRow = styled.tr`
   &:hover{
-    background: ${p.theme.colors.contentBackgroundColor};
+    background: ${p => p.theme.colors.contentBackgroundColor};
     cursor: pointer;,
 }`;
 
@@ -34,7 +34,7 @@ const Url = styled.p`
 `;
 
 const Verb = styled(Text.StatusTag)`
-  width: 34px
+  width: 34px;
 `;
 
 const S = {

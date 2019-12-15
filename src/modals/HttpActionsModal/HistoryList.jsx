@@ -67,7 +67,7 @@ export default class HistoryList extends React.Component {
     let args = `dep_name=${this.props.name}`;
     args = `${args}&dep_namespace=${this.props.namespace}`;
     args = `${args}&kind=http_requests`;
-    Backend.raisingFetch(`/dep_attachments?${args}`, (resp) => {
+    Backend.aFetch(`/dep_attachments?${args}`, (resp) => {
       if(this._isMounted) {
         this.setState(s => ({
           ...s,

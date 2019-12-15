@@ -27,12 +27,6 @@ export const ROUTES = {
     edit: { path: '/workspaces/:id/edit', comp: WorkspaceEdit },
     show: { path: '/workspaces/:id', comp: WorkspaceShow }
   },
-
-  auth: {
-    login: { path: '/auth/login', comp: LoginAndRegister },
-    register: { path: '/auth/register', comp: LoginAndRegister },
-    logout: { path: '/auth/logout', comp: Logout }
-  }
 };
 
 export function makeRoute(route, subs){

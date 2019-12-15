@@ -9,16 +9,12 @@ import {theme} from "ui-common";
 import {ThemeProvider} from "styled-components";
 
 export default class Root extends Component {
-
   render() {
     return (
       <Provider store={this.props.store}>
         <BrowserRouter history={this.props.history}>
           <ThemeProvider theme={theme}>
             <Switch>
-              { Root.renderRoute(R.auth.login) }
-              { Root.renderRoute(R.auth.register) }
-              { Root.renderRoute(R.auth.logout) }
               { Root.renderRoute(R.bulkMatch.index) }
               { Root.renderRoute(R.deployments.debug) }
               { Root.renderRoute(R.deployments.show) }

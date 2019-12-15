@@ -1,6 +1,6 @@
 //@flow
 import React from 'react';
-import s from './GithubAuth.sass';
+import S from './IntegrationsPromptStyles'
 import defaults from './defaults'
 import IntegrationsModal from "../../modals/IntegrationsModal/IntegrationsModal";
 import {Button} from "ui-common";
@@ -15,17 +15,17 @@ class IntegrationsPromptClass extends React.Component<Props> {
 
   render(){
     return(
-      <div className={s.connectContainer}>
-        <div className={s.innerBox}>
-          <p className={s.text}>{defaults.integration.reason}</p>
-          <i className={`${s.containerIcon} material-icons`}>extension</i>
-          <p className={s.text}>{defaults.integration.skip}</p>
-          <div className={s.buttons}>
+      <S.ConnectContainer>
+        <S.InnerBox>
+          <S.Text>{defaults.integration.reason}</S.Text>
+          <S.ContainerIcon className='material-icons'>extension</S.ContainerIcon>
+          <S.Text>{defaults.integration.skip}</S.Text>
+          <S.Buttons>
             { this.renderSkipButton() }
             { this.renderConnectButton() }
-          </div>
-        </div>
-      </div>
+          </S.Buttons>
+        </S.InnerBox>
+      </S.ConnectContainer>
     )
   }
 

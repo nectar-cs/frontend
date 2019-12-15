@@ -6548,8 +6548,9 @@ uglify-js@3.4.x:
     commander "~2.19.0"
     source-map "~0.6.1"
 
-"ui-common@file:../ui-common":
+"ui-common@https://github.com/nectar-cs/ui-common":
   version "1.0.0"
+  resolved "https://github.com/nectar-cs/ui-common#2a6d6952d14e4319dae0fa9a29a48c3bf354b547"
   dependencies:
     styled-components "^4.4.1"
 

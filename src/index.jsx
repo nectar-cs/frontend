@@ -9,7 +9,6 @@ import Utils from "./utils/Utils";
 if(Utils.hasSentry())
   Sentry.init({dsn: Utils.SENTRY_DSN});
 
-
 ReactDOM.render(
   <Root store={store} history={history}/>,
   document.getElementById('root')
