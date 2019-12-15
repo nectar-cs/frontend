@@ -1,21 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import Utils from '../../../utils/Utils';
-import { makeRoute, ROUTES } from '../../../containers/RoutesConsts';
-import HttpActionsModal from '../../../modals/HttpActionsModal/HttpActionsModal';
-import CardRow from './CardRow';
-import { Types } from '../../../types/CommonTypes';
-import ImageOpsModal from '../../../modals/ImageOpsModal/View/ImageOpsModal';
-import { S } from './DeploymentCardStyles';
-import PortForwardModal from '../../../modals/PortForwardModal/PortForwardModal';
-import CommandsModal from '../../../modals/CommandsModal/CommandsModal';
-import { Link } from 'react-router-dom';
-import HotReloadModal from '../../../modals/HotReloadingModal/HotReloadModal';
-import PodModal from '../../../modals/PodModal/PodModal';
-import LastCommitModal from '../../../modals/LastCommitModal/LastCommitModal';
+import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
+import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
+import CardRow from "./CardRow";
+import {Types} from "../../../types/CommonTypes";
+import ImageOpsModal from "../../../modals/ImageOpsModal/View/ImageOpsModal";
+import { S } from "./DeploymentCardStyles"
+import PortForwardModal from "../../../modals/PortForwardModal/PortForwardModal";
+import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
+import {Link} from "react-router-dom";
+import HotReloadModal from "../../../modals/HotReloadingModal/HotReloadModal";
+import PodModal from "../../../modals/PodModal/PodModal";
+import LastCommitModal from "../../../modals/LastCommitModal/LastCommitModal";
 
 export default class DeploymentCard extends React.Component {
-  constructor(props) {
+
+  constructor(props){
     super(props);
     this.openImageModal = this.openImageModal.bind(this);
     this.openSourceModal = this.openSourceModal.bind(this);
@@ -25,153 +26,160 @@ export default class DeploymentCard extends React.Component {
     this.openHttpModal = this.openHttpModal.bind(this);
   }
 
-  render() {
-    return (
+  render(){
+    return(
       <S.Card>
-        {this.renderHeader()}
-        {this.renderContentRows()}
-        {this.renderPodStatuses()}
-        {this.renderAdditionalControls()}
+        { this.renderHeader() }
+        { this.renderContentRows() }
+        { this.renderPodStatuses() }
+        { this.renderAdditionalControls() }
       </S.Card>
-    );
+    )
   }
 
-  renderHeader() {
+  renderHeader(){
     const { deployment, matching } = this.props;
     let frameworkImg = Utils.msImage(deployment, matching);
     let git = this.hasGit() ? Utils.gitSummary(matching) : null;
-    const subtitle = git || 'Not connected to Git';
-    const Ref = p => <Link to={this.detailPath()}>{p.children}</Link>;
+    const subtitle = git || "Not connected to Git";
+    const Ref = (p) => <Link to={this.detailPath()}>{p.children}</Link>;
 
-    return (
+    return(
       <S.Header>
-        <S.HeaderImage src={frameworkImg} alt="Language" />
-        <Ref>
-          <S.HeaderTitle>{deployment.name}</S.HeaderTitle>
-        </Ref>
+        <S.HeaderImage src={frameworkImg} alt='Language'/>
+        <Ref><S.HeaderTitle>{deployment.name}</S.HeaderTitle></Ref>
         <S.HeaderSubtitle>{subtitle}</S.HeaderSubtitle>
       </S.Header>
-    );
+    )
   }
 
-  hasMs() {
+  hasMs(){
     return !!this.props.matching;
   }
 
-  hasGit() {
+  hasGit(){
     return this.hasMs() && this.props.matching.gitRemoteName;
   }
 
-  renderContentRows() {
+  renderContentRows(){
     const dep = this.props.deployment;
     const sourceText = Utils.sourceString(dep.commit);
     const portText = `Ok CPU, low RAM`;
 
-    return (
-      <S.ContentRows>
-        <tbody>
-          {this.buildRow('Image', dep.imageName, this.openImageModal)}
-          {this.buildRow('Source', sourceText, this.openSourceModal)}
-          {this.renderDnsRow()}
-          {this.buildRow('Status', portText, () => alert('Implemented Before 2020.'))}
-        </tbody>
-      </S.ContentRows>
-    );
+    return <S.ContentRows>
+      <tbody>
+        { this.buildRow('Image', dep.imageName, this.openImageModal) }
+        { this.buildRow('Source', sourceText, this.openSourceModal) }
+        { this.renderDnsRow() }
+        { this.buildRow('Status', portText, () => alert("Implemented Before 2020.")) }
+      </tbody>
+    </S.ContentRows>;
   }
 
-  renderDnsRow() {
+  renderDnsRow(){
     const svc = this.props.deployment.services[0];
-    if (svc) {
+    if(svc){
       const dnsMaterial = svc.externalIp ? 'language' : null;
-      return this.buildRow('Quick DNS', svc.shortDns, this.openHttpModal, dnsMaterial);
+      return this.buildRow(
+        'Quick DNS',
+        svc.shortDns,
+        this.openHttpModal,
+        dnsMaterial
+      )
     } else {
-      return this.buildRow('Quick DNS', 'No Services', null);
+      return this.buildRow('Quick DNS', "No Services", null)
     }
   }
 
   renderPodStatuses() {
     const pods = this.props.deployment.pods;
-    const views = pods.map(pod => (
+    const views = pods.map(pod =>
       <S.PodCircle
         onClick={() => this.openPodModal(pod)}
         key={pod.name}
         emotion={pod.state}
         title={pod.name}
       />
-    ));
-    return <S.PodStatusesBox>{views}</S.PodStatusesBox>;
+    );
+    return <S.PodStatusesBox>{views}</S.PodStatusesBox>
   }
 
-  renderAdditionalControls() {
-    return (
+  renderAdditionalControls(){
+    return(
       <S.AdditionalControlsBox>
-        <ControlIcon icon="attach_money" title="CMD..." action={this.openCommandsModal} />
         <ControlIcon
-          icon="arrow_upward"
+          icon='attach_money'
+          title="CMD..."
+          action={this.openCommandsModal}
+        />
+        <ControlIcon
+          icon='arrow_upward'
           title="Port Forward..."
           action={this.openPortForwardModal}
         />
-        <ControlIcon icon="import_export" title="Bind Local..." action={this.openHotModal} />
+        <ControlIcon
+          icon='import_export'
+          title="Bind Local..."
+          action={this.openHotModal}
+        />
       </S.AdditionalControlsBox>
-    );
+    )
   }
 
-  openHotModal() {
+  openHotModal(){
     const { deployment, matching } = this.props;
-    this.props.openModal(HotReloadModal, {
-      deployment,
-      matching,
-      mode: 'modal',
-    });
+    this.props.openModal(HotReloadModal, ({
+      deployment, matching, mode: 'modal'
+    }));
   }
 
-  openHttpModal() {
+  openHttpModal(){
     const bundle = {
       deployment: this.props.deployment,
       matching: this.props.matching,
-      mode: 'modal',
+      mode: 'modal'
     };
 
     this.props.openModal(HttpActionsModal, bundle);
   }
 
-  openImageModal() {
+  openImageModal(){
     const bundle = {
       deployment: this.props.deployment,
       matching: this.props.matching,
       refreshCallback: this.props.refreshCallback,
-      mode: 'modal',
+      mode: 'modal'
     };
     this.props.openModal(ImageOpsModal, bundle);
   }
 
-  openSourceModal() {
+  openSourceModal(){
     const { deployment, matching, replaceModal } = this.props;
-    let bundle = { deployment, matching, replaceModal, mode: 'modal' };
+    let bundle = {deployment, matching, replaceModal, mode: 'modal'};
     this.props.openModal(LastCommitModal, bundle);
   }
 
-  openPortForwardModal() {
+  openPortForwardModal(){
     const { deployment, matching } = this.props;
-    let bundle = { deployment, matching, mode: 'modal' };
+    let bundle = {deployment, matching, mode: 'modal'};
     this.props.openModal(PortForwardModal, bundle);
   }
 
-  openCommandsModal() {
+  openCommandsModal(){
     const { deployment, matching } = this.props;
-    let bundle = { deployment, matching, mode: 'modal' };
+    let bundle = {deployment, matching, mode: 'modal'};
     this.props.openModal(CommandsModal, bundle);
   }
 
-  openPodModal(pod) {
-    console.log('ASdasdad');
+  openPodModal(pod){
+    console.log("ASdasdad");
     const { deployment, matching } = this.props;
     const bundle = { deployment, matching, pod, mode: 'modal' };
     this.props.openModal(PodModal, bundle);
   }
 
-  buildRow(label, text, callback, material) {
-    return (
+  buildRow(label, text, callback, material){
+    return(
       <CardRow
         label={label}
         text={text}
@@ -179,28 +187,33 @@ export default class DeploymentCard extends React.Component {
         callback={callback}
         material={material}
       />
-    );
+    )
   }
 
-  detailPath() {
-    return makeRoute(ROUTES.deployments.show.path, {
-      id: this.props.deployment.name,
-      ns: this.props.deployment.namespace,
-    });
+  detailPath(){
+    return makeRoute(
+      ROUTES.deployments.show.path, {
+        id: this.props.deployment.name,
+        ns: this.props.deployment.namespace
+      }
+    )
   }
 
   static propTypes = {
     deployment: Types.Deployment,
     matching: Types.Matching,
     openModal: PropTypes.func.isRequired,
-    refreshCallback: PropTypes.func.isRequired,
+    refreshCallback: PropTypes.func.isRequired
   };
 }
 
-function ControlIcon(props) {
-  return (
-    <S.ControlIcon className="material-icons" title={props.title} onClick={props.action}>
-      {props.icon}
+function ControlIcon(props){
+  return(
+    <S.ControlIcon
+      className='material-icons'
+      title={props.title}
+      onClick={props.action}>
+      { props.icon }
     </S.ControlIcon>
-  );
+  )
 }

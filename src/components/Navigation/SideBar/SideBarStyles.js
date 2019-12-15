@@ -1,22 +1,22 @@
-import styled from 'styled-components';
-import Text from './../../../assets/text-combos';
+import styled from 'styled-components'
+import {Text} from 'ui-common'
 
-const logoSide = '21px';
-const arrowSide = '20px';
-const itemMargin = '4px';
+const logoSide = "21px";
+const arrowSide = "20px";
+const itemMargin = "4px";
 
-const arrow = t => ({
+const arrow = (t) => ({
   color: t.colors.contrastColor,
   fontSize: `${arrowSide}`,
-  ':hover': {
-    cursor: 'pointer',
-  },
+  ":hover": {
+    cursor: "pointer"
+  }
 });
 
-const sectionIcon = t => ({
+const sectionIcon = (t) => ({
   color: t.colors.contrastColor,
-  margin: '0 12px 1.5px 0',
-  fontSize: '22px',
+  margin: "0 12px 1.5px 0",
+  fontSize: "22px"
 });
 
 const Sidebar = styled.div`
@@ -28,6 +28,7 @@ const Sidebar = styled.div`
   background: ${p => p.theme.colors.primaryColor};
   width: ${p => p.theme.dims.sideBarWidth};
   height: 100%;
+
 `;
 
 const LogoBox = styled.div`
@@ -38,7 +39,7 @@ const LogoBox = styled.div`
 
 const TitleLogo = styled.img`
   width: ${logoSide};
-  height: ${logoSide};
+  height: ${logoSide}
 `;
 
 const TitleText = styled.h1`
@@ -59,14 +60,14 @@ const SectionRow = styled.div`
   display: inline-flex;
   flex-direction: row;
   align-items: center;
-  &:nth-child(1) {
+  &:nth-child(1){
     margin-top: 10px;
   }
 `;
 
 const SectionTitle = styled.p`
   font-size: 15px;
-  color: ${p => p.theme.colors.contrastColor};
+  color: ${p => p.theme.colors.contrastColor}
 `;
 
 const SubSection = styled.div`
@@ -85,10 +86,10 @@ const ItemRow = styled.div`
 const ItemText = styled(Text.PA)`
   margin-left: ${itemMargin};
   font-size: 13.5px;
-  font-weight: ${p => (p.here ? 'bold' : 'normal')};
+  font-weight: ${p => p.here ? 'bold' : 'normal'};
   color: ${p => p.theme.colors.contrastColor};
-  &:hover {
-    cursor: pointer;
+  &:hover{
+    cursor: pointer
   }
 `;
 
@@ -104,25 +105,14 @@ const SubItem = styled.li`
 
 const SubItemText = styled(Text.PA)`
   color: ${p => p.theme.colors.contrastFont};
-  font-weight: ${p => (p.here ? 'bold' : 'normal')};
+  font-weight: ${p => p.here ? 'bold' : 'normal'};
 `;
 
 const S = {
-  Sidebar,
-  LogoBox,
-  TitleLogo,
-  TitleText,
-  Content,
-  SectionRow,
-  SectionTitle,
-  SubSection,
-  arrow,
-  ItemRow,
-  sectionIcon,
-  ItemText,
-  SubItemsContainer,
-  SubItem,
-  SubItemText,
+  Sidebar, LogoBox, TitleLogo, TitleText, Content,
+  SectionRow, SectionTitle, SubSection, arrow,
+  ItemRow, sectionIcon, ItemText,
+  SubItemsContainer, SubItem, SubItemText
 };
 
 export default S;

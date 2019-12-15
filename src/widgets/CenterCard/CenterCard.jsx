@@ -1,17 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import s from './CenterCard.sass';
 
-export default function CenterCard(props) {
-  const style = props.size === 'normal' ? s.centerCard : s.centerCardLarge;
+import React from 'react'
+import PropTypes from 'prop-types'
+import S from './CenterCardStyles'
 
-  return <div className={style}>{props.children}</div>;
+export default function CenterCard(props){
+  return(
+    <S.Container size={props.size}>
+      { props.children }
+    </S.Container>
+  );
 }
 
 CenterCard.propTypes = {
-  size: PropTypes.oneOf(['normal', 'large']),
+  size: PropTypes.oneOf(['normal', 'large'])
 };
 
 CenterCard.defaultProps = {
-  size: 'normal',
+  size: 'normal'
 };

@@ -1,20 +1,21 @@
 //@flow
-import React, { Fragment } from 'react';
-import AuthenticatedComponent from '../../../hocs/AuthenticatedComponent';
-import ModalHostComposer from '../../../hocs/ModalHostComposer';
-import ErrComponent from '../../../hocs/ErrComponent';
-import WorkspaceDepsPreview from './WorkspaceDepsPreview';
-import ModalButton from '../../../widgets/Buttons/ModalButton';
-import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
-import DoneAnnouncement from './DoneAnnouncement';
-import Layout from '../../../assets/layouts';
-import ConfigurationSide from './ConfigurationSide';
-import Helper from './Helper';
-import type { Deployment, Workspace } from '../../../types/Types';
-import Utils from '../../../utils/Utils';
+import React, {Fragment} from 'react'
+import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
+import ModalHostComposer from "../../../hocs/ModalHostComposer";
+import ErrComponent from "../../../hocs/ErrComponent";
+import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
+import ModalButton from "../../../widgets/Buttons/ModalButton";
+import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
+import DoneAnnouncement from "./DoneAnnouncement";
+import {Layout} from "ui-common";
+import ConfigurationSide from "./ConfigurationSide";
+import Helper from "./Helper";
+import type {Deployment, Workspace} from "../../../types/Types";
+import Utils from "../../../utils/Utils";
 
 class WorkspaceEditClass extends React.Component<State, Props> {
-  constructor(props) {
+
+  constructor(props){
     super(props);
     this.state = {
       isFetching: true,
@@ -24,7 +25,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
       deployments: [],
       namespaces: [],
       labels: [],
-      workspace: defaultWorkspace,
+      workspace: defaultWorkspace
     };
 
     this.update = this.update.bind(this);
@@ -32,39 +33,39 @@ class WorkspaceEditClass extends React.Component<State, Props> {
     this.updateWorkspace = this.updateWorkspace.bind(this);
   }
 
-  async componentDidMount() {
+  async componentDidMount(){
     this.reloadNamespacesAndLabels();
     this.reloadWorkspace();
   }
 
-  render() {
-    return (
+  render(){
+    return(
       <Fragment>
-        {this.renderInitialLoading()}
-        {this.renderLeftSide()}
-        {this.renderRightSide()}
-        {this.renderDone()}
+        { this.renderInitialLoading() }
+        { this.renderLeftSide() }
+        { this.renderRightSide() }
+        { this.renderDone() }
       </Fragment>
     );
   }
 
-  renderInitialLoading() {
+  renderInitialLoading(){
     const { isFetching, isSubmitting } = this.state;
-    if (!isFetching || isSubmitting) return null;
+    if(!isFetching || isSubmitting) return null;
 
-    return (
+    return(
       <Layout.FullWidthPanel>
-        <CenterLoader />
+        <CenterLoader/>
       </Layout.FullWidthPanel>
-    );
+    )
   }
 
-  renderLeftSide() {
-    const { workspace, isFetching, isSubmitting } = this.state;
+  renderLeftSide(){
+    const {  workspace, isFetching, isSubmitting } = this.state;
     const { namespaces, labels } = this.state;
-    if (isFetching || isSubmitting) return null;
+    if(isFetching || isSubmitting) return null;
 
-    return (
+    return(
       <Layout.LeftPanel>
         <ConfigurationSide
           namespaces={namespaces}
@@ -77,74 +78,86 @@ class WorkspaceEditClass extends React.Component<State, Props> {
     );
   }
 
-  renderRightSide() {
-    const { isReloadingDeployments, deployments } = this.state;
-    const { isFetching, isSubmitting } = this.state;
-    if (isFetching || isSubmitting) return null;
+  renderRightSide(){
+    const { isReloadingDeployments, deployments  } = this.state;
+    const { isFetching, isSubmitting  } = this.state;
+    if(isFetching || isSubmitting) return null;
 
-    return (
+    return(
       <Layout.RightPanel>
-        <WorkspaceDepsPreview isFetching={isReloadingDeployments} deployments={deployments} />
-        <ModalButton callback={this.submit} title="Save" isEnabled={!isSubmitting} />
+        <WorkspaceDepsPreview
+          isFetching={isReloadingDeployments}
+          deployments={deployments}
+        />
+        <ModalButton
+          callback={this.submit}
+          title='Save'
+          isEnabled={!isSubmitting}
+        />
       </Layout.RightPanel>
-    );
+    )
   }
 
-  renderDone() {
-    if (!this.state.isDone) return null;
+  renderDone(){
+    if(!this.state.isDone) return null;
 
-    return <DoneAnnouncement id={this.id()} name={this.state.workspace.name} />;
+    return(
+      <DoneAnnouncement
+        id={this.id()}
+        name={this.state.workspace.name}
+      />
+    )
   }
 
   update(changes) {
     const { workspace: oldWorkspace } = this.state;
 
-    if (Helper.deploymentsNeedReload(changes, oldWorkspace))
+    if(Helper.deploymentsNeedReload(changes, oldWorkspace))
       this.reloadDeployments(changes.workspace);
 
-    this.setState(s => ({ ...s, ...changes }));
+    this.setState((s) => ({...s, ...changes}));
   }
 
-  updateWorkspace(key, value) {
+  updateWorkspace(key, value){
     const { workspace: oldWorkspace } = this.state;
     const workspace = { ...oldWorkspace, [key]: value };
-    this.update({ workspace });
+    this.update({workspace});
   }
 
-  async reloadNamespacesAndLabels() {
-    this.update({ isFetching: true });
+  async reloadNamespacesAndLabels(){
+    this.update({isFetching: true});
     const namespaces = await Helper.fetchNamespaces();
     const labels = await Helper.fetchLabels();
-    this.update({ namespaces, labels, isFetching: false });
+    this.update({namespaces, labels, isFetching: false});
   }
 
-  async reloadDeployments(newWorkspace) {
-    this.update({ isReloadingDeployments: true });
+  async reloadDeployments(newWorkspace){
+    this.update({isReloadingDeployments: true});
     const sourceOfTruth = newWorkspace || this.state.workspace;
     const filterBundle = Helper.coreWorkspace(sourceOfTruth);
     const deployments = await Helper.fetchDeployments(filterBundle);
-    this.update({ deployments, isReloadingDeployments: false });
+    this.update({deployments, isReloadingDeployments: false});
   }
 
-  async reloadWorkspace() {
-    if (this.id()) {
-      this.update({ isFetching: true });
+  async reloadWorkspace(){
+    if(this.id()){
+      this.update({isFetching: true});
       const workspace = await Helper.fetchWorkspace(this.id());
-      this.update({ workspace, isFetching: false });
+      this.update({workspace, isFetching: false});
     }
   }
 
-  async submit() {
+  async submit(){
     this.mpTrack();
-    this.update({ isSubmitting: true });
+    this.update({isSubmitting: true});
     const { workspace: editedWorkspace } = this.state;
     const workspace = await Helper.patchOrPostWorkspace(editedWorkspace);
-    this.update({ workspace, isSubmitting: false, isDone: true });
+    this.update({workspace, isSubmitting: false, isDone: true});
   }
 
-  mpTrack() {
-    const verb = this.id() ? 'Update' : 'Create';
-    Utils.mp('Workspace Save', { verb });
+  mpTrack(){
+    const verb = this.id() ? "Update" : "Create";
+    Utils.mp("Workspace Save", { verb });
   }
 
   id() {
@@ -154,13 +167,13 @@ class WorkspaceEditClass extends React.Component<State, Props> {
   }
 }
 
-type Props = {};
+type Props = {  };
 
 type State = {
   namespaces: string[],
   labels: string[],
   workspace: Workspace,
-  deployments: Deployment[],
+  deployments: Deployment[]
 };
 
 const defaultWorkspace = {
@@ -169,11 +182,15 @@ const defaultWorkspace = {
   nsFilters: ['default'],
   lbFilters: [],
   nsFilterType: 'whitelist',
-  lbFilterType: 'blacklist',
+  lbFilterType: 'blacklist'
 };
 
 const WorkspaceEdit = AuthenticatedComponent.compose(
-  ModalHostComposer.compose(ErrComponent.compose(WorkspaceEditClass)),
+  ModalHostComposer.compose(
+    ErrComponent.compose(
+      WorkspaceEditClass
+    )
+  )
 );
 
 export default WorkspaceEdit;

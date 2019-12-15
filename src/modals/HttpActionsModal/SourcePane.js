@@ -1,108 +1,72 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import s from './SourcePane.sass';
-import Utils from '../../utils/Utils';
-import ReactTags from 'react-tag-autocomplete';
-import ss from '../../assets/react-tags.sass';
-import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
+//@flow
+import React, {Fragment} from 'react'
+import Utils from "../../utils/Utils";
+import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
+import FormComponent from "../../hocs/FormComponent";
 
-const AUTO_COMPLETE_STYLES = {
-  root: s.labelTags,
-  selected: ss.reactTagsSelected,
-  selectedTag: ss.reactTagsSelectedTag,
-  search: ss.reactTagsSearch,
-  suggestions: ss.reactTagsSuggestions,
-};
+class SourcePaneClass extends React.Component<Props> {
 
-export default class SourcePane extends React.Component {
-  render() {
-    return (
+  render(){
+    return(
       <Fragment>
-        <p>
-          <i>Where</i> your request comes from matters in some cases. Network Policies, Ingress, and
-          service meshes can modulate requests based on their origin.
-        </p>
-        <div className={s.inputLine}>
-          <p className={s.label}>Source Type</p>
-          <select
-            className={s.typeSelect}
-            value={this.props.type}
-            onChange={e => this.broadcastChange('type', e)}
-          >
-            {SourcePane.typeOptions()}
-          </select>
-        </div>
-
-        {this.renderConditionalFields()}
+        { this.renderIntro() }
+        { this.renderTypeSelect() }
+        { this.renderNamespaceSelector() }
+        { this.renderComingSoon() }
       </Fragment>
+    )
+  }
+
+  renderIntro(){
+    return(
+      <p><i>Where</i> your request comes from matters in some cases.
+        Network Policies, Ingress, and service meshes
+        can modulate requests based on their origin.</p>
+    )
+  }
+
+  renderTypeSelect(){
+    return this.props.makeSelect(
+      "Source Type",
+      "type",
+      SourcePaneClass.typeOptions()
+    )
+  }
+
+  renderComingSoon(){
+    if(this.props.type === 'test-pod') return null;
+    return <ComingSoonSection size='medium'/>;
+  }
+
+  renderNamespaceSelector(){
+    if(this.props.type !== 'test-pod') return null;
+    return this.props.makeSelect(
+      "Pod Namespace",
+      "namespace",
+      Utils.arrayOptions(this.props.namespaces)
     );
   }
 
-  renderConditionalFields() {
-    if (this.props.type === 'test-pod') {
-      return (
-        <Fragment>
-          {this.renderNamespaceSelector()}
-          {this.renderLabelsInput()}
-        </Fragment>
-      );
-    } else {
-      return <ComingSoonSection size="medium" />;
-    }
-  }
-
-  renderNamespaceSelector() {
-    return (
-      <div className={s.inputLine}>
-        <p className={s.label}>Pod Namespace</p>
-        <select
-          className={s.typeSelect}
-          value={this.props.namespace}
-          onChange={e => this.broadcastChange('namespace', e)}
-        >
-          {Utils.arrayOptions(this.props.namespaces)}
-        </select>
-      </div>
-    );
-  }
-
-  renderLabelsInput() {
-    return (
-      <div className={s.inputLine}>
-        <p className={s.label}>Pod Labels</p>
-        <ReactTags
-          classNames={AUTO_COMPLETE_STYLES}
-          suggestions={this.rinseTags(this.props.labelCombos)}
-          handleAddition={() => console.log('lol')}
-          handleDelete={() => console.log('ita')}
-        />
-      </div>
-    );
-  }
-
-  rinseTags(tags) {
-    return tags.map(t => ({ id: t, name: t }));
-  }
-
-  broadcastChange(field, event) {
-    const assignment = { [field]: event.target.value };
-    this.props.onFieldChanged(assignment);
-  }
-
-  static typeOptions() {
+  static typeOptions(){
     return Utils.hashOptions({
-      'test-pod': 'A one time pod we create inside your cluster',
-      web: 'One of our servers on the web',
-      'mimic-pod': 'A one time pod we create inside your cluster that mimics a deployment',
-    });
+      'test-pod': "A one time pod we create inside your cluster",
+      'web': "One of our servers on the web",
+      'mimic-pod': "A one time pod we create inside your cluster that mimics a deployment"
+    })
   }
-
-  static propTypes = {
-    type: PropTypes.oneOf(['test-pod', 'web', 'mimic-pod']),
-    namespaces: PropTypes.arrayOf(PropTypes.string),
-    namespace: PropTypes.string,
-    labelCombos: PropTypes.arrayOf(PropTypes.string),
-    labels: PropTypes.arrayOf(PropTypes.string),
-    onFieldChanged: PropTypes.func.isRequired,
-  };
 }
+
+type Props = {
+  type: 'test-pod' | 'web' | 'mimic-pod',
+  namespaces: Array<string>,
+  namespace: ?string,
+  labelCombos: Array<string>,
+  labels: Array<string>,
+  onFieldChanged: any => any
+}
+
+const SourcePane = FormComponent.compose(
+  SourcePaneClass
+);
+
+export default SourcePane;

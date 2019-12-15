@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { colored } from '../../../assets/constants';
+import styled from 'styled-components'
+import {colored} from "ui-common";
 
-const boxWidth = '47%';
+const boxWidth = "47%";
 
 const InfoIcon = styled.i`
   position: fixed;
@@ -9,7 +9,7 @@ const InfoIcon = styled.i`
   bottom: 24px;
   color: ${p => p.theme.colors.primaryColor};
   font-size: 24px;
-  &:hover {
+  &:hover{
     cursor: pointer;
   }
 `;
@@ -57,7 +57,7 @@ const DepBoxSep = styled.div`
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: ${p => p.theme.colors.primaryColor};
+  background: ${p => p.theme.colors.primaryColor}; 
 `;
 
 // noinspection JSUnresolvedFunction
@@ -77,7 +77,7 @@ const DepSvcArrow = styled.div`
 
 // noinspection JSUnresolvedFunction
 const DepSvcArrowTitle = styled.p`
-  position: absolute;
+  position:absolute;
   width: auto;
   background: ${p => p.theme.colors.itemBackgroundColor};
   top: 50%;
@@ -86,6 +86,7 @@ const DepSvcArrowTitle = styled.p`
   transform: translateY(-50%) translateX(-50%);
   font-size: 13px;
   font-weight: 900;
+
 `;
 
 // noinspection JSUnresolvedFunction
@@ -111,7 +112,7 @@ const PodsSep = styled.div`
 // noinspection JSUnresolvedFunction
 const PodRow = styled.div`
   margin-top: 8px;
-  display: inline-flex;
+  display: inline-flex;  
 `;
 
 // noinspection JSUnresolvedFunction
@@ -139,7 +140,7 @@ const PodSvcArrow = styled.div`
 `;
 
 const PodSvcArrowTitle = styled.p`
-  position: absolute;
+  position:absolute;
   width: auto;
   background: ${p => p.theme.colors.itemBackgroundColor};
   top: ${p => `${25 * p.n}%`};

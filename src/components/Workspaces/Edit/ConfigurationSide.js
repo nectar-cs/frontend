@@ -1,21 +1,21 @@
-import React, { Fragment } from 'react';
-import type { Workspace } from '../../../types/Types';
-import LeftHeader from '../../../widgets/LeftHeader/LeftHeader';
-import WorkspaceForm from './WorkspaceForm';
-import Loader from '../../../assets/loading-spinner';
-import TextOverLineSubtitle from '../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import React, {Fragment} from 'react'
+import type {Workspace} from "../../../types/Types";
+import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
+import WorkspaceForm from "./WorkspaceForm";
+import {Loader} from "ui-common";
+import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 export default function ConfigurationSide(props: Props) {
-  return (
+  return(
     <Fragment>
-      <Loader.TopRightSpinner there={props.isFetching} />
+      <Loader.TopRightSpinner there={props.isFetching}/>
       <LeftHeader
-        title={props.workspace.name || 'My New Workspace'}
-        subtitle="Which deployments should go in this workspace?"
-        graphicType="icon"
-        graphicName="developer_board"
+        title={props.workspace.name || "My New Workspace"}
+        subtitle='Which deployments should go in this workspace?'
+        graphicType='icon'
+        graphicName='developer_board'
       />
-      <TextOverLineSubtitle text="Setup" />
+      <TextOverLineSubtitle text='Setup'/>
       <WorkspaceForm
         {...props.workspace}
         namespaceChoices={props.namespaces}
@@ -23,7 +23,7 @@ export default function ConfigurationSide(props: Props) {
         notifyFormValueChanged={props.callback}
       />
     </Fragment>
-  );
+  )
 }
 
 type Props = {
@@ -31,5 +31,5 @@ type Props = {
   isFetching: boolean,
   namespaces: string[],
   labels: [],
-  callback: (*) => *,
-};
+  callback: (*) => (*)
+}

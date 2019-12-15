@@ -1,39 +1,47 @@
 import React from 'react';
-import s from './LeftHeader.sass';
-import PropTypes from 'prop-types';
+import S from './LeftHeaderStyles'
+import PropTypes from 'prop-types'
 
-export const ICON = 'icon';
+export const ICON = "icon";
 
 export default class LeftHeader extends React.Component {
-  render() {
-    return (
-      <div className={s.leftHeader}>
-        {this.renderGraphic()}
-        <div className={s.textBox}>
-          <h2 className={s.title}>{this.props.title}</h2>
-          <p className={s.subtitle}>{this.props.subtitle}</p>
-        </div>
-      </div>
-    );
+
+  render(){
+    return(
+      <S.Container>
+        { this.renderGraphic() }
+        <S.TextBox>
+          <S.Title>{this.props.title}</S.Title>
+          <S.SubTitle>{this.props.subtitle}</S.SubTitle>
+        </S.TextBox>
+      </S.Container>
+    )
   }
 
   renderGraphic() {
-    if (this.props.graphicType === 'icon') return this.renderMaterialIcon();
-    else if (this.props.graphicType === 'image') return this.renderImage();
-    else if (this.props.graphicType === 'stub') return this.renderStub();
+    if(this.props.graphicType === 'icon')
+      return this.renderMaterialIcon();
+    else if(this.props.graphicType === 'image')
+      return this.renderImage();
+    else if(this.props.graphicType === 'stub')
+      return this.renderStub();
   }
 
-  renderMaterialIcon() {
-    return <i className={`material-icons ${s.icon}`}>{this.props.graphicName}</i>;
+  renderMaterialIcon(){
+    return(
+      <S.Icon className='material-icons'>
+        { this.props.graphicName }
+      </S.Icon>
+    )
   }
 
-  renderImage() {
+  renderImage(){
     const source = this.props.graphicName;
-    return <img src={source} className={s.image} alt={null} />;
+    return <S.Image src={source} alt={null}/>;
   }
 
-  renderStub() {
-    return <div className={s.imageStub} />;
+  renderStub(){
+    return <S.ImageStub/>;
   }
 
   static propTypes = {
@@ -44,6 +52,6 @@ export default class LeftHeader extends React.Component {
   };
 
   static defaultProps = {
-    graphicType: 'image',
+    graphicType: 'image'
   };
 }

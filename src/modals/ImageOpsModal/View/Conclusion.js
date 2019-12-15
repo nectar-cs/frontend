@@ -1,11 +1,11 @@
-import React from 'react';
-import * as Styles from './ConclusionStyles';
-import Text from '../../../assets/text-combos';
+import React from 'react'
+import * as Styles from "./ConclusionStyles";
+import {Text} from "ui-common";
 
-export default function Conclusion({ success, reason }) {
+export default function Conclusion ({success, reason}) {
   const emotion = success ? 'success' : 'failure';
   const text = success ? 'Success' : 'Failure';
-  return (
+  return(
     <Styles.Container>
       <Styles.LineOne>
         <Text.BoldStatus emotion={emotion}>{text}.</Text.BoldStatus>

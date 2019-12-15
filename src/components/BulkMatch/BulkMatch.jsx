@@ -1,21 +1,20 @@
 //@flow
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 import AuthenticatedComponent from '../../hocs/AuthenticatedComponent';
 import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import DeploymentList from './DeploymentList';
 import MatchModal from '../../modals/MatchModal/MatchModal';
-import IntegrationsPrompt from './IntegrationsPrompt';
-import ErrComponent from '../../hocs/ErrComponent';
-import ModalHostComposer from '../../hocs/ModalHostComposer';
-import CenterAnnouncement from '../../widgets/CenterAnnouncement/CenterAnnouncement';
-import Layout from '../../assets/layouts';
-import Loader from '../../assets/loading-spinner';
-import defaults from './defaults';
-import Helper from './Helper';
-import type { Matching, WideDeployment } from '../../types/Types';
-import { Redirect } from 'react-router';
-import CenterLoader from '../../widgets/CenterLoader/CenterLoader';
-import Utils from '../../utils/Utils';
+import IntegrationsPrompt from "./IntegrationsPrompt";
+import ErrComponent from "../../hocs/ErrComponent";
+import ModalHostComposer from "../../hocs/ModalHostComposer";
+import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
+import {Layout, Loader} from 'ui-common';
+import defaults from './defaults'
+import Helper from './Helper'
+import type {Matching, WideDeployment} from "../../types/Types";
+import {Redirect} from "react-router";
+import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
+import Utils from "../../utils/Utils";
 
 class BulkMatchingClass extends React.Component<Props, State> {
   constructor(props) {

@@ -1,27 +1,27 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import Layout from '../../assets/layouts';
-import Text from '../../assets/text-combos';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
-import DockerSection from './DockerSection';
-import GitSection from './GitSection';
-import defaults from './defaults';
-import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
-import PageVisibility from 'react-page-visibility';
-import ModalButton from '../../widgets/Buttons/ModalButton';
+import React, {Fragment} from 'react'
+import PropTypes from 'prop-types'
+import {Layout, Text} from "ui-common";
+import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
+import DockerSection from "./DockerSection";
+import GitSection from "./GitSection";
+import defaults from "./defaults";
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import PageVisibility from "react-page-visibility";
+import ModalButton from "../../widgets/Buttons/ModalButton";
 
 export default class IntegrationsModal extends React.Component {
-  constructor(props) {
+
+  constructor(props){
     super(props);
     this.state = {
       docker: {
         formShowing: false,
-        vendor: null,
+        vendor: null
       },
       git: {
         formShowing: false,
-        vendor: null,
-      },
+        vendor: null
+      }
     };
 
     this.setDockerState = this.setDockerState.bind(this);
@@ -31,43 +31,41 @@ export default class IntegrationsModal extends React.Component {
     this.imgReloader = null;
   }
 
-  setDockerState(assignment) {
-    this.setState(s => ({ ...s, docker: { ...s.docker, ...assignment } }));
+  setDockerState(assignment){
+    this.setState(s => ({...s, docker: ({...s.docker, ...assignment})}));
   }
 
-  setGitState(assignment) {
-    this.setState(s => ({ ...s, git: { ...s.git, ...assignment } }));
+  setGitState(assignment){
+    this.setState(s => ({...s, git: ({...s.git, ...assignment})}));
   }
 
   onTabFocusChange = isFocused => {
-    if (isFocused) {
+    if(isFocused){
       this.gitReloader();
       this.imgReloader();
     }
   };
 
-  render() {
-    return (
+  render(){
+    return(
       <PageVisibility onChange={this.onTabFocusChange}>
         <Layout.ModalLayout>
-          <Header />
+          <Header/>
           <Text.P>{defaults.intro}</Text.P>
-          {this.renderDockerSection()}
-          {this.renderGitSection()}
-          {this.renderDoneButton()}
+          { this.renderDockerSection() }
+          { this.renderGitSection() }
+          { this.renderDoneButton() }
         </Layout.ModalLayout>
       </PageVisibility>
-    );
+    )
   }
 
-  renderDockerSection() {
-    if (this.state.git.formShowing) return null;
-    const reloadSetter = r => {
-      this.imgReloader = r;
-    };
-    return (
+  renderDockerSection(){
+    if(this.state.git.formShowing) return null;
+    const reloadSetter = (r) => { this.imgReloader = r; };
+    return(
       <Fragment>
-        <TextOverLineSubtitle text="Docker Image Registries" />
+        <TextOverLineSubtitle text='Docker Image Registries'/>
         <DockerSection
           setMasterState={this.setDockerState}
           vendor={this.state.docker.vendor}
@@ -76,17 +74,15 @@ export default class IntegrationsModal extends React.Component {
           notifyDataChanged={this.onCreateOrDelete}
         />
       </Fragment>
-    );
+    )
   }
 
-  renderGitSection() {
-    if (this.state.docker.formShowing) return null;
-    const reloadSetter = r => {
-      this.gitReloader = r;
-    };
-    return (
+  renderGitSection(){
+    if(this.state.docker.formShowing) return null;
+    const reloadSetter = (r) => { this.gitReloader = r; };
+    return(
       <Fragment>
-        <TextOverLineSubtitle text="Git Remotes" />
+        <TextOverLineSubtitle text='Git Remotes'/>
         <GitSection
           setMasterState={this.setGitState}
           vendor={this.state.git.vendor}
@@ -95,21 +91,27 @@ export default class IntegrationsModal extends React.Component {
           notifyDataChanged={this.onCreateOrDelete}
         />
       </Fragment>
-    );
+    )
   }
 
-  renderDoneButton() {
+  renderDoneButton(){
     const parentCallback = this.props.onDataChanged;
     const callback = () => {
       parentCallback && parentCallback();
       this.props.closeModal();
     };
 
-    return <ModalButton callback={callback} title={'Done'} />;
+    return(
+      <ModalButton
+        callback={callback}
+        title={"Done"}
+      />
+    )
   }
 
-  onCreateOrDelete() {
-    if (this.props.onDataChanged) this.props.onDataChanged();
+  onCreateOrDelete(){
+    if(this.props.onDataChanged)
+      this.props.onDataChanged();
   }
 
   static propTypes = {
@@ -118,17 +120,17 @@ export default class IntegrationsModal extends React.Component {
   };
 
   static defaultProps = {
-    mode: 'modal',
+    mode: "modal"
   };
 }
 
-function Header() {
-  return (
+function Header(){
+  return(
     <LeftHeader
-      graphicName="extension"
-      graphicType="icon"
-      title="Docker and Git Setup"
-      subtitle="Integration portal"
+      graphicName='extension'
+      graphicType='icon'
+      title='Docker and Git Setup'
+      subtitle='Integration portal'
     />
-  );
+  )
 }

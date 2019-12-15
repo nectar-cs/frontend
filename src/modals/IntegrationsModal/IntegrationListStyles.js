@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import Text from '../../assets/text-combos';
+import styled from 'styled-components'
+import {Text} from "ui-common";
 
 const iconSize = '30px';
 
@@ -13,5 +13,5 @@ export const Identifier = styled.p`
 `;
 
 export const Status = styled(Text.StatusTag)`
-  width: 84px;
+  width: 84px
 `;

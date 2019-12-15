@@ -1,106 +1,99 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
-import Text from '../../assets/text-combos';
-import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
-import Layout from '../../assets/layouts';
+import React, {Fragment} from 'react'
+import PropTypes from 'prop-types'
+import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
+import {Text} from "ui-common";
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import {Layout} from "ui-common";
 
-export default class TerminalStep extends React.Component {
-  render() {
-    return (
+export default class TerminalStep extends React.Component{
+
+  render(){
+    return(
       <Fragment>
-        {this.renderHeader()}
-        {this.renderSummary()}
-        {this.renderTips()}
-        {this.renderConsole()}
-        {this.renderResources()}
+        { this.renderHeader() }
+        { this.renderSummary() }
+        { this.renderTips() }
+        { this.renderConsole() }
+        { this.renderResources() }
       </Fragment>
-    );
+    )
   }
 
-  renderHeader() {
+  renderHeader(){
     const { node } = this.props;
 
-    return (
+    return(
       <LeftHeader
-        graphicName="cake"
+        graphicName='cake'
         title={`Conclusion: ${node.title()}`}
-        subtitle="Root cause identified. Explanation and how-to-fix."
-        graphicType="icon"
+        subtitle='Root cause identified. Explanation and how-to-fix.'
+        graphicType='icon'
       />
-    );
+    )
   }
 
-  renderSummary() {
+  renderSummary(){
     const { terminal } = this.props;
-    if (!terminal) return null;
+    if(!terminal) return null;
 
-    return (
+    return(
       <Fragment>
-        <TextOverLineSubtitle text="Diagnosis & Next Steps" />
+        <TextOverLineSubtitle text='Diagnosis & Next Steps'/>
         <Text.P raw>{terminal.summary}</Text.P>
       </Fragment>
-    );
+    )
   }
 
-  renderTips() {
+  renderTips(){
     const { terminal } = this.props;
-    if (!terminal) return null;
+    if(!terminal) return null;
 
-    const Points = () =>
-      terminal.tips.map(tip => (
-        <li key={tip}>
-          <p>{tip}</p>
-        </li>
-      ));
+    const Points = () => terminal.tips.map(tip => (
+      <li key={tip}><p>{tip}</p></li>
+    ));
 
-    return (
+    return(
       <Fragment>
-        <Text.P low={2.5}>
-          <b>Resolution Tips:</b>
-        </Text.P>
+        <Text.P low={2.5}><b>Resolution Tips:</b></Text.P>
         <ul>
-          <Points />
+          <Points/>
         </ul>
       </Fragment>
-    );
+    )
   }
 
-  renderConsole() {
+  renderConsole(){
     const { terminal } = this.props;
-    if (!terminal) return null;
+    if(!terminal) return null;
 
-    const Content = () => terminal.commands.map(s => <Text.Code key={s}>{s}</Text.Code>);
+    const Content = () => terminal.commands.map(s => (
+      <Text.Code key={s}>{s}</Text.Code>
+    ));
 
-    return (
+    return(
       <Fragment>
-        <TextOverLineSubtitle text={'Handy Copy Pasta'} />
+        <TextOverLineSubtitle text={'Handy Copy Pasta'}/>
         <Layout.BigCodeViewer>
-          <Content />
+          <Content/>
         </Layout.BigCodeViewer>
       </Fragment>
-    );
+    )
   }
 
-  renderResources() {
+  renderResources(){
     const { terminal } = this.props;
-    if (!terminal) return null;
-    const Refs = () =>
-      terminal.resources.map(r => (
-        <li key={r.name}>
-          <a href={r.url} target="_blank">
-            <p>{r.name}</p>
-          </a>
-        </li>
-      ));
-    return (
+    if(!terminal) return null;
+    const Refs = () => terminal.resources.map(r => (
+      <li key={r.name} >
+        <a href={r.url} target='_blank' ><p>{r.name}</p></a>
+      </li>
+    ));
+    return(
       <Fragment>
-        <TextOverLineSubtitle text="Recommended Reading" />
-        <ul>
-          <Refs />
-        </ul>
+        <TextOverLineSubtitle text='Recommended Reading'/>
+        <ul><Refs/></ul>
       </Fragment>
-    );
+    )
   }
 
   static propTypes = {
@@ -109,12 +102,10 @@ export default class TerminalStep extends React.Component {
       summary: PropTypes.string.isRequired,
       tips: PropTypes.arrayOf(PropTypes.string).isRequired,
       commands: PropTypes.PropTypes.arrayOf(PropTypes.string).isRequired,
-      resources: PropTypes.PropTypes.arrayOf(
-        PropTypes.shape({
-          name: PropTypes.string.isRequired,
-          url: PropTypes.string.isRequired,
-        }),
-      ).isRequired,
-    }),
-  };
+      resources: PropTypes.PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired
+      })).isRequired
+    })
+  }
 }

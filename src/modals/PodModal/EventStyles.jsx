@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import Text from '../../assets/text-combos';
+import styled from 'styled-components'
+import {Text} from "ui-common";
 
 const EventsTimeline = styled.div`
-  margin: -40px 0 0 ${p => (p.far ? '-100px' : '-40px')};
+  margin: -40px 0 0 ${p => p.far ? '-100px' :'-40px'};
   overflow-y: scroll;
 `;
 
@@ -11,14 +11,14 @@ const DateContainer = styled.p`
   padding-top: 6px;
   text-align: center;
   font-weight: bold;
-  &:hover {
+  &:hover{
     cursor: pointer;
   }
 `;
 
 const EventTitle = styled(Text.BoldStatus)`
   padding-top: 5px;
-  &:hover {
+  &:hover{
     cursor: pointer;
   }
 `;
@@ -26,6 +26,6 @@ const EventTitle = styled(Text.BoldStatus)`
 const S = {
   EventsTimeline,
   EventTitle,
-  DateContainer,
+  DateContainer
 };
 export default S;

@@ -1,88 +1,101 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import s from './DestinationPane.sass';
-import Utils from '../../utils/Utils';
-import { Types } from '../../types/CommonTypes';
+//@flow
+import React, {Fragment} from "react";
+import PropTypes from 'prop-types'
+import Utils from "../../utils/Utils";
+import {Types} from "../../types/CommonTypes";
+import FormComponent from "../../hocs/FormComponent";
+import type {LightPod, Service} from "../../types/Types";
 
 const HTTP_VERBS = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'];
 
-export default class DestinationPane extends React.Component {
-  render() {
-    return (
+class DestinationPaneClass extends React.Component<Props> {
+
+  render(){
+    return(
       <Fragment>
-        <div className={s.inputLine}>
-          <p className={s.label}>Target Host</p>
-          <select
-            className={s.fullLineInput}
-            value={this.props.host}
-            onChange={e => this.broadcastChange('host', e)}
-          >
-            {this.hostOptions()}
-          </select>
-        </div>
-        <div className={s.inputLine}>
-          <p className={s.label}>Path and Verb</p>
-          <input
-            className={s.pathInput}
-            value={this.props.path}
-            onChange={e => this.broadcastChange('path', e)}
-          />
-          <select
-            className={s.verbSelect}
-            value={this.props.verb}
-            onChange={e => this.broadcastChange('verb', e)}
-          >
-            {Utils.arrayOptions(HTTP_VERBS)}
-          </select>
-        </div>
+        { this.renderHostSelect() }
+        { this.renderPathAndVerb() }
       </Fragment>
+    )
+  }
+
+  renderHostSelect(){
+    return this.props.makeSelect(
+      "Target host",
+      "host",
+      this.hostOptions()
     );
   }
 
-  hostOptions() {
+  renderPathAndVerb(){
+    return this.props.makeLine("Path and Verb", [
+        this.renderPathInput,
+        this.renderVerbInput
+      ]
+    )
+  }
+
+  renderPathInput(){
+    return this.props.makeInputItem("path");
+  }
+
+  renderVerbInput() {
+    return this.props.makeSelectItem(
+      "verb",
+      Utils.arrayOptions(HTTP_VERBS)
+    );
+  }
+
+  hostOptions(){
     const { services, pods } = this.props;
 
-    const serviceOptions = services
-      .map(svc => [
-        DestinationPane.makeSvcHost(svc.name, svc.shortDns, svc.fromPort),
-        DestinationPane.makeSvcHost(svc.name, svc.longDns, svc.fromPort),
-        DestinationPane.makeSvcHost(svc.name, svc.internalIp, svc.fromPort),
-        DestinationPane.makeSvcHost(svc.name, svc.externalIp, svc.fromPort),
-      ])
-      .flat();
+    const serviceOptions = services.map(svc => [
+      DestinationPane.makeSvcHost(svc.name, svc.shortDns, svc.fromPort),
+      DestinationPane.makeSvcHost(svc.name, svc.longDns, svc.fromPort),
+      DestinationPane.makeSvcHost(svc.name, svc.internalIp, svc.fromPort),
+      DestinationPane.makeSvcHost(svc.name, svc.externalIp, svc.fromPort),
+    ]).flat();
 
-    const podOptions = pods.map(pod => DestinationPane.makePodHost(pod.name, pod.ip));
+    const podOptions = pods.map(pod =>
+      DestinationPane.makePodHost(pod.name, pod.ip)
+    );
 
     const combined = [...serviceOptions, ...podOptions];
     const cleaned = combined.filter(e => e);
     return Utils.arrayOfHashesOptions(cleaned);
   }
 
-  static makeSvcHost(name, domain, port) {
-    if (domain && port) {
-      const key = `http://${domain}:${port}`;
-      return { value: key, show: `${key} (Service ${name})` };
-    } else return null;
+  static makeSvcHost(name, domain, port){
+    if(!(domain && port)) return null;
+    const key = `http://${domain}:${port}`;
+    return { value: key,  show: `${key} (Service ${name})`}
   }
 
-  static makePodHost(name, domain) {
-    if (domain) {
-      const key = `http://${domain}`;
-      return { value: key, show: `${key} (Pod ${name})` };
-    } else return null;
-  }
-
-  broadcastChange(field, event) {
-    const assignment = { [field]: event.target.value };
-    this.props.onFieldChanged(assignment);
+  static makePodHost(name, domain){
+    if(!domain) return null;
+    const key = `http://${domain}`;
+    return { value: key, show: `${key} (Pod ${name})`}
   }
 
   static propTypes = {
-    onFieldChanged: PropTypes.func.isRequired,
     host: PropTypes.string,
     path: PropTypes.string,
     verb: PropTypes.oneOf(HTTP_VERBS),
     services: PropTypes.arrayOf(Types.Service),
-    pods: PropTypes.arrayOf(Types.LightPod),
-  };
+    pods: PropTypes.arrayOf(Types.LightPod)
+  }
 }
+
+type Props = {
+  host: ?string,
+  path: ?string,
+  verb: ?string,
+  services: Array<Service>,
+  pods: Array<LightPod>
+}
+
+const DestinationPane = FormComponent.compose(
+  DestinationPaneClass
+);
+
+export default DestinationPane;

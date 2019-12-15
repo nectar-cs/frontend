@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import S from './CommandHistoryStyles';
-import Text from './../../assets/text-combos';
-import Icon from './../../assets/icons';
-import Helper from './Helper';
-import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
+import React, {Fragment} from 'react'
+import PropTypes from 'prop-types'
+import S from './CommandHistoryStyles'
+import {Text, Icon} from 'ui-common'
+import Helper from "./Helper";
+import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+
 
 function HistoryRow(props) {
   const status = props.status;

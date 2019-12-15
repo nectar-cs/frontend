@@ -1,43 +1,52 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Utils from '../../utils/Utils';
-import s from './Response.sass';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Utils from "../../utils/Utils";
+import S from './ResponseStyles'
 
 export class BodyResponseView extends React.Component {
+
   render() {
-    if (Utils.isJson(this.props.body)) {
+    if(Utils.isJson(this.props.body)){
       const hash = JSON.parse(this.props.body);
-      return (
-        <div className={s.holder}>
-          <code className={`${s.code} language-json`}>{JSON.stringify(hash, null, 2)}</code>
-        </div>
-      );
+      return(
+        <S.Holder>
+          <S.Code className='language-json'>
+            { JSON.stringify(hash, null, 2) }
+          </S.Code>
+        </S.Holder>
+      )
     } else {
-      return <iframe className={s.holder} srcDoc={this.props.body} />;
+      return(
+        <S.IHolder srcDoc={this.props.body}/>
+      )
     }
   }
 
   static propTypes = {
-    body: PropTypes.string.isRequired,
-  };
+    body: PropTypes.string.isRequired
+  }
 }
 
 export class HeadersResponseView extends React.Component {
   render() {
     return (
-      <div className={s.holder}>
-        <code className={'language-markup'}>{(this.props.headers || []).join('\n')}</code>
-      </div>
-    );
+      <S.Holder>
+        <code className={"language-markup"}>
+          { (this.props.headers || []).join("\n") }
+        </code>
+      </S.Holder>
+    )
   }
 }
 
 export class RawResponseView extends React.Component {
   render() {
     return (
-      <div className={s.holder}>
-        <code>{this.props.raw}</code>
-      </div>
-    );
+      <S.Holder>
+        <code>
+          { this.props.raw }
+        </code>
+      </S.Holder>
+    )
   }
 }

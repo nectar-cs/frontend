@@ -1,22 +1,23 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { S } from './IntegrationSectionStyles';
-import AddNew from '../../widgets/AddNew/AddNew';
-import defaults from './defaults';
-import Utils from '../../utils/Utils';
-import { CenteredSpinner } from '../../assets/loading-spinner';
-import IntegrationList from './IntegrationList';
-import Backend from '../../utils/Backend';
+import React, {Fragment} from 'react'
+import PropTypes from 'prop-types'
+import {S} from './IntegrationSectionStyles'
+import AddNew from "../../widgets/AddNew/AddNew";
+import defaults from "./defaults";
+import Utils from "../../utils/Utils";
+import {Loader} from "ui-common";
+import IntegrationList from "./IntegrationList";
+import Backend from "../../utils/Backend";
 
 export default class IntegrationSection extends React.PureComponent {
-  constructor(props) {
+
+  constructor(props){
     super(props);
     this.state = {
       isSubmitting: false,
       isListFetching: true,
       isAuthUrlsFetching: true,
       registries: [],
-      authUrls: [],
+      authUrls: []
     };
     this.formSubmit = null;
     this.onSubmitted = this.onSubmitted.bind(this);
@@ -24,74 +25,78 @@ export default class IntegrationSection extends React.PureComponent {
     this.fetchIntegrations = this.fetchIntegrations.bind(this);
   }
 
-  componentDidMount() {
-    Utils.mp('Integrations Start', {});
+  componentDidMount(){
+    Utils.mp("Integrations Start", {});
     this.props.setReloadPerformer(this.fetchIntegrations);
     this.fetchIntegrations();
     this.fetchAuthUrls();
   }
 
-  render() {
-    return (
+  render(){
+    return(
       <Fragment>
-        {this.renderList()}
-        {this.renderAddNewButton()}
-        {this.renderLoading()}
-        {this.renderVendorChoices()}
-        {this.renderFormInputs()}
-        {this.renderFormButtons()}
+        { this.renderList() }
+        { this.renderAddNewButton() }
+        { this.renderLoading() }
+        { this.renderVendorChoices() }
+        { this.renderFormInputs() }
+        { this.renderFormButtons() }
       </Fragment>
-    );
+    )
   }
 
-  deleteItem({ id, type, entity }) {
+  deleteItem({id, type, entity}){
     if (window.confirm(defaults.confirmDelete)) {
-      this.setState(s => ({ ...s, isSubmitting: true }));
+      this.setState(s => ({...s, isSubmitting: true}));
       this.performDelete(id, () => {
-        Utils.mp('Integration Delete', { type, entity });
-        this.setState(s => ({ ...s, isSubmitting: false }));
+        Utils.mp('Integration Delete', {type, entity});
+        this.setState(s => ({...s, isSubmitting: false}));
         this.fetchIntegrations();
       });
     }
   }
 
-  renderList() {
-    if (this.isBaseFetching()) return null;
-    if (this.props.formShowing) return null;
-    if (this.state.isSubmitting) return null;
-    return <IntegrationList items={this.state.registries} requestDelete={this.deleteItem} />;
+  renderList(){
+    if(this.isBaseFetching()) return null;
+    if(this.props.formShowing) return null;
+    if(this.state.isSubmitting) return null;
+    return <IntegrationList
+      items={this.state.registries}
+      requestDelete={this.deleteItem}
+    />
   }
 
-  renderLoading() {
-    if (!this.state.isSubmitting && !this.isBaseFetching()) return null;
+  renderLoading(){
+    if(!this.state.isSubmitting && !this.isBaseFetching())
+      return null;
 
-    return (
+    return(
       <S.LoadingLayout>
-        <CenteredSpinner size="large" />
+        <Loader.CenteredSpinner size='large'/>
         <S.LoadText>Working</S.LoadText>
       </S.LoadingLayout>
-    );
+    )
   }
 
-  renderAddNewButton() {
-    if (this.isBaseFetching()) return null;
-    if (this.props.formShowing) return null;
-    if (this.state.isSubmitting) return null;
+  renderAddNewButton(){
+    if(this.isBaseFetching()) return null;
+    if(this.props.formShowing) return null;
+    if(this.state.isSubmitting) return null;
 
-    const action = () => this.changeState({ formShowing: true });
-    return (
+    const action = ()=> this.changeState({formShowing: true});
+    return(
       <AddNew action={action}>
         <p>{this.newEntryCopy()}</p>
       </AddNew>
-    );
+    )
   }
 
-  renderVendorChoices() {
-    if (this.isBaseFetching()) return null;
-    if (!this.props.formShowing) return null;
-    if (this.state.isSubmitting) return null;
+  renderVendorChoices(){
+    if(this.isBaseFetching()) return null;
+    if(!this.props.formShowing) return null;
+    if(this.state.isSubmitting) return null;
 
-    const make = name => () => this.changeState({ vendor: name });
+    const make = (name) => () => this.changeState({vendor: name});
     const items = this.vendorList().map(vendor => (
       <S.Vendor
         key={vendor.name}
@@ -101,7 +106,7 @@ export default class IntegrationSection extends React.PureComponent {
       />
     ));
 
-    return (
+    return(
       <Fragment>
         <p>{this.vendorQuestion()}</p>
         <S.RegistriesRow>{items}</S.RegistriesRow>
@@ -109,91 +114,91 @@ export default class IntegrationSection extends React.PureComponent {
     );
   }
 
-  renderFormInputs() {
-    if (this.isBaseFetching()) return null;
-    if (this.state.isSubmitting) return null;
+  renderFormInputs(){
+    if(this.isBaseFetching()) return null;
+    if(this.state.isSubmitting) return null;
 
     const extras = {
-      setSubmitPerformer: func => (this.formSubmit = func),
-      notifySubmitted: this.onSubmitted,
+      setSubmitPerformer: (func) => this.formSubmit = func,
+      notifySubmitted: this.onSubmitted
     };
 
-    if (this.props.formShowing && this.props.vendor) {
+    if(this.props.formShowing && this.props.vendor){
       return this.formRenderer(extras);
     } else return null;
   }
 
-  renderFormButtons() {
-    if (this.isBaseFetching()) return null;
-    if (!this.props.formShowing) return null;
-    if (this.state.isSubmitting) return null;
+  renderFormButtons(){
+    if(this.isBaseFetching()) return null;
+    if(!this.props.formShowing) return null;
+    if(this.state.isSubmitting) return null;
 
-    const onCancel = () => this.changeState({ formShowing: false });
+    const onCancel = () => this.changeState({formShowing: false});
     const onOk = () => {
-      this.setState(s => ({ ...s, isSubmitting: true }));
+      this.setState(s => ({...s, isSubmitting: true}));
       this.formSubmit();
     };
 
-    const OkButton = () => <S.OkButton onClick={onOk}>Connect</S.OkButton>;
+    const OkButton = ()=> <S.OkButton onClick={onOk}>Connect</S.OkButton>;
 
-    return (
+    return(
       <S.FormButtonsRow>
         <S.CancelButton onClick={onCancel}>Cancel</S.CancelButton>
-        {this.props.vendor && <OkButton />}
+        { this.props.vendor && <OkButton/> }
       </S.FormButtonsRow>
-    );
+    )
   }
 
-  fetchIntegrations() {
-    this.setState(s => ({ ...s, registries: [], isListFetching: true }));
-    this.performFetch(registries => {
-      this.setState(s => ({ ...s, registries, isListFetching: false }));
+  fetchIntegrations(){
+    this.setState(s => ({...s, registries: [], isListFetching: true}));
+    this.performFetch((registries) => {
+      this.setState(s => ({...s, registries, isListFetching: false}));
       registries.forEach(r => this.startConnectionCheck(r.id));
-    });
+    })
   }
 
-  fetchAuthUrls() {
-    this.setState(s => ({ ...s, isAuthUrlsFetching: true }));
-    this.performAuthUrlsFetch(authUrls => {
-      this.setState(s => ({ ...s, authUrls, isAuthUrlsFetching: false }));
-    });
+  fetchAuthUrls(){
+    this.setState(s => ({...s, isAuthUrlsFetching: true}));
+    this.performAuthUrlsFetch((authUrls) => {
+      this.setState(s => ({...s, authUrls, isAuthUrlsFetching: false}));
+    })
   }
 
-  performConnectionCheck(id, whenDone) {
+  performConnectionCheck(id, whenDone){
     const ep = `/remotes/${id}/check_connection`;
-    Backend.aFetch(ep, resp => {
+    Backend.raisingFetch(ep, resp => {
       whenDone(resp['data']['connected']);
-    });
+    })
   }
 
-  performDelete(id, whenDone) {
+  performDelete(id, whenDone){
     const endpoint = `/remotes/${id}`;
-    Backend.aDelete(endpoint, whenDone);
+    Backend.raisingDelete(endpoint, whenDone);
   }
 
-  startConnectionCheck(id) {
+  startConnectionCheck(id){
     this.performConnectionCheck(id, result => {
       const news = this.state.registries.map(r => {
-        if (r.id.toString() === id.toString()) {
-          return { ...r, connected: result };
+        if(r.id.toString() === id.toString()){
+          return {...r, connected: result};
         } else return r;
       });
-      this.setState(s => ({ ...s, registries: news }));
+      this.setState(s => ({...s, registries: news}));
     });
   }
 
-  changeState(assignment) {
+  changeState(assignment){
     this.props.setMasterState(assignment);
   }
 
-  onSubmitted() {
-    this.changeState({ formShowing: false });
-    this.setState(s => ({ ...s, isSubmitting: false }));
+  onSubmitted(){
+    this.changeState({formShowing: false});
+    this.setState(s => ({...s, isSubmitting: false}));
     this.props.notifyDataChanged();
     this.fetchIntegrations();
   }
 
-  isBaseFetching() {
+  isBaseFetching(){
     const { isAuthUrlsFetching, isListFetching } = this.state;
     return isAuthUrlsFetching || isListFetching;
   }
@@ -203,6 +208,6 @@ export default class IntegrationSection extends React.PureComponent {
     vendor: PropTypes.string,
     formShowing: PropTypes.oneOf([true, false]).isRequired,
     setMasterState: PropTypes.func.isRequired,
-    notifyDataChanged: PropTypes.func.isRequired,
-  };
+    notifyDataChanged: PropTypes.func.isRequired
+  }
 }

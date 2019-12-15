@@ -84,6 +84,7 @@
     "redux-thunk": "^2.3.0",
     "string-similarity": "^3.0.0",
     "styled-components": "^4.3.2",
+    "ui-common": "file:../ui-common",
     "url-loader": "^2.1.0",
     "vertical-timeline-component-for-react": "^1.0.6"
   }
