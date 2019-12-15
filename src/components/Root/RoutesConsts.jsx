@@ -1,4 +1,3 @@
-import LoginAndRegister from "../Auth/LoginAndRegister";
 import WorkspaceIndex from "../Workspaces/Index/WorkspaceIndex";
 import WorkspaceEdit from "../Workspaces/Edit/WorkspaceEdit";
 import WorkspaceShow from "../Workspaces/Show/WorkspaceShow";
@@ -6,7 +5,6 @@ import DeploymentShow from "../Deployments/Show/DeploymentShow";
 import InfraDebug from "../InfraDebug/InfraDebug";
 import BulkMatch from "../BulkMatch/BulkMatch";
 import DefaultWorkspace from "../Deployments/Default/Default";
-import Logout from "../Auth/Logout";
 
 export const ROUTES = {
   clusters: {

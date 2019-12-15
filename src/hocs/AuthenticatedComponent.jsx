@@ -1,10 +1,6 @@
 //@flow
 import React from 'react';
-import { Redirect } from 'react-router';
 import AppLayout from '../components/Navigation/AppLayout/AppLayout';
-import { ROUTES } from '../containers/RoutesConsts';
-import Backend from '../utils/Backend';
-import type { LightUser } from '../types/Types';
 
 /**
  * This is essentially legacy logic.

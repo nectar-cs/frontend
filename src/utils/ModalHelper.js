@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from 'react-modal';
 
 export default class ModalHelper {
   static customStyles() {
@@ -13,19 +12,6 @@ export default class ModalHelper {
         borderRadius: '4px',
         borderWidth: '0px',
         padding: '0',
-      },
-    };
-  }
-
-  static customStylesNoTransform() {
-    return {
-      content: {
-        top: '20%',
-        left: '70%',
-        right: 'auto',
-        bottom: 'auto',
-        borderRadius: '4px',
-        borderWidth: '0px',
       },
     };
   }
