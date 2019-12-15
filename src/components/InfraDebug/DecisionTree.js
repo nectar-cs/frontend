@@ -1,13 +1,12 @@
 import S from './DecisionTreeStyles'
 import PropTypes from 'prop-types'
 import Tree from "react-d3-tree";
-import React, {Fragment} from "react";
+import React from "react";
 import Helper from "./Helper";
 import defaults from "./defaults";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import Layout from "../../assets/layouts";
+import {Layout, Text} from 'ui-common';
 import Micon from "../../widgets/Micon/Micon";
-import Text from "../../assets/text-combos";
 
 export default class DecisionTree extends React.Component{
 

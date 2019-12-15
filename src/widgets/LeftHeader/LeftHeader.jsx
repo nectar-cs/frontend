@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './LeftHeader.sass'
+import S from './LeftHeaderStyles'
 import PropTypes from 'prop-types'
 
 export const ICON = "icon";
@@ -8,13 +8,13 @@ export default class LeftHeader extends React.Component {
 
   render(){
     return(
-      <div className={s.leftHeader}>
+      <S.Container>
         { this.renderGraphic() }
-        <div className={s.textBox}>
-          <h2 className={s.title}>{this.props.title}</h2>
-          <p className={s.subtitle}>{this.props.subtitle}</p>
-        </div>
-      </div>
+        <S.TextBox>
+          <S.Title>{this.props.title}</S.Title>
+          <S.SubTitle>{this.props.subtitle}</S.SubTitle>
+        </S.TextBox>
+      </S.Container>
     )
   }
 
@@ -29,19 +29,19 @@ export default class LeftHeader extends React.Component {
 
   renderMaterialIcon(){
     return(
-      <i className={`material-icons ${s.icon}`}>
+      <S.Icon className='material-icons'>
         { this.props.graphicName }
-      </i>
+      </S.Icon>
     )
   }
 
   renderImage(){
     const source = this.props.graphicName;
-    return <img src={source} className={s.image} alt={null}/>;
+    return <S.Image src={source} alt={null}/>;
   }
 
   renderStub(){
-    return <div className={s.imageStub}/>;
+    return <S.ImageStub/>;
   }
 
   static propTypes = {

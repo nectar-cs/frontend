@@ -4,7 +4,7 @@ import {S} from './IntegrationSectionStyles'
 import AddNew from "../../widgets/AddNew/AddNew";
 import defaults from "./defaults";
 import Utils from "../../utils/Utils";
-import {CenteredSpinner} from "../../assets/loading-spinner";
+import {Loader} from "ui-common";
 import IntegrationList from "./IntegrationList";
 import Backend from "../../utils/Backend";
 
@@ -72,7 +72,7 @@ export default class IntegrationSection extends React.PureComponent {
 
     return(
       <S.LoadingLayout>
-        <CenteredSpinner size='large'/>
+        <Loader.CenteredSpinner size='large'/>
         <S.LoadText>Working</S.LoadText>
       </S.LoadingLayout>
     )

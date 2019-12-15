@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Layout from "../../assets/layouts";
+import {Layout} from "ui-common";
 
 const Editor = styled(Layout.BigCodeViewer)`
   margin-top: 0;

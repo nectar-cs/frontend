@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types'
-import In from "../assets/input-combos";
+import {In} from 'ui-common';
 
 export default class FormComponent {
   static compose(InnerComponent)  {

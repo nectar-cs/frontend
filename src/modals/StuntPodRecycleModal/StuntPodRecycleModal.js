@@ -4,7 +4,7 @@ import {Types} from "../../types/CommonTypes";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import defaults from "./defaults";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import Text from "../../assets/text-combos";
+import {Text} from "ui-common";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import moment from "moment";
 import ModalButton from "../../widgets/Buttons/ModalButton";

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import Utils from '../../../utils/Utils';
-import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
+import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
 import HttpActionsModal from "../../../modals/HttpActionsModal/HttpActionsModal";
 import CardRow from "./CardRow";
 import {Types} from "../../../types/CommonTypes";

@@ -1,12 +1,12 @@
 import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../hocs/AuthenticatedComponent";
-import Layout from "../../assets/layouts";
+import {Layout} from "ui-common";
 import OverviewSide from "./OverviewSide";
 import Helper from './Helper'
 import Node from "./Node";
 import DebugStep from "./DebugStep";
 import Gulpers from "./Gulpers";
-import Loader from "../../assets/loading-spinner";
+import {Loader} from "ui-common";
 import TerminalStep from "./TerminalStep";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
 import UpdateCheckComposer from "../../hocs/UpdateCheckComposer";

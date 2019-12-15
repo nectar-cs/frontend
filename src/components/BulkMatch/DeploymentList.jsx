@@ -1,18 +1,19 @@
 //@flow
 import React from 'react';
-import s from './DeploymentList.sass'
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import type {Matching, WideDeployment} from "../../types/Types";
 import Micon from "../../widgets/Micon/Micon";
 import Utils from "../../utils/Utils";
+import {Text, Tables} from 'ui-common'
+import S from './DeploymentListStyles'
 
 function ListHeader() {
   return(
     <tr>
       <th><p>Deployment</p></th>
       <th><p>Found in</p></th>
-      <th><p className={s.checkHead}>Git</p></th>
-      <th><p className={s.checkHead}>Docker</p></th>
+      <th><Text.P2 left={1.8}>Git</Text.P2></th>
+      <th><Text.P2 left={1.8}>Docker</Text.P2></th>
     </tr>
   )
 }
@@ -21,7 +22,7 @@ function DeploymentItem(props: ItemProps) {
   const { isSelected, deployment, matching } = props;
 
   const NamespaceTags = () => deployment.namespaces.map(ns => (
-    <p key={ns} className={s.nsTag}>{ns}</p>
+    <S.NsTag key={ns}>{ns}</S.NsTag>
   ));
 
   const YesIcon = () => <Micon n='check' e='success' extras={"margin-left: 22px"}/>;
@@ -60,12 +61,12 @@ export default function DeploymentList(props: ListProps) {
     <div className={s.deploymentList}>
       <TextOverLineSubtitle text='Kubernetes Deployments'/>
       <p>{text}</p>
-      <table className={s.mainTable}>
+      <Tables.Table low={1.8}>
         <tbody>
         <ListHeader/>
         <ListItems/>
         </tbody>
-      </table>
+      </Tables.Table>
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react'
-import s from './WorkspaceIndex.sass'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
@@ -7,11 +6,9 @@ import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnoun
 import CenterCard from "../../../widgets/CenterCard/CenterCard";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import Backend from "../../../utils/Backend";
-import {makeRoute, ROUTES} from "../../../containers/RoutesConsts";
+import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
 import ColoredLabelList from "../../../widgets/ColoredLabelList/ColoredLabelList";
-import Button from "../../../assets/buttons";
-import Text from './../../../assets/text-combos'
-import Layout from './../../../assets/layouts'
+import {Text, Button, Layout} from 'ui-common'
 import {Link, Redirect} from "react-router-dom";
 import Utils from "../../../utils/Utils";
 
@@ -63,9 +60,9 @@ class WorkspaceIndexClass extends React.Component{
   renderLoading(){
     if(!this.state.isLoading) return null;
     return(
-      <div className={s.content}>
+      <Layout.FullWidthPanel>
         <CenterLoader/>
-      </div>
+      </Layout.FullWidthPanel>
     )
   }
 
@@ -73,14 +70,14 @@ class WorkspaceIndexClass extends React.Component{
     if(this.state.workspaces.length < 1) return null;
 
     return(
-      <div className={s.content}>
+      <Layout.FullWidthPanel>
         <table>
           <tbody>
           <WorkspaceHeader/>
           { this.renderWorkspacesList() }
           </tbody>
         </table>
-      </div>
+      </Layout.FullWidthPanel>
     )
   }
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Layout from "../../../assets/layouts";
+import {Layout} from "ui-common";
 
 const Section = styled(Layout.ContentContainer)`
   padding: ${Layout.Dims.containerPaddingVert} ${Layout.Dims.containerPaddingHor};

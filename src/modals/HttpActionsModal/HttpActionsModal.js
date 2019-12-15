@@ -14,8 +14,7 @@ import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response
 import HistoryList from "./HistoryList";
 import Backend from "../../utils/Backend";
 import FlexibleModal from "../../hocs/FlexibleModal";
-import Layout from "../../assets/layouts";
-import Text from './../../assets/text-combos'
+import {Layout, Text} from "ui-common";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import Helper from './Helper'
 import Checklist from "../ImageOpsModal/View/Checklist";
@@ -36,12 +35,10 @@ export default class HttpActionsModal extends React.Component {
       source: {
         type: 'test-pod',
         namespace: props.deployment.namespace,
-        labels: []
       },
       headerText: '',
       bodyText: '',
       namespaces: [],
-      labelCombos: [],
       phase: 'editing',
       httpResp: '',
       showHistory: true
@@ -76,11 +73,6 @@ export default class HttpActionsModal extends React.Component {
     Kapi.fetch('/api/cluster/namespaces', (resp) => {
       if(this._isMounted)
         this.setState(s => ({...s, namespaces: resp['data'] }))
-    });
-
-    Kapi.fetch('/api/cluster/label_combinations', (resp) => {
-      if(this._isMounted)
-        this.setState(s => ({...s, labelCombos: resp['data'] }))
     });
   }
 
@@ -205,9 +197,8 @@ export default class HttpActionsModal extends React.Component {
           {...this.state.destination}
         />
         <SourcePane
-          onFieldChanged={srcCallback}
+          notifyFormValueChanged={srcCallback}
           namespaces={this.state.namespaces}
-          labelCombos={this.state.labelCombos}
           {...this.state.source}
         />
         <CodeEditor
@@ -224,7 +215,8 @@ export default class HttpActionsModal extends React.Component {
     )
   }
 
-  onGroupFieldChanged(group, assignment){
+  onGroupFieldChanged(group, key, value){
+    const assignment = { [key]: value };
     const newDestination = {...this.state[group], ...assignment};
     this.setState(s => ({...s, [group]: newDestination}));
   }

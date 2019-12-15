@@ -1,7 +1,6 @@
 import React, {Fragment, useEffect, useRef} from 'react'
 import TextOverLineSubtitle from "../TextOverLineSubtitle/TextOverLineSubtitle";
-import Layout from "../../assets/layouts";
-import Text from "../../assets/text-combos";
+import {Layout, Text} from "ui-common";
 
 export default function TermSection({title, lines, extras = {}}){
 

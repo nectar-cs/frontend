@@ -1,10 +1,9 @@
 //@flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import s from './GithubAuth.sass';
 import defaults from './defaults'
 import IntegrationsModal from "../../modals/IntegrationsModal/IntegrationsModal";
-import Button from "../../assets/buttons";
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
+import {Button} from "ui-common";
 import ModalClientComposer from "../../hocs/ModalClientComposer";
 
 class IntegrationsPromptClass extends React.Component<Props> {

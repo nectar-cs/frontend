@@ -1,9 +1,9 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import Text from "../../assets/text-combos";
+import {Text} from "ui-common";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import Layout from "../../assets/layouts";
+import {Layout} from "ui-common";
 
 export default class TerminalStep extends React.Component{
 

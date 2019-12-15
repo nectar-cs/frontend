@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Button from "../../assets/buttons";
+import {Button} from "ui-common";
 
 const less = (p) => p.theme.colors.contrastLessFont;
 const secondary = (p) => p.theme.colors.secondaryColor;

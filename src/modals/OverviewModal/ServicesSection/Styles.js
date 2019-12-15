@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {colored} from "../../../assets/constants";
+import {colored} from "ui-common";
 
 const boxWidth = "47%";
 

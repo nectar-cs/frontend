@@ -2,7 +2,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import Utils from "../../utils/Utils";
-import {stacks} from "../../misc/stacks";
+import {stacks} from "../../vendor/stacks";
 import FormComponent from "../../hocs/FormComponent";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 

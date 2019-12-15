@@ -1,9 +1,8 @@
 //@flow
 
 import React, {Fragment} from 'react'
-import s from './WorkspaceForm.sass'
 import ReactTags from 'react-tag-autocomplete';
-import ss from './../../../assets/react-tags.sass'
+import {AutoComplete} from 'ui-common'
 import FormComponent from "../../../hocs/FormComponent";
 import Utils from "../../../utils/Utils";
 import type {Workspace} from "../../../types/Types";
@@ -85,7 +84,7 @@ class WorkspaceFormClass extends React.Component<Props> {
         handleDelete={(t) => this.onFilterRemoved(currentOptionsKey, t)}
         handleAddition={(t) => this.onFilterAdded(currentOptionsKey, t)}
         autofocus={false}
-        classNames={AUTO_COMPLETE_STYLES}
+        classNames={AutoComplete}
       />
     );
   }
@@ -135,14 +134,6 @@ const FILTER_TYPE_OPTIONS = Utils.hashOptions({
   whitelist: "Whitelist",
   blacklist: "Blacklist"
 });
-
-const AUTO_COMPLETE_STYLES = {
-  root: s.autoComplete,
-  selected: ss.reactTagsSelected,
-  selectedTag: ss.reactTagsSelectedTag,
-  search: ss.reactTagsSearch,
-  suggestions: ss.reactTagsSuggestions
-};
 
 const WorkspaceForm = FormComponent.compose(
   WorkspaceFormClass

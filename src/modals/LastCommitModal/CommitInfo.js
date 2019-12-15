@@ -1,8 +1,7 @@
 import React, {Fragment} from 'react'
 import S from './CommitInfoStyles'
 import {Types} from "../../types/CommonTypes";
-import Text from './../../assets/text-combos'
-import Img from './../../assets/img-combos'
+import {Text, Img} from 'ui-common'
 import FileChange from "./FileChange";
 import moment from "moment";
 import defaults from "./defaults";

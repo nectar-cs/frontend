@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react'
-import Layout from './../../assets/layouts'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../utils/Utils";
 import defaults from "./defaults";

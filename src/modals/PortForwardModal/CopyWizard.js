@@ -1,9 +1,7 @@
 import React, {useRef, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import defaults from "./defaults";
-import Layout from './../../assets/layouts'
-import Text from './../../assets/text-combos'
-import Button from './../../assets/buttons'
+import {Layout, Text, Button} from 'ui-common'
 import Utils from "../../utils/Utils";
 
 export default function CopyWizard(props){

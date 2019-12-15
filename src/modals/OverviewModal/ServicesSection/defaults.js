@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import Text from './../../../assets/text-combos'
+import {Text} from 'ui-common'
 
 const defaults = {
   intro: (

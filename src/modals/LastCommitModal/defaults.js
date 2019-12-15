@@ -1,5 +1,4 @@
-import Text from "../../assets/text-combos";
-import React, {Fragment} from "react";
+import React from "react";
 
 const defaults = {
   header: {

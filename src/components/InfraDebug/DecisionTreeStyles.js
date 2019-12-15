@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import {theme} from "../../assets/constants";
-import {leaf} from "react-syntax-highlighter/dist/cjs/languages/hljs";
+import {theme} from "ui-common";
 
 const Container = styled.div`
   position: relative;

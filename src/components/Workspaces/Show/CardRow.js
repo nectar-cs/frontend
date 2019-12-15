@@ -1,4 +1,3 @@
-import s from "./CardRow.sass";
 import React from "react";
 import PropTypes from 'prop-types'
 import { S } from './CardRowStyles'

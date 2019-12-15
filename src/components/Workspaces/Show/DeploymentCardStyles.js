@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { colored } from './../../../assets/constants'
-import Layout from './../../../assets/layouts'
+import { Layout, colored } from 'ui-common'
 
 const podSize = "14px";
 const mult = 1.04;
@@ -92,9 +91,7 @@ const PodCircle = styled.div`
   }
 `;
 
-const
-
-  ContentRows = styled.table`
+const ContentRows = styled.table`
   margin-top: 18px;
 `;
 

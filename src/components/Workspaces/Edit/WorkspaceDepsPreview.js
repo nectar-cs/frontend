@@ -1,9 +1,8 @@
 //@flow
 import React, {Fragment} from 'react'
-import s from './WorkspaceDepsPreview.sass'
-import Loader from "../../../assets/loading-spinner";
+import S from './WorkspaceDepsPreviewStyles'
+import {Loader} from "ui-common";
 import type {Deployment} from "../../../types/Types";
-import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 
 export default function WorkspaceDepsPreview(props: Props) {
@@ -30,12 +29,12 @@ export default function WorkspaceDepsPreview(props: Props) {
     <Fragment>
       <Header/>
       <Loader.TopRightSpinner there={isFetching}/>
-      <table className={s.table}>
+      <S.Table>
         <tbody>
         <DeploymentHeaderRow/>
         <DeploymentRows/>
         </tbody>
-      </table>
+      </S.Table>
     </Fragment>
   )
 }
@@ -48,7 +47,7 @@ function DeploymentRow(deployment: Deployment){
   ));
 
   const LabelViews = () => strLabels.map((label) => (
-    <p key={label} className={s.statusTag}>{label}</p>
+    <S.StatusTag key={label}>{label}</S.StatusTag>
   ));
 
   return(

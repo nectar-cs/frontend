@@ -1,11 +1,9 @@
 //@flow
 import React, {Fragment} from 'react'
-import VertSection from "../../widgets/VertSection/VertSection";
-import NotDoneSection from "../NotDoneSection/NotDoneSection";
 import EventsTimeline from "./EventsTimeline";
 import type {LightPod, ResEvent} from "../../types/Types";
 import Kapi from "../../utils/Kapi";
-import Loader from "../../assets/loading-spinner";
+import {Loader} from "ui-common";
 
 export default class PodOverview extends React.Component<Props, State>{
 

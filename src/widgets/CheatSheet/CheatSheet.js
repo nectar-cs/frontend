@@ -1,10 +1,9 @@
 //@flow
 import React, {Fragment} from 'react'
 import CheatSheetForm from "./CheatSheetForm";
-import Text from "../../assets/text-combos";
 import deploymentCopy from "./deployment";
 import Interpolation from "./Interpolation";
-import Layout from "../../assets/layouts";
+import {Layout, Text} from 'ui-common';
 import S from './Styles'
 
 

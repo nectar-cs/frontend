@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Utils from "../../utils/Utils";
-import s from './Response.sass'
+import S from './ResponseStyles'
 
 export class BodyResponseView extends React.Component {
 
@@ -9,15 +9,15 @@ export class BodyResponseView extends React.Component {
     if(Utils.isJson(this.props.body)){
       const hash = JSON.parse(this.props.body);
       return(
-        <div className={s.holder}>
-          <code className={`${s.code} language-json`}>
+        <S.Holder>
+          <S.Code className='language-json'>
             { JSON.stringify(hash, null, 2) }
-          </code>
-        </div>
+          </S.Code>
+        </S.Holder>
       )
     } else {
       return(
-        <iframe className={s.holder} srcDoc={this.props.body}/>
+        <S.IHolder srcDoc={this.props.body}/>
       )
     }
   }
@@ -30,11 +30,11 @@ export class BodyResponseView extends React.Component {
 export class HeadersResponseView extends React.Component {
   render() {
     return (
-      <div className={s.holder}>
+      <S.Holder>
         <code className={"language-markup"}>
           { (this.props.headers || []).join("\n") }
         </code>
-      </div>
+      </S.Holder>
     )
   }
 }
@@ -42,11 +42,11 @@ export class HeadersResponseView extends React.Component {
 export class RawResponseView extends React.Component {
   render() {
     return (
-      <div className={s.holder}>
+      <S.Holder>
         <code>
           { this.props.raw }
         </code>
-      </div>
+      </S.Holder>
     )
   }
 }

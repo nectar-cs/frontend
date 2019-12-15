@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { Route, BrowserRouter } from 'react-router-dom'
 import {ROUTES as R} from './RoutesConsts';
 import {Switch} from "react-router";
-import NotFound from "../components/NotFound/NotFound";
-import {theme} from "../assets/constants";
+import NotFound from "../NotFound/NotFound";
+import {theme} from "ui-common";
 import {ThemeProvider} from "styled-components";
 
 export default class Root extends Component {

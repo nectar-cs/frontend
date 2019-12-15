@@ -1,7 +1,7 @@
 import React from 'react'
 import AuthenticatedComponent from "../../hocs/AuthenticatedComponent";
 import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
-import upcoming from "../../containers/upcoming";
+import upcoming from "../Root/upcoming";
 import FutureFeature from "../../widgets/FutureFeature/FutureFeature";
 import DataUtils from "../../utils/DataUtils";
 

@@ -9,7 +9,7 @@ import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLin
 import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import {Types} from "../../types/CommonTypes";
-import {ROUTES} from "../../containers/RoutesConsts";
+import {ROUTES} from "../../components/Root/RoutesConsts";
 import {Redirect} from "react-router";
 
 export default class ChooseDebugTypeModal extends React.Component {

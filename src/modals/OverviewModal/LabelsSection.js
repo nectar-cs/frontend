@@ -1,13 +1,11 @@
 //@flow
 import type {Deployment, LabelMatrix} from "../../types/Types";
 import React, {Fragment} from "react";
-import Text from "../../assets/text-combos";
 import Helper from "./Helper";
-import Tables from "../../assets/table-combos";
 import Micon from "../../widgets/Micon/Micon";
 import S from './Styles'
 import defaults from "./defaults";
-import Loader from "../../assets/loading-spinner";
+import {Text, Tables, Loader} from "ui-common";
 
 export default class LabelsSection extends React.Component<Props, State>{
 

@@ -1,6 +1,5 @@
 import Utils from "../../utils/Utils";
-import Text from "../../assets/text-combos";
-import Layout from "../../assets/layouts";
+import {Text, Layout} from "ui-common";
 import S from "./Styles";
 import ModestLink from "../../widgets/ModestLink/ModestLink";
 import React from "react";

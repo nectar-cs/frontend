@@ -1,9 +1,8 @@
 //@flow
 import React, {Fragment} from 'react'
 import {LogsView} from "./Styles";
-import Text from "../../assets/text-combos";
 import Kapi from "../../utils/Kapi";
-import Loader from "../../assets/loading-spinner";
+import {Text, Loader} from "ui-common";
 import CenterAnnouncement from "../CenterAnnouncement/CenterAnnouncement";
 
 const POLL_RATE = 2500;

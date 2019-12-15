@@ -12,7 +12,7 @@ import FlexibleModal from "../../../hocs/FlexibleModal";
 import TermSection from "../../../widgets/TermSection/TermSection";
 import Checklist from "./Checklist";
 import Conclusion from "./Conclusion";
-import Loader from "../../../assets/loading-spinner";
+import {Loader} from "ui-common";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';

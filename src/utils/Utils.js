@@ -1,13 +1,13 @@
 //@flow
 import React, {Fragment} from 'react'
-import textCombos from './../assets/text-combos.sass'
-import Text from './../assets/text-combos'
 import moment from "moment";
 import type {Matching} from "../types/Types";
 import * as Sentry from "@sentry/browser";
 const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
 import mixpanel from 'mixpanel-browser';
+import {Text} from "ui-common";
+import {theme} from "ui-common/src/constants";
 
 export default class Utils {
 
@@ -159,19 +159,18 @@ export default class Utils {
   }
 
   static statusCodeColors(code){
-    if(code < 300) return textCombos.statusTagSuccess;
-    else if(code < 500 ) return textCombos.statusTagWarn;
-    else if(code < 600) return textCombos.statusTagFailure;
+    if(code < 300) return theme.colors.success;
+    else if(code < 500 ) return theme.colors.warn;
+    else if(code < 600) return theme.colors.fail;
     else return null;
   }
 
   static httpVerbColors(verb){
     verb = verb.toLowerCase();
-    if(verb === 'get')
-      return textCombos.statusTagGood;
+    if(verb === 'get') return 'success';
     else if(['post', 'patch', 'put'].includes(verb))
-      return textCombos.statusTagReady;
-    else return textCombos.statusTagWarn;
+      return 'primaryColor';
+    else return 'warn';
   }
 
   static senTrack(e){

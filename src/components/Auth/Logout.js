@@ -1,12 +1,11 @@
 import React from 'react'
 import Backend from "../../utils/Backend";
 import {Redirect} from "react-router";
-import Layout from "../../assets/layouts";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
-import {ROUTES} from "../../containers/RoutesConsts";
-import {theme} from "../../assets/constants";
+import {ROUTES} from "../Root/RoutesConsts";
 import {ThemeProvider} from "styled-components";
 import Utils from "../../utils/Utils";
+import {Layout, theme} from "ui-common";
 
 export default class Logout extends React.Component{
 

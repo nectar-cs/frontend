@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import In from "../../../assets/input-combos";
+import {In} from "ui-common";
 import { S } from './ImageFormStyles'
 import Utils from "../../../utils/Utils";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
@@ -10,7 +10,7 @@ import {Types} from "../../../types/CommonTypes";
 import {ImageActionsModalHelper} from "./ImageActionsModalHelper";
 import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import ModalClientComposer from "../../../hocs/ModalClientComposer";
-import {ROUTES} from "../../../containers/RoutesConsts";
+import {ROUTES} from "../../../components/Root/RoutesConsts";
 
 export default class ImageForm extends React.Component {
   render(){

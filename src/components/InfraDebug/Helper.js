@@ -2,7 +2,7 @@ import Kapi from "../../utils/Kapi";
 import DataUtils from "../../utils/DataUtils";
 import Backend from "../../utils/Backend";
 import S from './DecisionTreeStyles'
-import {theme} from "../../assets/constants";
+import {theme} from "ui-common";
 
 const mult = 120 / 17.8;
 const offset = (S.boxDiag / 2) + 2;

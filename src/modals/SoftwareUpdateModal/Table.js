@@ -1,4 +1,4 @@
-import Text from "../../assets/text-combos";
+import {Text} from "ui-common";
 import type {RevisionStatus} from "../../types/Types";
 import React from "react";
 

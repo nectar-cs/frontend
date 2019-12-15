@@ -2,8 +2,9 @@ import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
-import s from "./HistoryList.sass";
 import Utils from "../../utils/Utils";
+import {Tables} from "ui-common";
+import S from './HistoryListStyles'
 
 export default class HistoryList extends React.Component {
 
@@ -28,21 +29,21 @@ export default class HistoryList extends React.Component {
     const change = () => this.setState(s => ({...s, isExpanded: !s.isExpanded}));
     const text = t ? 'Hide history' : 'Prefill from history';
     return(
-      <div className={s.historyToggleLine} onClick={change}>
-        <p className={s.historyLabel}>{text}</p>
-        <i className={`${s.expand} material-icons`}>arrow_right</i>
-      </div>
+      <S.HistoryToggleLine onClick={change}>
+        <S.HistoryLabel>{text}</S.HistoryLabel>
+        <S.Expand className='material-icons'>arrow_right</S.Expand>
+      </S.HistoryToggleLine>
     )
   }
 
   renderContent(){
     if(this.state.isExpanded){
       return(
-        <table className={s.table}>
+        <Tables.Table low={1}>
           <tbody>
           { this.renderItems() }
           </tbody>
-        </table>
+        </Tables.Table>
       )
     } else return null;
   }
@@ -107,19 +108,19 @@ class HistoryRow extends React.Component {
     const back = { source, destination, bodyText, headerText };
 
     host = host.replace("http://", "");
-    const Td = (p) => <td className={s.row}>{p.children}</td>;
+    const Td = (p) => <Tables.SkinnyRow>{p.children}</Tables.SkinnyRow>;
     const statCol = Utils.statusCodeColors(status);
     const verbCol = Utils.httpVerbColors(verb);
     const callback = () => this.props.callback(back);
     verb = this.shortenVerb(verb);
 
     return(
-      <tr className={s.wholeRow} onClick={callback}>
-        <Td><p className={s.url}>{host}{path}</p></Td>
-        <Td><p className={`${s.verb} ${verbCol}`}>{verb}</p></Td>
+      <S.WholeRow onClick={callback}>
+        <Td><S.Url>{host}{path}</S.Url></Td>
+        <Td><S.Verb emotion={verbCol}>{verb}</S.Verb></Td>
         <Td><p>{namespace} / {type}</p></Td>
-        <Td><p className={`${s.verb} ${statCol}`}>{status}</p></Td>
-      </tr>
+        <Td><S.Verb emotion={statCol}>{status}</S.Verb></Td>
+      </S.WholeRow>
     )
   }
 

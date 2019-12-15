@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Icon as Ic, Identifier, Status} from "./IntegrationListStyles";
-import Icon from './../../assets/icons'
 import Helper from "./Helper";
-import {ModSpinner} from "../../assets/loading-spinner";
+import {Loader, Icon} from "ui-common";
 
 function IntegrationItem(props) {
   const delCol = (
@@ -18,7 +17,7 @@ function IntegrationItem(props) {
   switch(props.connected){
     case null:
     case undefined:
-      statusWidget = <ModSpinner size='x-small'/>;
+      statusWidget = <Loader.ModSpinner size='x-small'/>;
       break;
     case true:
       statusWidget = <Status emotion='success'>Connected</Status>;

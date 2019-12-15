@@ -1,6 +1,5 @@
 import React from 'react'
 import Section from "./Section";
-import CommandsModal from "../../../modals/CommandsModal/CommandsModal";
 import DeploymentLogsModal from "../../../modals/DeploymentLogsModal/DeploymentLogsModal";
 
 export default class LoggingSection extends Section {

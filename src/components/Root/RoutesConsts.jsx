@@ -1,13 +1,12 @@
-import LoginAndRegister from "../components/Auth/LoginAndRegister";
-import WorkspaceIndex from "../components/Workspaces/Index/WorkspaceIndex";
-import WorkspaceEdit from "../components/Workspaces/Edit/WorkspaceEdit";
-import WorkspaceShow from "../components/Workspaces/Show/WorkspaceShow";
-import DeploymentShow from "../components/Deployments/Show/DeploymentShow";
-import InfraDebug from "../components/InfraDebug/InfraDebug";
-import BulkMatch from "../components/BulkMatch/BulkMatch";
-import Welcome from "../components/Welcome/Welcome";
-import DefaultWorkspace from "../components/Deployments/Default/Default";
-import Logout from "../components/Auth/Logout";
+import LoginAndRegister from "../Auth/LoginAndRegister";
+import WorkspaceIndex from "../Workspaces/Index/WorkspaceIndex";
+import WorkspaceEdit from "../Workspaces/Edit/WorkspaceEdit";
+import WorkspaceShow from "../Workspaces/Show/WorkspaceShow";
+import DeploymentShow from "../Deployments/Show/DeploymentShow";
+import InfraDebug from "../InfraDebug/InfraDebug";
+import BulkMatch from "../BulkMatch/BulkMatch";
+import DefaultWorkspace from "../Deployments/Default/Default";
+import Logout from "../Auth/Logout";
 
 export const ROUTES = {
   clusters: {
@@ -21,10 +20,6 @@ export const ROUTES = {
 
   bulkMatch: {
     index: { path: '/bulk-matching', comp: BulkMatch },
-  },
-
-  welcome: {
-    index: { path: '/welcome', comp: Welcome }
   },
 
   workspaces: {

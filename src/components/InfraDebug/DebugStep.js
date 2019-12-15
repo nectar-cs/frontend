@@ -3,10 +3,8 @@ import PropTypes from 'prop-types'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import defaults from './defaults'
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import Text from "../../assets/text-combos";
-import Loader from "../../assets/loading-spinner";
+import {Layout, Text} from "ui-common";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import Layout from "../../assets/layouts";
 import S from "./StepExecutionStyles";
 import Helper from "./Helper";
 import ModalButton from "../../widgets/Buttons/ModalButton";

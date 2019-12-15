@@ -2,19 +2,17 @@
 
 import React, {Fragment} from 'react'
 import ModalClientComposer from "../../../hocs/ModalClientComposer";
-import Layout from "../../../assets/layouts";
+import {Layout} from "ui-common";
 import defaults from "./defaults";
 import S from './Styles'
 import type {Deployment, Service} from "../../../types/Types";
-import Text from "../../../assets/text-combos";
 import Utils from "../../../utils/Utils";
 import LabelTags from "../../../widgets/LabelTags/LabelTags";
-import Tables from "../../../assets/table-combos";
 import Micon from "../../../widgets/Micon/Micon";
 import HttpActionsModal from "../../HttpActionsModal/HttpActionsModal";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Kapi from "../../../utils/Kapi";
-import Loader from "../../../assets/loading-spinner";
+import {Text, Tables, Loader} from "ui-common";
 
 class ServicesSectionClass extends React.Component{
   constructor(props) {

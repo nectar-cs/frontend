@@ -1,4 +1,4 @@
-import {makeRoute, ROUTES} from "../../containers/RoutesConsts";
+import {makeRoute, ROUTES} from "../../components/Root/RoutesConsts";
 
 const defaults = {
   header: {

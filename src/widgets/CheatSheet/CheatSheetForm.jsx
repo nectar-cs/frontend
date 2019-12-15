@@ -1,9 +1,9 @@
 //@flow
-import React, {Fragment} from 'react'
+import React from 'react'
 import FormComponent from "../../hocs/FormComponent";
 import Utils from "../../utils/Utils";
 import defaults from './defaults'
-import Layout from "../../assets/layouts";
+import {Layout} from "ui-common";
 
 class CheatSheetFormFunc extends React.Component<Props>{
 

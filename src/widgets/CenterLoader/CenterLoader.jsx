@@ -1,17 +1,15 @@
+//@flow
 import React from 'react'
-import PropTypes from 'prop-types'
-import s from './CenterLoader.sass'
+import {Loader} from 'ui-common'
 
-export default function CenterLoader(props){
-  if(props.contrast)
-    return <div className={s.contrastLoader}/>;
-  else return <div className={s.loader}/>;
+export default function CenterLoader(props: Props){
+  return(
+    <Loader.ModSpinner
+      size='large'
+      emotion={props.contrast && 'contrastColor'}
+    />
+  );
 }
 
-CenterLoader.propTypes = {
-  contrast: PropTypes.bool
-};
-
-CenterLoader.defaultProps = {
-  contrast: false
-};
+type Props = {contrast: boolean};
+CenterLoader.defaultProps = {contrast: false};

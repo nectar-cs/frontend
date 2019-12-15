@@ -1,7 +1,7 @@
 //@flow
 import React, {Fragment} from 'react'
 import S from './Styles'
-import upcoming from "../../containers/upcoming";
+import upcoming from "../../components/Root/upcoming";
 import DataUtils from "../../utils/DataUtils";
 import Utils from "../../utils/Utils";
 import ComingSoonSection from "../ComingSoonSection/ComingSoonSection";

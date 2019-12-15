@@ -1,6 +1,6 @@
 //@flow
 import React, {Fragment} from 'react'
-import In from './../../assets/input-combos'
+import {In} from 'ui-common'
 
 export default class AuthForm extends React.Component<Props>{
 

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Layout from "../../assets/layouts";
 
 const Content = styled.div`
   height: 200px;

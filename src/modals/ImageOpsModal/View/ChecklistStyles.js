@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import {ModSpinner} from "../../../assets/loading-spinner";
-import {colored} from "../../../assets/constants";
+import {Loader, colored} from "ui-common";
 
 export const List = styled.ul`
   margin-top: 15px;
@@ -28,7 +27,7 @@ export const Icon = styled.div`
   color: ${p => colored(p.emotion, p)};
 `;
 
-export const Spinner = styled(ModSpinner)`
+export const Spinner = styled(Loader.ModSpinner)`
   margin-left: 24px;
   transform: translateY(-3px);
 `;

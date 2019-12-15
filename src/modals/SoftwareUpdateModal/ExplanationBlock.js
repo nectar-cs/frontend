@@ -1,7 +1,6 @@
 import React, {Fragment} from 'react'
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import Text from "../../assets/text-combos";
-import Layout from "../../assets/layouts";
+import {Text} from "ui-common";
 
 export default function ExplanationBlock(){
   return(

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import S from "./PreviewStyles";
-import Text from './../../assets/text-combos'
+import {Text} from 'ui-common'
 
 function Pending(props){
   if(props.isExecuting) return <Text.Code>...</Text.Code>;

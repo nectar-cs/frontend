@@ -1,6 +1,6 @@
 //@flow
 import React from 'react'
-import Layout from "../../assets/layouts";
+import {Layout} from 'ui-common';
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../utils/Utils";
 import defaults from "./defaults";
@@ -10,7 +10,7 @@ import ModalButton from "../../widgets/Buttons/ModalButton";
 import CommitInfo from "./CommitInfo";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import {ROUTES} from "../../containers/RoutesConsts";
+import {ROUTES} from "../../components/Root/RoutesConsts";
 import Backend from "../../utils/Backend";
 import ImageOpsModal from "../ImageOpsModal/View/ImageOpsModal";
 

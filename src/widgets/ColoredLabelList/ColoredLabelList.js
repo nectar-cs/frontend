@@ -1,15 +1,15 @@
 import React from 'react'
-import ts from './../../assets/text-combos.sass'
+import {Text} from "ui-common";
 
 export default function ColoredLabelList(props: Props) {
   const { labelType, labels } = props;
   const isWhiteList = labelType === 'whitelist';
-  const labelClass = isWhiteList ? ts.whiteLabel : ts.blackLabel;
+  const emo = isWhiteList ? 'contrastFont' : 'primaryColor';
 
   return labels.map((labelCopy) => (
-    <p className={labelClass} key={labelCopy}>
+    <Text.StatusTag emotion={emo} key={labelCopy}>
       { labelCopy }
-    </p>
+    </Text.StatusTag>
   ));
 }
 

@@ -1,7 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import Layout from "../../assets/layouts";
-import Text from "../../assets/text-combos";
+import {Layout, Text} from "ui-common";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";

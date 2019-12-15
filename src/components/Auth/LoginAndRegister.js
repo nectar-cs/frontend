@@ -2,12 +2,11 @@ import React, {Fragment} from 'react';
 import Utils from "../../utils/Utils";
 import {Redirect} from "react-router";
 import Backend from "../../utils/Backend";
-import Layout from "../../assets/layouts";
+import {Layout, Button} from "ui-common";
 import S from './Styles';
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import AuthForm from "./AuthForm";
 import MainLayout from "./MainLayout";
-import Button from "../../assets/buttons";
 
 const humanizeString = require('humanize-string');
 

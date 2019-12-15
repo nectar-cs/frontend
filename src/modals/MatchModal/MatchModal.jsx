@@ -2,13 +2,11 @@
 import React, {Fragment} from 'react';
 import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import MatchForm from './MatchForm';
-import Button from "../../assets/buttons";
-import Loader from "../../assets/loading-spinner";
+import {Button, Loader, Text} from "ui-common";
 import defaults from './defaults'
 import Helper from "./Helper";
 import type {Deployment, Matching, RemoteBundle} from "../../types/Types";
 import Gulper from "./Gulper";
-import Text from "../../assets/text-combos";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import IntegrationsModal from "../IntegrationsModal/IntegrationsModal";
 import ModalClientComposer from "../../hocs/ModalClientComposer";
