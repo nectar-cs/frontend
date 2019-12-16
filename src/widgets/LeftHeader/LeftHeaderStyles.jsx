@@ -40,14 +40,14 @@ const SubTitle = styled.p`
   margin: 7px 0 0 0;
   display: inline-block;
   width: auto;
-  color: ${p => p.theme.color.primaryFontLess};
+  color: ${p => p.theme.colors.primaryFontLess};
 `;
 
 const Icon = styled.i`
   width: ${headerHeight};
   height: ${headerHeight};
   font-size: ${headerHeight};
-  color: ${p => p.theme.color.primaryColor};
+  color: ${p => p.theme.colors.primaryColor};
 `;
 
 const S = {

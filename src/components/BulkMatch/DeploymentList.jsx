@@ -1,5 +1,5 @@
 //@flow
-import React from 'react';
+import React, {Fragment} from 'react';
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import type {Matching, WideDeployment} from "../../types/Types";
 import Micon from "../../widgets/Micon/Micon";
@@ -31,12 +31,12 @@ function DeploymentItem(props: ItemProps) {
   const callback = () => props.callback(deployment.name);
 
   return(
-    <tr className={isSelected ? s.focusedRow : s.row} onClick={callback}>
+    <S.Row focused={isSelected} onClick={callback}>
       <td><p>{deployment.name}</p></td>
       <td><NamespaceTags/></td>
       <td><StatusIcon name='gitRepoName'/></td>
       <td><StatusIcon name='imgRepoName'/></td>
-    </tr>
+    </S.Row>
   )
 }
 
@@ -58,7 +58,7 @@ export default function DeploymentList(props: ListProps) {
   );
 
   return (
-    <div className={s.deploymentList}>
+    <Fragment>
       <TextOverLineSubtitle text='Kubernetes Deployments'/>
       <p>{text}</p>
       <Tables.Table low={1.8}>
@@ -67,7 +67,7 @@ export default function DeploymentList(props: ListProps) {
         <ListItems/>
         </tbody>
       </Tables.Table>
-    </div>
+    </Fragment>
   );
 }
 

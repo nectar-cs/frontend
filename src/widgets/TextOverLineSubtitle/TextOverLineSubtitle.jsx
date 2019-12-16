@@ -20,5 +20,5 @@ export default function TextOverLineSubtitle(props: Props) {
 type Props = {
   text: string,
   toggleOpen: ?string,
-  callback: ?() => *,
+  callback: ?(() => *),
 };
