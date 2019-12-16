@@ -70,14 +70,14 @@ class WorkspaceIndexClass extends React.Component{
     if(this.state.workspaces.length < 1) return null;
 
     return(
-      <Layout.FullWidthPanel>
+      <Layout.FullScreen>
         <table>
           <tbody>
           <WorkspaceHeader/>
           { this.renderWorkspacesList() }
           </tbody>
         </table>
-      </Layout.FullWidthPanel>
+      </Layout.FullScreen>
     )
   }
 

@@ -7,12 +7,14 @@ import {Switch} from "react-router";
 import NotFound from "../NotFound/NotFound";
 import {theme} from "ui-common";
 import {ThemeProvider} from "styled-components";
+import {MosaicBaseStyle} from 'ui-common'
 
 export default class Root extends Component {
   render() {
     return (
       <Provider store={this.props.store}>
         <BrowserRouter history={this.props.history}>
+          <MosaicBaseStyle/>
           <ThemeProvider theme={theme}>
             <Switch>
               { Root.renderRoute(R.bulkMatch.index) }

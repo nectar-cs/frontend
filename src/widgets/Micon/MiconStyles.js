@@ -4,6 +4,7 @@ import {colored} from "ui-common";
 function size(size){
   if(size === 'm+') return "30px";
   if(size === 's') return "18px";
+  if(size === 'xs') return "14px";
   return "21px";
 }
 

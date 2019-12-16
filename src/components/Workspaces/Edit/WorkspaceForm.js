@@ -1,18 +1,16 @@
 //@flow
 
 import React, {Fragment} from 'react'
-import ReactTags from 'react-tag-autocomplete';
-import {AutoComplete} from 'ui-common'
 import FormComponent from "../../../hocs/FormComponent";
 import Utils from "../../../utils/Utils";
 import type {Workspace} from "../../../types/Types";
+import TagPool from "../../../widgets/TagPool/TagPool";
+
 
 class WorkspaceFormClass extends React.Component<Props> {
 
   constructor(props) {
     super(props);
-    this.onFilterAdded = this.onFilterAdded.bind(this);
-    this.onFilterRemoved = this.onFilterRemoved.bind(this);
   }
 
   render() {
@@ -69,54 +67,12 @@ class WorkspaceFormClass extends React.Component<Props> {
   }
 
   renderFilterSelect(name, poolKey, currentOptionsKey){
-    return this.props.makeLine(name, [
-      () => this.renderAutocomplete(poolKey, currentOptionsKey)
-    ]);
+    return this.props.makeTagPool(
+      "Hey",
+      "asdasd",
+      []
+    )
   }
-
-  renderAutocomplete(poolKey, currentOptionsKey) {
-    return (
-      <ReactTags
-        key={currentOptionsKey}
-        minQueryLength={0}
-        tags={this.tags(currentOptionsKey)}
-        suggestions={this.suggestions(poolKey, currentOptionsKey)}
-        handleDelete={(t) => this.onFilterRemoved(currentOptionsKey, t)}
-        handleAddition={(t) => this.onFilterAdded(currentOptionsKey, t)}
-        autofocus={false}
-        classNames={AutoComplete}
-      />
-    );
-  }
-
-  onFilterAdded(currentChoicesKey, item){
-    const oldList = this.props[currentChoicesKey];
-    const newList = [...oldList, item.name];
-    this.manualBroadcast(currentChoicesKey, newList);
-  }
-
-  onFilterRemoved(currentChoicesKey, itemIndex){
-    const oldList = this.props[currentChoicesKey];
-    const item = oldList[itemIndex];
-    const newList = oldList.filter(e => e !== item);
-    this.manualBroadcast(currentChoicesKey, newList);
-  }
-
-  suggestions(poolKey, currentChoicesKey) {
-    const all = this.props[poolKey];
-    const alreadyUsed = this.props[currentChoicesKey];
-    const truncated = all.filter((choice) => (
-      !alreadyUsed.includes(choice)
-    ));
-    return this.formatTags(truncated);
-  }
-
-  manualBroadcast(key, value){
-    this.props.notifyFormValueChanged(key, value);
-  }
-
-  tags(which){ return this.formatTags(this.props[which]); }
-  formatTags(tags){ return tags.map((t) => ({ id: t, name: t })); }
 }
 
 type Props = {

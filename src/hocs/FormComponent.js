@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types'
 import {In} from 'ui-common';
+import TagPool from "../widgets/TagPool/TagPool";
 
 export default class FormComponent {
   static compose(InnerComponent)  {
@@ -12,6 +13,7 @@ export default class FormComponent {
         this.makeSelectItem = this.makeSelectItem.bind(this);
         this.makeInputItem = this.makeInputItem.bind(this);
         this.makeLine = this.makeLine.bind(this);
+        this.makeTagPool = this.makeTagPool.bind(this);
       }
 
       makeLine(title, builders){
@@ -56,6 +58,21 @@ export default class FormComponent {
         )
       }
 
+      makeTagPoolItem(field, choices){
+        return(
+          <TagPool/>
+        )
+      }
+
+      makeTagPool(title, field, choices){
+        return(
+          <In.InputLine>
+            <In.LineLabel size='large'>{title}</In.LineLabel>
+            { this.makeTagPoolItem(field, choices) }
+          </In.InputLine>
+        )
+      }
+
       makeInput(title, field, placeholder){
         return(
           <In.InputLine>
@@ -72,6 +89,7 @@ export default class FormComponent {
             makeInput={this.makeInput}
             makeSelectItem={this.makeSelectItem}
             makeInputItem={this.makeInputItem}
+            makeTagPool={this.makeTagPool}
             makeLine={this.makeLine}
             {...this.props}
           />

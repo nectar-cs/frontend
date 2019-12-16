@@ -6,8 +6,7 @@ import * as Sentry from "@sentry/browser";
 const GCP_BASE = "https://storage.googleapis.com/";
 const IMG_BASE = GCP_BASE + "nectar-mosaic-public/images";
 import mixpanel from 'mixpanel-browser';
-import {Text} from "ui-common";
-import {theme} from "ui-common/src/constants";
+import {theme, Text} from "ui-common";
 
 export default class Utils {
 
