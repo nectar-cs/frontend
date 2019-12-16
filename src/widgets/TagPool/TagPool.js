@@ -1,58 +1,56 @@
 //@flow
 import {useAutocomplete} from "@material-ui/lab";
 import {Container, InputWrapper, Listbox, Tag} from "./TagPoolStyles";
-import React from "react";
+import React, {Fragment} from "react";
 
 export default function TagPool(props: Props){
+  const callback = (e, v) => { console.log("HEY"); console.log(v) };
+  const { optionsHash, defaultsArray } = props;
+  const humanizer = (key) => optionsHash[key];
 
-    const {
-      getRootProps,
-      getInputProps,
-      getTagProps,
-      getListboxProps,
-      getOptionProps,
-      groupedOptions,
-      value,
-      focused,
-      setAnchorEl,
-    } = useAutocomplete({
-      id: 'customized-hook-demo',
-      defaultValue: [],
-      multiple: true,
-      options: top100Films,
-      getOptionLabel: option => option.title,
-    });
+  const {
+    getInputProps,
+    getTagProps,
+    getListboxProps,
+    getOptionProps,
+    groupedOptions,
+    value,
+    focused,
+    setAnchorEl,
+  } = useAutocomplete({
+    id: 'customized-hook-demo',
+    defaultValue: defaultsArray,
+    options: Object.keys(optionsHash),
+    onChange: callback,
+    getOptionLabel: humanizer,
+    multiple: true
+  });
 
-    return(
-      <Container>
-        <div {...getRootProps()}>
-          <InputWrapper ref={setAnchorEl} className={focused ? 'focused' : ''}>
-            {value.map((option, index) => (
-              <Tag label={option.title} {...getTagProps({ index })} />
-            ))}
-
-            <input {...getInputProps()} />
-          </InputWrapper>
-        </div>
-        {groupedOptions.length > 0 ? (
-          <Listbox {...getListboxProps()}>
-            {groupedOptions.map((option, index) => (
-              <li {...getOptionProps({ option, index })}>
-                <span>{option.title}</span>
-              </li>
-            ))}
-          </Listbox>
-        ) : null}
-      </Container>
-    )
-  }
-
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'Monty Python and the Holy Grail', year: 1975 }
-];
+  return(
+    <Container>
+      <Fragment>
+        <InputWrapper ref={setAnchorEl} className={focused ? 'focused' : ''}>
+          {value.map((option, index) => (
+            <Tag label={humanizer(option)} {...getTagProps({ index })} />
+          ))}
+          <input {...getInputProps()} />
+        </InputWrapper>
+      </Fragment>
+      {groupedOptions.length > 0 ? (
+        <Listbox {...getListboxProps()}>
+          {groupedOptions.map((option, index) => (
+            <li {...getOptionProps({ option, index })}>
+              <span>{humanizer(option)}</span>
+            </li>
+          ))}
+        </Listbox>
+      ) : null}
+    </Container>
+  )
+}
 
 type Props = {
+  callback: any => any,
+  optionsHash: {any: string},
+  defaultsArray: Array<any>,
 };

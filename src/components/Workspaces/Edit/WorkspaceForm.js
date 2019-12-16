@@ -4,7 +4,6 @@ import React, {Fragment} from 'react'
 import FormComponent from "../../../hocs/FormComponent";
 import Utils from "../../../utils/Utils";
 import type {Workspace} from "../../../types/Types";
-import TagPool from "../../../widgets/TagPool/TagPool";
 
 
 class WorkspaceFormClass extends React.Component<Props> {
@@ -54,7 +53,7 @@ class WorkspaceFormClass extends React.Component<Props> {
     return this.renderFilterSelect(
       'Namespace Filters',
       'namespaceChoices',
-      'nsFilters'
+      nsFilters
     );
   }
 
@@ -66,11 +65,11 @@ class WorkspaceFormClass extends React.Component<Props> {
     );
   }
 
-  renderFilterSelect(name, poolKey, currentOptionsKey){
+  renderFilterSelect(title, field, choices){
     return this.props.makeTagPool(
-      "Hey",
-      "asdasd",
-      []
+      title,
+      field,
+      choices
     )
   }
 }

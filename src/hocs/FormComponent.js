@@ -6,6 +6,9 @@ import TagPool from "../widgets/TagPool/TagPool";
 export default class FormComponent {
   static compose(InnerComponent)  {
     return class extends React.Component{
+
+      valueDefaults: {string: any};
+
       constructor(props){
         super(props);
         this.makeSelect = this.makeSelect.bind(this);
@@ -14,6 +17,8 @@ export default class FormComponent {
         this.makeInputItem = this.makeInputItem.bind(this);
         this.makeLine = this.makeLine.bind(this);
         this.makeTagPool = this.makeTagPool.bind(this);
+
+        this.valueDefaults = {};
       }
 
       makeLine(title, builders){
@@ -59,8 +64,13 @@ export default class FormComponent {
       }
 
       makeTagPoolItem(field, choices){
+        const callback = optionKeys => this.parentCallback(field, optionKeys);
         return(
-          <TagPool/>
+          <TagPool
+            optionsHash={choices}
+            defaultsArray={this.getDefault(field)}
+            callback={callback}
+          />
         )
       }
 
@@ -100,6 +110,12 @@ export default class FormComponent {
         if(this.props.retriever){
           return this.props.retriever(this.props, field);
         } else return this.props[field];
+      }
+
+      getDefault(field){
+        if(this.valueDefaults[field] == null)
+          this.valueDefaults[field] = this.getValue(field);
+        return this.valueDefaults[field];
       }
 
       static propTypes = {
