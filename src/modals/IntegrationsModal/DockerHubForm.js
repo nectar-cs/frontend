@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 import PropTypes from 'prop-types'
-import {In} from "ui-common";
+import {In} from "ui-common/api/styles";
 import {S} from "./IntegrationSectionStyles";
 import defaults from "./defaults";
 import Backend from "../../utils/Backend";

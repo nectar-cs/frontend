@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import defaults from "./defaults";
-import {Layout, Text} from 'ui-common'
+import {Layout, Text} from "ui-common/api/styles"
 import {Types} from "../../types/CommonTypes";
 import Utils from "../../utils/Utils";
 

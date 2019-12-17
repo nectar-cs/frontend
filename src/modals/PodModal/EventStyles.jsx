@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Text} from "ui-common";
+import {Text} from "ui-common/api/styles";
 
 const EventsTimeline = styled.div`
   margin: -40px 0 0 ${p => p.far ? '-100px' :'-40px'};

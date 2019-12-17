@@ -7,7 +7,7 @@ import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
 import ModalButton from "../../../widgets/Buttons/ModalButton";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import DoneAnnouncement from "./DoneAnnouncement";
-import {Layout} from "ui-common";
+import {Layout} from "ui-common/api/styles";
 import ConfigurationSide from "./ConfigurationSide";
 import Helper from "./Helper";
 import type {Deployment, Workspace} from "../../../types/Types";

@@ -1,6 +1,6 @@
 import React from 'react'
 import * as Styles from "./ConclusionStyles";
-import {Text} from "ui-common";
+import {Text} from "ui-common/api/styles";
 
 export default function Conclusion ({success, reason}) {
   const emotion = success ? 'success' : 'failure';

@@ -3,7 +3,7 @@ import React from 'react';
 import S from './IntegrationsPromptStyles'
 import defaults from './defaults'
 import IntegrationsModal from "../../modals/IntegrationsModal/IntegrationsModal";
-import {Button} from "ui-common";
+import {Button} from "ui-common/api/styles";
 import ModalClientComposer from "../../hocs/ModalClientComposer";
 
 class IntegrationsPromptClass extends React.Component<Props> {

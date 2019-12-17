@@ -1,7 +1,7 @@
 import React from "react";
 import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
-import {Layout, Text} from "ui-common";
+import {Layout, Text} from "ui-common/api/styles";
 
 
 export default function  DoneAnnouncement({name, id}){

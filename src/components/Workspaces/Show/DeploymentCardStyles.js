@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Layout, colored } from 'ui-common'
+import { Layout, colored } from "ui-common/api/styles"
 
 const podSize = "14px";
 const mult = 1.04;

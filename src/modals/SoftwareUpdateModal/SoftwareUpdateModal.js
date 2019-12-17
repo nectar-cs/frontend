@@ -4,7 +4,7 @@ import FlexibleModal from "../../hocs/FlexibleModal";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import {Layout, Text} from "ui-common";
+import {Layout, Text} from "ui-common/api/styles";
 import Kapi from "../../utils/Kapi";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";

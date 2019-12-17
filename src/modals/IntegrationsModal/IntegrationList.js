@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Icon as Ic, Identifier, Status} from "./IntegrationListStyles";
 import Helper from "./Helper";
-import {Loader, Icon} from "ui-common";
+import {Loader, Icon} from "ui-common/api/styles";
 
 function IntegrationItem(props) {
   const delCol = (

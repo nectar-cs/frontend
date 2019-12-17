@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Text} from "ui-common";
+import {Text} from "ui-common/api/styles";
 
 const iconSize = '30px';
 

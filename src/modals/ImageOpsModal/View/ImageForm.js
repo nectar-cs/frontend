@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {In} from "ui-common";
+import {In} from "ui-common/api/styles";
 import { S } from './ImageFormStyles'
 import Utils from "../../../utils/Utils";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";

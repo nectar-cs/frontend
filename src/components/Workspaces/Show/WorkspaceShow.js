@@ -9,7 +9,7 @@ import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import Helper from "./Helper";
 import {connect} from "react-redux";
-import {Button} from "ui-common";
+import {Button} from "ui-common/api/styles";
 import Micon from "../../../widgets/Micon/Micon";
 import StuntPodRecycleModal from "../../../modals/StuntPodRecycleModal/StuntPodRecycleModal";
 import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";

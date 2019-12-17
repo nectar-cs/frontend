@@ -1,7 +1,7 @@
 //@flow
 import React, {Fragment} from 'react'
 import S from './WorkspaceDepsPreviewStyles'
-import {Loader} from "ui-common";
+import {Loader} from "ui-common/api/styles";
 import type {Deployment} from "../../../types/Types";
 import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 

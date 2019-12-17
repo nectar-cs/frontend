@@ -4,7 +4,7 @@ import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLin
 import type {Matching, WideDeployment} from "../../types/Types";
 import Micon from "../../widgets/Micon/Micon";
 import Utils from "../../utils/Utils";
-import {Text, Tables} from 'ui-common'
+import {Text, Tables} from "ui-common/api/styles"
 import S from './DeploymentListStyles'
 import ColoredLabelList from "../../widgets/ColoredLabelList/ColoredLabelList";
 

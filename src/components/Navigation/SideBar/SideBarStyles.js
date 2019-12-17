@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Text} from 'ui-common'
+import {Text} from "ui-common/api/styles"
 
 const logoSide = "21px";
 const arrowSide = "20px";

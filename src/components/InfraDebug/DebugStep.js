@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import defaults from './defaults'
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import {Layout, Text} from "ui-common";
+import {Layout, Text} from "ui-common/api/styles";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import S from "./StepExecutionStyles";
 import Helper from "./Helper";

@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import {Text} from 'ui-common'
+import {Text} from "ui-common/api/styles"
 
 const defaults = {
   intro: (

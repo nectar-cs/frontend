@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types'
-import {In} from 'ui-common';
+import {In} from "ui-common/api/styles";
 import TagPool from "../widgets/TagPool/TagPool";
 
 export default class FormComponent {

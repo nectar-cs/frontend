@@ -3,7 +3,7 @@ import React, {Fragment} from 'react'
 import { Timeline, TimelineItem }  from 'vertical-timeline-component-for-react';
 import type {LightPod, ResEvent} from "../../types/Types";
 import S from './EventStyles'
-import {Layout, Text, colored, theme} from "ui-common";
+import {Layout, Text, colored, theme} from "ui-common/api/styles";
 import moment from "moment";
 import defaults from "./defaults";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";

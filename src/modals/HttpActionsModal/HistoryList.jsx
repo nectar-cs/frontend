@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
 import Utils from "../../utils/Utils";
-import {Tables} from "ui-common";
+import {Tables} from "ui-common/api/styles";
 import S from './HistoryListStyles'
 
 export default class HistoryList extends React.Component {

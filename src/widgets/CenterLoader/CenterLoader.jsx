@@ -1,6 +1,6 @@
 //@flow
 import React from 'react'
-import {Loader} from 'ui-common'
+import {Loader} from "ui-common/api/styles"
 
 export default function CenterLoader(props: Props){
   return(

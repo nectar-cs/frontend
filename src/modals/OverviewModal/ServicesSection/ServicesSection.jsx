@@ -2,7 +2,7 @@
 
 import React, {Fragment} from 'react'
 import ModalClientComposer from "../../../hocs/ModalClientComposer";
-import {Layout} from "ui-common";
+import {Layout} from "ui-common/api/styles";
 import defaults from "./defaults";
 import S from './Styles'
 import type {Deployment, Service} from "../../../types/Types";
@@ -12,7 +12,7 @@ import Micon from "../../../widgets/Micon/Micon";
 import HttpActionsModal from "../../HttpActionsModal/HttpActionsModal";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Kapi from "../../../utils/Kapi";
-import {Text, Tables, Loader} from "ui-common";
+import {Text, Tables, Loader} from "ui-common/api/styles";
 
 class ServicesSectionClass extends React.Component{
   constructor(props) {

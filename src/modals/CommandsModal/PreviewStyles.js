@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Layout} from 'ui-common'
+import {Layout} from "ui-common/api/styles"
 
 const Preview = styled(Layout.BigCodeViewer)`
   height: 110px

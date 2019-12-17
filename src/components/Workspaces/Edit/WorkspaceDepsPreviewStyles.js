@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Text} from "ui-common";
+import {Text} from "ui-common/api/styles";
 
 export const Table = styled.table`
   margin: 20px 0 0 0;

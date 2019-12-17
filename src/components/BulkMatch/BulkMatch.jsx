@@ -8,7 +8,7 @@ import IntegrationsPrompt from "./IntegrationsPrompt";
 import ErrComponent from "../../hocs/ErrComponent";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import {Layout, Loader} from 'ui-common';
+import {Layout, Loader} from "ui-common/api/styles";
 import defaults from './defaults'
 import Helper from './Helper'
 import type {Matching, WideDeployment} from "../../types/Types";

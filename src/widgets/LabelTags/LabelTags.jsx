@@ -1,5 +1,5 @@
 import Utils from "../../utils/Utils";
-import {Text} from "ui-common";
+import {Text} from "ui-common/api/styles";
 import React from "react";
 
 export default function LabelTags({labels}){

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {theme} from "ui-common";
+import {theme} from "ui-common/api/styles";
 
 const Container = styled.div`
   position: relative;

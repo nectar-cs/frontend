@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import S from './CommandHistoryStyles'
-import {Text, Icon} from 'ui-common'
+import {Text, Icon} from "ui-common/api/styles"
 import Helper from "./Helper";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 

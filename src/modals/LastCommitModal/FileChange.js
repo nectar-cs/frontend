@@ -1,5 +1,5 @@
 import React from 'react'
-import {Text} from 'ui-common'
+import {Text} from "ui-common/api/styles"
 import {Types} from "../../types/CommonTypes";
 
 export default class FileChange extends React.Component{

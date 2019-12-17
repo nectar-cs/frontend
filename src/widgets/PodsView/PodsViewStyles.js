@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {colored} from "ui-common";
+import {colored} from "ui-common/api/styles";
 
 const podSize = 16;
 const podMargin = podSize * 0.4;

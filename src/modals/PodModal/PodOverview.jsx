@@ -3,7 +3,7 @@ import React, {Fragment} from 'react'
 import EventsTimeline from "./EventsTimeline";
 import type {LightPod, ResEvent} from "../../types/Types";
 import Kapi from "../../utils/Kapi";
-import {Loader} from "ui-common";
+import {Loader} from "ui-common/api/styles";
 
 export default class PodOverview extends React.Component<Props, State>{
 

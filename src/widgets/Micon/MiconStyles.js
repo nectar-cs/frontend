@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {colored} from "ui-common";
+import {colored} from "ui-common/api/styles";
 
 function size(size){
   if(size === 'm+') return "30px";

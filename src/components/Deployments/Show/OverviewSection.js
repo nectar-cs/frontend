@@ -6,8 +6,8 @@ import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../../utils/Utils";
 import SS from './OverviewSectionStyles'
 import OverviewModal from "../../../modals/OverviewModal/OverviewModal";
-import {Layout} from "ui-common";
-import {Text} from "ui-common";
+import {Layout} from "ui-common/api/styles";
+import {Text} from "ui-common/api/styles";
 import {connect} from "react-redux";
 import {Types} from "../../../types/CommonTypes";
 import ImageOpsSection from "./ImageOpsSection";

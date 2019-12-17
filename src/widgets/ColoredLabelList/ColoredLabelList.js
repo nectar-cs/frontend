@@ -1,6 +1,6 @@
 //@flow
 import React from 'react'
-import {Text} from "ui-common";
+import {Text} from "ui-common/api/styles";
 
 export default function ColoredLabelList(props: Props) {
   const { labelType, labels } = props;

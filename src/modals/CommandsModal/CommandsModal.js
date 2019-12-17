@@ -10,7 +10,7 @@ import CommandHistory from "./CommandHistory";
 import Helper from "./Helper";
 import Preview from "./Preview";
 import FlexibleModal from "../../hocs/FlexibleModal";
-import {Loader} from "ui-common";
+import {Loader} from "ui-common/api/styles";
 
 export default class CommandsModal extends React.Component{
 

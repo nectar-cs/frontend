@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import {Layout} from "ui-common";
-import {Button} from "ui-common";
+import {Layout} from "ui-common/api/styles";
+import {Button} from "ui-common/api/styles";
 
 const Explanation = styled.ol`
   margin-top: 12px;

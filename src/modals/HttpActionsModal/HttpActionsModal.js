@@ -15,7 +15,7 @@ import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response
 import HistoryList from "./HistoryList";
 import Backend from "../../utils/Backend";
 import FlexibleModal from "../../hocs/FlexibleModal";
-import {Layout, Text} from "ui-common";
+import {Layout, Text} from "ui-common/api/styles";
 import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import Helper from './Helper'
 import Checklist from "../ImageOpsModal/View/Checklist";

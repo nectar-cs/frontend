@@ -3,7 +3,7 @@ import React from 'react'
 import FormComponent from "../../hocs/FormComponent";
 import Utils from "../../utils/Utils";
 import defaults from './defaults'
-import {Layout} from "ui-common";
+import {Layout} from "ui-common/api/styles";
 
 class CheatSheetFormFunc extends React.Component<Props>{
 

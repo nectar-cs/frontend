@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Loader, colored} from "ui-common";
+import {Loader, colored} from "ui-common/api/styles";
 
 export const List = styled.ul`
   margin-top: 15px;

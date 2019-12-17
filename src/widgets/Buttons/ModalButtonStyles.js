@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Button} from 'ui-common'
+import {Button} from "ui-common/api/styles"
 
 const Main = styled(Button.ConfirmButton)`
   background: ${p => p.theme.colors.primaryColor};

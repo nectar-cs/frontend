@@ -4,7 +4,7 @@ import {S} from './IntegrationSectionStyles'
 import AddNew from "../../widgets/AddNew/AddNew";
 import defaults from "./defaults";
 import Utils from "../../utils/Utils";
-import {Loader} from "ui-common";
+import {Loader} from "ui-common/api/styles";
 import IntegrationList from "./IntegrationList";
 import Backend from "../../utils/Backend";
 

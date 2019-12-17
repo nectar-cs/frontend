@@ -1,6 +1,6 @@
 //@flow
 import React from 'react'
-import {Layout} from 'ui-common';
+import {Layout} from "ui-common/api/styles";
 import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../utils/Utils";
 import defaults from "./defaults";

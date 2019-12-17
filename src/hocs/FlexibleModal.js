@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Layout} from "ui-common";
+import {Layout} from "ui-common/api/styles";
 
 export default function FlexibleModal({mode, children}){
   if(mode === 'modal'){
