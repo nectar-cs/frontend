@@ -151,7 +151,8 @@ class BulkMatchingClass extends React.Component<Props, State> {
   }
 
   selectedDeployment() {
-    if (this.state.selectedIndex !== null) return this.state.deployments[this.state.selectedIndex];
+    const { deployments, selectedIndex } = this.state;
+    if (selectedIndex !== null) return deployments[selectedIndex];
     else return null;
   }
 
@@ -233,6 +234,9 @@ type State = {
   isCheckingIntegration: ?boolean,
   skipRequested: false,
   phase: 'fetching' | 'integrating' | 'submitting',
+  selectedIndex: number,
+  isSubmitting: boolean,
+  isFetching: boolean
 };
 
 type Props = {};

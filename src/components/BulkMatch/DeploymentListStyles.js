@@ -1,3 +1,4 @@
+import React from "react";
 import styled from 'styled-components'
 
 const NsTag = styled.p`
@@ -10,7 +11,11 @@ const NsTag = styled.p`
 
 const bkgColor = p => p.theme.colors.contentBackgroundColor;
 
-const Row = styled.tr`
+const Row = styled(({children, ...props}) => (
+  <tr {...props}>
+    { children.map((c, i) => (<td key={i}>{c}</td>)) }
+  </tr>
+))`
   background: ${p => p.focused ? bkgColor(p) : 'transparent'};
   &:hover{
     background: ${p => bkgColor(p)};

@@ -6,6 +6,7 @@ import Micon from "../../widgets/Micon/Micon";
 import Utils from "../../utils/Utils";
 import {Text, Tables} from 'ui-common'
 import S from './DeploymentListStyles'
+import ColoredLabelList from "../../widgets/ColoredLabelList/ColoredLabelList";
 
 function ListHeader() {
   return(
@@ -21,21 +22,17 @@ function ListHeader() {
 function DeploymentItem(props: ItemProps) {
   const { isSelected, deployment, matching } = props;
 
-  const NamespaceTags = () => deployment.namespaces.map(ns => (
-    <S.NsTag key={ns}>{ns}</S.NsTag>
-  ));
-
-  const YesIcon = () => <Micon n='check' e='success' extras={"margin-left: 22px"}/>;
-  const NoIcon = () => <Micon n='close' e='idle' extras={"margin-left: 22px"}/>;
+  const YesIcon = () => <Micon n='check' emotion='success' left={1.75}/>;
+  const NoIcon = () => <Micon n='close' emotion='idle' left={1.75}/>;
   const StatusIcon = ({name}) => ((matching || {})[name] ? <YesIcon/> : <NoIcon/>);
   const callback = () => props.callback(deployment.name);
 
   return(
     <S.Row focused={isSelected} onClick={callback}>
-      <td><p>{deployment.name}</p></td>
-      <td><NamespaceTags/></td>
-      <td><StatusIcon name='gitRepoName'/></td>
-      <td><StatusIcon name='imgRepoName'/></td>
+      <p>{deployment.name}</p>
+      <ColoredLabelList labels={deployment.namespaces} labelType='blacklist'/>
+      <StatusIcon name='gitRepoName'/>
+      <StatusIcon name='imgRepoName'/>
     </S.Row>
   )
 }
