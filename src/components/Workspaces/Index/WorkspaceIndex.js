@@ -1,3 +1,4 @@
+//@flow
 import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
@@ -6,13 +7,14 @@ import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnoun
 import CenterCard from "../../../widgets/CenterCard/CenterCard";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import Backend from "../../../utils/Backend";
-import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
-import ColoredLabelList from "../../../widgets/ColoredLabelList/ColoredLabelList";
-import {Text, Button, Layout} from 'ui-common'
-import {Link, Redirect} from "react-router-dom";
+import { ROUTES} from "../../Root/RoutesConsts";
+import { Button, Layout} from 'ui-common'
+import { Redirect} from "react-router-dom";
+import type {Workspace} from "../../../types/Types";
 import Utils from "../../../utils/Utils";
+import {WorkspaceHeader, WorkspaceRow} from "./WorkspaceRow";
 
-class WorkspaceIndexClass extends React.Component{
+class WorkspaceIndexClass extends React.Component<Props, State>{
 
   constructor(props){
     super(props);
@@ -20,17 +22,15 @@ class WorkspaceIndexClass extends React.Component{
       workspaces: [],
       isLoading: false,
       redirectTo: null
-    }
+    };
+    this.promptDelete = this.promptDelete.bind(this);
   }
 
-  componentDidMount(){
+  async componentDidMount(): void{
     document.title = `Workspaces`;
     this.setState(s => ({...s, isLoading: true}));
-    Backend.aFetch('/workspaces', (payload) => {
-      const workspaces = payload['data'];
-      // TODO have logic for begin tutorial here!
-      this.setState((s) => ({...s, isLoading: false, workspaces }));
-    }, this.props.apiErrorCallback);
+    const workspaces = await Backend.bFetch('/workspaces');
+    this.setState((s) => ({...s, isLoading: false, workspaces }));
   }
 
   render(){
@@ -82,8 +82,12 @@ class WorkspaceIndexClass extends React.Component{
   }
 
   renderWorkspacesList(){
-    return this.state.workspaces.map((w) =>
-      <WorkspaceRow key={w.id} {...w}/>
+    return this.state.workspaces.map(workspace =>
+      <WorkspaceRow
+        key={workspace.id}
+        workspace={workspace}
+        deleteCallback={this.promptDelete}
+      />
     );
   }
 
@@ -102,64 +106,24 @@ class WorkspaceIndexClass extends React.Component{
       </CenterCard>
     )
   }
-}
 
-function WorkspaceHeader() {
-  return(
-    <tr>
-      <th><p>Workspace</p></th>
-      <th><p>Default?</p></th>
-      <th><p>Namespace Filters</p></th>
-      <th><p>Label Filters</p></th>
-      <th><p>Actions</p></th>
-    </tr>
-  )
-}
-
-function WorkspaceRow(props) {
-  const bundle = ROUTES.workspaces;
-  const showPath = makeRoute(bundle.show.path, {id: props.id});
-  const editPath = makeRoute(bundle.edit.path, {id: props.id});
-
-  const onDelete = () => {
+  promptDelete(workspaceId){
+    const bundle = ROUTES.workspaces;
     if(window.confirm("Are you sure?")){
-      const ep = `/workspaces/${props.id}`;
+      const ep = `/workspaces/${workspaceId}`;
       Utils.mp("Workspace Delete", {});
       Backend.aDelete(ep, () => {
         window.location = bundle.index.path;
       });
     }
-  };
+  }
+}
 
-  return(
-    <tr>
-      <td>
-        <Link to={showPath}><p>{props.name}</p></Link>
-      </td>
-      <td>
-        <p><Text.BoldStatus>{props.is_default.toString()}</Text.BoldStatus></p>
-      </td>
-      <td>
-        <ColoredLabelList
-          labelType={props.ns_filter_type}
-          labels={props.ns_filters}
-        />
-      </td>
-      <td>
-        <ColoredLabelList
-          labelType={props.lb_filter_type}
-          labels={props.lb_filters}
-        />
-      </td>
-      <td>
-        <Layout.TextLine>
-          <Link to={editPath}><p>Edit</p></Link>
-          <p>&nbsp;&nbsp;</p>
-          <a><p onClick={onDelete}>Delete</p></a>
-        </Layout.TextLine>
-      </td>
-    </tr>
-  )
+type Props = {};
+type State = {
+  workspaces: Array<Workspace>,
+  redirectTo: string,
+  isLoading: boolean
 }
 
 const WorkspaceIndex = AuthenticatedComponent.compose(

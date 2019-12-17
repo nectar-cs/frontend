@@ -4,7 +4,7 @@ import {Loader} from 'ui-common'
 
 export default function CenterLoader(props: Props){
   return(
-    <Loader.ModSpinner
+    <Loader.CenteredSpinner
       size='large'
       emotion={props.contrast && 'contrastColor'}
     />

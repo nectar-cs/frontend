@@ -7,11 +7,6 @@ import type {Workspace} from "../../../types/Types";
 
 
 class WorkspaceFormClass extends React.Component<Props> {
-
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Fragment>
@@ -50,27 +45,23 @@ class WorkspaceFormClass extends React.Component<Props> {
   }
 
   renderNamespaceFilters(){
-    return this.renderFilterSelect(
+    return this.props.makeTagPool(
       'Namespace Filters',
-      'namespaceChoices',
-      nsFilters
+      'nsFilters',
+      this.flesh(this.props.namespaceChoices)
     );
   }
 
   renderLabelFilters(){
-    return this.renderFilterSelect(
+    return this.props.makeTagPool(
       'Label Filters',
-      'labelChoices',
-      'lbFilters'
+      'nsLabels',
+      this.flesh(this.props.labelChoices)
     );
   }
 
-  renderFilterSelect(title, field, choices){
-    return this.props.makeTagPool(
-      title,
-      field,
-      choices
-    )
+  flesh(array: string[]): {string: string} {
+    return array.reduce((w, c) => ({...w, [c]: c}), {});
   }
 }
 

@@ -4,7 +4,6 @@ import {Container, InputWrapper, Listbox, Tag} from "./TagPoolStyles";
 import React, {Fragment} from "react";
 
 export default function TagPool(props: Props){
-  const callback = (e, v) => { console.log("HEY"); console.log(v) };
   const { optionsHash, defaultsArray } = props;
   const humanizer = (key) => optionsHash[key];
 
@@ -18,10 +17,9 @@ export default function TagPool(props: Props){
     focused,
     setAnchorEl,
   } = useAutocomplete({
-    id: 'customized-hook-demo',
     defaultValue: defaultsArray,
     options: Object.keys(optionsHash),
-    onChange: callback,
+    onChange: (_, v) => props.callback(v),
     getOptionLabel: humanizer,
     multiple: true
   });
@@ -51,6 +49,6 @@ export default function TagPool(props: Props){
 
 type Props = {
   callback: any => any,
-  optionsHash: {any: string},
+  optionsHash: {string: string},
   defaultsArray: Array<any>,
 };

@@ -33,7 +33,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
     this.updateWorkspace = this.updateWorkspace.bind(this);
   }
 
-  async componentDidMount(){
+  async componentDidMount(): void{
     this.reloadNamespacesAndLabels();
     this.reloadWorkspace();
   }
@@ -170,6 +170,7 @@ class WorkspaceEditClass extends React.Component<State, Props> {
 type Props = {  };
 
 type State = {
+  isDone: boolean,
   namespaces: string[],
   labels: string[],
   workspace: Workspace,

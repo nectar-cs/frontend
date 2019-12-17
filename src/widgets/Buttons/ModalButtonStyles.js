@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import {Button} from 'ui-common'
 
-const Main = styled.button`
+const Main = styled(Button.ConfirmButton)`
   background: ${p => p.theme.colors.primaryColor};
   font-weight: bold;
   position: absolute;

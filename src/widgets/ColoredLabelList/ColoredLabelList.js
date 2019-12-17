@@ -1,16 +1,20 @@
+//@flow
 import React from 'react'
 import {Text} from "ui-common";
 
 export default function ColoredLabelList(props: Props) {
   const { labelType, labels } = props;
   const isWhiteList = labelType === 'whitelist';
-  const emo = isWhiteList ? 'contrastFont' : 'primaryColor';
+  const emo = isWhiteList ? 'contentBackgroundColor' : 'primaryColor';
 
-  return labels.map((labelCopy) => (
-    <Text.StatusTag emotion={emo} key={labelCopy}>
-      { labelCopy }
-    </Text.StatusTag>
-  ));
+  return labels.map((labelCopy, i) => {
+    const leftOffset = i === 0 ? 0 : 0.3;
+    return(
+      <Text.StatusTag emotion={emo} key={i} left={leftOffset}>
+        {labelCopy}
+      </Text.StatusTag>
+    )
+  });
 }
 
 type Props = {
