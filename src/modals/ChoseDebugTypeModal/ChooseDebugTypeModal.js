@@ -126,7 +126,6 @@ export default class ChooseDebugTypeModal extends React.Component {
   }
 }
 
-
 function ActivityOffering(props){
   return(
     <S.ActivityContainer

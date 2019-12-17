@@ -37,6 +37,9 @@ export default class Helper {
     if (Object.keys(changes).includes('workspace')) {
       const coreOldWorkspace = this.coreWorkspace(prevWorkspace);
       const coreNewWorkspace = this.coreWorkspace(changes.workspace);
+      console.log("COMPARE");
+      console.log(coreOldWorkspace);
+      console.log(coreNewWorkspace);
       return !DataUtils.deepEqual(coreOldWorkspace, coreNewWorkspace);
     }
   }

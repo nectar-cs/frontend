@@ -13,7 +13,7 @@ import Helper from "./Helper";
 import type {Deployment, Workspace} from "../../../types/Types";
 import Utils from "../../../utils/Utils";
 
-class WorkspaceEditClass extends React.Component<State, Props> {
+class WorkspaceEditClass extends React.Component<Props, State> {
 
   constructor(props){
     super(props);

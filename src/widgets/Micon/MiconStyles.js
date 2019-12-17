@@ -16,6 +16,7 @@ const Micon = styled.i`
   margin-right: ${p => `${(p.right || 0) * 12}px`};
   margin-bottom: ${p => `${(p.bottom || 0) * 12}px`};
   margin-left: ${p => `${(p.left || 0) * 12}px`};
+  ${p => p.hack};
 `;
 
 const S = { Micon };

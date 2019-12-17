@@ -59,7 +59,7 @@ class SideBarItemClass extends React.Component {
       <Micon
         callback={this.toggle}
         n={`keyboard_arrow_${isExpanded ? 'up' : 'down'}`}
-        e={S.arrow(theme)}
+        hack={S.arrow(theme)}
       />
     )
   }
@@ -122,7 +122,7 @@ function SideBarSection(props) {
   return(
     <Fragment>
       <S.SectionRow>
-        <Micon n={icon} e={S.sectionIcon(theme)}/>
+        <Micon n={icon} hack={S.sectionIcon(theme)}/>
         <S.SectionTitle>{title}</S.SectionTitle>
       </S.SectionRow>
       <S.SubSection>

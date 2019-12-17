@@ -11,8 +11,8 @@ const workbench = {
       path: '/workspaces',
       eager: true,
     },
-    { title: 'Playground', path: '/playground' },
     { title: 'Observatory', path: '/observatory' },
+    { title: 'Playground', path: '/playground' },
   ],
 };
 

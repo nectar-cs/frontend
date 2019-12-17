@@ -55,7 +55,7 @@ class WorkspaceFormClass extends React.Component<Props> {
   renderLabelFilters(){
     return this.props.makeTagPool(
       'Label Filters',
-      'nsLabels',
+      'lbFilters',
       this.flesh(this.props.labelChoices)
     );
   }

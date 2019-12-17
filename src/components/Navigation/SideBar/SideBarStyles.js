@@ -15,8 +15,8 @@ const arrow = (t) => ({
 
 const sectionIcon = (t) => ({
   color: t.colors.contrastColor,
-  margin: "0 12px 1.5px 0",
-  fontSize: "22px"
+  margin: "1px 12px 1.5px 0",
+  fontSize: "20px"
 });
 
 const Sidebar = styled.div`
@@ -28,7 +28,6 @@ const Sidebar = styled.div`
   background: ${p => p.theme.colors.primaryColor};
   width: ${p => p.theme.dims.sideBarWidth};
   height: 100%;
-
 `;
 
 const LogoBox = styled.div`

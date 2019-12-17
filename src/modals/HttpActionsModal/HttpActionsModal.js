@@ -1,9 +1,10 @@
+//@flow
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {Types} from "../../types/CommonTypes";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import Tabs from "../../widgets/Tabs/Tabs";
-import DestinationPane from "./DestinationPane";
+import DestinationForm from "./DestinationForm";
 import SourcePane from "./SourcePane";
 import Kapi from "../../utils/Kapi";
 import CodeEditor from "./CodeEditor";
@@ -55,25 +56,22 @@ export default class HttpActionsModal extends React.Component {
 
   static defaultHost(props){
     if(props.targetHost){
-      return DestinationPane.makeSvcHost(props.targetHost, props.port);
+      return Helper.makeSvcHost(props.targetHost, props.port);
     } else {
       if(props.deployment.services[0]){
         const {name, shortDns, fromPort} = props.deployment.services[0];
-        return DestinationPane.makeSvcHost(name, shortDns, fromPort).value;
+        return Helper.makeSvcHost(name, shortDns, fromPort).value;
       } if(props.deployment.pods[0]) {
         const {name, ip} = props.deployment.pods[0];
-        return DestinationPane.makePodHost(name, ip).value;
+        return Helper.makePodHost(name, ip).value;
       }
     }
   }
 
-  componentDidMount(){
+  async componentDidMount(): void {
     Utils.mp("HTTP Operations Start", {});
-
-    Kapi.fetch('/api/cluster/namespaces', (resp) => {
-      if(this._isMounted)
-        this.setState(s => ({...s, namespaces: resp['data'] }))
-    });
+    const namespaces = await Kapi.bFetch('/api/cluster/namespaces');
+    this.setState(s => ({...s, namespaces}))
   }
 
   render(){
@@ -179,43 +177,37 @@ export default class HttpActionsModal extends React.Component {
   }
 
   renderRequestTabs(){
-    const destCallback = a => this.onGroupFieldChanged('destination', a);
-    const srcCallback = a => this.onGroupFieldChanged('source', a);
-    const headCallback = (headerText) => this.setState(s => ({...s, headerText}));
-    const bodyCallback = (bodyText) => this.setState(s => ({...s, bodyText}));
-    const onChange = (i) => { this.setState(s => ({...s, showHistory: i === 0})) };
-
     return(
       <Tabs
         tabs={REQUEST_TAB_NAMES}
         selectedInd={0}
-        onTabChanged={onChange}>
-        <DestinationPane
-          onFieldChanged={destCallback}
+        onTabChanged={(i) => this.setState(s => ({...s, showHistory: i === 0}))}>
+        <DestinationForm
+          notifyFormValueChanged={(k, v) => this.onGroupChanged('destination', k, v)}
           services={this.props.deployment.services}
           pods={this.props.deployment.pods}
           {...this.state.destination}
         />
         <SourcePane
-          notifyFormValueChanged={srcCallback}
+          notifyFormValueChanged={(k, v) => this.onGroupChanged('source', k, v)}
           namespaces={this.state.namespaces}
           {...this.state.source}
         />
         <CodeEditor
           body={this.state.headerText}
           placeholder={defaultHeaders}
-          onCodeChanged={headCallback}
+          onCodeChanged={(headerText) => this.setState(s => ({...s, headerText}))}
         />
         <CodeEditor
           body={this.state.bodyText}
           placeholder={defaultBody}
-          onCodeChanged={bodyCallback}
+          onCodeChanged={(bodyText) => this.setState(s => ({...s, bodyText}))}
         />
       </Tabs>
     )
   }
 
-  onGroupFieldChanged(group, key, value){
+  onGroupChanged(group, key, value){
     const assignment = { [key]: value };
     const newDestination = {...this.state[group], ...assignment};
     this.setState(s => ({...s, [group]: newDestination}));
@@ -247,8 +239,6 @@ export default class HttpActionsModal extends React.Component {
   onSubmitFailed(bundle){
     if(this._isMounted){
       this.setState(s => ({...s, phase: 'editing'}));
-
-      console.log("Fook");
       console.log(bundle);
     }
   }

@@ -22,4 +22,17 @@ export default class Helper {
 
     return defaults.previewCommands(bundle);
   }
+
+  static makeSvcHost(name, domain, port){
+    if(!(domain && port)) return null;
+    const key = `http://${domain}:${port}`;
+    return { value: key,  show: `${key} (Service ${name})`}
+  }
+
+  static makePodHost(name, domain){
+    if(!domain) return null;
+    const key = `http://${domain}`;
+    return { value: key, show: `${key} (Pod ${name})`}
+  }
+
 }
