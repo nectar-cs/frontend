@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Text} from "ui-common/api/styles";
+import {Text} from "@nectar/js-common";
 
 export const Table = styled.table`
   margin: 20px 0 0 0;

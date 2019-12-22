@@ -1,9 +1,7 @@
 import React, {Fragment} from 'react'
 import type {Workspace} from "../../../types/Types";
-import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 import WorkspaceForm from "./WorkspaceForm";
-import {Loader} from "ui-common/api/styles";
-import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import { LeftHeader, Loader, TextOverLineSubtitle } from "@nectar/js-common";
 
 export default function ConfigurationSide(props: Props) {
   return(

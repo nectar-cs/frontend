@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {In} from "ui-common/api/styles";
+import { In, TextOverLineSubtitle } from "@nectar/js-common";
 import { S } from './ImageFormStyles'
 import Utils from "../../../utils/Utils";
 import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
@@ -8,7 +8,6 @@ import {defaults} from "./defaults";
 import IntegrationsModal from "../../IntegrationsModal/IntegrationsModal";
 import {Types} from "../../../types/CommonTypes";
 import {ImageActionsModalHelper} from "./ImageActionsModalHelper";
-import TextOverLineSubtitle from "../../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import ModalClientComposer from "../../../hocs/ModalClientComposer";
 import {ROUTES} from "../../../components/Root/RoutesConsts";
 

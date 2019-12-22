@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../../utils/Utils";
 import {Types} from "../../../types/CommonTypes";
 import ModalButton from "../../../widgets/Buttons/ModalButton";
@@ -12,7 +11,7 @@ import FlexibleModal from "../../../hocs/FlexibleModal";
 import TermSection from "../../../widgets/TermSection/TermSection";
 import Checklist from "./Checklist";
 import Conclusion from "./Conclusion";
-import {Loader} from "ui-common/api/styles";
+import { LeftHeader, Loader } from "@nectar/js-common";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';

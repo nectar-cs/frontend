@@ -1,9 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
-import {Text} from "ui-common/api/styles";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import {Layout} from "ui-common/api/styles";
+import { LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
+import {Layout} from "@nectar/js-common";
 
 export default class TerminalStep extends React.Component{
 

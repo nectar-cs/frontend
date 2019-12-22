@@ -1,11 +1,10 @@
 import React, {Fragment} from 'react'
 import S from './CommitInfoStyles'
 import {Types} from "../../types/CommonTypes";
-import {Text, Img} from "ui-common/api/styles"
+import { Text, Img, TextOverLineSubtitle } from "@nectar/js-common";
 import FileChange from "./FileChange";
 import moment from "moment";
 import defaults from "./defaults";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import Utils from "../../utils/Utils";
 
 export default class CommitInfo extends React.Component{

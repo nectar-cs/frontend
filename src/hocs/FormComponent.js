@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types'
-import {In} from "ui-common/api/styles";
+import {In} from "@nectar/js-common";
 import TagPool from "../widgets/TagPool/TagPool";
 
 export default class FormComponent {

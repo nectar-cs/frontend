@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Text} from "ui-common/api/styles"
+import {Text} from "@nectar/js-common"
 
 const logoSide = "21px";
 const arrowSide = "20px";

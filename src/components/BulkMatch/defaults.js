@@ -1,4 +1,3 @@
-import LeftHeader, { ICON } from '../../widgets/LeftHeader/LeftHeader';
 
 const defaults = {
   header: {

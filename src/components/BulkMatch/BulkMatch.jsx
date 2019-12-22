@@ -1,14 +1,13 @@
 //@flow
 import React, {Fragment} from 'react';
 import AuthenticatedComponent from '../../hocs/AuthenticatedComponent';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import DeploymentList from './DeploymentList';
 import MatchModal from '../../modals/MatchModal/MatchModal';
 import IntegrationsPrompt from "./IntegrationsPrompt";
 import ErrComponent from "../../hocs/ErrComponent";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import {Layout, Loader} from "ui-common/api/styles";
+import { Layout, LeftHeader, Loader } from "@nectar/js-common";
 import defaults from './defaults'
 import Helper from './Helper'
 import type {Matching, WideDeployment} from "../../types/Types";

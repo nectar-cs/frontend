@@ -1,14 +1,13 @@
 import React, {Fragment} from 'react'
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../utils/Utils";
 import defaults from "./defaults";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import PortForwardForm from "./PortForwardForm";
 import Helper from "./Helper";
 import CopyWizard from "./CopyWizard";
 import {Types} from "../../types/CommonTypes";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import FormGulper from "./FormGulper";
+import { LeftHeader, TextOverLineSubtitle } from "@nectar/js-common";
 
 export default class PortForwardModal extends React.Component{
 

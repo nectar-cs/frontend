@@ -4,8 +4,8 @@ import type { Deployment } from '../../types/Types';
 import ResourceLogs from '../../widgets/ResourceLogs/ResourceLogs';
 import Utils from '../../utils/Utils';
 import LogsForm from './LogsForm';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import defaults from './defaults';
+import { LeftHeader } from "@nectar/js-common";
 
 export default class DeploymentLogsModal extends React.Component<Props> {
   constructor(props) {

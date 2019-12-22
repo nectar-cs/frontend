@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react'
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import {Text} from "ui-common/api/styles";
+import { Text, TextOverLineSubtitle } from "@nectar/js-common";
 
 export default function ExplanationBlock(){
   return(

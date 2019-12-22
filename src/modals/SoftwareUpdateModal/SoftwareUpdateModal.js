@@ -1,10 +1,8 @@
 //@flow
 import React, {Fragment} from 'react'
 import FlexibleModal from "../../hocs/FlexibleModal";
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import ModalButton from "../../widgets/Buttons/ModalButton";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import {Layout, Text} from "ui-common/api/styles";
+import { Layout, LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
 import Kapi from "../../utils/Kapi";
 import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
@@ -73,7 +71,7 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
 
     const Rows = () => statuses.map(status => (
       <Table.AppRow
-        key={status.appName} 
+        key={status.appName}
         status={status}
         isChecked={checks[status.appName]}
         callback={() => this.changeCheck(status.appName)}
@@ -173,7 +171,7 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
     const { checks } = this.state;
     return Object.keys(checks).filter(k => checks[k]);
   }
-  
+
   changeCheck(which){
     this.setState(s => ({...s,
       checks: { ...s.checks, [which]: !s.checks[which] }

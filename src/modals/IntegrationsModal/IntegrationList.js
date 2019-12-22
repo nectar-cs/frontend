@@ -2,15 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Icon as Ic, Identifier, Status} from "./IntegrationListStyles";
 import Helper from "./Helper";
-import {Loader, Icon} from "ui-common/api/styles";
+import {Loader} from "@nectar/js-common";
+import Micon from "../../widgets/Micon/Micon";
 
 function IntegrationItem(props) {
   const delCol = (
-    <Icon.Trash
-      className='material-icons'
-      onClick={props.requestDelete}>
-      delete_outline
-    </Icon.Trash>
+    <Micon
+      n='delete_outline'
+      onClick={props.requestDelete}
+    />
   );
 
   let statusWidget = null;

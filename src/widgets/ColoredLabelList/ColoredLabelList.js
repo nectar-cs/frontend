@@ -1,6 +1,6 @@
 //@flow
 import React from 'react'
-import {Text} from "ui-common/api/styles";
+import {Text} from "@nectar/js-common";
 
 export default function ColoredLabelList(props: Props) {
   const { labelType, labels } = props;

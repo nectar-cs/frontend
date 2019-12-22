@@ -1,6 +1,5 @@
 //@flow
 import React from 'react';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import defaults from './defaults';
 import FlexibleModal from '../../hocs/FlexibleModal';
 import type { Deployment } from '../../types/Types';
@@ -9,6 +8,7 @@ import Tabs from '../../widgets/Tabs/Tabs';
 import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
 import CheatSheet from '../../widgets/CheatSheet/CheatSheet';
 import ServicesSection from './ServicesSection/ServicesSection';
+import { LeftHeader } from "@nectar/js-common";
 
 export default class OverviewModal extends React.Component<Props> {
   render() {

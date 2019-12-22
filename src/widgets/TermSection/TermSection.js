@@ -1,6 +1,5 @@
 import React, {Fragment, useEffect, useRef} from 'react'
-import TextOverLineSubtitle from "../TextOverLineSubtitle/TextOverLineSubtitle";
-import {Layout, Text} from "ui-common/api/styles";
+import { Layout, Text, TextOverLineSubtitle } from "@nectar/js-common";
 
 export default function TermSection({title, lines, extras = {}}){
 

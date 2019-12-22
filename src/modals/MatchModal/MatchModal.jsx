@@ -1,8 +1,7 @@
 //@flow
 import React, {Fragment} from 'react';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import MatchForm from './MatchForm';
-import {Button, Loader, Text} from "ui-common/api/styles";
+import { Button, LeftHeader, Loader, Text } from "@nectar/js-common";
 import defaults from './defaults'
 import Helper from "./Helper";
 import type {Deployment, Matching, RemoteBundle} from "../../types/Types";

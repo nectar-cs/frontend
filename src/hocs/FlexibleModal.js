@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Layout} from "ui-common/api/styles";
+import {Layout} from "@nectar/js-common";
 
 export default function FlexibleModal({mode, children}){
   if(mode === 'modal'){

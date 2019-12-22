@@ -1,10 +1,8 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import defaults from './defaults'
 import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import {Layout, Text} from "ui-common/api/styles";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import { Layout, LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
 import S from "./StepExecutionStyles";
 import Helper from "./Helper";
 import ModalButton from "../../widgets/Buttons/ModalButton";

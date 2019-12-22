@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import Utils from '../../utils/Utils';
 import defaults from './defaults';
 import { Types } from '../../types/CommonTypes';
 import DecisionTree from './DecisionTree';
 import NetworkDebugForm from './DebugOptions';
+import { LeftHeader } from "@nectar/js-common";
 
 export default class OverviewSide extends React.Component {
   constructor(props) {

@@ -2,12 +2,11 @@
 
 import React, {Fragment} from 'react'
 import Section from "./Section";
-import LeftHeader from "../../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../../utils/Utils";
 import SS from './OverviewSectionStyles'
 import OverviewModal from "../../../modals/OverviewModal/OverviewModal";
-import {Layout} from "ui-common/api/styles";
-import {Text} from "ui-common/api/styles";
+import { Layout, LeftHeader } from "@nectar/js-common";
+import {Text} from "@nectar/js-common";
 import {connect} from "react-redux";
 import {Types} from "../../../types/CommonTypes";
 import ImageOpsSection from "./ImageOpsSection";

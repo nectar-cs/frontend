@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {colored} from "ui-common/api/styles";
+import {colored} from "@nectar/js-common";
 
 function size(size){
   if(size === 'm+') return "30px";

@@ -2,7 +2,7 @@ import React, {Fragment} from 'react'
 import Kapi from "../../utils/Kapi";
 import type {LabelMatrix} from "../../types/Types";
 import type {MatrixBundle} from "./LabelsSection";
-import {Text} from "ui-common/api/styles";
+import {Text} from "@nectar/js-common";
 
 export default class Helper {
 

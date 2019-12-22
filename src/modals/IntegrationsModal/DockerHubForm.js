@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 import PropTypes from 'prop-types'
-import {In} from "ui-common/api/styles";
+import {In} from "@nectar/js-common";
 import {S} from "./IntegrationSectionStyles";
 import defaults from "./defaults";
 import Backend from "../../utils/Backend";

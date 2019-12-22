@@ -5,7 +5,7 @@ import Helper from "./Helper";
 import Micon from "../../widgets/Micon/Micon";
 import S from './Styles'
 import defaults from "./defaults";
-import {Text, Tables, Loader} from "ui-common/api/styles";
+import {Text, Tables, Loader} from "@nectar/js-common";
 
 export default class LabelsSection extends React.Component<Props, State>{
 

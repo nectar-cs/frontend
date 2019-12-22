@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Layout} from "ui-common/api/styles"
+import {Layout} from "@nectar/js-common"
 
 const Preview = styled(Layout.BigCodeViewer)`
   height: 110px

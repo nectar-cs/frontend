@@ -1,11 +1,9 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Layout, Text} from "ui-common/api/styles";
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
+import { Layout, LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
 import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";
 import defaults from "./defaults";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import PageVisibility from "react-page-visibility";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 

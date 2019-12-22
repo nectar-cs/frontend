@@ -3,7 +3,7 @@ import React, {Fragment} from 'react'
 import CheatSheetForm from "./CheatSheetForm";
 import deploymentCopy from "./deployment";
 import Interpolation from "./Interpolation";
-import {Layout, Text} from "ui-common/api/styles";
+import {Layout, Text} from "@nectar/js-common";
 import S from './Styles'
 
 

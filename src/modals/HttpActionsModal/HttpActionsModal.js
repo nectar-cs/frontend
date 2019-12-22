@@ -9,14 +9,12 @@ import SourcePane from "./SourcePane";
 import Kapi from "../../utils/Kapi";
 import CodeEditor from "./CodeEditor";
 import {defaultBody, defaultHeaders} from "./defaults";
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../utils/Utils";
 import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response";
 import HistoryList from "./HistoryList";
 import Backend from "../../utils/Backend";
 import FlexibleModal from "../../hocs/FlexibleModal";
-import {Layout, Text} from "ui-common/api/styles";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
+import { Layout, LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
 import Helper from './Helper'
 import Checklist from "../ImageOpsModal/View/Checklist";
 

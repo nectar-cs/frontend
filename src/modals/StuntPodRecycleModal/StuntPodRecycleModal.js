@@ -1,10 +1,8 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {Types} from "../../types/CommonTypes";
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import defaults from "./defaults";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
-import {Text} from "ui-common/api/styles";
+import { LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import moment from "moment";
 import ModalButton from "../../widgets/Buttons/ModalButton";

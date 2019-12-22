@@ -8,7 +8,7 @@ import CenterCard from "../../../widgets/CenterCard/CenterCard";
 import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import Backend from "../../../utils/Backend";
 import { ROUTES} from "../../Root/RoutesConsts";
-import { Button, Layout} from "ui-common/api/styles"
+import { Button, Layout} from "@nectar/js-common"
 import { Redirect} from "react-router-dom";
 import type {Workspace} from "../../../types/Types";
 import Utils from "../../../utils/Utils";

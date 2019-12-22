@@ -1,9 +1,9 @@
 import React from 'react';
 import FlexibleModal from '../../hocs/FlexibleModal';
-import LeftHeader from '../../widgets/LeftHeader/LeftHeader';
 import Utils from '../../utils/Utils';
 import defaults from './defaults';
 import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
+import { LeftHeader } from "@nectar/js-common";
 
 export default class HotReloadModal extends React.Component {
   render() {

@@ -1,9 +1,8 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import S from './CommandHistoryStyles'
-import {Text, Icon} from "ui-common/api/styles"
+import {Text, Micon} from "@nectar/js-common"
 import Helper from "./Helper";
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 
 
 function HistoryRow(props) {
@@ -11,9 +10,9 @@ function HistoryRow(props) {
   const emotion = status === 0 ? 'good' : 'warn';
 
   const Trash = () => (
-    <Icon.Trash className="material-icons" onClick={props.deleteCallback}>
-      delete_outline
-    </Icon.Trash>
+    <Micon
+      n='delete_outline'
+      callback={props.deleteCallback}/>
   );
 
   const Command = () => <Text.ContrastCode>{props.command}</Text.ContrastCode>;

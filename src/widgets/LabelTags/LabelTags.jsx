@@ -1,5 +1,5 @@
 import Utils from "../../utils/Utils";
-import {Text} from "ui-common/api/styles";
+import {Text} from "@nectar/js-common";
 import React from "react";
 
 export default function LabelTags({labels}){

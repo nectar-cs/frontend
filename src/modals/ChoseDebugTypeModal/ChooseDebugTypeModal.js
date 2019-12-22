@@ -1,16 +1,15 @@
 import React, {Fragment} from 'react'
 import FlexibleModal from "../../hocs/FlexibleModal";
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
 import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import PropTypes from "prop-types";
 import S from './DebugModalStyles'
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
 import ModalButton from "../../widgets/Buttons/ModalButton";
 import {Types} from "../../types/CommonTypes";
 import {ROUTES} from "../../components/Root/RoutesConsts";
 import {Redirect} from "react-router";
+import { LeftHeader, TextOverLineSubtitle } from "@nectar/js-common";
 
 export default class ChooseDebugTypeModal extends React.Component {
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Layout} from "ui-common/api/styles";
+import {Layout} from "@nectar/js-common";
 
 const Container = styled(Layout.ContentContainer)`
   position: relative;

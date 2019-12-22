@@ -1,7 +1,6 @@
 //@flow
 import React from 'react'
-import {Layout} from "ui-common/api/styles";
-import LeftHeader from "../../widgets/LeftHeader/LeftHeader";
+import { Layout, LeftHeader } from "@nectar/js-common";
 import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import {Types} from "../../types/CommonTypes";
@@ -21,7 +20,7 @@ export default class LastCommitModal extends React.Component {
     this.state = { isFetching: false, commit: null }
   }
 
-  async componentDidMount(){
+  async componentDidMount(): void{
     this.fetchCommit();
   }
 

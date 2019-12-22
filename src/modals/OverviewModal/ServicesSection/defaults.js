@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import {Text} from "ui-common/api/styles"
+import {Text} from "@nectar/js-common"
 
 const defaults = {
   intro: (

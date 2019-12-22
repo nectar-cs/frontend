@@ -1,12 +1,12 @@
 import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../hocs/AuthenticatedComponent";
-import {Layout} from "ui-common/api/styles";
+import {Layout} from "@nectar/js-common";
 import OverviewSide from "./OverviewSide";
 import Helper from './Helper'
 import Node from "./Node";
 import DebugStep from "./DebugStep";
 import Gulpers from "./Gulpers";
-import {Loader} from "ui-common/api/styles";
+import {Loader} from "@nectar/js-common";
 import TerminalStep from "./TerminalStep";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
 import UpdateCheckComposer from "../../hocs/UpdateCheckComposer";

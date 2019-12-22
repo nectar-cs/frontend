@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import FormComponent from '../../hocs/FormComponent';
-import TextOverLineSubtitle from '../../widgets/TextOverLineSubtitle/TextOverLineSubtitle';
 import defaults from './defaults';
 import Utils from '../../utils/Utils';
 import ModalButton from '../../widgets/Buttons/ModalButton';
+import { TextOverLineSubtitle } from "@nectar/js-common";
 
 class DebugOptionsForm extends React.Component {
   render() {

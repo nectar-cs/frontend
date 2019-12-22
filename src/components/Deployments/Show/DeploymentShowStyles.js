@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Layout} from "ui-common/api/styles"
+import {Layout} from "@nectar/js-common"
 
 const RightPanel = styled(Layout.RightPanel)`
   box-shadow: none;

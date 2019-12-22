@@ -1,10 +1,9 @@
 //@flow
 import React, {Fragment} from 'react';
-import TextOverLineSubtitle from "../../widgets/TextOverLineSubtitle/TextOverLineSubtitle";
 import type {Matching, WideDeployment} from "../../types/Types";
 import Micon from "../../widgets/Micon/Micon";
 import Utils from "../../utils/Utils";
-import {Text, Tables} from "ui-common/api/styles"
+import { Text, Tables, TextOverLineSubtitle } from "@nectar/js-common";
 import S from './DeploymentListStyles'
 import ColoredLabelList from "../../widgets/ColoredLabelList/ColoredLabelList";
 
