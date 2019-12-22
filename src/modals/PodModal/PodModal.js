@@ -2,10 +2,9 @@ import React from 'react';
 import FlexibleModal from '../../hocs/FlexibleModal';
 import { Types } from '../../types/CommonTypes';
 import Utils from '../../utils/Utils';
-import Tabs from '../../widgets/Tabs/Tabs';
 import defaults from './defaults';
 import PodOverview from './PodOverview';
-import { LeftHeader } from "@nectar/js-common";
+import { LeftHeader, Tabs } from "@nectar/js-common";
 
 export default class PodModal extends React.Component {
   render() {

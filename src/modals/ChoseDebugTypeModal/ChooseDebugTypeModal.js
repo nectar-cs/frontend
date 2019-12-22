@@ -5,11 +5,10 @@ import defaults from "./defaults";
 import PropTypes from "prop-types";
 import S from './DebugModalStyles'
 import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection";
-import ModalButton from "../../widgets/Buttons/ModalButton";
 import {Types} from "../../types/CommonTypes";
 import {ROUTES} from "../../components/Root/RoutesConsts";
 import {Redirect} from "react-router";
-import { LeftHeader, TextOverLineSubtitle } from "@nectar/js-common";
+import { LeftHeader, ModalButton, TextOverLineSubtitle } from "@nectar/js-common";
 
 export default class ChooseDebugTypeModal extends React.Component {
 

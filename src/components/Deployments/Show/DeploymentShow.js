@@ -5,7 +5,7 @@ import Helper from './Helper';
 import S from './DeploymentShowStyles';
 import UpdateCheckComposer from '../../../hocs/UpdateCheckComposer';
 import ModalHostComposer from '../../../hocs/ModalHostComposer';
-import CenterLoader from '../../../widgets/CenterLoader/CenterLoader';
+import { CenterLoader } from "@nectar/js-common";
 
 class DeploymentShowClass extends React.Component {
   constructor(props) {

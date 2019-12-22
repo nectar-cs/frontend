@@ -1,10 +1,9 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {S} from './IntegrationSectionStyles'
-import AddNew from "../../widgets/AddNew/AddNew";
 import defaults from "./defaults";
 import Utils from "../../utils/Utils";
-import {Loader} from "@nectar/js-common";
+import { AddNew, Loader } from "@nectar/js-common";
 import IntegrationList from "./IntegrationList";
 import Backend from "../../utils/Backend";
 

@@ -1,11 +1,9 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import defaults from './defaults'
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import { Layout, LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
+import { CenterAnnouncement, Layout, LeftHeader, ModalButton, Text, TextOverLineSubtitle } from "@nectar/js-common";
 import S from "./StepExecutionStyles";
 import Helper from "./Helper";
-import ModalButton from "../../widgets/Buttons/ModalButton";
 
 export default class DebugStep extends React.Component {
 

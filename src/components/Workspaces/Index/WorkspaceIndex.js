@@ -3,12 +3,9 @@ import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
-import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
-import CenterCard from "../../../widgets/CenterCard/CenterCard";
-import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import Backend from "../../../utils/Backend";
 import { ROUTES} from "../../Root/RoutesConsts";
-import { Button, Layout} from "@nectar/js-common"
+import { CenterLoader, Button, CenterAnnouncement, CenterCard, Layout } from "@nectar/js-common";
 import { Redirect} from "react-router-dom";
 import type {Workspace} from "../../../types/Types";
 import Utils from "../../../utils/Utils";

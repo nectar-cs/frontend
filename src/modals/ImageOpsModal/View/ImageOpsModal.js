@@ -2,16 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Utils from "../../../utils/Utils";
 import {Types} from "../../../types/CommonTypes";
-import ModalButton from "../../../widgets/Buttons/ModalButton";
 import ImageForm from "./ImageForm";
 import {ImageActionsModalHelper as Helper} from "./ImageActionsModalHelper";
-import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
 import {defaults} from "./defaults";
 import FlexibleModal from "../../../hocs/FlexibleModal";
 import TermSection from "../../../widgets/TermSection/TermSection";
 import Checklist from "./Checklist";
 import Conclusion from "./Conclusion";
-import { LeftHeader, Loader } from "@nectar/js-common";
+import { CenterLoader, LeftHeader, Loader, ModalButton } from "@nectar/js-common";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';

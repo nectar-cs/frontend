@@ -4,8 +4,7 @@ import Tree from "react-d3-tree";
 import React from "react";
 import Helper from "./Helper";
 import defaults from "./defaults";
-import { Layout, Text, TextOverLineSubtitle } from "@nectar/js-common";
-import Micon from "../../widgets/Micon/Micon";
+import { Micon, Layout, Text, TextOverLineSubtitle } from "@nectar/js-common";
 
 export default class DecisionTree extends React.Component{
 

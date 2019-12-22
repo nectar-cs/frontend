@@ -2,13 +2,17 @@ import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {Types} from "../../types/CommonTypes";
 import defaults from "./defaults";
-import { LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
+import {
+  CenterAnnouncement,
+  CenterLoader,
+  LeftHeader,
+  ModalButton,
+  Text,
+  TextOverLineSubtitle
+} from "@nectar/js-common";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import moment from "moment";
-import ModalButton from "../../widgets/Buttons/ModalButton";
 import Kapi from "../../utils/Kapi";
-import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import Utils from "../../utils/Utils";
 
 export default class StuntPodRecycleModal extends React.Component {

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from "styled-components";
-import Micon from "../Micon/Micon";
+import {Micon} from "@nectar/js-common";
 
 export const Container = styled.div`
   width: 100%;

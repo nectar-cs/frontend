@@ -7,12 +7,11 @@ import defaults from "./defaults";
 import S from './Styles'
 import type {Deployment, Service} from "../../../types/Types";
 import Utils from "../../../utils/Utils";
-import LabelTags from "../../../widgets/LabelTags/LabelTags";
-import Micon from "../../../widgets/Micon/Micon";
 import HttpActionsModal from "../../HttpActionsModal/HttpActionsModal";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import Kapi from "../../../utils/Kapi";
-import {Text, Tables, Loader} from "@nectar/js-common";
+import {Text, Tables, Loader, LabelTags} from "@nectar/js-common";
+import { Micon } from "@nectar/js-common/";
 
 class ServicesSectionClass extends React.Component{
   constructor(props) {

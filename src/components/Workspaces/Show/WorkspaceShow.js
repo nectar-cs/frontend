@@ -3,14 +3,11 @@ import {S} from './WorkspaceShowStyles'
 import AuthenticatedComponent from "../../../hocs/AuthenticatedComponent";
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
-import CenterLoader from "../../../widgets/CenterLoader/CenterLoader";
-import CenterAnnouncement from "../../../widgets/CenterAnnouncement/CenterAnnouncement";
 import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import Helper from "./Helper";
 import {connect} from "react-redux";
-import {Button} from "@nectar/js-common";
-import Micon from "../../../widgets/Micon/Micon";
+import { Micon, Button, CenterAnnouncement, CenterLoader } from "@nectar/js-common";
 import StuntPodRecycleModal from "../../../modals/StuntPodRecycleModal/StuntPodRecycleModal";
 import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
 import Utils from "../../../utils/Utils";

@@ -1,14 +1,11 @@
 //@flow
 import React from 'react'
-import { Layout, LeftHeader } from "@nectar/js-common";
+import { CenterLoader, CenterAnnouncement, Layout, LeftHeader, ModalButton } from "@nectar/js-common";
 import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import {Types} from "../../types/CommonTypes";
 import HowToAnnotate from "./HowToAnnotate";
-import ModalButton from "../../widgets/Buttons/ModalButton";
 import CommitInfo from "./CommitInfo";
-import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import {ROUTES} from "../../components/Root/RoutesConsts";
 import Backend from "../../utils/Backend";
 import ImageOpsModal from "../ImageOpsModal/View/ImageOpsModal";

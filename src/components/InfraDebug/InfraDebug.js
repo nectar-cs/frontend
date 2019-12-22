@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../hocs/AuthenticatedComponent";
-import {Layout} from "@nectar/js-common";
+import { CenterAnnouncement, Layout } from "@nectar/js-common";
 import OverviewSide from "./OverviewSide";
 import Helper from './Helper'
 import Node from "./Node";
@@ -11,7 +11,6 @@ import TerminalStep from "./TerminalStep";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
 import UpdateCheckComposer from "../../hocs/UpdateCheckComposer";
 import Utils from "../../utils/Utils";
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 
 class InfraDebugClass extends React.Component {
 

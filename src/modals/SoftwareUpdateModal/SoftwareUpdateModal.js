@@ -1,11 +1,8 @@
 //@flow
 import React, {Fragment} from 'react'
 import FlexibleModal from "../../hocs/FlexibleModal";
-import ModalButton from "../../widgets/Buttons/ModalButton";
-import { Layout, LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
+import { CenterLoader, CenterAnnouncement, Layout, LeftHeader, ModalButton, Text, TextOverLineSubtitle } from "@nectar/js-common";
 import Kapi from "../../utils/Kapi";
-import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
 import Utils from "../../utils/Utils";
 import Backend from "../../utils/Backend";
 import type {RevisionStatus} from "../../types/Types";

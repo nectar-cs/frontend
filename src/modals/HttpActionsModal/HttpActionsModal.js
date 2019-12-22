@@ -2,8 +2,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {Types} from "../../types/CommonTypes";
-import ModalButton from "../../widgets/Buttons/ModalButton";
-import Tabs from "../../widgets/Tabs/Tabs";
 import DestinationForm from "./DestinationForm";
 import SourcePane from "./SourcePane";
 import Kapi from "../../utils/Kapi";
@@ -14,7 +12,7 @@ import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response
 import HistoryList from "./HistoryList";
 import Backend from "../../utils/Backend";
 import FlexibleModal from "../../hocs/FlexibleModal";
-import { Layout, LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
+import { Tabs, Layout, LeftHeader, Text, TextOverLineSubtitle, ModalButton } from "@nectar/js-common";
 import Helper from './Helper'
 import Checklist from "../ImageOpsModal/View/Checklist";
 

@@ -6,13 +6,11 @@ import MatchModal from '../../modals/MatchModal/MatchModal';
 import IntegrationsPrompt from "./IntegrationsPrompt";
 import ErrComponent from "../../hocs/ErrComponent";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import { Layout, LeftHeader, Loader } from "@nectar/js-common";
+import { CenterAnnouncement, CenterLoader, Layout, LeftHeader, Loader } from "@nectar/js-common";
 import defaults from './defaults'
 import Helper from './Helper'
 import type {Matching, WideDeployment} from "../../types/Types";
 import {Redirect} from "react-router";
-import CenterLoader from "../../widgets/CenterLoader/CenterLoader";
 import Utils from "../../utils/Utils";
 
 class BulkMatchingClass extends React.Component<Props, State> {

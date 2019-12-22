@@ -3,13 +3,11 @@ import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import {Types} from "../../types/CommonTypes";
 import CommandForm from "./CommandForm";
-import CenterAnnouncement from "../../widgets/CenterAnnouncement/CenterAnnouncement";
-import ModalButton from "../../widgets/Buttons/ModalButton";
 import CommandHistory from "./CommandHistory";
 import Helper from "./Helper";
 import Preview from "./Preview";
 import FlexibleModal from "../../hocs/FlexibleModal";
-import { LeftHeader, Loader } from "@nectar/js-common";
+import { CenterAnnouncement, LeftHeader, Loader, ModalButton } from "@nectar/js-common";
 
 export default class CommandsModal extends React.Component{
 

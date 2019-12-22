@@ -1,11 +1,9 @@
 //@flow
 import React, {Fragment} from 'react';
 import type {Matching, WideDeployment} from "../../types/Types";
-import Micon from "../../widgets/Micon/Micon";
 import Utils from "../../utils/Utils";
-import { Text, Tables, TextOverLineSubtitle } from "@nectar/js-common";
+import { Micon, Text, Tables, TextOverLineSubtitle, ColoredLabelList } from "@nectar/js-common";
 import S from './DeploymentListStyles'
-import ColoredLabelList from "../../widgets/ColoredLabelList/ColoredLabelList";
 
 function ListHeader() {
   return(

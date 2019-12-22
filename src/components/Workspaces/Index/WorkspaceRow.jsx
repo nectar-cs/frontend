@@ -2,8 +2,7 @@
 import React from 'react'
 import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
 import {Link} from "react-router-dom";
-import {Layout, Text} from "@nectar/js-common";
-import ColoredLabelList from "../../../widgets/ColoredLabelList/ColoredLabelList";
+import { ColoredLabelList, Layout, Text } from "@nectar/js-common";
 import type {Workspace} from "../../../types/Types";
 
 export function WorkspaceHeader() {
