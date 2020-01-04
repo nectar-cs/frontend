@@ -9,7 +9,7 @@ import {
   ModalButton,
   Text,
   TextOverLineSubtitle
-} from "@nectar/js-common";
+} from "nectar-cs-js-common";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import moment from "moment";
 import Kapi from "../../utils/Kapi";

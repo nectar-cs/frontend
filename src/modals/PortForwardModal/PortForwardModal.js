@@ -7,7 +7,7 @@ import CopyWizard from "./CopyWizard";
 import {Types} from "../../types/CommonTypes";
 import FlexibleModal from "../../hocs/FlexibleModal";
 import FormGulper from "./FormGulper";
-import { LeftHeader, TextOverLineSubtitle } from "@nectar/js-common";
+import { LeftHeader, TextOverLineSubtitle } from "nectar-cs-js-common";
 
 export default class PortForwardModal extends React.Component{
 

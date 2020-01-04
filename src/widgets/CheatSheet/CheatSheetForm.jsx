@@ -3,7 +3,7 @@ import React from 'react'
 import FormComponent from "../../hocs/FormComponent";
 import Utils from "../../utils/Utils";
 import defaults from './defaults'
-import {Layout} from "@nectar/js-common";
+import {Layout} from "nectar-cs-js-common";
 
 class CheatSheetFormFunc extends React.Component<Props>{
 

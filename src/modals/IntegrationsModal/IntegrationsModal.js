@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import { Layout, LeftHeader, ModalButton, Text, TextOverLineSubtitle } from "@nectar/js-common";
+import { Layout, LeftHeader, ModalButton, Text, TextOverLineSubtitle } from "nectar-cs-js-common";
 import DockerSection from "./DockerSection";
 import GitSection from "./GitSection";
 import defaults from "./defaults";

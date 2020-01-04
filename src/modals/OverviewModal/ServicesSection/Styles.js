@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {colored} from "@nectar/js-common";
+import {colored} from "nectar-cs-js-common";
 
 const boxWidth = "47%";
 

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Detail, Icon, Item, List, Name, Spinner } from './ChecklistStyles';
-import { TextOverLineSubtitle } from "@nectar/js-common";
+import { TextOverLineSubtitle } from "nectar-cs-js-common";
 
 function ChecklistItem(props) {
   let thirdItem;

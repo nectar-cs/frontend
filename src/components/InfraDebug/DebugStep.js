@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import defaults from './defaults'
-import { CenterAnnouncement, Layout, LeftHeader, ModalButton, Text, TextOverLineSubtitle } from "@nectar/js-common";
+import { CenterAnnouncement, Layout, LeftHeader, ModalButton, Text, TextOverLineSubtitle } from "nectar-cs-js-common";
 import S from "./StepExecutionStyles";
 import Helper from "./Helper";
 

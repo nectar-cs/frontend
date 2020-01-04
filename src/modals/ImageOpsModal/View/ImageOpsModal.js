@@ -9,7 +9,7 @@ import FlexibleModal from "../../../hocs/FlexibleModal";
 import TermSection from "../../../widgets/TermSection/TermSection";
 import Checklist from "./Checklist";
 import Conclusion from "./Conclusion";
-import { CenterLoader, LeftHeader, Loader, ModalButton } from "@nectar/js-common";
+import { CenterLoader, LeftHeader, Loader, ModalButton } from "nectar-cs-js-common";
 
 const PHASE_CONFIG = 'configuring';
 const PHASE_SUBMITTING = 'submitting';

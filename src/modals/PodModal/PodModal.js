@@ -4,7 +4,7 @@ import { Types } from '../../types/CommonTypes';
 import Utils from '../../utils/Utils';
 import defaults from './defaults';
 import PodOverview from './PodOverview';
-import { LeftHeader, Tabs } from "@nectar/js-common";
+import { LeftHeader, Tabs } from "nectar-cs-js-common";
 
 export default class PodModal extends React.Component {
   render() {

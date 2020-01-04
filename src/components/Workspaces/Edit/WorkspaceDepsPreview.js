@@ -1,7 +1,7 @@
 //@flow
 import React, {Fragment} from 'react'
 import S from './WorkspaceDepsPreviewStyles'
-import { LeftHeader, Loader } from "@nectar/js-common";
+import { LeftHeader, Loader } from "nectar-cs-js-common";
 import type {Deployment} from "../../../types/Types";
 
 export default function WorkspaceDepsPreview(props: Props) {

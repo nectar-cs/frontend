@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useRef} from 'react'
-import { Layout, Text, TextOverLineSubtitle } from "@nectar/js-common";
+import { Layout, Text, TextOverLineSubtitle } from "nectar-cs-js-common";
 
 export default function TermSection({title, lines, extras = {}}){
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Text} from "@nectar/js-common";
+import {Text} from "nectar-cs-js-common";
 
 const iconSize = '30px';
 

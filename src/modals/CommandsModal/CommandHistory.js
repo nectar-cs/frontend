@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import S from './CommandHistoryStyles'
-import {Text, Micon} from "@nectar/js-common"
+import {Text, Micon} from "nectar-cs-js-common"
 import Helper from "./Helper";
 
 

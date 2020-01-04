@@ -5,7 +5,7 @@ import ModalHostComposer from "../../../hocs/ModalHostComposer";
 import ErrComponent from "../../../hocs/ErrComponent";
 import WorkspaceDepsPreview from "./WorkspaceDepsPreview";
 import DoneAnnouncement from "./DoneAnnouncement";
-import { CenterLoader, Layout, ModalButton } from "@nectar/js-common";
+import { CenterLoader, Layout, ModalButton } from "nectar-cs-js-common";
 import ConfigurationSide from "./ConfigurationSide";
 import Helper from "./Helper";
 import type {Deployment, Workspace} from "../../../types/Types";

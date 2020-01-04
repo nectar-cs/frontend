@@ -6,7 +6,7 @@ import {ROUTES as R} from './RoutesConsts';
 import {Switch} from "react-router";
 import NotFound from "../NotFound/NotFound";
 import {ThemeProvider} from "styled-components";
-import {theme, MosaicBaseStyle} from "@nectar/js-common"
+import {theme, MosaicBaseStyle} from "nectar-cs-js-common"
 
 export default class Root extends Component {
   render() {

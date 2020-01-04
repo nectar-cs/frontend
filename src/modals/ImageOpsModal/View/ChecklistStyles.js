@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Loader, colored} from "@nectar/js-common";
+import {Loader, colored} from "nectar-cs-js-common";
 
 export const List = styled.ul`
   margin-top: 15px;

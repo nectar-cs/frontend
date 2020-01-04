@@ -4,7 +4,7 @@ import React, {Fragment} from "react";
 import Helper from "./Helper";
 import S from './Styles'
 import defaults from "./defaults";
-import {Micon, Text, Tables, Loader} from "@nectar/js-common";
+import {Micon, Text, Tables, Loader} from "nectar-cs-js-common";
 
 export default class LabelsSection extends React.Component<Props, State>{
 

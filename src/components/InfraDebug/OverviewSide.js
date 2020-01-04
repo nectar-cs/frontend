@@ -5,7 +5,7 @@ import defaults from './defaults';
 import { Types } from '../../types/CommonTypes';
 import DecisionTree from './DecisionTree';
 import NetworkDebugForm from './DebugOptions';
-import { LeftHeader } from "@nectar/js-common";
+import { LeftHeader } from "nectar-cs-js-common";
 
 export default class OverviewSide extends React.Component {
   constructor(props) {

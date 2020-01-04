@@ -1,7 +1,7 @@
 import React, {useRef, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import defaults from "./defaults";
-import {Layout, Text, Button} from "@nectar/js-common"
+import {Layout, Text, Button} from "nectar-cs-js-common"
 import Utils from "../../utils/Utils";
 
 export default function CopyWizard(props){

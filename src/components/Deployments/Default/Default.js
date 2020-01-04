@@ -2,7 +2,7 @@ import React from 'react';
 import Backend from '../../../utils/Backend';
 import { Redirect } from 'react-router';
 import AppLayout from '../../Navigation/AppLayout/AppLayout';
-import { CenterLoader } from "@nectar/js-common";
+import { CenterLoader } from "nectar-cs-js-common";
 
 export default class DefaultWorkspace extends React.Component {
   constructor(props) {

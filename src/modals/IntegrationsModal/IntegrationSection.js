@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {S} from './IntegrationSectionStyles'
 import defaults from "./defaults";
 import Utils from "../../utils/Utils";
-import { AddNew, Loader } from "@nectar/js-common";
+import { AddNew, Loader } from "nectar-cs-js-common";
 import IntegrationList from "./IntegrationList";
 import Backend from "../../utils/Backend";
 

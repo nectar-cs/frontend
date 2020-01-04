@@ -2,7 +2,7 @@
 import React, {Fragment} from 'react'
 import {LogsView} from "./Styles";
 import Kapi from "../../utils/Kapi";
-import { Text, Loader, CenterAnnouncement } from "@nectar/js-common";
+import { Text, Loader, CenterAnnouncement } from "nectar-cs-js-common";
 
 const POLL_RATE = 2500;
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FormComponent from '../../hocs/FormComponent';
 import defaults from './defaults';
 import Utils from '../../utils/Utils';
-import { ModalButton, TextOverLineSubtitle } from "@nectar/js-common";
+import { ModalButton, TextOverLineSubtitle } from "nectar-cs-js-common";
 
 class DebugOptionsForm extends React.Component {
   render() {

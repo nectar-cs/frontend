@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Layout, Button} from "@nectar/js-common";
+import {Layout, Button} from "nectar-cs-js-common";
 
 const Explanation = styled.ol`
   margin-top: 12px;

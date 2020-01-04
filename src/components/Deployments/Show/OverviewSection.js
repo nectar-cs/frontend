@@ -5,8 +5,8 @@ import Section from "./Section";
 import Utils from "../../../utils/Utils";
 import SS from './OverviewSectionStyles'
 import OverviewModal from "../../../modals/OverviewModal/OverviewModal";
-import { Layout, LeftHeader } from "@nectar/js-common";
-import {Text} from "@nectar/js-common";
+import { Layout, LeftHeader } from "nectar-cs-js-common";
+import {Text} from "nectar-cs-js-common";
 import {connect} from "react-redux";
 import {Types} from "../../../types/CommonTypes";
 import ImageOpsSection from "./ImageOpsSection";

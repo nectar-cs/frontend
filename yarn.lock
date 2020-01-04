@@ -849,9 +849,6 @@
     prop-types "^15.7.2"
     react-is "^16.8.0"
 
-"@nectar/js-common@./../js-common/":
-  version "1.0.0"
-
 "@sentry/browser@^5.7.1":
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.7.1.tgz#1f8435e2a325d7a09f830065ebce40a2b3c708a4"
@@ -4341,6 +4338,11 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
+
+nectar-cs-js-common@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/nectar-cs-js-common/-/nectar-cs-js-common-1.0.1.tgz#593989e7d5659dd35d7b9de053e89a79a854e41a"
+  integrity sha512-rIwn7j3lXku1SVui6Iqzq/zkiygEwUS5zpGioPwxE2ssWRHJqTT5ROy3riNDLK8nYIOFhKLFHHEekLIi+m9ajg==
 
 needle@^2.2.1:
   version "2.4.0"

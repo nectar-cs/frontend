@@ -6,7 +6,7 @@ import MatchModal from '../../modals/MatchModal/MatchModal';
 import IntegrationsPrompt from "./IntegrationsPrompt";
 import ErrComponent from "../../hocs/ErrComponent";
 import ModalHostComposer from "../../hocs/ModalHostComposer";
-import { CenterAnnouncement, CenterLoader, Layout, LeftHeader, Loader } from "@nectar/js-common";
+import { CenterAnnouncement, CenterLoader, Layout, LeftHeader, Loader } from "nectar-cs-js-common";
 import defaults from './defaults'
 import Helper from './Helper'
 import type {Matching, WideDeployment} from "../../types/Types";

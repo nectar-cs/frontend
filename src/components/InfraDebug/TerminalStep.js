@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import { LeftHeader, Text, TextOverLineSubtitle } from "@nectar/js-common";
-import {Layout} from "@nectar/js-common";
+import { LeftHeader, Text, TextOverLineSubtitle } from "nectar-cs-js-common";
+import {Layout} from "nectar-cs-js-common";
 
 export default class TerminalStep extends React.Component{
 

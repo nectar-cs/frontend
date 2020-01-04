@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Utils from "../../utils/Utils";
 import {stacks} from "../../vendor/stacks";
 import FormComponent from "../../hocs/FormComponent";
-import { TextOverLineSubtitle } from "@nectar/js-common";
+import { TextOverLineSubtitle } from "nectar-cs-js-common";
 
 class MatchFormClass extends React.Component<Props> {
 

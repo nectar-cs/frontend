@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Utils from '../../../utils/Utils';
 import sections from './sections'
 import ModalHostComposer from "../../../hocs/ModalHostComposer";
-import { Micon, ModestLink, theme } from "@nectar/js-common";
+import { Micon, ModestLink, theme } from "nectar-cs-js-common";
 import {Link} from "react-router-dom";
 
 function SideBarSubItemF({name, url, crtAppPath}){

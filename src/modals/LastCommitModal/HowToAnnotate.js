@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import defaults from "./defaults";
-import {Layout, Text} from "@nectar/js-common"
+import {Layout, Text} from "nectar-cs-js-common"
 import {Types} from "../../types/CommonTypes";
 import Utils from "../../utils/Utils";
 

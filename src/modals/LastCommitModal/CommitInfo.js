@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import S from './CommitInfoStyles'
 import {Types} from "../../types/CommonTypes";
-import { Text, Img, TextOverLineSubtitle } from "@nectar/js-common";
+import { Text, Img, TextOverLineSubtitle } from "nectar-cs-js-common";
 import FileChange from "./FileChange";
 import moment from "moment";
 import defaults from "./defaults";

@@ -8,7 +8,7 @@ import ComingSoonSection from "../../widgets/ComingSoonSection/ComingSoonSection
 import {Types} from "../../types/CommonTypes";
 import {ROUTES} from "../../components/Root/RoutesConsts";
 import {Redirect} from "react-router";
-import { LeftHeader, ModalButton, TextOverLineSubtitle } from "@nectar/js-common";
+import { LeftHeader, ModalButton, TextOverLineSubtitle } from "nectar-cs-js-common";
 
 export default class ChooseDebugTypeModal extends React.Component {
 

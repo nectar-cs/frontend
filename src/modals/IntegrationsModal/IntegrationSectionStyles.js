@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Button} from "@nectar/js-common";
+import {Button} from "nectar-cs-js-common";
 
 const less = (p) => p.theme.colors.contrastLessFont;
 const secondary = (p) => p.theme.colors.secondaryColor;

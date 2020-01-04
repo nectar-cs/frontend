@@ -1,6 +1,6 @@
 import React from "react";
 import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
-import { CenterAnnouncement, Layout, Text } from "@nectar/js-common";
+import { CenterAnnouncement, Layout, Text } from "nectar-cs-js-common";
 
 
 export default function  DoneAnnouncement({name, id}){

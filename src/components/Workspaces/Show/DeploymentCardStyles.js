@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Layout, colored } from "@nectar/js-common"
+import { Layout, colored } from "nectar-cs-js-common"
 
 const podSize = "14px";
 const mult = 1.04;

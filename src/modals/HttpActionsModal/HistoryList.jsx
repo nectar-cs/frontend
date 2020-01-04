@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Backend from "../../utils/Backend";
 import DataUtils from "../../utils/DataUtils";
 import Utils from "../../utils/Utils";
-import {Tables} from "@nectar/js-common";
+import {Tables} from "nectar-cs-js-common";
 import S from './HistoryListStyles'
 
 export default class HistoryList extends React.Component {

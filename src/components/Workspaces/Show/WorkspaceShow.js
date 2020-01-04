@@ -7,7 +7,7 @@ import {makeRoute, ROUTES} from "../../Root/RoutesConsts";
 import DeploymentCard from "./DeploymentCard";
 import Helper from "./Helper";
 import {connect} from "react-redux";
-import { Micon, Button, CenterAnnouncement, CenterLoader } from "@nectar/js-common";
+import { Micon, Button, CenterAnnouncement, CenterLoader } from "nectar-cs-js-common";
 import StuntPodRecycleModal from "../../../modals/StuntPodRecycleModal/StuntPodRecycleModal";
 import UpdateCheckComposer from "../../../hocs/UpdateCheckComposer";
 import Utils from "../../../utils/Utils";

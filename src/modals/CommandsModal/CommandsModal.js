@@ -7,7 +7,7 @@ import CommandHistory from "./CommandHistory";
 import Helper from "./Helper";
 import Preview from "./Preview";
 import FlexibleModal from "../../hocs/FlexibleModal";
-import { CenterAnnouncement, LeftHeader, Loader, ModalButton } from "@nectar/js-common";
+import { CenterAnnouncement, LeftHeader, Loader, ModalButton } from "nectar-cs-js-common";
 
 export default class CommandsModal extends React.Component{
 

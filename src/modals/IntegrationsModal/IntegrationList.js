@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Icon as Ic, Identifier, Status} from "./IntegrationListStyles";
 import Helper from "./Helper";
-import {Micon, Loader} from "@nectar/js-common";
+import {Micon, Loader} from "nectar-cs-js-common";
 
 function IntegrationItem(props) {
   const delCol = (

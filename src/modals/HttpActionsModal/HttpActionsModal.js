@@ -12,7 +12,7 @@ import {BodyResponseView, HeadersResponseView, RawResponseView} from "./Response
 import HistoryList from "./HistoryList";
 import Backend from "../../utils/Backend";
 import FlexibleModal from "../../hocs/FlexibleModal";
-import { Tabs, Layout, LeftHeader, Text, TextOverLineSubtitle, ModalButton } from "@nectar/js-common";
+import { Tabs, Layout, LeftHeader, Text, TextOverLineSubtitle, ModalButton } from "nectar-cs-js-common";
 import Helper from './Helper'
 import Checklist from "../ImageOpsModal/View/Checklist";
 

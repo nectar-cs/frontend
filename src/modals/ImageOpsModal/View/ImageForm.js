@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import { CenterAnnouncement, In, TextOverLineSubtitle } from "@nectar/js-common";
+import { CenterAnnouncement, In, TextOverLineSubtitle } from "nectar-cs-js-common";
 import { S } from './ImageFormStyles'
 import Utils from "../../../utils/Utils";
 import {defaults} from "./defaults";

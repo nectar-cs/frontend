@@ -7,7 +7,7 @@ import LabelsSection from './LabelsSection';
 import ComingSoonSection from '../../widgets/ComingSoonSection/ComingSoonSection';
 import CheatSheet from '../../widgets/CheatSheet/CheatSheet';
 import ServicesSection from './ServicesSection/ServicesSection';
-import { LeftHeader, Tabs } from "@nectar/js-common";
+import { LeftHeader, Tabs } from "nectar-cs-js-common";
 
 export default class OverviewModal extends React.Component<Props> {
   render() {

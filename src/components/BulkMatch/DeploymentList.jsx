@@ -2,7 +2,7 @@
 import React, {Fragment} from 'react';
 import type {Matching, WideDeployment} from "../../types/Types";
 import Utils from "../../utils/Utils";
-import { Micon, Text, Tables, TextOverLineSubtitle, ColoredLabelList } from "@nectar/js-common";
+import { Micon, Text, Tables, TextOverLineSubtitle, ColoredLabelList } from "nectar-cs-js-common";
 import S from './DeploymentListStyles'
 
 function ListHeader() {

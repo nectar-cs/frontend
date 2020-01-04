@@ -1,6 +1,6 @@
 //@flow
 import React from 'react'
-import { CenterLoader, CenterAnnouncement, Layout, LeftHeader, ModalButton } from "@nectar/js-common";
+import { CenterLoader, CenterAnnouncement, Layout, LeftHeader, ModalButton } from "nectar-cs-js-common";
 import Utils from "../../utils/Utils";
 import defaults from "./defaults";
 import {Types} from "../../types/CommonTypes";

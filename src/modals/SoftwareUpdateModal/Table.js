@@ -1,4 +1,4 @@
-import {Text} from "@nectar/js-common";
+import {Text} from "nectar-cs-js-common";
 import type {RevisionStatus} from "../../types/Types";
 import React from "react";
 

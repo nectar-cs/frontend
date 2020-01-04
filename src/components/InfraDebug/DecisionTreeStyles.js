@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {theme} from "@nectar/js-common";
+import {theme} from "nectar-cs-js-common";
 
 const Container = styled.div`
   position: relative;
