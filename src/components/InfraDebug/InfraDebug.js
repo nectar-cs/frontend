@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import AuthenticatedComponent from "../../hocs/AuthenticatedComponent";
-import { CenterAnnouncement, Layout } from "nectar-cs-js-common";
+import { CenterAnnouncement, CenterLoader, Layout } from "nectar-cs-js-common";
 import OverviewSide from "./OverviewSide";
 import Helper from './Helper'
 import Node from "./Node";
@@ -135,9 +135,8 @@ class InfraDebugClass extends React.Component {
   }
 
   renderLoader(){
-    // if(this.isDataReady()) return null;
-    // return <CenterLoader/>;
-    return null;
+    if(this.isDataReady()) return null;
+    return <CenterLoader/>;
   }
 
   isDataReady(){

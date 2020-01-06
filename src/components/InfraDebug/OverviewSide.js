@@ -52,6 +52,7 @@ export default class OverviewSide extends React.Component {
     return (
       <LeftHeader
         graphicName={Utils.msImage(deployment, matching)}
+        graphicType={LeftHeader.gTypes.image}
         title={this.config().header.title(deployment.name)}
         subtitle={this.config().header.subtitle}
       />

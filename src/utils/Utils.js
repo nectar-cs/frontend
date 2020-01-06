@@ -180,14 +180,14 @@ export default class Utils {
   }
 
   static mp(name, hash){
-    try{
-      if(this.hasMixPanel()){
-        mixpanel.track(name, hash);
-      }
-    } catch (e) {
-      this.senTrack(e);
-      console.log("MP FAIL " + e);
-    }
+    // try{
+    //   if(this.hasMixPanel()){
+    //     mixpanel.track(name, hash);
+    //   }
+    // } catch (e) {
+    //   this.senTrack(e);
+    //   console.log("MP FAIL " + e);
+    // }
   }
 
   static isNonDev(){

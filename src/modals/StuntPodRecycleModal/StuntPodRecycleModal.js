@@ -48,7 +48,7 @@ export default class StuntPodRecycleModal extends React.Component {
     return(
       <LeftHeader
         graphicName='repeat'
-        graphicType='icon'
+        graphicType={LeftHeader.gTypes.icon}
         title={defaults.header.title}
         subtitle={defaults.header.subtitle}
       />

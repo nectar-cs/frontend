@@ -25,7 +25,7 @@ export default class TerminalStep extends React.Component{
         graphicName='cake'
         title={`Conclusion: ${node.title()}`}
         subtitle='Root cause identified. Explanation and how-to-fix.'
-        graphicType='icon'
+        graphicType={LeftHeader.gTypes.icon}
       />
     )
   }

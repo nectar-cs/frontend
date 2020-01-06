@@ -4340,9 +4340,9 @@ natural-compare@^1.4.0:
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
 nectar-cs-js-common@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/nectar-cs-js-common/-/nectar-cs-js-common-1.0.1.tgz#593989e7d5659dd35d7b9de053e89a79a854e41a"
-  integrity sha512-rIwn7j3lXku1SVui6Iqzq/zkiygEwUS5zpGioPwxE2ssWRHJqTT5ROy3riNDLK8nYIOFhKLFHHEekLIi+m9ajg==
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/nectar-cs-js-common/-/nectar-cs-js-common-1.0.11.tgz#731951c2241ba0cb68d019eefc53320a33715b6e"
+  integrity sha512-mLZ5nu+ikAEWGMZk2QEwKfIAcgr904/8eEvUFOWLvvXLmOPCWBYTgMVUZIBjXcBLHy1D/tC5xNHT9iJtOoN23A==
 
 needle@^2.2.1:
   version "2.4.0"

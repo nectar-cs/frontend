@@ -33,7 +33,7 @@ export default class DebugStep extends React.Component {
         graphicName='bug_report'
         title={defaults.step.title(node.depth() + 1, node.title())}
         subtitle={defaults.step.subtitle}
-        graphicType='icon'
+        graphicType={LeftHeader.gTypes.icon}
       />
     )
   }

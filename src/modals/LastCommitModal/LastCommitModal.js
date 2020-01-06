@@ -40,6 +40,7 @@ export default class LastCommitModal extends React.Component {
     return(
       <LeftHeader
         graphicName={Utils.msImage(deployment, matching)}
+        graphicType={LeftHeader.gTypes.image}
         title={defaults.header.title(deployment.name)}
         subtitle={defaults.header.subtitle}
       />
