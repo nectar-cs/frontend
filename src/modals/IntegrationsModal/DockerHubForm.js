@@ -32,9 +32,9 @@ export default class DockerHubForm extends React.Component{
   submit(){
     const endpoint = `/remotes/dockerhub`;
     const { username, password } = this.state;
-    const payload = { identifier: username, secret: password };
-    Utils.mp('Integration Create', {type: "DockerHub",  entity: "docker"});
-    Backend.aPost(endpoint, payload, this.props.notifySubmitted);
+    const remote = { identifier: username, secret: password };
+    const { notifySubmitted: callback } = this.props;
+    Backend.aPost(endpoint, { remote }, callback);
   }
 
   renderFormInputs(){

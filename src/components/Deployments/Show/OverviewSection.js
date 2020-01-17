@@ -5,7 +5,7 @@ import Section from "./Section";
 import Utils from "../../../utils/Utils";
 import SS from './OverviewSectionStyles'
 import OverviewModal from "../../../modals/OverviewModal/OverviewModal";
-import { Layout, LeftHeader } from "nectar-cs-js-common";
+import { ColoredLabelList, Layout, LeftHeader } from "nectar-cs-js-common";
 import {Text} from "nectar-cs-js-common";
 import {connect} from "react-redux";
 import {Types} from "../../../types/CommonTypes";
@@ -49,6 +49,20 @@ class OverviewSectionClass extends Section {
     )
   }
 
+  renderLabels(){
+    const { labels } = this.props.deployment;
+    const asString = Object.keys(labels).map(k => `${k}:${labels[k]}`);
+
+    return(
+      <Layout.Div top={1.5}>
+        <ColoredLabelList
+          labels={asString}
+          labelType='whitelist'
+        />
+      </Layout.Div>
+    )
+  }
+
   renderLines(){
     const { deployment } = this.props;
     if(!deployment) return null;
@@ -61,6 +75,7 @@ class OverviewSectionClass extends Section {
         { this.renderServiceLines() }
         { this.renderNotMatchedLine() }
         { this.renderNotConnectedLine() }
+        { this.renderLabels() }
       </SS.ContentRow>
     )
   }

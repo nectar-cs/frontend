@@ -18,7 +18,9 @@ export default class DockerSection extends IntegrationSection {
   }
 
   formRenderer(extras) {
-    if (this.props.vendor === 'dockerhub') return <DockerHubForm {...extras} />;
+    if (this.props.vendor === 'dockerhub') {
+      return <DockerHubForm {...extras} />;
+    }
     else return <S.Apology>Coming soon!</S.Apology>;
   }
 

@@ -4,7 +4,6 @@ import IntegrationSection from './IntegrationSection';
 import Backend from '../../utils/Backend';
 import DataUtils from '../../utils/DataUtils';
 import { S } from './IntegrationSectionStyles';
-import Utils from '../../utils/Utils';
 
 export default class GitSection extends IntegrationSection {
   performFetch(whenDone) {
@@ -22,13 +21,14 @@ export default class GitSection extends IntegrationSection {
 
   formRenderer() {
     super.formSubmit = () => {
-      Utils.mp('Integration Create', { type: 'GitHub', entity: 'git' });
       const url = this.state.authUrls[this.props.vendor];
       window.open(url, '_blank');
       super.onSubmitted();
     };
 
-    if (this.props.vendor === 'github') return <S.FwdNotice>{defaults.gitFwdNotice}</S.FwdNotice>;
+    if (this.props.vendor === 'github') {
+      return <S.FwdNotice>{defaults.gitFwdNotice}</S.FwdNotice>;
+    }
     else return <S.Apology>Coming soon!</S.Apology>;
   }
 

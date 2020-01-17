@@ -25,7 +25,7 @@ export default class Helper {
     MatchingSection,
   ];
 
-  static defaultSection = HttpOpsSection._className();
+  static defaultSection = OverviewSection._className();
 
   static classNameToKey(className) {
     const key = className.replace('Section', '');

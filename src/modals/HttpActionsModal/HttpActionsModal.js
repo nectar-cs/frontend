@@ -247,7 +247,7 @@ export default class HttpActionsModal extends React.Component {
 
     Utils.mp('HTTP Operations Send', {verb, path});
 
-    Kapi.post(
+    Kapi.aPost(
       "/api/run/curl",
       payload,
       this.onSubmitted,

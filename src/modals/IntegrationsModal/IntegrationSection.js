@@ -1,5 +1,5 @@
+//@flow
 import React, {Fragment} from 'react'
-import PropTypes from 'prop-types'
 import {S} from './IntegrationSectionStyles'
 import defaults from "./defaults";
 import Utils from "../../utils/Utils";
@@ -7,7 +7,7 @@ import { AddNew, Loader } from "nectar-cs-js-common";
 import IntegrationList from "./IntegrationList";
 import Backend from "../../utils/Backend";
 
-export default class IntegrationSection extends React.PureComponent {
+export default class IntegrationSection extends React.Component<Props, State> {
 
   constructor(props){
     super(props);
@@ -172,7 +172,7 @@ export default class IntegrationSection extends React.PureComponent {
 
   performDelete(id, whenDone){
     const endpoint = `/remotes/${id}`;
-    Backend.raisingDelete(endpoint, whenDone);
+    Backend.aDelete(endpoint, whenDone);
   }
 
   startConnectionCheck(id){
@@ -201,12 +201,20 @@ export default class IntegrationSection extends React.PureComponent {
     const { isAuthUrlsFetching, isListFetching } = this.state;
     return isAuthUrlsFetching || isListFetching;
   }
+}
 
-  static propTypes = {
-    setReloadPerformer: PropTypes.func.isRequired,
-    vendor: PropTypes.string,
-    formShowing: PropTypes.oneOf([true, false]).isRequired,
-    setMasterState: PropTypes.func.isRequired,
-    notifyDataChanged: PropTypes.func.isRequired
-  }
+type Props = {
+  setReloadPerformer: any => any,
+  vendor: ?string,
+  formShowing: boolean,
+  setMasterState: any => any,
+  notifyDataChanged: any => any
+}
+
+type State = {
+  isSubmitting: boolean,
+  isListFetching: boolean,
+  isAuthUrlsFetching: boolean,
+  registries: Array<>,
+  authUrls: Array<string>
 }

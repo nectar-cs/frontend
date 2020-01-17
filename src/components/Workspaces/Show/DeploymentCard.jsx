@@ -13,6 +13,7 @@ import {Link} from "react-router-dom";
 import HotReloadModal from "../../../modals/HotReloadingModal/HotReloadModal";
 import PodModal from "../../../modals/PodModal/PodModal";
 import LastCommitModal from "../../../modals/LastCommitModal/LastCommitModal";
+import { ColoredLabelList, Text } from "nectar-cs-js-common";
 
 export default class DeploymentCard extends React.Component {
 
@@ -31,6 +32,7 @@ export default class DeploymentCard extends React.Component {
       <S.Card>
         { this.renderHeader() }
         { this.renderContentRows() }
+        { this.renderLabels() }
         { this.renderPodStatuses() }
         { this.renderAdditionalControls() }
       </S.Card>
@@ -61,17 +63,25 @@ export default class DeploymentCard extends React.Component {
     return this.hasMs() && this.props.matching.gitRemoteName;
   }
 
+  renderLabels(){
+    const { labels } = this.props.deployment;
+    const asString = Object.keys(labels).map(k => `${k}:${labels[k]}`);
+    if(asString.length > 0){
+      return <ColoredLabelList labelType='whitelist' labels={asString}/>
+    } else {
+      return <Text.P>No labels!</Text.P>
+    }
+  }
+
   renderContentRows(){
     const dep = this.props.deployment;
     const sourceText = Utils.sourceString(dep.commit);
-    const portText = `Ok CPU, low RAM`;
 
     return <S.ContentRows>
       <tbody>
         { this.buildRow('Image', dep.imageName, this.openImageModal) }
         { this.buildRow('Source', sourceText, this.openSourceModal) }
         { this.renderDnsRow() }
-        { this.buildRow('Status', portText, () => alert("Implemented Before 2020.")) }
       </tbody>
     </S.ContentRows>;
   }

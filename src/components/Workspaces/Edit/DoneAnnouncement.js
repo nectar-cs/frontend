@@ -8,6 +8,7 @@ export default function  DoneAnnouncement({name, id}){
   const bundle = ROUTES.workspaces;
   const editPath = makeRoute(bundle.edit.path, { id });
   const continuePath = makeRoute(bundle.show.path, { id });
+
   return(
     <Layout.FullWidthPanel>
       <CenterAnnouncement
