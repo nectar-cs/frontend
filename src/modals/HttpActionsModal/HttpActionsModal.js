@@ -243,9 +243,7 @@ export default class HttpActionsModal extends React.Component {
     this.setState(s => ({...s, phase: 'submitting'}));
     const {verb, path, host } = this.state.destination;
     const { namespace } = this.state.source;
-    let payload = { verb, url: `${host}${path}`, namespace };
-
-    Utils.mp('HTTP Operations Send', {verb, path});
+    let payload = { verb, url: host, path, namespace };
 
     Kapi.aPost(
       "/api/run/curl",

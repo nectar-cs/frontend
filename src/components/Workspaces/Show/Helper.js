@@ -33,12 +33,6 @@ export default class Helper {
     );
   }
 
-  static checkStuntTrash(callback) {
-    Kapi.aFetch(`/api/cluster/stunt_pods`, resp => {
-      callback(DataUtils.obj2Camel(resp['data']));
-    });
-  }
-
   static workspace(inst) {
     return inst.props.workspace;
   }

@@ -12,7 +12,7 @@ export const defaultBody = JSON.stringify(
 
 const defaults = {
   previewCommands: ({ ns, curl }) => [
-    `kubectl run curler --image=nectar/curler --namespace=${ns}`,
+    `kubectl run curler --image=nectar/curler -n ${ns}`,
     `cmd="${curl}"`,
     `kubectl exec $cmd curler --namespace=${ns}`,
   ],
