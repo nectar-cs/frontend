@@ -1,9 +1,8 @@
 import Kapi from './Kapi';
-import Backend from './Backend';
+import Central from './Central';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 import Utils from './Utils';
-import type { RevisionStatus } from '../types/Types';
 
 const KEY = 'last_revision_check';
 const THRESHOLD = { minutes: 10 };
@@ -19,16 +18,22 @@ export default class UpdateChecker {
   async fetchVerdict() {
     const frontend = Utils.REVISION;
     const kapi = await this.fetchKapiVersion();
-    const currentVersions = { frontend, kapi };
+    const backend = await this.fetchBackendVersion();
+    const currentVersions = { frontend, kapi, backend };
     const payload = { currentVersions };
     const ep = '/revisions/compare';
-    const statuses = await Backend.bPost(ep, payload);
+    const statuses = await Central.bPost(ep, payload);
     const needingUpdate = (statuses || []).filter(v => v.updateNecessary);
     return needingUpdate.length > 0;
   }
 
   async fetchKapiVersion() {
     const ep = '/api/status/revision';
+    return (await Kapi.bFetch(ep))['sha'];
+  }
+
+  async fetchBackendVersion(){
+    const ep = '/status/revision';
     return (await Kapi.bFetch(ep))['sha'];
   }
 

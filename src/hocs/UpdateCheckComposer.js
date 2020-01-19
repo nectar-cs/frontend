@@ -8,7 +8,9 @@ export default class UpdateCheckComposer {
       async componentDidMount() {
         const props = this.props;
         const checker = new UpdateChecker();
-        if (await checker.perform()) props.openModal(SoftwareUpdateModal, { prompted: true });
+        if (await checker.perform()) {
+          props.openModal(SoftwareUpdateModal, { prompted: true });
+        }
       }
       render() {
         return <Component {...this.props} />;
