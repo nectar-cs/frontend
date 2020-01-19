@@ -9,6 +9,7 @@ import type {RevisionStatus} from "../../types/Types";
 import ExplanationBlock from "./ExplanationBlock";
 import Table from "./Table";
 import Helper from './Helper'
+import Backend from "../../utils/Backend";
 
 export default class SoftwareUpdateModal extends React.Component<Props, State> {
 
@@ -147,8 +148,8 @@ export default class SoftwareUpdateModal extends React.Component<Props, State> {
   async fetchStatuses(){
     this.setState(s => ({...s, isFetching: true}));
     const frontend = Utils.REVISION || '';
-    const kapi = (await Kapi.bFetch('/api/status/revision'))['sha'];
-    const backend = (await Kapi.bFetch('/status/revision'))['sha'];
+    const kapi = ((await Kapi.bFetch('/api/status/revision')) || {})['sha'];
+    const backend = ((await Backend.bFetch('/status/revision')) || {})['sha'];
     const payload = { currentVersions: { frontend, kapi, backend } };
     const answer = await Central.bPost('/revisions/compare', payload);
     const statuses = Helper.massageStatuses(answer);

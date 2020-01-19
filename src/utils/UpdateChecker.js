@@ -3,6 +3,7 @@ import Central from './Central';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 import Utils from './Utils';
+import Backend from "./Backend";
 
 const KEY = 'last_revision_check';
 const THRESHOLD = { minutes: 10 };
@@ -34,7 +35,7 @@ export default class UpdateChecker {
 
   async fetchBackendVersion(){
     const ep = '/status/revision';
-    return (await Kapi.bFetch(ep))['sha'];
+    return (await Backend.bFetch(ep))['sha'];
   }
 
   shouldPerform() {
